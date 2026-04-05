@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Source Code Holdings</title>
+
+<style>
+:root {
+  --bg: #f4f4f2;
+  --bg-soft: #ecece8;
+  --panel: #ffffff;
+  --line: rgba(0,0,0,0.1);
+  --line-strong: rgba(0,0,0,0.2);
+  --text: #111;
+  --muted: #6a6a6a;
+  --input: #fff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, sans-serif;
+}
+
+body {
+  background:
+    linear-gradient(180deg, rgba(127,127,127,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127,127,127,0.06) 1px, transparent 1px),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+  background-size: 40px 40px, 40px 40px, auto;
+  color: var(--text);
+}
+
+.container {
+  width: min(1200px, calc(100% - 40px));
+  margin: auto;
+}
+
+/* BRAND */
+
+.brand-top {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.brand-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand-logo img {
+  width: 180px;
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.brand-title {
+  font-size: 1.4rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.brand-copy {
+  margin-top: 18px;
+  max-width: 700px;
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+/* CORE */
+
+.core {
+  padding: 60px 0;
+}
+
+.core-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.core-top h2 {
+  font-size: 2.2rem;
+}
+
+.core-top p {
+  color: var(--muted);
+}
+
+/* CARDS */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 16px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-number {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.card h3 {
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+.card ul {
+  list-style: none;
+  margin-top: auto;
+}
+
+.card li {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  padding-left: 14px;
+  position: relative;
+}
+
+.card li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+}
+
+/* CONTACT — ONLY CHANGE HERE */
+
+.contact {
+  margin-top: 600px; /* pushed DOWN properly */
+}
+
+.contact-panel {
+  max-width: 900px;
+  margin: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  background: var(--panel);
+}
+
+.contact-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 15px;
+}
+
+.contact-top h2 {
+  font-size: 1.4rem;
+}
+
+.contact-top p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--input);
+  color: var(--text);
+}
+
+textarea {
+  grid-column: 1/-1;
+  min-height: 100px;
+}
+
+.form-bottom {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-bottom button {
+  background: var(--text);
+  color: var(--bg);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+}
+
+.contact-direct {
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  display: flex;
+  gap: 15px;
+}
+
+.contact-direct a {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+footer {
+  text-align: center;
+  padding: 30px 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+  .core-top,
+  .cards,
+  .contact-top,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-logo img {
+    width: 140px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- BRAND -->
+  <section class="brand-top">
+
+    <div class="brand-logo">
+      <img src="images/sch_logo_light.png" alt="Source Code Holdings logo">
+    </div>
+
+    <div class="brand-title">Source Code Holdings</div>
+
+    <p class="brand-copy">
+      The holding entity behind a private body of intellectual property,
+      structured frameworks, system logic, and licensing-led deployment pathways.
+    </p>
+
+  </section>
+
+  <!-- CORE -->
+  <section class="core">
+
+    <div class="core-top">
+      <h2>What we cover</h2>
+      <p>
+        SCH operates across a private set of knowledge assets, visual systems,
+        logic engines, application concepts, and licensing-led build pathways.
+      </p>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-number">01</div>
+        <h3>Framework Design</h3>
+        <p>
+          Foundational systems, structured models, symbolic architecture,
+          and protected intellectual property built for long-range use.
+        </p>
+        <ul>
+          <li>Core framework creation</li>
+          <li>Proprietary model structuring</li>
+          <li>Private blueprint development</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-number">02</div>
+        <h3>Intelligence Systems</h3>
+        <p>
+          Behavioural, interpretive, and decision-based engines designed
+          to turn complexity into usable structure.
+        </p>
+        <ul>
+          <li>Decision support logic</li>
+          <li>Pattern and drift modelling</li>
+          <li>Predictive system layers</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-number">03</div>
+        <h3>Interface Concepts</h3>
+        <p>
+          Premium visual layers that translate hidden processes into clear,
+          elegant, system-led interaction.
+        </p>
+        <ul>
+          <li>HUD and dashboard concepts</li>
+          <li>Structured visual mapping</li>
+          <li>Private application surfaces</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-number">04</div>
+        <h3>Licensed Deployment</h3>
+        <p>
+          Selected integrations, controlled builds, and commercial pathways
+          developed under private governance.
+        </p>
+        <ul>
+          <li>Licensing-led implementation</li>
+          <li>Protected system integration</li>
+          <li>Selective partner access</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact">
+
+    <div class="contact-panel">
+
+      <div class="contact-top">
+        <h2>Private access</h2>
+        <p>Selective enquiries only.</p>
+      </div>
+
+      <form>
+        <div class="form-grid">
+
+          <input placeholder="Full name" required>
+          <input placeholder="Company">
+
+          <input type="email" placeholder="Email" required>
+          <input placeholder="Phone">
+
+          <input placeholder="Subject" required>
+
+          <select required>
+            <option>Enquiry type</option>
+            <option>IP / Licensing</option>
+            <option>Framework Access</option>
+            <option>Architecture</option>
+            <option>Partnership</option>
+          </select>
+
+          <textarea placeholder="Brief enquiry..." required></textarea>
+
+          <div class="form-bottom">
+            <label><input type="checkbox" required> Confidential</label>
+            <button>Submit</button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
+  </section>
+
+  <footer>
+    Source Code Holdings • All Rights Reserved 2026
+  </footer>
+
+</div>
+
+</body>
+</html>
