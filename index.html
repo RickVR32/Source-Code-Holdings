@@ -451,29 +451,31 @@ footer {
         <p>Selective enquiries only.</p>
       </div>
 
-      <form>
-        <div class="form-grid">
+<form action="https://formspree.io/f/xpqobvev" method="POST">
+  <div class="form-grid">
 
-          <input placeholder="Name" required>
-          <input placeholder="Company">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="company" placeholder="Company">
 
-          <input type="email" placeholder="Email" required>
-          <select required>
-            <option>Enquiry type</option>
-            <option>IP / Licensing</option>
-            <option>Framework Access</option>
-            <option>System Architecture</option>
-            <option>Partnership</option>
-          </select>
+    <input type="email" name="email" placeholder="Email" required>
+    <select name="enquiry_type" required>
+      <option value="" disabled selected>Enquiry type</option>
+      <option value="IP / Licensing">IP / Licensing</option>
+      <option value="Framework Access">Framework Access</option>
+      <option value="System Architecture">System Architecture</option>
+      <option value="Partnership">Partnership</option>
+    </select>
 
-          <textarea placeholder="Brief enquiry..." required></textarea>
+    <textarea name="message" placeholder="Brief enquiry..." required></textarea>
 
-          <div class="form-bottom">
-            <button>Submit</button>
-          </div>
+    <input type="hidden" name="_subject" value="New SCH enquiry">
 
-        </div>
-      </form>
+    <div class="form-bottom">
+      <button type="submit">Submit</button>
+    </div>
+
+  </div>
+</form>
 
     </div>
 
