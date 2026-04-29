@@ -5,211 +5,251 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Source Code Holdings</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
 :root {
-  --bg: #f4f4f2;
-  --bg-soft: #ecece8;
-  --panel: #ffffff;
-  --line: rgba(0,0,0,0.1);
-  --line-strong: rgba(0,0,0,0.2);
-  --text: #111;
-  --muted: #6a6a6a;
-  --input: #fff;
+  --bg: #f2f1ee;
+  --bg-soft: #e9e8e3;
+  --panel: #fafaf8;
+  --panel-border: rgba(0,0,0,0.09);
+  --line: rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.18);
+  --text: #0e0e0c;
+  --muted: #7a7972;
+  --accent: #0e0e0c;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Inter, Arial, sans-serif;
 }
 
 body {
-  background:
-    linear-gradient(180deg, rgba(127,127,127,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(127,127,127,0.06) 1px, transparent 1px),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
-  background-size: 40px 40px, 40px 40px, auto;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(100,100,90,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,100,90,0.055) 1px, transparent 1px);
+  background-size: 44px 44px;
   color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
 }
 
 .container {
-  width: min(1200px, calc(100% - 40px));
+  width: min(1200px, calc(100% - 48px));
   margin: auto;
 }
 
-/* BRAND */
+/* ── HERO ── */
 
-.brand-top {
+.hero {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 40px 0;
-}
-
-.brand-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.brand-logo img {
-  width: 180px;
-  height: auto;
-  display: block;
-  margin-bottom: 20px;
-}
-
-.brand-title {
-  font-size: 1.4rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-top: 10px;
-}
-
-.brand-copy {
-  margin-top: 18px;
-  max-width: 760px;
-  font-size: 1.05rem;
-  color: var(--muted);
-}
-
-/* CORE */
-
-.core,
-.tech-layer {
-  padding: 60px 0;
-}
-
-.core-top,
-.tech-top {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.core-top h2,
-.tech-top h2 {
-  font-size: 2.2rem;
-}
-
-.core-top p,
-.tech-top p {
-  color: var(--muted);
-}
-
-/* CARDS */
-
-.cards,
-.tech-cards {
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 16px;
-}
-
-.card,
-.tech-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: 26px;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-number {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-bottom: 18px;
-}
-
-.tech-card .card-number {
-  width: auto;
-  min-width: 52px;
-  padding: 0 14px;
-  border-radius: 999px;
-}
-
-.card h3,
-.tech-card h3 {
-  margin-bottom: 14px;
-  font-size: 1.08rem;
-  line-height: 1.2;
-}
-
-.card p,
-.tech-card p {
-  color: var(--muted);
-  font-size: 0.97rem;
-  line-height: 1.45;
-  margin-bottom: 18px;
-}
-
-.card ul,
-.tech-card ul {
-  list-style: none;
-  margin-top: auto;
-}
-
-.card li,
-.tech-card li {
-  font-size: 0.93rem;
-  line-height: 1.45;
-  color: var(--muted);
-  margin-bottom: 8px;
-  padding-left: 14px;
+  padding: 60px 0 80px;
   position: relative;
 }
 
-.card li::before,
-.tech-card li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
+.hero-logo img {
+  width: 160px;
+  height: auto;
+  display: block;
+  margin: 0 auto 32px;
+  opacity: 0.92;
 }
 
-/* CONTACT */
+.hero-name {
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.hero-divider {
+  width: 32px;
+  height: 1px;
+  background: var(--line-strong);
+  margin: 28px auto;
+}
+
+.hero-copy {
+  max-width: 580px;
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.hero-tag {
+  margin-top: 44px;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* ── SECTION SHARED ── */
+
+.section {
+  padding: 80px 0;
+  border-top: 1px solid var(--line);
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.section-desc {
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 440px;
+  padding-top: 8px;
+  align-self: end;
+}
+
+/* ── CARDS ── */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: var(--line-strong);
+}
+
+.card-index {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.card h3 {
+  font-family: 'Cormorant', serif;
+  font-weight: 400;
+  font-size: 1.18rem;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.card p {
+  font-size: 0.77rem;
+  line-height: 1.75;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.card ul {
+  list-style: none;
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.card li {
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--muted);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line);
+  letter-spacing: 0.01em;
+}
+
+.card li:last-child {
+  border-bottom: none;
+}
+
+/* tech card badge */
+.card-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  align-self: flex-start;
+}
+
+/* ── CONTACT ── */
 
 .contact {
-  margin-top: 260px;
-  padding-bottom: 40px;
+  padding: 120px 0 80px;
+  border-top: 1px solid var(--line);
 }
 
-.contact-panel {
-  max-width: 760px;
+.contact-inner {
+  max-width: 680px;
   margin: auto;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 18px;
-  background: var(--panel);
 }
 
-.contact-top {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 20px;
-  align-items: end;
-  margin-bottom: 12px;
+.contact-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
 }
 
-.contact-top h2 {
-  font-size: 1.2rem;
+.contact-head h2 {
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
 }
 
-.contact-top p {
+.contact-head span {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--muted);
-  font-size: 0.88rem;
 }
 
 .form-grid {
@@ -219,109 +259,139 @@ body {
 }
 
 input, select, textarea {
-  padding: 10px;
+  font-family: 'Geist Mono', monospace;
+  font-weight: 300;
+  font-size: 0.78rem;
+  padding: 11px 14px;
   border-radius: 10px;
-  border: 1px solid var(--line);
-  background: var(--input);
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
   color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  letter-spacing: 0.01em;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--text);
+}
+
+select {
+  appearance: none;
+  cursor: pointer;
 }
 
 textarea {
-  grid-column: 1/-1;
-  min-height: 88px;
+  grid-column: 1 / -1;
+  min-height: 90px;
+  resize: none;
 }
 
-.form-bottom {
-  grid-column: 1/-1;
+.form-actions {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
   margin-top: 4px;
 }
 
-.form-bottom button {
+.form-actions button {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   background: var(--text);
   color: var(--bg);
-  padding: 8px 14px;
+  padding: 9px 20px;
   border-radius: 999px;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.form-actions button:hover {
+  opacity: 0.75;
 }
 
 footer {
   text-align: center;
-  padding: 30px 0;
-  font-size: 0.75rem;
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--muted);
+  opacity: 0.6;
 }
 
-/* MOBILE */
+/* ── RESPONSIVE ── */
 
 @media (max-width: 900px) {
-  .core-top,
-  .tech-top,
+  .section-head,
   .cards,
-  .tech-cards,
-  .contact-top,
   .form-grid {
     grid-template-columns: 1fr;
   }
 
-  .brand-logo img {
-    width: 140px;
+  .section-desc {
+    max-width: 100%;
+    padding-top: 0;
+  }
+
+  .hero-logo img {
+    width: 120px;
   }
 
   .contact {
-    margin-top: 160px;
-  }
-
-  .form-bottom {
-    justify-content: flex-start;
+    padding: 80px 0 60px;
   }
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-  <!-- BRAND -->
-  <section class="brand-top">
-
-    <div class="brand-logo">
-      <img src="images/sch_logo_light.png" alt="Source Code Holdings logo">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-logo">
+      <img src="images/sch_logo_light.png" alt="Source Code Holdings">
     </div>
-
-    <div class="brand-title">Source Code Holdings</div>
-
-    <p class="brand-copy">
-      Source Code Holdings is the parent entity overseeing a private body of intellectual property,
-      structured frameworks, system architecture, and licensing-led commercial pathways.
+    <div class="hero-name">Source Code Holdings</div>
+    <div class="hero-divider"></div>
+    <p class="hero-copy">
+      A private holding structure for intellectual property, system architecture,
+      and behavioural frameworks. Not a product company. Not a service.
+      A structure built to hold, protect, and licence what has been built.
     </p>
-
+    <div class="hero-tag">Private · By arrangement only</div>
   </section>
 
-  <!-- CORE -->
-  <section class="core">
-
-    <div class="core-top">
-      <h2>What we cover</h2>
-      <p>
-        SCH operates a layered system architecture spanning knowledge frameworks,
-        behavioural monitoring, execution logic, and interface deployment.
+  <!-- SYSTEM ARCHITECTURE -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-label">01 — Architecture</div>
+        <h2 class="section-title">The system<br>structure</h2>
+      </div>
+      <p class="section-desc">
+        Four discrete operational layers. Each independently defined,
+        independently protected. Knowledge encodes the base state.
+        Monitoring tracks deviation. Behaviour governs correction.
+        Interface renders output.
       </p>
     </div>
 
     <div class="cards">
 
       <div class="card">
-        <div class="card-number">01</div>
+        <div class="card-index">01</div>
         <h3>Knowledge Layer</h3>
-        <p>
-          Foundational frameworks defining awareness, perception, identity, and behavioural structure
-          across all system environments.
-        </p>
+        <p>Primary encoding layer. Defines the structural variables governing awareness state, perceptual orientation, and identity configuration across all downstream system environments.</p>
         <ul>
           <li>Conscious and Subconscious code systems</li>
           <li>Quadruality and Trinity frameworks</li>
@@ -330,162 +400,141 @@ footer {
       </div>
 
       <div class="card">
-        <div class="card-number">02</div>
+        <div class="card-index">02</div>
         <h3>Monitoring Layer</h3>
-        <p>
-          Real-time tracking of awareness, drift, and behavioural movement across controlled system states.
-        </p>
+        <p>Continuous state observation across active system environments. Measures deviation from calibrated baselines and flags instability thresholds before drift compounds.</p>
         <ul>
-          <li>Awareness state monitoring (–5 to +5 scale)</li>
+          <li>Awareness state monitoring (−5 to +5)</li>
           <li>Drift detection and instability mapping</li>
-          <li>Behavioural pattern tracking and loop identification</li>
+          <li>Behavioural pattern and loop identification</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-number">03</div>
+        <div class="card-index">03</div>
         <h3>Behaviour Layer</h3>
-        <p>
-          Execution, correction, and restructuring of behavioural output through structured internal logic.
-        </p>
+        <p>Execution environment for structured correction logic. Processes flagged deviation through defined internal protocols and applies targeted restructuring to restore output alignment.</p>
         <ul>
           <li>Input → processing → output pipelines</li>
-          <li>Behavioural loop interruption and restructuring</li>
-          <li>Pattern reinforcement and correction systems</li>
+          <li>Loop interruption and restructuring</li>
+          <li>Pattern reinforcement and correction</li>
         </ul>
       </div>
 
       <div class="card">
-        <div class="card-number">04</div>
+        <div class="card-index">04</div>
         <h3>Interface Layer</h3>
-        <p>
-          Visual translation of system activity into clear, usable, and commercially deployable environments.
-        </p>
+        <p>Render layer. Converts internal system state into structured visual output — calibrated for operator clarity, commercial deployment, and real-time observability.</p>
         <ul>
-          <li>Real-time awareness display systems (HUD architecture)</li>
-          <li>Behavioural trajectory and drift visualisation</li>
-          <li>Observer-state clarity tracking and alignment indicators</li>
+          <li>HUD architecture and awareness display</li>
+          <li>Behavioural trajectory visualisation</li>
+          <li>Observer-state clarity and alignment</li>
         </ul>
       </div>
 
     </div>
-
   </section>
 
   <!-- DEVICE LAYER -->
-  <section class="tech-layer">
-
-    <div class="tech-top">
-      <h2>Device layer</h2>
-      <p>
-        Beneath the framework environment, SCH technology operates through a private device architecture
-        designed to interpret awareness, monitor instability, stabilise drift, and deliver corrective output.
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-label">02 — Device Layer</div>
+        <h2 class="section-title">The engine<br>architecture</h2>
+      </div>
+      <p class="section-desc">
+        Four proprietary engines operating beneath the framework layer.
+        Each handles a discrete function: state interpretation, equilibrium
+        calculation, corrective feedback, or lightweight deployment.
+        Not interchangeable. Not public.
       </p>
     </div>
 
-    <div class="tech-cards">
+    <div class="cards">
 
-      <div class="tech-card">
-        <div class="card-number">TCE</div>
+      <div class="card">
+        <div class="card-badge">TCE</div>
         <h3>Trinity Consciousness Engine</h3>
-        <p>
-          Core processing engine for awareness interpretation, behavioural mapping, and observer-layer alignment.
-        </p>
+        <p>Primary processing engine. Ingests raw state data across conscious, subconscious, and observer channels — maps behavioural structure, calculates drift vectors, and produces alignment output.</p>
         <ul>
-          <li>Conscious, subconscious, and observer-layer processing</li>
-          <li>Drift detection and behavioural output calculation</li>
-          <li>Structured awareness-state and alignment reporting</li>
+          <li>Conscious, subconscious, observer-layer processing</li>
+          <li>Drift detection and output calculation</li>
+          <li>Awareness-state and alignment reporting</li>
         </ul>
       </div>
 
-      <div class="tech-card">
-        <div class="card-number">NES</div>
+      <div class="card">
+        <div class="card-badge">NES</div>
         <h3>Neural Equilibrium System</h3>
-        <p>
-          Stability engine designed to detect drift, measure imbalance, and return internal states toward equilibrium.
-        </p>
+        <p>Equilibrium engine. Indexes drift magnitude, calculates imbalance coefficient, and routes corrective pathways to return internal state variables toward defined zero-point thresholds.</p>
         <ul>
           <li>Drift indexing and equilibrium tracking</li>
-          <li>Emotional stability and conflict prediction outputs</li>
+          <li>Emotional stability and conflict prediction</li>
           <li>Zero-point correction pathways</li>
         </ul>
       </div>
 
-      <div class="tech-card">
-        <div class="card-number">ABFS</div>
+      <div class="card">
+        <div class="card-badge">ABFS</div>
         <h3>Awareness-Based Feedback System</h3>
-        <p>
-          Real-time feedback engine delivering corrective prompts, alignment cues, and behavioural recalibration.
-        </p>
+        <p>Closed-loop feedback engine. Monitors live output against target alignment parameters and delivers time-sequenced corrective prompts, warnings, and recalibration cues at the point of deviation.</p>
         <ul>
-          <li>Instant feedback and guided alignment cycles</li>
+          <li>Instant feedback and alignment cycles</li>
           <li>Drift warnings and stabilising prompts</li>
-          <li>Pattern restoration and zero-point rebuild support</li>
+          <li>Pattern restoration and zero-point rebuild</li>
         </ul>
       </div>
 
-      <div class="tech-card">
-        <div class="card-number">DP-1</div>
+      <div class="card">
+        <div class="card-badge">DP-1</div>
         <h3>Device Pack One</h3>
-        <p>
-          Lightweight deployment architecture for early-stage systems, simplified tools, and app-based environments.
-        </p>
+        <p>Reduced-footprint deployment package. Implements core scoring, detection, and correction logic at simplified fidelity — designed for early-stage rollout, prototype environments, and app-layer integration.</p>
         <ul>
-          <li>Awareness scoring and basic drift detection</li>
+          <li>Awareness scoring and drift detection</li>
           <li>Quadruality-lite and Trinity-lite modelling</li>
-          <li>Lightweight correction outputs for prototype use</li>
+          <li>Correction outputs for prototype use</li>
         </ul>
       </div>
 
     </div>
-
   </section>
 
   <!-- CONTACT -->
   <section class="contact">
+    <div class="contact-inner">
 
-    <div class="contact-panel">
-
-      <div class="contact-top">
+      <div class="contact-head">
         <h2>Private access</h2>
-        <p>Selective enquiries only.</p>
+        <span>Selective enquiries only</span>
       </div>
 
-<form action="https://formspree.io/f/xpqobvev" method="POST">
-  <div class="form-grid">
-
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="text" name="company" placeholder="Company">
-
-    <input type="email" name="email" placeholder="Email" required>
-    <select name="enquiry_type" required>
-      <option value="" disabled selected>Enquiry type</option>
-      <option value="IP / Licensing">IP / Licensing</option>
-      <option value="Framework Access">Framework Access</option>
-      <option value="System Architecture">System Architecture</option>
-      <option value="Partnership">Partnership</option>
-    </select>
-
-    <textarea name="message" placeholder="Brief enquiry..." required></textarea>
-
-    <input type="hidden" name="_subject" value="New SCH enquiry">
-
-    <div class="form-bottom">
-      <button type="submit">Submit</button>
-    </div>
-
-  </div>
-</form>
+      <form action="https://formspree.io/f/xpqobvev" method="POST">
+        <div class="form-grid">
+          <input type="text" name="name" placeholder="Name" required>
+          <input type="text" name="company" placeholder="Company">
+          <input type="email" name="email" placeholder="Email" required>
+          <select name="enquiry_type" required>
+            <option value="" disabled selected>Enquiry type</option>
+            <option value="IP / Licensing">IP / Licensing</option>
+            <option value="Framework Access">Framework Access</option>
+            <option value="System Architecture">System Architecture</option>
+            <option value="Partnership">Partnership</option>
+          </select>
+          <textarea name="message" placeholder="Brief enquiry..." required></textarea>
+          <input type="hidden" name="_subject" value="New SCH enquiry">
+          <div class="form-actions">
+            <button type="submit">Submit</button>
+          </div>
+        </div>
+      </form>
 
     </div>
-
   </section>
 
   <footer>
-    Source Code Holdings • All Rights Reserved 2026
+    Source Code Holdings &bull; All Rights Reserved 2026
   </footer>
 
 </div>
-
 </body>
 </html>
