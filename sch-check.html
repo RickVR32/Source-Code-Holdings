@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SCH Check — Full Awareness Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root {
+  --bg: #f2f1ee;
+  --bg-soft: #e9e8e3;
+  --panel: #fafaf8;
+  --panel-border: rgba(0,0,0,0.09);
+  --line: rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.18);
+  --text: #0e0e0c;
+  --muted: #7a7972;
+  --narc: #C4622D;
+  --yarc: #1D7A5F;
+  --cist: #4A42A0;
+  --oll: #A0426B;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(100,100,90,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,100,90,0.055) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.container { width: min(800px, calc(100% - 48px)); margin: auto; }
+
+nav {
+  padding: 20px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.nav-logo img { width:28px; height:auto; opacity:0.85; }
+.nav-logo span { font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+.nav-back { font-size:0.68rem; letter-spacing:0.12em; color:var(--muted); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-back:hover { color:var(--text); }
+
+/* SCREENS */
+.screen { display:none; }
+.screen.active { display:block; }
+
+/* ── LANDING ── */
+.landing { padding: 72px 0 64px; }
+.landing-hero { text-align:center; margin-bottom:56px; }
+.hero-label { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+.hero-title { font-family:'Cormorant',serif; font-weight:300; font-size:clamp(2.6rem,5vw,4rem); line-height:1.05; letter-spacing:-0.01em; margin-bottom:24px; }
+.hero-copy { font-size:0.82rem; line-height:1.85; color:var(--muted); max-width:520px; margin:0 auto 40px; }
+.hero-price { font-family:'Cormorant',serif; font-size:3rem; font-weight:300; margin-bottom:6px; }
+.hero-price-sub { font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; margin-bottom:36px; }
+
+/* WHAT'S IN THE REPORT */
+.report-contents { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:48px; }
+.rc-card { background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:24px 22px; }
+.rc-num { font-size:0.62rem; letter-spacing:0.12em; color:var(--muted); margin-bottom:10px; }
+.rc-title { font-family:'Cormorant',serif; font-size:1.05rem; margin-bottom:8px; line-height:1.2; }
+.rc-desc { font-size:0.72rem; color:var(--muted); line-height:1.7; }
+
+/* STRIPE CARD */
+.payment-card { background:var(--text); border-radius:18px; padding:40px 36px; color:var(--bg); }
+.payment-title { font-family:'Cormorant',serif; font-weight:300; font-size:1.8rem; margin-bottom:8px; }
+.payment-sub { font-size:0.78rem; opacity:0.6; line-height:1.7; margin-bottom:28px; }
+.payment-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.pay-input {
+  font-family:'Geist Mono',monospace; font-weight:300; font-size:0.78rem;
+  padding:11px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08); color:var(--bg); outline:none; transition:border-color 0.2s;
+  width:100%;
+}
+.pay-input::placeholder { color:rgba(255,255,255,0.35); }
+.pay-input:focus { border-color:rgba(255,255,255,0.5); }
+#card-element { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
+#card-errors { color:#ff6b6b; font-size:0.72rem; margin-bottom:10px; min-height:18px; }
+.pay-btn {
+  width:100%; font-family:'Geist Mono',monospace; font-weight:300;
+  font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase;
+  background:var(--bg); color:var(--text); padding:13px 24px;
+  border-radius:999px; border:none; cursor:pointer; transition:opacity 0.2s;
+}
+.pay-btn:hover { opacity:0.8; }
+.pay-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.pay-secure { font-size:0.65rem; opacity:0.4; text-align:center; margin-top:12px; letter-spacing:0.08em; }
+
+/* ── QUESTIONS ── */
+.questions-wrap { padding: 48px 0; }
+.progress-wrap { margin-bottom:40px; }
+.progress-info { display:flex; justify-content:space-between; font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px; }
+.progress-track { height:2px; background:rgba(0,0,0,0.08); border-radius:1px; overflow:hidden; }
+.progress-fill { height:100%; background:var(--text); border-radius:1px; transition:width 0.4s ease; }
+
+.layer-divider {
+  display:flex; align-items:center; gap:12px;
+  font-size:0.62rem; letter-spacing:0.18em; color:var(--muted); text-transform:uppercase;
+  padding:16px 0 8px;
+}
+.layer-divider::before, .layer-divider::after { content:''; flex:1; height:1px; background:var(--line); }
+
+.q-card { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:36px 32px; margin-bottom:10px; display:none; }
+.q-card.active { display:block; }
+.q-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+.q-badge { font-size:0.62rem; letter-spacing:0.14em; border:1px solid var(--line-strong); border-radius:999px; padding:3px 10px; color:var(--muted); }
+.q-num { font-size:0.62rem; letter-spacing:0.1em; color:var(--muted); }
+.q-layer { font-size:0.65rem; letter-spacing:0.12em; color:var(--muted); margin-bottom:10px; }
+.q-text { font-family:'Cormorant',serif; font-weight:300; font-size:clamp(1.2rem,2.5vw,1.6rem); line-height:1.35; margin-bottom:8px; }
+.q-subtext { font-size:0.75rem; color:var(--muted); line-height:1.7; margin-bottom:28px; }
+
+input[type=range] {
+  -webkit-appearance:none; width:100%; height:2px;
+  background:linear-gradient(90deg, var(--text) 0%, var(--text) var(--pct,50%), rgba(0,0,0,0.12) var(--pct,50%), rgba(0,0,0,0.12) 100%);
+  border-radius:1px; outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--panel); border:2px solid var(--text); cursor:pointer; transition:transform 0.1s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.2); }
+.slider-labels { display:flex; justify-content:space-between; font-size:0.65rem; color:var(--muted); margin-top:8px; }
+.slider-val { text-align:center; font-family:'Cormorant',serif; font-size:2.2rem; font-weight:300; color:var(--text); margin-top:6px; }
+
+.q-nav { display:flex; align-items:center; justify-content:space-between; margin-top:20px; }
+.btn { font-family:'Geist Mono',monospace; font-weight:300; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; padding:10px 22px; border-radius:999px; cursor:pointer; transition:all 0.2s; border:none; }
+.btn-primary { background:var(--text); color:var(--bg); }
+.btn-primary:hover { opacity:0.75; }
+.btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--line-strong); }
+.btn-ghost:hover { color:var(--text); border-color:var(--text); }
+
+/* ── PROCESSING ── */
+.processing-screen { padding:80px 0; text-align:center; }
+.proc-title { font-family:'Cormorant',serif; font-weight:300; font-size:2.4rem; margin-bottom:12px; }
+.proc-sub { font-size:0.8rem; color:var(--muted); margin-bottom:52px; }
+
+/* ANIMATED DIAGRAM */
+.diagram-wrap { margin:0 auto 48px; max-width:600px; position:relative; }
+#arch-svg { width:100%; height:auto; }
+
+/* STAGE LIST */
+.proc-stages { display:flex; flex-direction:column; gap:8px; max-width:380px; margin:0 auto; }
+.proc-stage { display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; font-size:0.72rem; color:var(--muted); transition:all 0.4s; }
+.proc-stage.active { color:var(--text); border-color:var(--text); }
+.proc-stage.done { color:var(--text); border-color:var(--line-strong); }
+.ps-pip { width:6px; height:6px; border-radius:50%; background:var(--line-strong); flex-shrink:0; transition:background 0.3s; }
+.proc-stage.active .ps-pip { background:var(--text); animation:pip 1s ease-in-out infinite; }
+.proc-stage.done .ps-pip { background:var(--text); }
+@keyframes pip { 0%,100%{opacity:1}50%{opacity:0.2} }
+
+/* ── REPORT ── */
+.report-screen { padding:56px 0 80px; }
+
+/* REPORT HEADER */
+.report-header { text-align:center; margin-bottom:56px; padding-bottom:40px; border-bottom:1px solid var(--line); }
+.report-tag { font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
+.report-name { font-family:'Cormorant',serif; font-weight:300; font-size:clamp(1.4rem,3vw,2rem); margin-bottom:4px; }
+.report-date { font-size:0.68rem; color:var(--muted); letter-spacing:0.1em; margin-bottom:32px; }
+
+/* BALANCE SCALE */
+.bs-display { margin-bottom:10px; }
+.bs-score-big { font-family:'Cormorant',serif; font-weight:300; font-size:clamp(5rem,12vw,8rem); line-height:1; transition:color 0.5s; }
+.bs-state { font-size:0.82rem; letter-spacing:0.08em; color:var(--muted); margin-top:4px; }
+.bs-meta { font-size:0.72rem; color:var(--muted); margin-top:8px; }
+
+/* DIAGRAM IN REPORT */
+.arch-section { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:32px; margin-bottom:14px; }
+.arch-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+
+/* OC SECTION */
+.oc-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.oc-card { background:var(--panel); border:1px solid var(--panel-border); border-radius:14px; padding:24px 22px; }
+.oc-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:12px; }
+.oc-name { font-family:'Cormorant',serif; font-size:1.3rem; font-weight:400; }
+.oc-pct { font-family:'Cormorant',serif; font-size:2rem; font-weight:300; }
+.oc-track { height:2px; border-radius:1px; overflow:hidden; margin-bottom:12px; background:rgba(0,0,0,0.08); }
+.oc-fill { height:100%; border-radius:1px; transition:width 1.2s ease; }
+.oc-desc { font-size:0.72rem; color:var(--muted); line-height:1.7; }
+
+/* SC BREAKDOWN */
+.sc-section { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:32px; margin-bottom:14px; }
+.sc-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+.sc-grid { display:flex; flex-direction:column; gap:0; }
+.sc-row { display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); font-size:0.72rem; }
+.sc-row:last-child { border-bottom:none; }
+.sc-code { font-family:'Cormorant',serif; font-size:0.9rem; min-width:130px; color:var(--text); }
+.sc-layer { font-size:0.62rem; color:var(--muted); min-width:90px; letter-spacing:0.06em; }
+.sc-track { flex:1; height:2px; background:rgba(0,0,0,0.08); border-radius:1px; overflow:hidden; }
+.sc-fill { height:100%; border-radius:1px; transition:width 1s ease; }
+.sc-val { font-family:'Cormorant',serif; font-size:1rem; min-width:28px; text-align:right; }
+
+/* WRITTEN REPORT */
+.written-report { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:40px 36px; margin-bottom:14px; }
+.wr-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:28px; }
+.wr-section { margin-bottom:32px; }
+.wr-section:last-child { margin-bottom:0; }
+.wr-section-title { font-family:'Cormorant',serif; font-size:1.3rem; font-weight:400; margin-bottom:12px; color:var(--text); }
+.wr-body { font-size:0.8rem; line-height:1.9; color:var(--muted); }
+.wr-body p { margin-bottom:12px; }
+.wr-body p:last-child { margin-bottom:0; }
+
+/* DOWNLOAD */
+.download-row { text-align:center; padding:32px 0; }
+.download-btn {
+  font-family:'Geist Mono',monospace; font-weight:300; font-size:0.72rem; letter-spacing:0.12em;
+  text-transform:uppercase; background:var(--text); color:var(--bg);
+  padding:13px 32px; border-radius:999px; border:none; cursor:pointer; transition:opacity 0.2s;
+}
+.download-btn:hover { opacity:0.75; }
+.download-sub { font-size:0.65rem; color:var(--muted); margin-top:10px; letter-spacing:0.06em; }
+
+footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); opacity:0.6; }
+
+@media(max-width:600px) {
+  .report-contents, .oc-grid, .payment-row { grid-template-columns:1fr; }
+  .payment-card, .written-report, .arch-section { padding:28px 22px; }
+  .q-card { padding:28px 22px; }
+}
+
+/* PRINT STYLES */
+@media print {
+  body { background:white; background-image:none; }
+  nav, .download-row, footer { display:none; }
+  .report-screen { padding:0; }
+  .written-report, .oc-card, .sc-section, .arch-section { break-inside:avoid; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="sch_sygil.png" alt="SCH">
+    <span>Source Code Holdings</span>
+  </a>
+  <a class="nav-back" href="awareness.html">← Free assessment</a>
+</nav>
+
+<!-- ── SCREEN 1: LANDING / PAYMENT ── -->
+<div class="screen active" id="screen-landing">
+  <div class="landing">
+    <div class="landing-hero">
+      <div class="hero-label">SCH Check — Full Report</div>
+      <h1 class="hero-title">Your complete<br>awareness architecture</h1>
+      <p class="hero-copy">Twenty questions. All 20 Source Codes scored across both conscious and subconscious layers. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised written report you keep forever.</p>
+      <div class="hero-price">£19.99</div>
+      <div class="hero-price-sub">One-time · Instant report · No subscription</div>
+    </div>
+
+    <div class="report-contents">
+      <div class="rc-card"><div class="rc-num">01</div><div class="rc-title">Full 4×4+4 architecture diagram</div><div class="rc-desc">Your scores mapped onto the complete Source Code architecture — every node scored, coloured by activation, showing how each layer feeds the next.</div></div>
+      <div class="rc-card"><div class="rc-num">02</div><div class="rc-title">All 20 Source Codes scored</div><div class="rc-desc">10 Conscious Codes and 10 Subconscious Codes individually scored and displayed — the most complete picture of your awareness profile available.</div></div>
+      <div class="rc-card"><div class="rc-num">03</div><div class="rc-title">Drift score — the gap</div><div class="rc-desc">The gap between your conscious presentation and your subconscious drivers. Zero is full alignment. High drift explains the loops you keep running.</div></div>
+      <div class="rc-card"><div class="rc-num">04</div><div class="rc-title">Personalised written report</div><div class="rc-desc">800–1200 words written specifically to your scores. What your profile reveals, what it produces in your life, and where the imbalance is concentrated.</div></div>
+      <div class="rc-card"><div class="rc-num">05</div><div class="rc-title">Observer Code breakdown</div><div class="rc-desc">NARC, YARC, CIST, and Øll percentages with personalised interpretation for each. Zero-Point is 25% each — see exactly where you sit and what it means.</div></div>
+      <div class="rc-card"><div class="rc-num">06</div><div class="rc-title">Downloadable PDF</div><div class="rc-desc">Your report is yours to keep, print, and share. Save it. Return to it. Share it with a therapist, coach, or trusted person who wants to understand your profile.</div></div>
+    </div>
+
+    <div class="payment-card">
+      <div class="payment-title">Purchase your report</div>
+      <div class="payment-sub">Secure payment via Stripe. Your report is generated immediately after payment and never stored on our servers.</div>
+      <div class="payment-row">
+        <input class="pay-input" type="text" id="pay-name" placeholder="Full name" required>
+        <input class="pay-input" type="email" id="pay-email" placeholder="Email address" required>
+      </div>
+      <div id="card-element"></div>
+      <div id="card-errors"></div>
+      <button class="pay-btn" id="pay-btn" onclick="handlePayment()">Pay £19.99 and begin →</button>
+      <div class="pay-secure">🔒 &nbsp;Secured by Stripe · SSL encrypted · No card data stored</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN 2: QUESTIONS ── -->
+<div class="screen" id="screen-questions">
+  <div class="questions-wrap">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="prog-label">Question 1 of 20</span>
+        <span id="prog-section">Conscious Layer</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+
+    <!-- CONSCIOUS LAYER — 10 questions -->
+    <div class="layer-divider" id="div-conscious">Conscious Layer — what you show</div>
+
+    <!-- Q1 Presence -->
+    <div class="q-card active" id="q1">
+      <div class="q-meta"><div class="q-badge">Conscious · Presence</div><div class="q-num">1 / 20</div></div>
+      <div class="q-text">How fully present are you in the current moment?</div>
+      <div class="q-subtext">Your ability to be genuinely here — not replaying the past or rehearsing the future — in conversations, decisions, and everyday experience.</div>
+      <input type="range" id="s1" min="1" max="10" value="5" oninput="updateSlider(this,1)">
+      <div class="slider-labels"><span>Rarely present</span><span>Fully present</span></div>
+      <div class="slider-val" id="sv1">5</div>
+      <div class="q-nav"><div></div><button class="btn btn-primary" onclick="nextQ(1)">Next →</button></div>
+    </div>
+
+    <!-- Q2 Interpretation -->
+    <div class="q-card" id="q2">
+      <div class="q-meta"><div class="q-badge">Conscious · Interpretation</div><div class="q-num">2 / 20</div></div>
+      <div class="q-text">How accurately do you read situations and information?</div>
+      <div class="q-subtext">Whether you process what is actually happening or filter it through assumptions, prior experience, and emotional state.</div>
+      <input type="range" id="s2" min="1" max="10" value="5" oninput="updateSlider(this,2)">
+      <div class="slider-labels"><span>Heavily filtered</span><span>Highly accurate</span></div>
+      <div class="slider-val" id="sv2">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(2)">← Back</button><button class="btn btn-primary" onclick="nextQ(2)">Next →</button></div>
+    </div>
+
+    <!-- Q3 Logic -->
+    <div class="q-card" id="q3">
+      <div class="q-meta"><div class="q-badge">Conscious · Logic</div><div class="q-num">3 / 20</div></div>
+      <div class="q-text">How structured and rational is your thinking under pressure?</div>
+      <div class="q-subtext">Your ability to reason clearly when it matters — not just when conditions are easy, but when stakes are high and emotions are activated.</div>
+      <input type="range" id="s3" min="1" max="10" value="5" oninput="updateSlider(this,3)">
+      <div class="slider-labels"><span>Reactive / scattered</span><span>Clear and structured</span></div>
+      <div class="slider-val" id="sv3">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(3)">← Back</button><button class="btn btn-primary" onclick="nextQ(3)">Next →</button></div>
+    </div>
+
+    <!-- Q4 Perspective -->
+    <div class="q-card" id="q4">
+      <div class="q-meta"><div class="q-badge">Conscious · Perspective</div><div class="q-num">4 / 20</div></div>
+      <div class="q-text">Can you hold multiple viewpoints simultaneously?</div>
+      <div class="q-subtext">The ability to understand someone else's position without abandoning your own — to see the full picture rather than only your angle.</div>
+      <input type="range" id="s4" min="1" max="10" value="5" oninput="updateSlider(this,4)">
+      <div class="slider-labels"><span>One view at a time</span><span>Multiple simultaneously</span></div>
+      <div class="slider-val" id="sv4">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(4)">← Back</button><button class="btn btn-primary" onclick="nextQ(4)">Next →</button></div>
+    </div>
+
+    <!-- Q5 Prediction -->
+    <div class="q-card" id="q5">
+      <div class="q-meta"><div class="q-badge">Conscious · Prediction</div><div class="q-num">5 / 20</div></div>
+      <div class="q-text">How accurately do you anticipate outcomes?</div>
+      <div class="q-subtext">Pattern recognition applied forward — whether your predictions about people, situations, and consequences tend to be accurate.</div>
+      <input type="range" id="s5" min="1" max="10" value="5" oninput="updateSlider(this,5)">
+      <div class="slider-labels"><span>Frequently surprised</span><span>Usually accurate</span></div>
+      <div class="slider-val" id="sv5">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(5)">← Back</button><button class="btn btn-primary" onclick="nextQ(5)">Next →</button></div>
+    </div>
+
+    <!-- Q6 Intention -->
+    <div class="q-card" id="q6">
+      <div class="q-meta"><div class="q-badge">Conscious · Intention</div><div class="q-num">6 / 20</div></div>
+      <div class="q-text">How clear is your sense of purpose behind your actions?</div>
+      <div class="q-subtext">Whether you act from a defined internal direction or tend to respond to circumstance, expectation, or habit without conscious choice.</div>
+      <input type="range" id="s6" min="1" max="10" value="5" oninput="updateSlider(this,6)">
+      <div class="slider-labels"><span>Unclear / reactive</span><span>Clear and deliberate</span></div>
+      <div class="slider-val" id="sv6">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(6)">← Back</button><button class="btn btn-primary" onclick="nextQ(6)">Next →</button></div>
+    </div>
+
+    <!-- Q7 Communication -->
+    <div class="q-card" id="q7">
+      <div class="q-meta"><div class="q-badge">Conscious · Communication</div><div class="q-num">7 / 20</div></div>
+      <div class="q-text">How effectively do you express and receive information?</div>
+      <div class="q-subtext">Both directions — how clearly you communicate what you mean, and how accurately you receive what others are actually saying.</div>
+      <input type="range" id="s7" min="1" max="10" value="5" oninput="updateSlider(this,7)">
+      <div class="slider-labels"><span>Frequently misread</span><span>Clear in both directions</span></div>
+      <div class="slider-val" id="sv7">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(7)">← Back</button><button class="btn btn-primary" onclick="nextQ(7)">Next →</button></div>
+    </div>
+
+    <!-- Q8 Adaptation -->
+    <div class="q-card" id="q8">
+      <div class="q-meta"><div class="q-badge">Conscious · Adaptation</div><div class="q-num">8 / 20</div></div>
+      <div class="q-text">How well do you respond to changing conditions?</div>
+      <div class="q-subtext">Flexibility under real pressure — not just tolerating change in theory, but actually updating your approach when circumstances shift.</div>
+      <input type="range" id="s8" min="1" max="10" value="5" oninput="updateSlider(this,8)">
+      <div class="slider-labels"><span>Resist change</span><span>Adapt fluidly</span></div>
+      <div class="slider-val" id="sv8">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(8)">← Back</button><button class="btn btn-primary" onclick="nextQ(8)">Next →</button></div>
+    </div>
+
+    <!-- Q9 Alignment -->
+    <div class="q-card" id="q9">
+      <div class="q-meta"><div class="q-badge">Conscious · Alignment</div><div class="q-num">9 / 20</div></div>
+      <div class="q-text">How consistent are your values and your actual behaviour?</div>
+      <div class="q-subtext">The gap between what you believe in and how you actually act — particularly under stress, when the cost of living your values is real.</div>
+      <input type="range" id="s9" min="1" max="10" value="5" oninput="updateSlider(this,9)">
+      <div class="slider-labels"><span>Significant gap</span><span>Fully consistent</span></div>
+      <div class="slider-val" id="sv9">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(9)">← Back</button><button class="btn btn-primary" onclick="nextQ(9)">Next →</button></div>
+    </div>
+
+    <!-- Q10 Integrity -->
+    <div class="q-card" id="q10">
+      <div class="q-meta"><div class="q-badge">Conscious · Integrity</div><div class="q-num">10 / 20</div></div>
+      <div class="q-text">How honest are you with yourself about who you are?</div>
+      <div class="q-subtext">Not moral honesty — awareness honesty. Whether you can see your own patterns clearly, including the ones that don't serve you.</div>
+      <input type="range" id="s10" min="1" max="10" value="5" oninput="updateSlider(this,10)">
+      <div class="slider-labels"><span>Significant blind spots</span><span>Clear self-perception</span></div>
+      <div class="slider-val" id="sv10">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(10)">← Back</button><button class="btn btn-primary" onclick="nextQ(10)">Next →</button></div>
+    </div>
+
+    <!-- SUBCONSCIOUS DIVIDER -->
+    <div class="layer-divider" id="div-subconscious" style="display:none;">Subconscious Layer — what drives you</div>
+
+    <!-- Q11 Fear -->
+    <div class="q-card" id="q11">
+      <div class="q-meta"><div class="q-badge">Subconscious · Fear</div><div class="q-num">11 / 20</div></div>
+      <div class="q-text">How much does fear shape your decisions without you choosing it?</div>
+      <div class="q-subtext">Not conscious caution — the fear that runs quietly underneath and steers you away from things before you've consciously evaluated them.</div>
+      <input type="range" id="s11" min="1" max="10" value="5" oninput="updateSlider(this,11)">
+      <div class="slider-labels"><span>Rarely drives me</span><span>Constantly present</span></div>
+      <div class="slider-val" id="sv11">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(11)">← Back</button><button class="btn btn-primary" onclick="nextQ(11)">Next →</button></div>
+    </div>
+
+    <!-- Q12 Memory -->
+    <div class="q-card" id="q12">
+      <div class="q-meta"><div class="q-badge">Subconscious · Memory</div><div class="q-num">12 / 20</div></div>
+      <div class="q-text">How much does past experience colour how you read the present?</div>
+      <div class="q-subtext">Whether old events — good or bad — are actively shaping how you interpret current people, situations, and what feels safe or possible.</div>
+      <input type="range" id="s12" min="1" max="10" value="5" oninput="updateSlider(this,12)">
+      <div class="slider-labels"><span>I see now clearly</span><span>Past is always present</span></div>
+      <div class="slider-val" id="sv12">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(12)">← Back</button><button class="btn btn-primary" onclick="nextQ(12)">Next →</button></div>
+    </div>
+
+    <!-- Q13 Trauma -->
+    <div class="q-card" id="q13">
+      <div class="q-meta"><div class="q-badge">Subconscious · Trauma</div><div class="q-num">13 / 20</div></div>
+      <div class="q-text">How much unprocessed experience is still running as background?</div>
+      <div class="q-subtext">Events that haven't been fully integrated — that still produce automatic reactions, avoidance, or emotional responses disproportionate to the trigger.</div>
+      <input type="range" id="s13" min="1" max="10" value="5" oninput="updateSlider(this,13)">
+      <div class="slider-labels"><span>Little unprocessed</span><span>Significant background load</span></div>
+      <div class="slider-val" id="sv13">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(13)">← Back</button><button class="btn btn-primary" onclick="nextQ(13)">Next →</button></div>
+    </div>
+
+    <!-- Q14 Desire -->
+    <div class="q-card" id="q14">
+      <div class="q-meta"><div class="q-badge">Subconscious · Desire</div><div class="q-num">14 / 20</div></div>
+      <div class="q-text">How aware are you of what is actually pulling you forward?</div>
+      <div class="q-subtext">The subconscious drive beneath your conscious goals — what you're really moving toward, which may or may not match what you say you want.</div>
+      <input type="range" id="s14" min="1" max="10" value="5" oninput="updateSlider(this,14)">
+      <div class="slider-labels"><span>Unclear what drives me</span><span>Fully aware of my pull</span></div>
+      <div class="slider-val" id="sv14">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(14)">← Back</button><button class="btn btn-primary" onclick="nextQ(14)">Next →</button></div>
+    </div>
+
+    <!-- Q15 Attachment -->
+    <div class="q-card" id="q15">
+      <div class="q-meta"><div class="q-badge">Subconscious · Attachment</div><div class="q-num">15 / 20</div></div>
+      <div class="q-text">How much do your emotional bonds shape your behaviour?</div>
+      <div class="q-subtext">Whether attachment to people, outcomes, or identities is driving decisions beneath your awareness — including over-giving, over-protecting, or over-controlling.</div>
+      <input type="range" id="s15" min="1" max="10" value="5" oninput="updateSlider(this,15)">
+      <div class="slider-labels"><span>Minimal attachment pull</span><span>Strongly attachment-driven</span></div>
+      <div class="slider-val" id="sv15">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(15)">← Back</button><button class="btn btn-primary" onclick="nextQ(15)">Next →</button></div>
+    </div>
+
+    <!-- Q16 Pattern -->
+    <div class="q-card" id="q16">
+      <div class="q-meta"><div class="q-badge">Subconscious · Pattern</div><div class="q-num">16 / 20</div></div>
+      <div class="q-text">How aware are you of the loops you keep running?</div>
+      <div class="q-subtext">Repeating behavioural sequences — the same relationship dynamic, the same self-sabotage, the same emotional cycle — playing out despite conscious awareness.</div>
+      <input type="range" id="s16" min="1" max="10" value="5" oninput="updateSlider(this,16)">
+      <div class="slider-labels"><span>Mostly unaware</span><span>Can see my loops clearly</span></div>
+      <div class="slider-val" id="sv16">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(16)">← Back</button><button class="btn btn-primary" onclick="nextQ(16)">Next →</button></div>
+    </div>
+
+    <!-- Q17 Protection -->
+    <div class="q-card" id="q17">
+      <div class="q-meta"><div class="q-badge">Subconscious · Protection</div><div class="q-num">17 / 20</div></div>
+      <div class="q-text">How much energy goes into defending against perceived threats?</div>
+      <div class="q-subtext">The subconscious defensive layer — whether you're spending significant internal resource on protection that may be unnecessary given your actual current circumstances.</div>
+      <input type="range" id="s17" min="1" max="10" value="5" oninput="updateSlider(this,17)">
+      <div class="slider-labels"><span>Low defensive load</span><span>Constant high defence</span></div>
+      <div class="slider-val" id="sv17">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(17)">← Back</button><button class="btn btn-primary" onclick="nextQ(17)">Next →</button></div>
+    </div>
+
+    <!-- Q18 Instinct -->
+    <div class="q-card" id="q18">
+      <div class="q-meta"><div class="q-badge">Subconscious · Instinct</div><div class="q-num">18 / 20</div></div>
+      <div class="q-text">How accurate are your immediate gut responses?</div>
+      <div class="q-subtext">Whether your pre-conscious rapid reactions tend to serve you well — or whether they frequently lead you somewhere you have to correct from.</div>
+      <input type="range" id="s18" min="1" max="10" value="5" oninput="updateSlider(this,18)">
+      <div class="slider-labels"><span>Often misleads me</span><span>Consistently accurate</span></div>
+      <div class="slider-val" id="sv18">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(18)">← Back</button><button class="btn btn-primary" onclick="nextQ(18)">Next →</button></div>
+    </div>
+
+    <!-- Q19 Drift -->
+    <div class="q-card" id="q19">
+      <div class="q-meta"><div class="q-badge">Subconscious · Drift</div><div class="q-num">19 / 20</div></div>
+      <div class="q-text">How much does your subconscious pull you away from balance?</div>
+      <div class="q-subtext">The felt sense of being pulled off course by something internal — an undercurrent that disrupts your stability even when external conditions are fine.</div>
+      <input type="range" id="s19" min="1" max="10" value="5" oninput="updateSlider(this,19)">
+      <div class="slider-labels"><span>Rarely feel the pull</span><span>Constant internal drift</span></div>
+      <div class="slider-val" id="sv19">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(19)">← Back</button><button class="btn btn-primary" onclick="nextQ(19)">Next →</button></div>
+    </div>
+
+    <!-- Q20 Core Identity -->
+    <div class="q-card" id="q20">
+      <div class="q-meta"><div class="q-badge">Subconscious · Core Identity</div><div class="q-num">20 / 20</div></div>
+      <div class="q-text">How clearly defined is your deepest sense of self?</div>
+      <div class="q-subtext">Not your roles or achievements — the bedrock self that exists underneath all of that. How stable and clear is that foundation when everything else is stripped away.</div>
+      <input type="range" id="s20" min="1" max="10" value="5" oninput="updateSlider(this,20)">
+      <div class="slider-labels"><span>Undefined / shifting</span><span>Clear and stable</span></div>
+      <div class="slider-val" id="sv20">5</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(20)">← Back</button><button class="btn btn-primary" onclick="generateReport()">Generate my report →</button></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── SCREEN 3: PROCESSING ── -->
+<div class="screen" id="screen-processing">
+  <div class="processing-screen">
+    <div class="proc-title">Generating your report</div>
+    <div class="proc-sub">The DP-1 engine is processing all 20 Source Codes</div>
+
+    <!-- ANIMATED ARCHITECTURE DIAGRAM -->
+    <div class="diagram-wrap">
+      <svg id="arch-svg" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="560" height="480" fill="none"/>
+
+        <!-- DP-1 CENTRE -->
+        <circle id="dp1-node" cx="280" cy="240" r="38" fill="#fafaf8" stroke="#0e0e0c" stroke-width="1.5" opacity="0.3"/>
+        <text x="280" y="236" text-anchor="middle" font-size="11" fill="#0e0e0c" font-family="'Geist Mono',monospace" opacity="0.4">DP-1</text>
+        <text x="280" y="252" text-anchor="middle" font-size="8" fill="#7a7972" font-family="'Geist Mono',monospace" opacity="0.4">PROCESSING</text>
+
+        <!-- OBSERVER CODE NODES -->
+        <!-- NARC — top -->
+        <rect id="narc-node" x="228" y="60" width="104" height="44" rx="10" fill="#fafaf8" stroke="#C4622D" stroke-width="1.2" opacity="0.2"/>
+        <text x="280" y="80" text-anchor="middle" font-size="11" fill="#C4622D" font-family="'Geist Mono',monospace" opacity="0.3">NARC</text>
+        <text id="narc-val" x="280" y="96" text-anchor="middle" font-size="9" fill="#C4622D" font-family="'Geist Mono',monospace" opacity="0.3">—</text>
+
+        <!-- YARC — right -->
+        <rect id="yarc-node" x="420" y="218" width="104" height="44" rx="10" fill="#fafaf8" stroke="#1D7A5F" stroke-width="1.2" opacity="0.2"/>
+        <text x="472" y="238" text-anchor="middle" font-size="11" fill="#1D7A5F" font-family="'Geist Mono',monospace" opacity="0.3">YARC</text>
+        <text id="yarc-val" x="472" y="254" text-anchor="middle" font-size="9" fill="#1D7A5F" font-family="'Geist Mono',monospace" opacity="0.3">—</text>
+
+        <!-- CIST — bottom -->
+        <rect id="cist-node" x="228" y="376" width="104" height="44" rx="10" fill="#fafaf8" stroke="#4A42A0" stroke-width="1.2" opacity="0.2"/>
+        <text x="280" y="396" text-anchor="middle" font-size="11" fill="#4A42A0" font-family="'Geist Mono',monospace" opacity="0.3">CIST</text>
+        <text id="cist-val" x="280" y="412" text-anchor="middle" font-size="9" fill="#4A42A0" font-family="'Geist Mono',monospace" opacity="0.3">—</text>
+
+        <!-- ØLL — left -->
+        <rect id="oll-node" x="36" y="218" width="104" height="44" rx="10" fill="#fafaf8" stroke="#A0426B" stroke-width="1.2" opacity="0.2"/>
+        <text x="88" y="238" text-anchor="middle" font-size="11" fill="#A0426B" font-family="'Geist Mono',monospace" opacity="0.3">Øll</text>
+        <text id="oll-val" x="88" y="254" text-anchor="middle" font-size="9" fill="#A0426B" font-family="'Geist Mono',monospace" opacity="0.3">—</text>
+
+        <!-- CONNECTOR LINES — OC to DP1 -->
+        <line x1="280" y1="104" x2="280" y2="202" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.15" id="line-narc"/>
+        <line x1="420" y1="240" x2="318" y2="240" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.15" id="line-yarc"/>
+        <line x1="280" y1="376" x2="280" y2="278" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.15" id="line-cist"/>
+        <line x1="140" y1="240" x2="242" y2="240" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.15" id="line-oll"/>
+
+        <!-- APP SLOT NODES — NARC A1 A2 -->
+        <rect id="a1-node" x="148" y="148" width="72" height="32" rx="7" fill="#fafaf8" stroke="#C4622D" stroke-width="0.8" opacity="0.15"/>
+        <text x="184" y="160" text-anchor="middle" font-size="8" fill="#C4622D" font-family="'Geist Mono',monospace" opacity="0.2">A1</text>
+        <text id="a1-val" x="184" y="172" text-anchor="middle" font-size="7" fill="#C4622D" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+        <rect id="a2-node" x="340" y="148" width="72" height="32" rx="7" fill="#fafaf8" stroke="#C4622D" stroke-width="0.8" opacity="0.15"/>
+        <text x="376" y="160" text-anchor="middle" font-size="8" fill="#C4622D" font-family="'Geist Mono',monospace" opacity="0.2">A2</text>
+        <text id="a2-val" x="376" y="172" text-anchor="middle" font-size="7" fill="#C4622D" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+
+        <!-- APP SLOT NODES — YARC A3 A4 -->
+        <rect id="a3-node" x="396" y="148" width="72" height="32" rx="7" fill="#fafaf8" stroke="#1D7A5F" stroke-width="0.8" opacity="0.15"/>
+        <text x="432" y="160" text-anchor="middle" font-size="8" fill="#1D7A5F" font-family="'Geist Mono',monospace" opacity="0.2">A3</text>
+        <text id="a3-val" x="432" y="172" text-anchor="middle" font-size="7" fill="#1D7A5F" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+        <rect id="a4-node" x="396" y="300" width="72" height="32" rx="7" fill="#fafaf8" stroke="#1D7A5F" stroke-width="0.8" opacity="0.15"/>
+        <text x="432" y="312" text-anchor="middle" font-size="8" fill="#1D7A5F" font-family="'Geist Mono',monospace" opacity="0.2">A4</text>
+        <text id="a4-val" x="432" y="324" text-anchor="middle" font-size="7" fill="#1D7A5F" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+
+        <!-- APP SLOT NODES — CIST A5 A6 -->
+        <rect id="a5-node" x="148" y="300" width="72" height="32" rx="7" fill="#fafaf8" stroke="#4A42A0" stroke-width="0.8" opacity="0.15"/>
+        <text x="184" y="312" text-anchor="middle" font-size="8" fill="#4A42A0" font-family="'Geist Mono',monospace" opacity="0.2">A5</text>
+        <text id="a5-val" x="184" y="324" text-anchor="middle" font-size="7" fill="#4A42A0" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+        <rect id="a6-node" x="340" y="300" width="72" height="32" rx="7" fill="#fafaf8" stroke="#4A42A0" stroke-width="0.8" opacity="0.15"/>
+        <text x="376" y="312" text-anchor="middle" font-size="8" fill="#4A42A0" font-family="'Geist Mono',monospace" opacity="0.2">A6</text>
+        <text id="a6-val" x="376" y="324" text-anchor="middle" font-size="7" fill="#4A42A0" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+
+        <!-- APP SLOT NODES — ØLL A7 A8 -->
+        <rect id="a7-node" x="92" y="148" width="72" height="32" rx="7" fill="#fafaf8" stroke="#A0426B" stroke-width="0.8" opacity="0.15"/>
+        <text x="128" y="160" text-anchor="middle" font-size="8" fill="#A0426B" font-family="'Geist Mono',monospace" opacity="0.2">A7</text>
+        <text id="a7-val" x="128" y="172" text-anchor="middle" font-size="7" fill="#A0426B" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+        <rect id="a8-node" x="92" y="300" width="72" height="32" rx="7" fill="#fafaf8" stroke="#A0426B" stroke-width="0.8" opacity="0.15"/>
+        <text x="128" y="312" text-anchor="middle" font-size="8" fill="#A0426B" font-family="'Geist Mono',monospace" opacity="0.2">A8</text>
+        <text id="a8-val" x="128" y="324" text-anchor="middle" font-size="7" fill="#A0426B" font-family="'Geist Mono',monospace" opacity="0.2">—</text>
+
+        <!-- BALANCE SCALE OUTPUT -->
+        <rect id="bs-node" x="214" y="438" width="132" height="34" rx="8" fill="#fafaf8" stroke="#0e0e0c" stroke-width="1" opacity="0.15"/>
+        <text x="280" y="454" text-anchor="middle" font-size="9" fill="#0e0e0c" font-family="'Geist Mono',monospace" opacity="0.2">BALANCE SCALE</text>
+        <text id="bs-diag-val" x="280" y="466" text-anchor="middle" font-size="8" fill="#0e0e0c" font-family="'Geist Mono',monospace" opacity="0.2">—5 ——— 0 ——— +5</text>
+        <line x1="280" y1="278" x2="280" y2="438" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.1"/>
+      </svg>
+    </div>
+
+    <div class="proc-stages">
+      <div class="proc-stage" id="ps1"><div class="ps-pip"></div>Ingesting 20 Source Code inputs</div>
+      <div class="proc-stage" id="ps2"><div class="ps-pip"></div>Scoring Conscious layer (10 codes)</div>
+      <div class="proc-stage" id="ps3"><div class="ps-pip"></div>Scoring Subconscious layer (10 codes)</div>
+      <div class="proc-stage" id="ps4"><div class="ps-pip"></div>Resolving Observer Code ratios</div>
+      <div class="proc-stage" id="ps5"><div class="ps-pip"></div>Calculating Drift score</div>
+      <div class="proc-stage" id="ps6"><div class="ps-pip"></div>Mapping Balance Scale position</div>
+      <div class="proc-stage" id="ps7"><div class="ps-pip"></div>Writing personalised report</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN 4: REPORT ── -->
+<div class="screen" id="screen-report">
+  <div class="report-screen">
+
+    <div class="report-header">
+      <div class="report-tag">SCH Check — Full Awareness Report</div>
+      <div class="report-name" id="r-name">—</div>
+      <div class="report-date" id="r-date">—</div>
+
+      <div class="bs-display">
+        <div class="bs-score-big" id="r-bs-score">—</div>
+        <div class="bs-state" id="r-bs-state">—</div>
+        <div class="bs-meta">Drift score: <span id="r-drift">—</span> &nbsp;·&nbsp; Zero-Point distance: <span id="r-zp">—</span></div>
+      </div>
+    </div>
+
+    <!-- ARCHITECTURE DIAGRAM IN REPORT -->
+    <div class="arch-section">
+      <div class="arch-label">Your Source Code architecture — 4×4+4</div>
+      <svg id="report-svg" viewBox="0 0 560 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;"></svg>
+    </div>
+
+    <!-- OC RATIO -->
+    <div class="oc-grid">
+      <div class="oc-card">
+        <div class="oc-header"><div class="oc-name">NARC</div><div class="oc-pct" id="r-narc-pct" style="color:var(--narc)">—</div></div>
+        <div class="oc-track"><div class="oc-fill" id="r-narc-fill" style="width:0%;background:var(--narc)"></div></div>
+        <div class="oc-desc" id="r-narc-desc">—</div>
+      </div>
+      <div class="oc-card">
+        <div class="oc-header"><div class="oc-name">YARC</div><div class="oc-pct" id="r-yarc-pct" style="color:var(--yarc)">—</div></div>
+        <div class="oc-track"><div class="oc-fill" id="r-yarc-fill" style="width:0%;background:var(--yarc)"></div></div>
+        <div class="oc-desc" id="r-yarc-desc">—</div>
+      </div>
+      <div class="oc-card">
+        <div class="oc-header"><div class="oc-name">CIST</div><div class="oc-pct" id="r-cist-pct" style="color:var(--cist)">—</div></div>
+        <div class="oc-track"><div class="oc-fill" id="r-cist-fill" style="width:0%;background:var(--cist)"></div></div>
+        <div class="oc-desc" id="r-cist-desc">—</div>
+      </div>
+      <div class="oc-card">
+        <div class="oc-header"><div class="oc-name">Øll</div><div class="oc-pct" id="r-oll-pct" style="color:var(--oll)">—</div></div>
+        <div class="oc-track"><div class="oc-fill" id="r-oll-fill" style="width:0%;background:var(--oll)"></div></div>
+        <div class="oc-desc" id="r-oll-desc">—</div>
+      </div>
+    </div>
+
+    <!-- SC BREAKDOWN -->
+    <div class="sc-section">
+      <div class="sc-label">All 20 Source Codes — individual scores</div>
+      <div class="sc-grid" id="sc-grid"></div>
+    </div>
+
+    <!-- WRITTEN REPORT -->
+    <div class="written-report">
+      <div class="wr-label">Your personalised report</div>
+      <div id="written-report-content"></div>
+    </div>
+
+    <!-- DOWNLOAD -->
+    <div class="download-row">
+      <button class="download-btn" onclick="downloadReport()">Download as PDF →</button>
+      <div class="download-sub">Opens print dialog · Save as PDF · Yours to keep</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>Source Code Holdings &bull; All Rights Reserved 2026 &bull; SCH Check v1.0</footer>
+</div>
+
+<script>
+// ── Stripe init ────────────────────────────────────────────────────────────
+const stripe = Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');
+const elements = stripe.elements();
+
+const cardStyle = {
+  style: {
+    base: {
+      fontFamily: "'Geist Mono', monospace",
+      fontWeight: '300',
+      fontSize: '14px',
+      color: '#fafaf8',
+      '::placeholder': { color: 'rgba(250,250,248,0.35)' }
+    }
+  }
+};
+
+const card = elements.create('card', cardStyle);
+card.mount('#card-element');
+card.on('change', e => {
+  document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+});
+
+// ── State ──────────────────────────────────────────────────────────────────
+let currentQ = 1;
+const answers = {};
+let customerName = '';
+let reportData = null;
+
+// ── Slider ─────────────────────────────────────────────────────────────────
+function updateSlider(input, n) {
+  const pct = ((input.value - 1) / 9 * 100).toFixed(1);
+  input.style.setProperty('--pct', pct + '%');
+  document.getElementById('sv' + n).textContent = input.value;
+  answers['s' + n] = parseInt(input.value);
+}
+
+for (let i = 1; i <= 20; i++) {
+  answers['s' + i] = 5;
+  const el = document.getElementById('s' + i);
+  if (el) updateSlider(el, i);
+}
+
+// ── Screen ─────────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── Payment ────────────────────────────────────────────────────────────────
+async function handlePayment() {
+  const name = document.getElementById('pay-name').value.trim();
+  const email = document.getElementById('pay-email').value.trim();
+
+  if (!name || !email) {
+    document.getElementById('card-errors').textContent = 'Please enter your name and email.';
+    return;
+  }
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  try {
+    // For test mode — create a payment method and simulate success
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: card,
+      billing_details: { name, email }
+    });
+
+    if (error) {
+      document.getElementById('card-errors').textContent = error.message;
+      btn.disabled = false;
+      btn.textContent = 'Pay £19.99 and begin →';
+      return;
+    }
+
+    // Payment method created successfully — proceed to questions
+    // In production: send paymentMethod.id to your server to complete payment
+    customerName = name;
+    showScreen('screen-questions');
+    showQ(1);
+
+  } catch(e) {
+    document.getElementById('card-errors').textContent = 'Payment failed. Please try again.';
+    btn.disabled = false;
+    btn.textContent = 'Pay £19.99 and begin →';
+  }
+}
+
+// ── Questions ──────────────────────────────────────────────────────────────
+function showQ(n) {
+  for (let i = 1; i <= 20; i++) {
+    document.getElementById('q' + i).classList.toggle('active', i === n);
+  }
+  document.getElementById('div-subconscious').style.display = n === 11 ? 'flex' : 'none';
+  const pct = ((n-1)/20*100).toFixed(0);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = `Question ${n} of 20`;
+  document.getElementById('prog-section').textContent = n <= 10 ? 'Conscious Layer' : 'Subconscious Layer';
+  currentQ = n;
+}
+
+function nextQ(n) {
+  answers['s'+n] = parseInt(document.getElementById('s'+n).value);
+  if (n < 20) showQ(n+1);
+}
+
+function prevQ(n) {
+  if (n > 1) showQ(n-1);
+}
+
+// ── Generate report ────────────────────────────────────────────────────────
+async function generateReport() {
+  answers['s20'] = parseInt(document.getElementById('s20').value);
+  showScreen('screen-processing');
+  animateDiagram();
+  animateStages();
+
+  try {
+    reportData = await callClaude(answers);
+  } catch(e) {
+    console.error(e);
+    reportData = localScore(answers);
+  }
+
+  setTimeout(() => {
+    renderReport(reportData);
+    showScreen('screen-report');
+  }, 7000);
+}
+
+// ── Diagram animation ──────────────────────────────────────────────────────
+function animateDiagram() {
+  const nodes = ['dp1','narc','yarc','cist','oll','a1','a2','a3','a4','a5','a6','a7','a8','bs'];
+  const lines = ['line-narc','line-yarc','line-cist','line-oll'];
+
+  // Animate nodes lighting up in sequence
+  nodes.forEach((id, i) => {
+    const el = document.getElementById(id+'-node');
+    if (!el) return;
+    setTimeout(() => {
+      el.style.transition = 'opacity 0.5s ease';
+      el.style.opacity = '1';
+    }, i * 200 + 500);
+  });
+
+  // Animate lines
+  lines.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    setTimeout(() => {
+      el.style.transition = 'opacity 0.5s ease';
+      el.style.opacity = '0.5';
+    }, i * 300 + 1000);
+  });
+}
+
+// ── Stage animation ────────────────────────────────────────────────────────
+function animateStages() {
+  const stages = ['ps1','ps2','ps3','ps4','ps5','ps6','ps7'];
+  stages.forEach((id, i) => {
+    setTimeout(() => {
+      stages.slice(0,i).forEach(s => {
+        document.getElementById(s).classList.remove('active');
+        document.getElementById(s).classList.add('done');
+      });
+      document.getElementById(id).classList.add('active');
+    }, i * 900 + 200);
+  });
+}
+
+// ── Claude API ─────────────────────────────────────────────────────────────
+async function callClaude(a) {
+  const sys = `You are the DP-1 processor chip — the full scoring engine of the Source Code Holdings framework. You receive 20 slider responses (1–10) mapping to all 20 Source Codes across Conscious and Subconscious layers, and produce a complete personalised awareness report.
+
+SOURCE CODE MAPPING:
+CONSCIOUS (Q1-Q10): Presence(1), Interpretation(2), Logic(3), Perspective(4), Prediction(5), Intention(6), Communication(7), Adaptation(8), Alignment(9), Integrity(10)
+SUBCONSCIOUS (Q11-Q20): Fear(11), Memory(12), Trauma(13), Desire(14), Attachment(15), Pattern(16), Protection(17), Instinct(18), Drift(19), Core Identity(20)
+
+OBSERVER CODE MAPPING (App slots):
+NARC — A1: Presence+Fear, A2: Intention+Desire
+YARC — A3: Communication+Attachment, A4: Perspective+Memory
+CIST — A5: Logic+Pattern, A6: Alignment+Protection
+Øll — A7: Adaptation+Instinct, A8: Integrity+Core Identity
+
+SCORING RULES:
+- Each SC score: raw slider value / 10 (so 1=0.1, 10=1.0)
+- App slot score = average of its two SC scores
+- Observer Code score = average of its two App slot scores
+- Convert to percentages that sum to exactly 100
+- High conscious scores with low matching subconscious = high drift (presenting regulated while running disrupted underneath)
+- Drift = average |conscious_score - subconscious_score| across matched pairs (Q1vsQ11, Q2vsQ12 etc)
+- Balance Scale: map overall awareness to -5 to +5. High scores across all = positive. Imbalance + high drift = negative.
+- Trauma (Q13) is a global modifier — high trauma amplifies drift and pulls BS negative regardless of other scores
+
+Return ONLY valid JSON:
+{
+  "balance_scale": <number -5 to 5, one decimal>,
+  "drift": <number 0 to 5, one decimal>,
+  "zp_distance": <number>,
+  "bs_state": <string>,
+  "observer_codes": { "narc":<int>, "yarc":<int>, "cist":<int>, "oll":<int> },
+  "sc_scores": {
+    "presence":<int 1-10>, "interpretation":<int>, "logic":<int>, "perspective":<int>, "prediction":<int>,
+    "intention":<int>, "communication":<int>, "adaptation":<int>, "alignment":<int>, "integrity":<int>,
+    "fear":<int>, "memory":<int>, "trauma":<int>, "desire":<int>, "attachment":<int>,
+    "pattern":<int>, "protection":<int>, "instinct":<int>, "drift_sc":<int>, "core_identity":<int>
+  },
+  "oc_descriptions": {
+    "narc":<string — 1 sentence specific to their scores>,
+    "yarc":<string>,
+    "cist":<string>,
+    "oll":<string>
+  },
+  "report_sections": {
+    "overview": <string — 2-3 paragraphs. Their overall profile. What the scores reveal about who they are right now. Second person, precise, no therapy language.>,
+    "dominant_dynamic": <string — 2 paragraphs. The single most significant pattern in their scores — what it produces in relationships, work, self-perception.>,
+    "the_gap": <string — 1-2 paragraphs. Their drift — the specific gap between conscious presentation and subconscious reality. What this gap likely looks like from the outside.>,
+    "source_codes": <string — 2 paragraphs. The 2-3 most elevated and 1-2 most suppressed Source Codes and what that specific combination means.>,
+    "developmental_stage": <string — 1-2 paragraphs. Where they sit in the NARC→CIST→YARC→Øll developmental sequence and what that means for where they're headed.>,
+    "zero_point": <string — 1 paragraph. What Zero-Point would look like specifically for this person given their profile — not generic, based on their actual scores.>
+  }
+}
+
+observer_codes must sum to exactly 100. Be precise. The report sections should feel like they were written for this specific person.`;
+
+  const msg = `CONSCIOUS LAYER (Q1-Q10):
+Presence: ${a.s1}, Interpretation: ${a.s2}, Logic: ${a.s3}, Perspective: ${a.s4}, Prediction: ${a.s5}
+Intention: ${a.s6}, Communication: ${a.s7}, Adaptation: ${a.s8}, Alignment: ${a.s9}, Integrity: ${a.s10}
+
+SUBCONSCIOUS LAYER (Q11-Q20):
+Fear: ${a.s11}, Memory: ${a.s12}, Trauma: ${a.s13}, Desire: ${a.s14}, Attachment: ${a.s15}
+Pattern: ${a.s16}, Protection: ${a.s17}, Instinct: ${a.s18}, Drift: ${a.s19}, Core Identity: ${a.s20}
+
+Generate full SCH Check report.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:2000,
+      system:sys,
+      messages:[{role:'user',content:msg}]
+    })
+  });
+
+  const data = await res.json();
+  return JSON.parse((data.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
+}
+
+// ── Local fallback ─────────────────────────────────────────────────────────
+function localScore(a) {
+  const conscious = [a.s1,a.s2,a.s3,a.s4,a.s5,a.s6,a.s7,a.s8,a.s9,a.s10];
+  const subcon = [a.s11,a.s12,a.s13,a.s14,a.s15,a.s16,a.s17,a.s18,a.s19,a.s20];
+  const drift = conscious.reduce((sum,c,i) => sum + Math.abs(c - subcon[i]), 0) / 10 / 2;
+  const avg = [...conscious,...subcon].reduce((a,b)=>a+b,0)/20;
+  const bs = parseFloat(((avg-5.5)/4.5*5 - drift*0.5).toFixed(1));
+  const narc = Math.round(((a.s1+a.s11+a.s6+a.s14)/4)/10*40+10);
+  const yarc = Math.round(((a.s7+a.s15+a.s4+a.s12)/4)/10*40+10);
+  const cist = Math.round(((a.s3+a.s16+a.s9+a.s17)/4)/10*40+10);
+  const oll = 100-narc-yarc-cist;
+  return {
+    balance_scale: Math.max(-5, Math.min(5, bs)),
+    drift: parseFloat(drift.toFixed(1)),
+    zp_distance: Math.abs(bs).toFixed(1),
+    bs_state: bs>2?'Conscious expansion':bs>0?'Stability emerging':bs>-2?'Drift activated':'Emotional overload',
+    observer_codes:{narc,yarc,cist,oll:Math.max(5,oll)},
+    sc_scores:{presence:a.s1,interpretation:a.s2,logic:a.s3,perspective:a.s4,prediction:a.s5,intention:a.s6,communication:a.s7,adaptation:a.s8,alignment:a.s9,integrity:a.s10,fear:a.s11,memory:a.s12,trauma:a.s13,desire:a.s14,attachment:a.s15,pattern:a.s16,protection:a.s17,instinct:a.s18,drift_sc:a.s19,core_identity:a.s20},
+    oc_descriptions:{narc:'Your self-reference and identity patterns.',yarc:'Your other-directed awareness and connection.',cist:'Your regulation and structural thinking.',oll:'Your volatility and adaptive integration.'},
+    report_sections:{
+      overview:'Your awareness profile has been scored across all 20 Source Codes. The scores reveal the relationship between your conscious presentation and the subconscious layer running underneath.',
+      dominant_dynamic:'Your dominant Observer Code shapes the primary pattern in your awareness. This is the code that is pulling most significantly from the 25% equilibrium point.',
+      the_gap:'Your Drift score reflects the gap between your conscious and subconscious layers. A higher drift indicates a larger gap between what you present and what is actually running underneath.',
+      source_codes:'The individual Source Code scores reveal which specific capacities are most active and which are most suppressed in your current profile.',
+      developmental_stage:'Based on your profile, you are at a specific point in the NARC→CIST→YARC→Øll developmental sequence.',
+      zero_point:'Zero-Point for you means achieving a 25/25/25/25 balance across all four Observer Codes — full alignment between your conscious and subconscious layers.'
+    }
+  };
+}
+
+// ── Render report ──────────────────────────────────────────────────────────
+function renderReport(r) {
+  const bs = r.balance_scale;
+  const bsCol = bs>0.5?'#1D7A5F':bs<-0.5?'#C4622D':'#4A42A0';
+
+  document.getElementById('r-name').textContent = customerName || 'SCH Check Report';
+  document.getElementById('r-date').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+  document.getElementById('r-bs-score').textContent = (bs>0?'+':'')+bs.toFixed(1);
+  document.getElementById('r-bs-score').style.color = bsCol;
+  document.getElementById('r-bs-state').textContent = r.bs_state||'';
+  document.getElementById('r-drift').textContent = r.drift;
+  document.getElementById('r-zp').textContent = r.zp_distance;
+
+  // OC cards
+  const oc = r.observer_codes;
+  const desc = r.oc_descriptions||{};
+  [['narc','--narc'],['yarc','--yarc'],['cist','--cist'],['oll','--oll']].forEach(([code,cssvar])=>{
+    document.getElementById('r-'+code+'-pct').textContent = oc[code]+'%';
+    document.getElementById('r-'+code+'-fill').style.width = oc[code]+'%';
+    document.getElementById('r-'+code+'-desc').textContent = desc[code]||'';
+  });
+
+  // SC grid
+  const sc = r.sc_scores||{};
+  const scDefs = [
+    {name:'Presence',key:'presence',layer:'Conscious',code:'NARC'},
+    {name:'Fear',key:'fear',layer:'Subconscious',code:'NARC'},
+    {name:'Intention',key:'intention',layer:'Conscious',code:'NARC'},
+    {name:'Desire',key:'desire',layer:'Subconscious',code:'NARC'},
+    {name:'Communication',key:'communication',layer:'Conscious',code:'YARC'},
+    {name:'Attachment',key:'attachment',layer:'Subconscious',code:'YARC'},
+    {name:'Perspective',key:'perspective',layer:'Conscious',code:'YARC'},
+    {name:'Memory',key:'memory',layer:'Subconscious',code:'YARC'},
+    {name:'Logic',key:'logic',layer:'Conscious',code:'CIST'},
+    {name:'Pattern',key:'pattern',layer:'Subconscious',code:'CIST'},
+    {name:'Alignment',key:'alignment',layer:'Conscious',code:'CIST'},
+    {name:'Protection',key:'protection',layer:'Subconscious',code:'CIST'},
+    {name:'Adaptation',key:'adaptation',layer:'Conscious',code:'Øll'},
+    {name:'Instinct',key:'instinct',layer:'Subconscious',code:'Øll'},
+    {name:'Integrity',key:'integrity',layer:'Conscious',code:'Øll'},
+    {name:'Core Identity',key:'core_identity',layer:'Subconscious',code:'Øll'},
+    {name:'Interpretation',key:'interpretation',layer:'Conscious',code:'—'},
+    {name:'Prediction',key:'prediction',layer:'Conscious',code:'—'},
+    {name:'Trauma',key:'trauma',layer:'Subconscious',code:'×All'},
+    {name:'Drift',key:'drift_sc',layer:'Subconscious',code:'×All'},
+  ];
+
+  const colMap = {NARC:'var(--narc)',YARC:'var(--yarc)',CIST:'var(--cist)','Øll':'var(--oll)','—':'var(--muted)','×All':'#888'};
+
+  document.getElementById('sc-grid').innerHTML = scDefs.map(s => {
+    const val = sc[s.key]||5;
+    const pct = (val/10*100).toFixed(0);
+    const col = colMap[s.code]||'var(--muted)';
+    return `<div class="sc-row">
+      <div class="sc-code">${s.name}</div>
+      <div class="sc-layer">${s.layer}</div>
+      <div class="sc-track"><div class="sc-fill" style="width:${pct}%;background:${col};"></div></div>
+      <div class="sc-val" style="color:${col};">${val}</div>
+    </div>`;
+  }).join('');
+
+  // Render report diagram
+  renderReportDiagram(r);
+
+  // Written report
+  const sections = r.report_sections||{};
+  const sectionDefs = [
+    {key:'overview',title:'Overview'},
+    {key:'dominant_dynamic',title:'The dominant dynamic'},
+    {key:'the_gap',title:'The gap — your Drift score'},
+    {key:'source_codes',title:'Your Source Codes'},
+    {key:'developmental_stage',title:'Developmental stage'},
+    {key:'zero_point',title:'What Zero-Point looks like for you'},
+  ];
+
+  document.getElementById('written-report-content').innerHTML = sectionDefs.map(s => `
+    <div class="wr-section">
+      <div class="wr-section-title">${s.title}</div>
+      <div class="wr-body"><p>${(sections[s.key]||'').replace(/\n\n/g,'</p><p>')}</p></div>
+    </div>
+  `).join('');
+}
+
+// ── Report diagram ─────────────────────────────────────────────────────────
+function renderReportDiagram(r) {
+  const oc = r.observer_codes||{narc:25,yarc:25,cist:25,oll:25};
+  const opacity = code => Math.max(0.2, (oc[code]||25)/100*1.8).toFixed(2);
+
+  document.getElementById('report-svg').innerHTML = `
+    <rect width="560" height="480" fill="none"/>
+    <circle cx="280" cy="240" r="38" fill="#fafaf8" stroke="#0e0e0c" stroke-width="1.5" opacity="0.8"/>
+    <text x="280" y="236" text-anchor="middle" font-size="11" fill="#0e0e0c" font-family="'Geist Mono',monospace">DP-1</text>
+    <text x="280" y="252" text-anchor="middle" font-size="8" fill="#7a7972" font-family="'Geist Mono',monospace">CORE ENGINE</text>
+
+    <rect x="228" y="60" width="104" height="44" rx="10" fill="#fafaf8" stroke="#C4622D" stroke-width="1.5" opacity="${opacity('narc')}"/>
+    <text x="280" y="80" text-anchor="middle" font-size="11" fill="#C4622D" font-family="'Geist Mono',monospace">NARC</text>
+    <text x="280" y="96" text-anchor="middle" font-size="9" fill="#C4622D" font-family="'Geist Mono',monospace">${oc.narc}%</text>
+
+    <rect x="420" y="218" width="104" height="44" rx="10" fill="#fafaf8" stroke="#1D7A5F" stroke-width="1.5" opacity="${opacity('yarc')}"/>
+    <text x="472" y="238" text-anchor="middle" font-size="11" fill="#1D7A5F" font-family="'Geist Mono',monospace">YARC</text>
+    <text x="472" y="254" text-anchor="middle" font-size="9" fill="#1D7A5F" font-family="'Geist Mono',monospace">${oc.yarc}%</text>
+
+    <rect x="228" y="376" width="104" height="44" rx="10" fill="#fafaf8" stroke="#4A42A0" stroke-width="1.5" opacity="${opacity('cist')}"/>
+    <text x="280" y="396" text-anchor="middle" font-size="11" fill="#4A42A0" font-family="'Geist Mono',monospace">CIST</text>
+    <text x="280" y="412" text-anchor="middle" font-size="9" fill="#4A42A0" font-family="'Geist Mono',monospace">${oc.cist}%</text>
+
+    <rect x="36" y="218" width="104" height="44" rx="10" fill="#fafaf8" stroke="#A0426B" stroke-width="1.5" opacity="${opacity('oll')}"/>
+    <text x="88" y="238" text-anchor="middle" font-size="11" fill="#A0426B" font-family="'Geist Mono',monospace">Øll</text>
+    <text x="88" y="254" text-anchor="middle" font-size="9" fill="#A0426B" font-family="'Geist Mono',monospace">${oc.oll}%</text>
+
+    <line x1="280" y1="104" x2="280" y2="202" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
+    <line x1="420" y1="240" x2="318" y2="240" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
+    <line x1="280" y1="376" x2="280" y2="278" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
+    <line x1="140" y1="240" x2="242" y2="240" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
+
+    <rect x="214" y="438" width="132" height="34" rx="8" fill="#fafaf8" stroke="#0e0e0c" stroke-width="1" opacity="0.8"/>
+    <text x="280" y="453" text-anchor="middle" font-size="9" fill="#0e0e0c" font-family="'Geist Mono',monospace">BALANCE SCALE</text>
+    <text x="280" y="466" text-anchor="middle" font-size="10" fill="#0e0e0c" font-family="'Geist Mono',monospace" font-weight="400">${(r.balance_scale>0?'+':'')+r.balance_scale.toFixed(1)}</text>
+    <line x1="280" y1="278" x2="280" y2="438" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.2"/>
+  `;
+}
+
+// ── Download ───────────────────────────────────────────────────────────────
+function downloadReport() {
+  window.print();
+}
+</script>
+</body>
+</html>

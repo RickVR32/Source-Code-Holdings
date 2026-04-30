@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Awareness Assessment — Source Code Holdings</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f2f1ee;
+  --bg-soft: #e9e8e3;
+  --panel: #fafaf8;
+  --panel-border: rgba(0,0,0,0.09);
+  --line: rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.18);
+  --text: #0e0e0c;
+  --muted: #7a7972;
+  --narc: #C4622D;
+  --yarc: #1D7A5F;
+  --cist: #4A42A0;
+  --oll: #A0426B;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(100,100,90,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,100,90,0.055) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.container { width: min(720px, calc(100% - 48px)); margin: auto; }
+
+/* NAV */
+nav {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+}
+.nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.nav-logo img { width:28px; height:auto; opacity:0.85; }
+.nav-logo span { font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+.nav-back { font-size:0.68rem; letter-spacing:0.12em; color:var(--muted); text-decoration:none; text-transform:uppercase; transition:color 0.2s; }
+.nav-back:hover { color:var(--text); }
+
+/* HERO */
+.assessment-hero {
+  padding: 72px 0 56px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-label { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+
+.hero-title {
+  font-family:'Cormorant', serif;
+  font-weight:300;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height:1.05;
+  letter-spacing:-0.01em;
+  margin-bottom:24px;
+}
+
+.hero-copy { font-size:0.82rem; line-height:1.85; color:var(--muted); max-width:500px; margin:0 auto 32px; }
+
+.hero-meta {
+  display:flex; align-items:center; justify-content:center; gap:24px;
+  font-size:0.68rem; letter-spacing:0.12em; color:var(--muted);
+}
+.hero-meta span { display:flex; align-items:center; gap:6px; }
+.dot { width:4px; height:4px; border-radius:50%; background:var(--line-strong); }
+
+/* SCREENS */
+.screen { display:none; }
+.screen.active { display:block; }
+
+/* QUESTIONS */
+.questions-wrap { padding: 56px 0; }
+
+/* PROGRESS */
+.progress-bar-wrap {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius:999px;
+  height:3px;
+  margin-bottom:48px;
+  overflow:hidden;
+}
+.progress-bar-fill {
+  height:100%;
+  background:var(--text);
+  border-radius:999px;
+  transition:width 0.5s ease;
+}
+
+/* QUESTION CARD */
+.q-card {
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  border-radius:18px;
+  padding:40px 36px;
+  margin-bottom:14px;
+  display:none;
+}
+.q-card.active { display:block; }
+
+.q-meta {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:28px;
+}
+
+.q-code-badge {
+  font-size:0.62rem; letter-spacing:0.14em;
+  border:1px solid var(--line-strong); border-radius:999px;
+  padding:3px 10px; color:var(--muted);
+}
+
+.q-num { font-size:0.62rem; letter-spacing:0.1em; color:var(--muted); }
+
+.q-text {
+  font-family:'Cormorant', serif;
+  font-weight:300;
+  font-size:clamp(1.3rem, 2.5vw, 1.7rem);
+  line-height:1.35;
+  margin-bottom:8px;
+}
+
+.q-subtext { font-size:0.75rem; color:var(--muted); line-height:1.7; margin-bottom:32px; }
+
+/* SLIDER */
+.slider-wrap { display:flex; flex-direction:column; gap:12px; }
+.slider-track { position:relative; }
+
+input[type=range] {
+  -webkit-appearance:none;
+  width:100%; height:2px;
+  background: linear-gradient(90deg, var(--text) 0%, var(--text) var(--pct,50%), rgba(0,0,0,0.12) var(--pct,50%), rgba(0,0,0,0.12) 100%);
+  border-radius:1px; outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--panel); border:2px solid var(--text);
+  cursor:pointer; transition:transform 0.1s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
+
+.slider-labels {
+  display:flex; justify-content:space-between;
+  font-size:0.65rem; color:var(--muted); letter-spacing:0.06em;
+}
+
+.slider-value {
+  text-align:center;
+  font-family:'Cormorant', serif;
+  font-size:2.4rem;
+  font-weight:300;
+  color:var(--text);
+  line-height:1;
+  margin-top:4px;
+  transition:color 0.3s;
+}
+
+/* NAV BUTTONS */
+.q-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:24px;
+}
+
+.btn {
+  font-family:'Geist Mono', monospace; font-weight:300;
+  font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  padding:10px 22px; border-radius:999px; cursor:pointer; transition:all 0.2s; border:none;
+}
+.btn-primary { background:var(--text); color:var(--bg); }
+.btn-primary:hover { opacity:0.75; }
+.btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--line-strong); }
+.btn-ghost:hover { color:var(--text); border-color:var(--text); }
+.btn:disabled { opacity:0.3; cursor:not-allowed; }
+
+/* SECTION DIVIDERS */
+.section-divider {
+  display:flex; align-items:center; gap:16px;
+  padding:20px 0 8px;
+  font-size:0.62rem; letter-spacing:0.18em; color:var(--muted); text-transform:uppercase;
+}
+.section-divider::before, .section-divider::after { content:''; flex:1; height:1px; background:var(--line); }
+
+/* LOADING */
+.loading-screen { padding:96px 0; text-align:center; }
+.loading-title { font-family:'Cormorant', serif; font-weight:300; font-size:2rem; margin-bottom:16px; }
+.loading-sub { font-size:0.78rem; color:var(--muted); margin-bottom:40px; }
+.loading-stages { display:flex; flex-direction:column; gap:8px; max-width:340px; margin:0 auto; }
+.loading-stage {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 14px; background:var(--panel); border:1px solid var(--panel-border);
+  border-radius:10px; font-size:0.72rem; color:var(--muted); transition:all 0.4s;
+}
+.loading-stage.done { color:var(--text); border-color:var(--line-strong); }
+.loading-stage.active { color:var(--text); border-color:var(--text); }
+.stage-pip { width:6px; height:6px; border-radius:50%; background:var(--line-strong); transition:background 0.3s; flex-shrink:0; }
+.loading-stage.done .stage-pip { background:var(--text); }
+.loading-stage.active .stage-pip { background:var(--text); animation:pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* RESULTS */
+.results-screen { padding:56px 0; }
+
+.results-hero { text-align:center; margin-bottom:48px; }
+.results-label { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
+.results-score {
+  font-family:'Cormorant', serif; font-weight:300;
+  font-size:clamp(4rem, 10vw, 7rem); line-height:1;
+  margin-bottom:8px; transition:color 0.5s;
+}
+.results-state { font-size:0.82rem; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px; }
+.results-divider { width:32px; height:1px; background:var(--line-strong); margin:24px auto; opacity:0.4; }
+
+/* OC BARS */
+.oc-section { margin-bottom:14px; }
+.oc-card {
+  background:var(--panel); border:1px solid var(--panel-border);
+  border-radius:18px; padding:28px 28px; margin-bottom:10px;
+}
+.oc-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.oc-name { font-family:'Cormorant', serif; font-size:1.2rem; font-weight:400; }
+.oc-pct { font-family:'Cormorant', serif; font-size:1.8rem; font-weight:300; }
+.oc-track { height:3px; background:rgba(0,0,0,0.08); border-radius:2px; overflow:hidden; margin-bottom:12px; }
+.oc-fill { height:100%; border-radius:2px; transition:width 1s ease; }
+.oc-desc { font-size:0.75rem; color:var(--muted); line-height:1.7; }
+
+/* INTERPRETATION */
+.interpretation-card {
+  background:var(--panel); border:1px solid var(--panel-border);
+  border-radius:18px; padding:36px 32px; margin-bottom:14px;
+}
+.interp-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
+.interp-text { font-family:'Cormorant', serif; font-style:italic; font-size:1.15rem; font-weight:300; line-height:1.6; color:var(--text); }
+
+/* EMAIL CAPTURE */
+.email-card {
+  background:var(--text); border-radius:18px;
+  padding:40px 36px; margin-bottom:14px; color:var(--bg);
+}
+.email-title { font-family:'Cormorant', serif; font-weight:300; font-size:1.8rem; margin-bottom:10px; line-height:1.15; }
+.email-sub { font-size:0.78rem; line-height:1.7; opacity:0.65; margin-bottom:28px; }
+.email-form { display:flex; gap:10px; }
+.email-input {
+  flex:1; font-family:'Geist Mono', monospace; font-weight:300; font-size:0.78rem;
+  padding:11px 16px; border-radius:999px; border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.08); color:var(--bg); outline:none; transition:border-color 0.2s;
+}
+.email-input::placeholder { color:rgba(255,255,255,0.35); }
+.email-input:focus { border-color:rgba(255,255,255,0.5); }
+.email-btn {
+  font-family:'Geist Mono', monospace; font-weight:300;
+  font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  background:var(--bg); color:var(--text); padding:11px 22px;
+  border-radius:999px; border:none; cursor:pointer; transition:opacity 0.2s; white-space:nowrap;
+}
+.email-btn:hover { opacity:0.75; }
+.email-success { font-size:0.78rem; opacity:0.65; margin-top:12px; display:none; }
+
+/* RETAKE */
+.retake-row { text-align:center; padding:24px 0 48px; }
+.retake-link {
+  font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--muted); cursor:pointer; text-decoration:none; border-bottom:1px solid var(--line-strong); padding-bottom:2px; transition:color 0.2s;
+}
+.retake-link:hover { color:var(--text); }
+
+footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); opacity:0.6; }
+
+@media(max-width:600px) {
+  .q-card { padding:28px 22px; }
+  .email-form { flex-direction:column; }
+  .email-card { padding:28px 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="sch_sygil.png" alt="SCH">
+      <span>Source Code Holdings</span>
+    </a>
+    <a class="nav-back" href="index.html">← Back</a>
+  </nav>
+
+  <!-- INTRO SCREEN -->
+  <div class="screen active" id="screen-intro">
+    <div class="assessment-hero">
+      <div class="hero-label">Free Awareness Assessment</div>
+      <h1 class="hero-title">Where are you<br>on the scale?</h1>
+      <p class="hero-copy">
+        Eight questions. Two per Observer Code. The DP-1 engine scores your responses and maps your current position on the Balance Scale — from −5 to +5, with Zero-Point at the centre.
+      </p>
+      <div class="hero-meta">
+        <span>8 questions</span>
+        <div class="dot"></div>
+        <span>3 minutes</span>
+        <div class="dot"></div>
+        <span>Free</span>
+        <div class="dot"></div>
+        <span>No sign-up required</span>
+      </div>
+    </div>
+
+    <div style="padding:48px 0 0; text-align:center;">
+      <button class="btn btn-primary" onclick="startAssessment()" style="padding:14px 36px;font-size:0.78rem;">Begin assessment →</button>
+      <p style="margin-top:20px;font-size:0.68rem;color:var(--muted);letter-spacing:0.06em;">Your responses are not stored. Results are generated in real time.</p>
+    </div>
+
+    <!-- WHAT YOU GET -->
+    <div style="padding:56px 0 64px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:var(--panel);border:1px solid var(--panel-border);border-radius:18px;padding:28px 24px;">
+          <div style="font-size:0.62rem;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;text-transform:uppercase;">You receive</div>
+          <div style="font-family:'Cormorant',serif;font-size:1.1rem;margin-bottom:10px;">Your Balance Scale score</div>
+          <div style="font-size:0.75rem;color:var(--muted);line-height:1.7;">Your current position on the −5 to +5 axis. Zero-Point is the target. Negative means subconscious dominant. Positive means conscious expanding.</div>
+        </div>
+        <div style="background:var(--panel);border:1px solid var(--panel-border);border-radius:18px;padding:28px 24px;">
+          <div style="font-size:0.62rem;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;text-transform:uppercase;">You receive</div>
+          <div style="font-family:'Cormorant',serif;font-size:1.1rem;margin-bottom:10px;">Your Observer Code ratio</div>
+          <div style="font-size:0.75rem;color:var(--muted);line-height:1.7;">How much NARC, YARC, CIST, and Øll are active in you right now. Zero-Point is 25% each. The ratio tells you where the imbalance is.</div>
+        </div>
+        <div style="background:var(--panel);border:1px solid var(--panel-border);border-radius:18px;padding:28px 24px;">
+          <div style="font-size:0.62rem;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;text-transform:uppercase;">You receive</div>
+          <div style="font-family:'Cormorant',serif;font-size:1.1rem;margin-bottom:10px;">Your Drift score</div>
+          <div style="font-size:0.75rem;color:var(--muted);line-height:1.7;">The gap between what you present and what is running underneath. Zero is full alignment. The higher the drift, the further from Zero-Point.</div>
+        </div>
+        <div style="background:var(--panel);border:1px solid var(--panel-border);border-radius:18px;padding:28px 24px;">
+          <div style="font-size:0.62rem;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;text-transform:uppercase;">You receive</div>
+          <div style="font-family:'Cormorant',serif;font-size:1.1rem;margin-bottom:10px;">A plain-language interpretation</div>
+          <div style="font-size:0.75rem;color:var(--muted);line-height:1.7;">What your scores mean in practice — what patterns are dominant, what that produces in behaviour, and where the imbalance is likely showing up.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS SCREEN -->
+  <div class="screen" id="screen-questions">
+    <div class="questions-wrap">
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+
+      <!-- Q1 — NARC / Self-perception -->
+      <div class="section-divider">NARC — Self</div>
+      <div class="q-card active" id="q1">
+        <div class="q-meta">
+          <div class="q-code-badge">NARC · A1</div>
+          <div class="q-num">1 of 8</div>
+        </div>
+        <div class="q-text">How clearly do you understand who you are?</div>
+        <div class="q-subtext">Your sense of identity — how consistent, defined, and stable your self-perception is across different situations.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s1" min="1" max="10" value="5" oninput="updateSlider(this,1)">
+          <div class="slider-labels"><span>Fragmented / unclear</span><span>Fully defined</span></div>
+          <div class="slider-value" id="sv1">5</div>
+        </div>
+        <div class="q-nav">
+          <div></div>
+          <button class="btn btn-primary" onclick="nextQ(1)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q2 — NARC / Internal narrative -->
+      <div class="q-card" id="q2">
+        <div class="q-meta">
+          <div class="q-code-badge">NARC · A2</div>
+          <div class="q-num">2 of 8</div>
+        </div>
+        <div class="q-text">Does your internal dialogue support or limit you?</div>
+        <div class="q-subtext">The story you tell yourself — about your capabilities, your worth, your past, and what is possible for you.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s2" min="1" max="10" value="5" oninput="updateSlider(this,2)">
+          <div class="slider-labels"><span>Predominantly limiting</span><span>Predominantly supportive</span></div>
+          <div class="slider-value" id="sv2">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(2)">← Back</button>
+          <button class="btn btn-primary" onclick="nextQ(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q3 — YARC / External awareness -->
+      <div class="section-divider" id="div-q3" style="display:none;">YARC — Other</div>
+      <div class="q-card" id="q3">
+        <div class="q-meta">
+          <div class="q-code-badge">YARC · A3</div>
+          <div class="q-num">3 of 8</div>
+        </div>
+        <div class="q-text">How aware are you of the people around you?</div>
+        <div class="q-subtext">Your ability to read others accurately — their emotional state, their needs, and how your behaviour affects them.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s3" min="1" max="10" value="5" oninput="updateSlider(this,3)">
+          <div class="slider-labels"><span>Rarely notice others</span><span>Highly attuned</span></div>
+          <div class="slider-value" id="sv3">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(3)">← Back</button>
+          <button class="btn btn-primary" onclick="nextQ(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q4 — YARC / Meaning attribution -->
+      <div class="q-card" id="q4">
+        <div class="q-meta">
+          <div class="q-code-badge">YARC · A4</div>
+          <div class="q-num">4 of 8</div>
+        </div>
+        <div class="q-text">How do you assign meaning to events in your life?</div>
+        <div class="q-subtext">Whether events happen to you or through you — how much you interpret experience constructively versus as confirmation of a negative pattern.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s4" min="1" max="10" value="5" oninput="updateSlider(this,4)">
+          <div class="slider-labels"><span>Negatively / as threat</span><span>Constructively / as signal</span></div>
+          <div class="slider-value" id="sv4">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(4)">← Back</button>
+          <button class="btn btn-primary" onclick="nextQ(4)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q5 — CIST / Emotional regulation -->
+      <div class="section-divider" id="div-q5" style="display:none;">CIST — Regulation</div>
+      <div class="q-card" id="q5">
+        <div class="q-meta">
+          <div class="q-code-badge">CIST · A5</div>
+          <div class="q-num">5 of 8</div>
+        </div>
+        <div class="q-text">How well do you manage your emotional responses?</div>
+        <div class="q-subtext">Your ability to stay regulated under pressure — to feel an emotion without being consumed by it or acting from it automatically.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s5" min="1" max="10" value="5" oninput="updateSlider(this,5)">
+          <div class="slider-labels"><span>Easily overwhelmed</span><span>Consistently regulated</span></div>
+          <div class="slider-value" id="sv5">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(5)">← Back</button>
+          <button class="btn btn-primary" onclick="nextQ(5)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q6 — CIST / Behaviour control -->
+      <div class="q-card" id="q6">
+        <div class="q-meta">
+          <div class="q-code-badge">CIST · A6</div>
+          <div class="q-num">6 of 8</div>
+        </div>
+        <div class="q-text">Do your actions consistently match your intentions?</div>
+        <div class="q-subtext">How often you do what you said you would — the gap between your values and your actual behaviour under real conditions.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s6" min="1" max="10" value="5" oninput="updateSlider(this,6)">
+          <div class="slider-labels"><span>Rarely aligned</span><span>Almost always aligned</span></div>
+          <div class="slider-value" id="sv6">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(6)">← Back</button>
+          <button class="btn btn-primary" onclick="nextQ(6)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q7 — ØLL / System balance -->
+      <div class="section-divider" id="div-q7" style="display:none;">Øll — Integration</div>
+      <div class="q-card" id="q7">
+        <div class="q-meta">
+          <div class="q-code-badge">Øll · A7</div>
+          <div class="q-num">7 of 8</div>
+        </div>
+        <div class="q-text">How stable is your overall state across time?</div>
+        <div class="q-subtext">Whether your baseline — mood, energy, sense of self — is consistent week to week, or whether it swings significantly without clear external cause.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s7" min="1" max="10" value="5" oninput="updateSlider(this,7)">
+          <div class="slider-labels"><span>Highly volatile</span><span>Consistently stable</span></div>
+          <div class="slider-value" id="sv7">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(7)">← Back</button>
+          <button class="btn btn-primary" onclick="nextQ(7)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q8 — ØLL / Adaptive integration -->
+      <div class="q-card" id="q8">
+        <div class="q-meta">
+          <div class="q-code-badge">Øll · A8</div>
+          <div class="q-num">8 of 8</div>
+        </div>
+        <div class="q-text">How well do you integrate new challenges and change?</div>
+        <div class="q-subtext">Your capacity to absorb disruption, update your model of the world, and continue functioning — rather than fragmenting or shutting down.</div>
+        <div class="slider-wrap">
+          <input type="range" id="s8" min="1" max="10" value="5" oninput="updateSlider(this,8)">
+          <div class="slider-labels"><span>Destabilised by change</span><span>Integrate it and evolve</span></div>
+          <div class="slider-value" id="sv8">5</div>
+        </div>
+        <div class="q-nav">
+          <button class="btn btn-ghost" onclick="prevQ(8)">← Back</button>
+          <button class="btn btn-primary" onclick="submitAssessment()">Calculate my score →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen">
+      <div class="loading-title">Processing</div>
+      <div class="loading-sub">The DP-1 engine is scoring your responses</div>
+      <div class="loading-stages">
+        <div class="loading-stage" id="ls1"><div class="stage-pip"></div>Input ingestion</div>
+        <div class="loading-stage" id="ls2"><div class="stage-pip"></div>Dual Yin-Yang scoring</div>
+        <div class="loading-stage" id="ls3"><div class="stage-pip"></div>Observer Code ratio</div>
+        <div class="loading-stage" id="ls4"><div class="stage-pip"></div>Drift calculation</div>
+        <div class="loading-stage" id="ls5"><div class="stage-pip"></div>Balance Scale output</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screen-results">
+    <div class="results-screen">
+
+      <div class="results-hero">
+        <div class="results-label">Your Balance Scale score</div>
+        <div class="results-score" id="r-score">—</div>
+        <div class="results-state" id="r-state">—</div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:6px;">Drift: <span id="r-drift">—</span> · Zero-Point distance: <span id="r-zp">—</span></div>
+        <div class="results-divider"></div>
+        <div style="font-size:0.78rem;color:var(--muted);max-width:420px;margin:0 auto;line-height:1.7;" id="r-summary">—</div>
+      </div>
+
+      <!-- OC BARS -->
+      <div class="oc-section">
+        <div style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Observer Code ratio</div>
+
+        <div class="oc-card">
+          <div class="oc-header">
+            <div class="oc-name">NARC</div>
+            <div class="oc-pct" id="oc-narc-pct" style="color:var(--narc);">—</div>
+          </div>
+          <div class="oc-track"><div class="oc-fill" id="oc-narc-fill" style="width:0%;background:var(--narc);"></div></div>
+          <div class="oc-desc" id="oc-narc-desc">—</div>
+        </div>
+
+        <div class="oc-card">
+          <div class="oc-header">
+            <div class="oc-name">YARC</div>
+            <div class="oc-pct" id="oc-yarc-pct" style="color:var(--yarc);">—</div>
+          </div>
+          <div class="oc-track"><div class="oc-fill" id="oc-yarc-fill" style="width:0%;background:var(--yarc);"></div></div>
+          <div class="oc-desc" id="oc-yarc-desc">—</div>
+        </div>
+
+        <div class="oc-card">
+          <div class="oc-header">
+            <div class="oc-name">CIST</div>
+            <div class="oc-pct" id="oc-cist-pct" style="color:var(--cist);">—</div>
+          </div>
+          <div class="oc-track"><div class="oc-fill" id="oc-cist-fill" style="width:0%;background:var(--cist);"></div></div>
+          <div class="oc-desc" id="oc-cist-desc">—</div>
+        </div>
+
+        <div class="oc-card">
+          <div class="oc-header">
+            <div class="oc-name">Øll</div>
+            <div class="oc-pct" id="oc-oll-pct" style="color:var(--oll);">—</div>
+          </div>
+          <div class="oc-track"><div class="oc-fill" id="oc-oll-fill" style="width:0%;background:var(--oll);"></div></div>
+          <div class="oc-desc" id="oc-oll-desc">—</div>
+        </div>
+      </div>
+
+      <!-- INTERPRETATION -->
+      <div class="interpretation-card">
+        <div class="interp-label">Interpretation</div>
+        <div class="interp-text" id="r-interpretation">—</div>
+      </div>
+
+      <!-- EMAIL CAPTURE -->
+      <div class="email-card">
+        <div class="email-title">Get your full<br>SCH report</div>
+        <div class="email-sub">
+          The free assessment shows you where you are. The full SCH Check maps all 20 Source Codes across both conscious and subconscious layers — and gives you the recalibration path back to Zero-Point. Enter your email to be notified when it launches.
+        </div>
+        <div class="email-form">
+          <input type="email" class="email-input" id="email-input" placeholder="your@email.com">
+          <button class="email-btn" onclick="submitEmail()">Notify me</button>
+        </div>
+        <div class="email-success" id="email-success">You're on the list. We'll be in touch.</div>
+      </div>
+
+      <div class="retake-row">
+        <a class="retake-link" onclick="retake()">Retake assessment</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>Source Code Holdings &bull; All Rights Reserved 2026</footer>
+
+</div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────
+let currentQ = 1;
+const totalQ = 8;
+const answers = {};
+
+// ── Slider update ──────────────────────────────────────────────────────────
+function updateSlider(input, n) {
+  const pct = ((input.value - 1) / 9 * 100).toFixed(1);
+  input.style.setProperty('--pct', pct + '%');
+  document.getElementById('sv' + n).textContent = input.value;
+  answers['s' + n] = parseInt(input.value);
+}
+
+// Init all sliders
+for (let i = 1; i <= 8; i++) {
+  const el = document.getElementById('s' + i);
+  if (el) { answers['s' + i] = 5; updateSlider(el, i); }
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function startAssessment() {
+  showScreen('screen-questions');
+  currentQ = 1;
+  showQ(1);
+}
+
+function showQ(n) {
+  for (let i = 1; i <= totalQ; i++) {
+    document.getElementById('q' + i).classList.toggle('active', i === n);
+  }
+  // Show section dividers
+  const divIds = { 3:'div-q3', 5:'div-q5', 7:'div-q7' };
+  Object.entries(divIds).forEach(([q, id]) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = n == q ? 'flex' : 'none';
+  });
+  document.getElementById('progress-fill').style.width = ((n-1)/totalQ*100) + '%';
+}
+
+function nextQ(n) {
+  answers['s' + n] = parseInt(document.getElementById('s' + n).value);
+  if (n < totalQ) { currentQ = n + 1; showQ(currentQ); }
+}
+
+function prevQ(n) {
+  if (n > 1) { currentQ = n - 1; showQ(currentQ); }
+}
+
+// ── Screen switching ───────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── Submit & score ─────────────────────────────────────────────────────────
+async function submitAssessment() {
+  answers['s8'] = parseInt(document.getElementById('s8').value);
+  showScreen('screen-loading');
+  animateLoading();
+
+  try {
+    const result = await scoreWithClaude(answers);
+    await delay(500);
+    renderResults(result);
+    showScreen('screen-results');
+  } catch(e) {
+    console.error(e);
+    // Fallback to local scoring
+    const result = localScore(answers);
+    renderResults(result);
+    showScreen('screen-results');
+  }
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Loading animation ──────────────────────────────────────────────────────
+function animateLoading() {
+  const stages = ['ls1','ls2','ls3','ls4','ls5'];
+  stages.forEach((id, i) => {
+    setTimeout(() => {
+      stages.slice(0,i).forEach(s => { document.getElementById(s).classList.remove('active'); document.getElementById(s).classList.add('done'); });
+      document.getElementById(id).classList.add('active');
+    }, i * 600);
+  });
+}
+
+// ── Claude API scoring ─────────────────────────────────────────────────────
+async function scoreWithClaude(a) {
+  const sys = `You are the DP-1 processor chip — the scoring engine of the Source Code Holdings framework. You receive 8 slider responses (1–10 scale) from a human awareness assessment and produce scored output.
+
+QUESTION MAPPING:
+- Q1 (s1): NARC · A1 — Self-perception clarity
+- Q2 (s2): NARC · A2 — Internal narrative quality
+- Q3 (s3): YARC · A3 — External / other awareness
+- Q4 (s4): YARC · A4 — Meaning attribution (constructive vs negative)
+- Q5 (s5): CIST · A5 — Emotional regulation
+- Q6 (s6): CIST · A6 — Behaviour / intention alignment
+- Q7 (s7): Øll · A7 — Baseline stability
+- Q8 (s8): Øll · A8 — Adaptive integration
+
+SCORING RULES:
+- Observer Codes must sum to exactly 100%
+- Zero-Point = 25% each — the target state
+- NARC score: derived from Q1+Q2. High scores = more self-aware NARC (regulated). Low scores = reactive, extractive NARC pattern dominant.
+- YARC score: derived from Q3+Q4. High = empathic and constructive. Low = disconnected or negative-meaning bias.
+- CIST score: derived from Q5+Q6. High = well-regulated, values-aligned. Low = emotional overwhelm, behaviour drift.
+- Øll score: derived from Q7+Q8. High = stable and adaptive. Low = volatile, fragmented.
+- Balance Scale (−5 to +5): overall position. High scores across all four = positive. Low = negative. Imbalance creates drift.
+- Drift (0–5): gap between conscious presentation (Q1,Q3,Q5,Q7 — outward scores) and subconscious layer (Q2,Q4,Q6,Q8 — internal drivers).
+
+Return ONLY valid JSON, no other text:
+{
+  "balance_scale": <number -5 to 5, one decimal>,
+  "drift": <number 0 to 5, one decimal>,
+  "zp_distance": <number 0 to 5, one decimal — distance from zero-point>,
+  "bs_state": <string — e.g. "Stability emerging" / "Drift activated" / "Zero-Point" / "Emotional overload">,
+  "summary": <string — 1 sentence, plain language, what this score profile indicates overall>,
+  "observer_codes": {
+    "narc": <integer 0-100>,
+    "yarc": <integer 0-100>,
+    "cist": <integer 0-100>,
+    "oll": <integer 0-100>
+  },
+  "oc_descriptions": {
+    "narc": <string — 1 sentence, what this NARC percentage means for this person specifically>,
+    "yarc": <string — 1 sentence>,
+    "cist": <string — 1 sentence>,
+    "oll": <string — 1 sentence>
+  },
+  "interpretation": <string — 3-4 sentences. Plain language. What these scores reveal about this person's current awareness pattern — what is working, where the imbalance is, what the dominant dynamic is likely producing in their life. No coaching language. Just precise observation in second person.>
+}
+
+observer_codes must sum to exactly 100.`;
+
+  const msg = `Assessment responses (1–10 scale):
+Q1 — Self-perception clarity: ${a.s1}
+Q2 — Internal narrative quality: ${a.s2}
+Q3 — External awareness: ${a.s3}
+Q4 — Meaning attribution: ${a.s4}
+Q5 — Emotional regulation: ${a.s5}
+Q6 — Behaviour/intention alignment: ${a.s6}
+Q7 — Baseline stability: ${a.s7}
+Q8 — Adaptive integration: ${a.s8}
+
+Score through the DP-1 pipeline and return results.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: sys,
+      messages: [{ role:'user', content: msg }]
+    })
+  });
+
+  const data = await res.json();
+  return JSON.parse((data.content?.[0]?.text || '').replace(/```json|```/g,'').trim());
+}
+
+// ── Local fallback scoring ─────────────────────────────────────────────────
+function localScore(a) {
+  const narc = (a.s1 + a.s2) / 2;
+  const yarc = (a.s3 + a.s4) / 2;
+  const cist = (a.s5 + a.s6) / 2;
+  const oll  = (a.s7 + a.s8) / 2;
+  const avg = (narc + yarc + cist + oll) / 4;
+  const bs = parseFloat(((avg - 5.5) / 4.5 * 5).toFixed(1));
+  const drift = parseFloat((Math.abs(narc - yarc) * 0.4 + Math.abs(cist - oll) * 0.3).toFixed(1));
+
+  const total = narc + yarc + cist + oll;
+  const np = Math.round(narc/total*100);
+  const yp = Math.round(yarc/total*100);
+  const cp = Math.round(cist/total*100);
+  const op = 100 - np - yp - cp;
+
+  return {
+    balance_scale: bs,
+    drift: Math.min(drift, 5),
+    zp_distance: Math.abs(bs).toFixed(1),
+    bs_state: bs > 2 ? 'Conscious expansion' : bs > 0 ? 'Stability emerging' : bs > -2 ? 'Drift activated' : 'Emotional overload',
+    summary: 'Your score profile has been calculated from your eight responses.',
+    observer_codes: { narc: np, yarc: yp, cist: cp, oll: op },
+    oc_descriptions: {
+      narc: 'Your self-reference and identity patterns at current level.',
+      yarc: 'Your other-directed awareness and meaning attribution.',
+      cist: 'Your regulation and behaviour alignment capacity.',
+      oll: 'Your stability and adaptive integration.'
+    },
+    interpretation: 'Your responses have been scored across the four Observer Codes. The Balance Scale shows your current position between subconscious dominance and conscious expansion. Review your individual code percentages to see where the imbalance is concentrated.'
+  };
+}
+
+// ── Render results ─────────────────────────────────────────────────────────
+function renderResults(r) {
+  const bs = r.balance_scale;
+  const bsCol = bs > 0.5 ? '#1D7A5F' : bs < -0.5 ? '#C4622D' : '#4A42A0';
+
+  document.getElementById('r-score').textContent = (bs > 0 ? '+' : '') + bs.toFixed(1);
+  document.getElementById('r-score').style.color = bsCol;
+  document.getElementById('r-state').textContent = r.bs_state || '';
+  document.getElementById('r-drift').textContent = r.drift;
+  document.getElementById('r-zp').textContent = r.zp_distance;
+  document.getElementById('r-summary').textContent = r.summary || '';
+  document.getElementById('r-interpretation').textContent = r.interpretation || '';
+
+  const oc = r.observer_codes;
+  const desc = r.oc_descriptions || {};
+  [
+    ['narc', oc.narc],
+    ['yarc', oc.yarc],
+    ['cist', oc.cist],
+    ['oll',  oc.oll]
+  ].forEach(([code, pct]) => {
+    document.getElementById('oc-'+code+'-pct').textContent = pct + '%';
+    document.getElementById('oc-'+code+'-fill').style.width = pct + '%';
+    document.getElementById('oc-'+code+'-desc').textContent = desc[code] || '';
+  });
+}
+
+// ── Email capture ──────────────────────────────────────────────────────────
+async function submitEmail() {
+  const email = document.getElementById('email-input').value.trim();
+  if (!email || !email.includes('@')) return;
+
+  try {
+    await fetch('https://formspree.io/f/xpqobvev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email, _subject: 'SCH Assessment — Full report request', source: 'awareness-calculator' })
+    });
+  } catch(e) {}
+
+  document.getElementById('email-success').style.display = 'block';
+  document.getElementById('email-input').disabled = true;
+  document.querySelector('.email-btn').disabled = true;
+}
+
+// ── Retake ────────────────────────────────────────────────────────────────
+function retake() {
+  for (let i = 1; i <= 8; i++) {
+    const el = document.getElementById('s' + i);
+    if (el) { el.value = 5; updateSlider(el, i); }
+  }
+  showScreen('screen-questions');
+  currentQ = 1;
+  showQ(1);
+}
+</script>
+</body>
+</html>
