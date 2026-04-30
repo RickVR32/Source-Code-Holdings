@@ -7,7 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -19,14 +19,10 @@
   --line-strong: rgba(0,0,0,0.18);
   --text: #0e0e0c;
   --muted: #7a7972;
-  --accent: #0e0e0c;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   background-color: var(--bg);
@@ -40,316 +36,148 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.container {
-  width: min(1200px, calc(100% - 48px));
-  margin: auto;
-}
+.container { width: min(1200px, calc(100% - 48px)); margin: auto; }
 
-/* ── HERO ── */
-
+/* HERO */
 .hero {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 60px 0 80px;
-  position: relative;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 60px 0 80px;
 }
-
-.hero-logo img {
-  width: 160px;
-  height: auto;
-  display: block;
-  margin: 0 auto 32px;
-  opacity: 0.92;
-}
-
+.hero-logo { margin-bottom: 32px; }
+.hero-logo svg { width: 140px; height: auto; display: block; margin: 0 auto; opacity: 0.92; }
 .hero-name {
-  font-family: 'Cormorant', serif;
-  font-weight: 300;
+  font-family: 'Cormorant', serif; font-weight: 300;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--text);
+  letter-spacing: 0.32em; text-transform: uppercase;
 }
+.hero-divider { width: 32px; height: 1px; background: var(--line-strong); margin: 28px auto; }
+.hero-copy { max-width: 580px; font-size: 0.82rem; line-height: 1.85; color: var(--muted); letter-spacing: 0.02em; }
+.hero-tag { margin-top: 44px; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
 
-.hero-divider {
-  width: 32px;
-  height: 1px;
-  background: var(--line-strong);
-  margin: 28px auto;
-}
+/* SECTIONS */
+.section { padding: 80px 0; border-top: 1px solid var(--line); }
+.section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-bottom: 40px; }
+.section-label { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.section-title { font-family: 'Cormorant', serif; font-weight: 300; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; letter-spacing: -0.01em; }
+.section-desc { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 440px; padding-top: 8px; align-self: end; }
 
-.hero-copy {
-  max-width: 580px;
-  font-size: 0.82rem;
-  line-height: 1.85;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
-
-.hero-tag {
-  margin-top: 44px;
-  font-size: 0.68rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0.6;
-}
-
-/* ── SECTION SHARED ── */
-
-.section {
-  padding: 80px 0;
-  border-top: 1px solid var(--line);
-}
-
-.section-head {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  align-items: start;
-  margin-bottom: 40px;
-}
-
-.section-label {
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-
-.section-title {
-  font-family: 'Cormorant', serif;
-  font-weight: 300;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-}
-
-.section-desc {
-  font-size: 0.8rem;
-  line-height: 1.9;
-  color: var(--muted);
-  max-width: 440px;
-  padding-top: 8px;
-  align-self: end;
-}
-
-/* ── CARDS ── */
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-}
+/* CARDS */
+.cards   { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.cards-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+.cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
 
 .card {
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  border-radius: 18px;
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.2s;
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 28px 24px;
+  display: flex; flex-direction: column; transition: border-color 0.2s;
 }
-
-.card:hover {
-  border-color: var(--line-strong);
-}
-
-.card-index {
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  color: var(--muted);
-  margin-bottom: 20px;
-  opacity: 0.7;
-}
-
-.card h3 {
-  font-family: 'Cormorant', serif;
-  font-weight: 400;
-  font-size: 1.18rem;
-  margin-bottom: 12px;
-  line-height: 1.2;
-}
-
-.card p {
-  font-size: 0.77rem;
-  line-height: 1.75;
-  color: var(--muted);
-  margin-bottom: 20px;
-}
-
-.card ul {
-  list-style: none;
-  margin-top: auto;
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
-}
-
-.card li {
-  font-size: 0.72rem;
-  line-height: 1.6;
-  color: var(--muted);
-  padding: 4px 0;
-  border-bottom: 1px solid var(--line);
-  letter-spacing: 0.01em;
-}
-
-.card li:last-child {
-  border-bottom: none;
-}
-
-/* tech card badge */
+.card:hover { border-color: var(--line-strong); }
+.card-index { font-size: 0.62rem; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 20px; opacity: 0.7; }
 .card-badge {
-  display: inline-block;
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 3px 10px;
-  color: var(--muted);
-  margin-bottom: 20px;
-  align-self: flex-start;
+  display: inline-block; font-size: 0.62rem; letter-spacing: 0.14em;
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 3px 10px; color: var(--muted); margin-bottom: 20px; align-self: flex-start;
 }
+.card h3 { font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.18rem; margin-bottom: 12px; line-height: 1.2; }
+.card p { font-size: 0.77rem; line-height: 1.75; color: var(--muted); margin-bottom: 20px; }
+.card ul { list-style: none; margin-top: auto; border-top: 1px solid var(--line); padding-top: 16px; }
+.card li { font-size: 0.72rem; line-height: 1.6; color: var(--muted); padding: 4px 0; border-bottom: 1px solid var(--line); }
+.card li:last-child { border-bottom: none; }
 
-/* ── CONTACT ── */
-
-.contact {
-  padding: 120px 0 80px;
-  border-top: 1px solid var(--line);
+.card-demo-btn {
+  margin-top: 20px; font-family: 'Geist Mono', monospace; font-weight: 300;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; color: var(--muted); border: 1px solid var(--line-strong);
+  border-radius: 999px; padding: 7px 16px; cursor: pointer; transition: all 0.2s; align-self: flex-start;
 }
+.card-demo-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-.contact-inner {
-  max-width: 680px;
-  margin: auto;
+/* FRAMEWORK STATEMENT */
+.fw-statement {
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 48px 52px; margin-bottom: 14px;
 }
-
-.contact-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--line);
+.fw-law {
+  font-family: 'Cormorant', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(1.4rem, 2.5vw, 2rem); line-height: 1.35;
+  margin-bottom: 24px; max-width: 680px;
 }
+.fw-body { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 560px; }
 
-.contact-head h2 {
-  font-family: 'Cormorant', serif;
-  font-weight: 300;
-  font-size: 1.5rem;
-  letter-spacing: 0.06em;
+/* SCALE */
+.scale-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 18px; padding: 36px 32px; }
+.scale-track-wrap { position: relative; margin: 24px 0 10px; }
+.scale-track { height: 1px; background: var(--line-strong); position: relative; }
+.scale-pip {
+  position: absolute; top: 50%; transform: translate(-50%,-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: var(--text);
 }
+.scale-pip.empty { background: transparent; border: 1px solid var(--line-strong); }
+.scale-ends { display: flex; justify-content: space-between; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+.scale-rows { display: flex; flex-direction: column; margin-top: 20px; border-top: 1px solid var(--line); }
+.scale-row { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.72rem; }
+.scale-row:last-child { border-bottom: none; }
+.scale-score { font-family: 'Cormorant', serif; font-size: 1rem; min-width: 40px; }
+.scale-state { flex: 1; }
+.scale-note { color: var(--muted); font-size: 0.68rem; text-align: right; }
 
-.contact-head span {
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
+/* QUOTE */
+.quote-block {
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 48px 52px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
 }
+.quote-text { font-family: 'Cormorant', serif; font-style: italic; font-weight: 300; font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.4; }
+.quote-attr { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--muted); margin-top: 20px; }
+.quote-right { font-size: 0.78rem; line-height: 1.85; color: var(--muted); }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+/* DEMO PANELS */
+.demo-panel { display: none; flex-direction: column; margin-top: 14px; border-radius: 18px; overflow: hidden; border: 1px solid var(--panel-border); }
+.demo-panel.visible { display: flex; }
+.demo-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+.demo-label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.demo-close { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); background: none; border: none; cursor: pointer; transition: color 0.2s; font-family: 'Geist Mono', monospace; font-weight: 300; }
+.demo-close:hover { color: var(--text); }
+.demo-frame { width: 100%; height: 760px; background: #0D0D0B; border: none; }
+.demo-footer { padding: 10px 22px; background: var(--bg-soft); border-top: 1px solid var(--line); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; }
 
+/* CONTACT */
+.contact { padding: 120px 0 80px; border-top: 1px solid var(--line); }
+.contact-inner { max-width: 680px; margin: auto; }
+.contact-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.contact-head h2 { font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.5rem; letter-spacing: 0.06em; }
+.contact-head span { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 input, select, textarea {
-  font-family: 'Geist Mono', monospace;
-  font-weight: 300;
-  font-size: 0.78rem;
-  padding: 11px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--line-strong);
-  background: var(--panel);
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
-  letter-spacing: 0.01em;
+  font-family: 'Geist Mono', monospace; font-weight: 300; font-size: 0.78rem;
+  padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line-strong);
+  background: var(--panel); color: var(--text); outline: none;
+  transition: border-color 0.2s; letter-spacing: 0.01em; width: 100%;
 }
-
-input::placeholder, textarea::placeholder {
-  color: var(--muted);
-  opacity: 0.7;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--text);
-}
-
-select {
-  appearance: none;
-  cursor: pointer;
-}
-
-textarea {
-  grid-column: 1 / -1;
-  min-height: 90px;
-  resize: none;
-}
-
-.form-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 4px;
-}
-
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.7; }
+input:focus, select:focus, textarea:focus { border-color: var(--text); }
+select { appearance: none; cursor: pointer; }
+textarea { grid-column: 1 / -1; min-height: 90px; resize: none; }
+.form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 4px; }
 .form-actions button {
-  font-family: 'Geist Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: var(--text);
-  color: var(--bg);
-  padding: 9px 20px;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.2s;
+  font-family: 'Geist Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; background: var(--text); color: var(--bg);
+  padding: 9px 20px; border-radius: 999px; border: none; cursor: pointer; transition: opacity 0.2s;
 }
+.form-actions button:hover { opacity: 0.75; }
 
-.form-actions button:hover {
-  opacity: 0.75;
-}
+footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
 
-footer {
-  text-align: center;
-  padding: 32px 0;
-  border-top: 1px solid var(--line);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0.6;
-}
-
-/* ── RESPONSIVE ── */
-
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  .section-head,
-  .cards,
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-desc {
-    max-width: 100%;
-    padding-top: 0;
-  }
-
-  .hero-logo img {
-    width: 120px;
-  }
-
-  .contact {
-    padding: 80px 0 60px;
-  }
+  .section-head, .cards, .cards-2, .cards-3, .form-grid, .quote-block { grid-template-columns: 1fr; }
+  .section-desc { max-width: 100%; padding-top: 0; }
+  .fw-statement, .quote-block { padding: 32px 28px; }
+  .contact { padding: 80px 0 60px; }
 }
+@media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
 </style>
 </head>
 
@@ -359,7 +187,7 @@ footer {
   <!-- HERO -->
   <section class="hero">
     <div class="hero-logo">
-      <img src="images/sch_logo_light.png" alt="Source Code Holdings">
+      <img src="sch_sygil.png" alt="Source Code Holdings" style="width:140px;height:auto;display:block;margin:0 auto;opacity:0.92;">
     </div>
     <div class="hero-name">Source Code Holdings</div>
     <div class="hero-divider"></div>
@@ -371,143 +199,364 @@ footer {
     <div class="hero-tag">Private · By arrangement only</div>
   </section>
 
-  <!-- SYSTEM ARCHITECTURE -->
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <div class="section-label">01 — Architecture</div>
-        <h2 class="section-title">The system<br>structure</h2>
-      </div>
-      <p class="section-desc">
-        Four discrete operational layers. Each independently defined,
-        independently protected. Knowledge encodes the base state.
-        Monitoring tracks deviation. Behaviour governs correction.
-        Interface renders output.
-      </p>
-    </div>
-
-    <div class="cards">
-
-      <div class="card">
-        <div class="card-index">01</div>
-        <h3>Knowledge Layer</h3>
-        <p>Primary encoding layer. Defines the structural variables governing awareness state, perceptual orientation, and identity configuration across all downstream system environments.</p>
-        <ul>
-          <li>Conscious and Subconscious code systems</li>
-          <li>Quadruality and Trinity frameworks</li>
-          <li>Balance scale and zero-point modelling</li>
-        </ul>
+  <!-- 01 — THE FRAMEWORK -->
+  <section class="section" id="framework">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">01 — The Framework</div>
+          <h2 class="section-title">A law, not<br>a theory</h2>
+        </div>
+        <p class="section-desc">
+          The Source Code Framework was reverse-engineered from lived human experience — not built top-down from academic theory. An original, internally consistent model of human awareness. The language, structure, and all terminology are proprietary intellectual property of Source Code Holdings Ltd.
+        </p>
       </div>
 
-      <div class="card">
-        <div class="card-index">02</div>
-        <h3>Monitoring Layer</h3>
-        <p>Continuous state observation across active system environments. Measures deviation from calibrated baselines and flags instability thresholds before drift compounds.</p>
-        <ul>
-          <li>Awareness state monitoring (−5 to +5)</li>
-          <li>Drift detection and instability mapping</li>
-          <li>Behavioural pattern and loop identification</li>
-        </ul>
+      <div class="fw-statement">
+        <div class="fw-law">"Everything in existence must coincide with its polar opposite or cease to exist."</div>
+        <div class="fw-body">
+          This is the single principle from which the entire framework derives. Not a metaphor — a structural rule. It determines why the framework is shaped the way it is, why its measurement system works the way it does, and why its developmental model follows a spiral rather than a line.<br><br>
+          The practical implication: no code, state, or pattern should be eliminated. The goal is never to remove the negative — it is to balance all components so that none dominates to the point of dysfunction.
+        </div>
       </div>
 
-      <div class="card">
-        <div class="card-index">03</div>
-        <h3>Behaviour Layer</h3>
-        <p>Execution environment for structured correction logic. Processes flagged deviation through defined internal protocols and applies targeted restructuring to restore output alignment.</p>
-        <ul>
-          <li>Input → processing → output pipelines</li>
-          <li>Loop interruption and restructuring</li>
-          <li>Pattern reinforcement and correction</li>
-        </ul>
+      <div class="cards-3">
+        <div class="card">
+          <div class="card-index">Layer 01</div>
+          <h3>Conscious layer</h3>
+          <p>The external, observable layer. What a person shows — their behaviour, decisions, communication, and patterns. Ten discrete codes govern this layer. Accessible through observation and structured self-reflection.</p>
+          <ul>
+            <li>10 Conscious Source Codes</li>
+            <li>Observable behaviour and output</li>
+            <li>The active Yin-Yang</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-index">Layer 02</div>
+          <h3>Subconscious layer</h3>
+          <p>The internal, hidden layer running underneath simultaneously. What drives the conscious layer without the person's awareness — fear, memory, desire, instinct, attachment. Ten codes. Not directly observable.</p>
+          <ul>
+            <li>10 Subconscious Source Codes</li>
+            <li>Emotional patterns and loops</li>
+            <li>The inverse Yin-Yang</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-index">The gap</div>
+          <h3>Drift</h3>
+          <p>The measurable distance between what a person presents and what is actually running underneath. A person can appear perfectly regulated while running a destabilising subconscious programme. That gap is their true score.</p>
+          <ul>
+            <li>D = |Conscious − Subconscious|</li>
+            <li>Zero = full alignment</li>
+            <li>The primary measurement output</li>
+          </ul>
+        </div>
       </div>
-
-      <div class="card">
-        <div class="card-index">04</div>
-        <h3>Interface Layer</h3>
-        <p>Render layer. Converts internal system state into structured visual output — calibrated for operator clarity, commercial deployment, and real-time observability.</p>
-        <ul>
-          <li>HUD architecture and awareness display</li>
-          <li>Behavioural trajectory visualisation</li>
-          <li>Observer-state clarity and alignment</li>
-        </ul>
-      </div>
-
     </div>
   </section>
 
-  <!-- DEVICE LAYER -->
+  <!-- 02 — OBSERVER CODES -->
   <section class="section">
-    <div class="section-head">
-      <div>
-        <div class="section-label">02 — Device Layer</div>
-        <h2 class="section-title">The engine<br>architecture</h2>
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">02 — Observer Codes</div>
+          <h2 class="section-title">Not types.<br>Percentages.</h2>
+        </div>
+        <p class="section-desc">
+          The framework's most original contribution. Four Observer Codes present in every person simultaneously, always summing to 100%. The ratio between them determines current state and predicts behavioural output. Zero-Point — fully balanced awareness — is 25% across all four simultaneously.
+        </p>
       </div>
-      <p class="section-desc">
-        Four proprietary engines operating beneath the framework layer.
-        Each handles a discrete function: state interpretation, equilibrium
-        calculation, corrective feedback, or lightweight deployment.
-        Not interchangeable. Not public.
-      </p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-badge">NARC</div>
+          <h3>The negative percentage</h3>
+          <p>Extractive, self-protective, survival-oriented energy. Not inherently harmful — at 25% it provides necessary self-preservation. When dominant it becomes zero-sum. Where every human awareness begins.</p>
+          <ul>
+            <li>Polar pair: YARC</li>
+            <li>At 25%: healthy self-interest</li>
+            <li>When dominant: manipulative, zero-sum</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge">YARC</div>
+          <h3>The positive percentage</h3>
+          <p>Giving, other-directed energy. The polar opposite of NARC. At 25% it produces empathy and genuine connection. When dominant, self-abandoning. Not widely recognised as a dysfunction — society rewards self-sacrifice.</p>
+          <ul>
+            <li>Polar pair: NARC</li>
+            <li>At 25%: empathy, connection</li>
+            <li>When dominant: self-abandoning</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge">CIST</div>
+          <h3>The balanced percentage</h3>
+          <p>The integration code. Holds NARC and YARC in conscious regulation — does not eliminate either, contains both. When dominant, the most stable self-aware functioning state available below Zero-Point.</p>
+          <ul>
+            <li>Polar pair: Øll</li>
+            <li>At 25%: stable, grounded</li>
+            <li>When dominant: rigid, over-analytical</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-badge">Øll</div>
+          <h3>The all-and-nothing percentage</h3>
+          <p>Pure potential in both directions simultaneously. At 25% it provides creative intensity and transformational energy. When dominant, total volatility — behaviour that cannot be predicted even by the person themselves.</p>
+          <ul>
+            <li>Polar pair: CIST</li>
+            <li>At 25%: creative intensity</li>
+            <li>When dominant: implosion or explosion</li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="cards">
+  <!-- 03 — MEASUREMENT -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">03 — Measurement</div>
+          <h2 class="section-title">The Balance<br>Scale</h2>
+        </div>
+        <p class="section-desc">
+          A universal measurement axis running from −5 to +5. Zero is Zero-Point — perfect alignment of both awareness layers with a balanced Observer Code ratio. Negative scores indicate subconscious dominance. Positive scores indicate conscious expansion.
+        </p>
+      </div>
+      <div class="scale-card">
+        <div class="section-label">Balance Scale axis</div>
+        <div class="scale-track-wrap">
+          <div class="scale-track">
+            <div class="scale-pip" style="left:0%"></div>
+            <div class="scale-pip empty" style="left:50%"></div>
+            <div class="scale-pip" style="left:100%"></div>
+          </div>
+        </div>
+        <div class="scale-ends"><span>−5 · Collapse</span><span>0 · Zero-Point</span><span>+5 · Full awareness</span></div>
+        <div class="scale-rows">
+          <div class="scale-row"><div class="scale-score">+5</div><div class="scale-state">Full conscious awareness</div><div class="scale-note">25/25/25/25 · both layers aligned</div></div>
+          <div class="scale-row"><div class="scale-score">+3 / +4</div><div class="scale-state">Conscious expansion</div><div class="scale-note">CIST / YARC rising · drift low</div></div>
+          <div class="scale-row"><div class="scale-score">+1 / +2</div><div class="scale-state">Stability emerging</div><div class="scale-note">CIST dominant · NARC regulated</div></div>
+          <div class="scale-row"><div class="scale-score">0</div><div class="scale-state">Zero-Point</div><div class="scale-note">Perfect 25/25/25/25 balance</div></div>
+          <div class="scale-row"><div class="scale-score">−1 / −2</div><div class="scale-state">Drift activated</div><div class="scale-note">NARC or Øll beginning to rise</div></div>
+          <div class="scale-row"><div class="scale-score">−3 / −4</div><div class="scale-state">Emotional overload</div><div class="scale-note">NARC or Øll dominant</div></div>
+          <div class="scale-row"><div class="scale-score">−5</div><div class="scale-state">Collapse</div><div class="scale-note">Øll dominant · implosion or explosion</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <div class="card">
-        <div class="card-badge">TCE</div>
-        <h3>Trinity Consciousness Engine</h3>
-        <p>Primary processing engine. Ingests raw state data across conscious, subconscious, and observer channels — maps behavioural structure, calculates drift vectors, and produces alignment output.</p>
-        <ul>
-          <li>Conscious, subconscious, observer-layer processing</li>
-          <li>Drift detection and output calculation</li>
-          <li>Awareness-state and alignment reporting</li>
-        </ul>
+  <!-- 04 — DEVELOPMENT -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">04 — Development</div>
+          <h2 class="section-title">A spiral,<br>not a line</h2>
+        </div>
+        <p class="section-desc">
+          Human awareness follows a natural sequence governed by the polar opposite law. Each cycle completes and begins again at a higher level of awareness. The sequence is fixed. The depth of each pass through it changes.
+        </p>
+      </div>
+      <div class="cards-3">
+        <div class="card">
+          <div class="card-index">Stage 01 → 02</div>
+          <h3>Origin</h3>
+          <p>Øll first — pure potential, no formed identity. Then NARC: self-reference. <em>I exist. I need. I feel.</em> Where every human awareness begins. Not a flaw — a structural necessity governed by the foundational law.</p>
+          <ul><li>Øll → NARC sequence</li><li>Pre-conscious to self-aware</li><li>The necessary starting point</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">Stage 03 → 04</div>
+          <h3>Integration</h3>
+          <p>NARC learning duality — right and wrong, cause and effect, consequence. Becoming CIST: regulation, holding self and other in balance simultaneously. The stable functional adult state.</p>
+          <ul><li>NARC → CIST transition</li><li>Duality and consequence</li><li>Stable self-aware functioning</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">Stage 05 → 06</div>
+          <h3>Cycle completion</h3>
+          <p>CIST → YARC: genuine other-awareness without losing self. Then Øll again — the known meets the unknown. The spiral restarts at a higher level. Each cycle produces more conscious awareness than the last.</p>
+          <ul><li>CIST → YARC → Øll</li><li>The spiral restarts higher</li><li>Growth is never linear</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — ORIGIN -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">05 — Origin</div>
+          <h2 class="section-title">Built from<br>the inside</h2>
+        </div>
+        <p class="section-desc">
+          The framework was not designed in a research institution. It was reverse-engineered from lived experience — including a formal psychiatric assessment whose data the developer used as input rather than diagnosis.
+        </p>
+      </div>
+      <div class="quote-block">
+        <div>
+          <div class="quote-text">"I know who I am. So I know who I was. And I now know who I will become."</div>
+          <div class="quote-attr">R.H. — Founder & Director, Source Code Holdings Ltd</div>
+        </div>
+        <div class="quote-right">
+          This is the Trinity model applied in practice. Three identity layers — subconscious (past), conscious (present), projected (future) — held simultaneously and without contradiction. When all three are coherent, that is the felt sense of Zero-Point.<br><br>
+          The framework emerged from the process of understanding that statement. Six months of structured research, observation, and self-analysis. Not built top-down from academic theory. Reverse-engineered from the inside out.<br><br>
+          The result draws on — but does not copy — developmental psychology, neuroscience, behavioural science, and philosophy. The language, structure, and all terminology are original intellectual property.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — SYSTEM ARCHITECTURE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">06 — System Architecture</div>
+          <h2 class="section-title">The system<br>structure</h2>
+        </div>
+        <p class="section-desc">
+          Four discrete operational layers. Each independently defined, independently protected. Knowledge encodes the base state. Monitoring tracks deviation. Behaviour governs correction. Interface renders output.
+        </p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-index">01</div>
+          <h3>Knowledge Layer</h3>
+          <p>Primary encoding layer. Defines the structural variables governing awareness state, perceptual orientation, and identity configuration across all downstream system environments.</p>
+          <ul><li>Conscious and Subconscious code systems</li><li>Quadruality and Trinity frameworks</li><li>Balance Scale and Zero-Point modelling</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">02</div>
+          <h3>Monitoring Layer</h3>
+          <p>Continuous state observation across active system environments. Measures deviation from calibrated baselines and flags instability thresholds before drift compounds.</p>
+          <ul><li>Awareness state monitoring (−5 to +5)</li><li>Drift detection and instability mapping</li><li>Behavioural pattern and loop identification</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">03</div>
+          <h3>Behaviour Layer</h3>
+          <p>Execution environment for structured correction logic. Processes flagged deviation through defined internal protocols and applies targeted restructuring to restore output alignment.</p>
+          <ul><li>Input → processing → output pipelines</li><li>Loop interruption and restructuring</li><li>Pattern reinforcement and correction</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">04</div>
+          <h3>Interface Layer</h3>
+          <p>Render layer. Converts internal system state into structured visual output — calibrated for operator clarity, commercial deployment, and real-time observability.</p>
+          <ul><li>HUD architecture and awareness display</li><li>Behavioural trajectory visualisation</li><li>Observer-state clarity and alignment</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — DEVICE LAYER -->
+  <section class="section" id="devices">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">07 — Device Layer</div>
+          <h2 class="section-title">The engine<br>architecture</h2>
+        </div>
+        <p class="section-desc">
+          Four proprietary engines operating beneath the framework layer. Each handles a discrete function: state interpretation, equilibrium calculation, corrective feedback, or lightweight deployment. Not interchangeable. Not public. Interactive prototypes below.
+        </p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-badge">TCE</div>
+          <h3>Trinity Consciousness Engine</h3>
+          <p>Primary processing engine. Ingests raw state data across conscious, subconscious, and observer channels — maps behavioural structure, calculates drift vectors, and produces alignment output.</p>
+          <ul><li>Conscious, subconscious, observer-layer processing</li><li>Drift detection and output calculation</li><li>Awareness-state and alignment reporting</li></ul>
+          <button class="card-demo-btn" onclick="showDemo('tce')">Interactive prototype ↗</button>
+        </div>
+        <div class="card">
+          <div class="card-badge">NES</div>
+          <h3>Neural Equilibrium System</h3>
+          <p>Equilibrium engine. Indexes drift magnitude, calculates imbalance coefficient, and routes corrective pathways to return internal state variables toward defined zero-point thresholds.</p>
+          <ul><li>Drift indexing and equilibrium tracking</li><li>Emotional stability and conflict prediction</li><li>Zero-point correction pathways</li></ul>
+          <button class="card-demo-btn" onclick="showDemo('nes')">Interactive prototype ↗</button>
+        </div>
+        <div class="card">
+          <div class="card-badge">ABFS</div>
+          <h3>Awareness-Based Feedback System</h3>
+          <p>Closed-loop feedback engine. Monitors live output against target alignment parameters and delivers time-sequenced corrective prompts, warnings, and recalibration cues at the point of deviation.</p>
+          <ul><li>Instant feedback and alignment cycles</li><li>Drift warnings and stabilising prompts</li><li>Pattern restoration and zero-point rebuild</li></ul>
+          <button class="card-demo-btn" onclick="showDemo('abfs')">Interactive prototype ↗</button>
+        </div>
+        <div class="card">
+          <div class="card-badge">DP-1</div>
+          <h3>Data Processor 1</h3>
+          <p>Reduced-footprint deployment package. Implements core scoring, detection, and correction logic at simplified fidelity — designed for early-stage rollout, prototype environments, and app-layer integration.</p>
+          <ul><li>Awareness scoring and drift detection</li><li>Quadruality-lite and Trinity-lite modelling</li><li>Correction outputs for prototype use</li></ul>
+          <button class="card-demo-btn" onclick="showDemo('dp1')">Interactive prototype ↗</button>
+        </div>
       </div>
 
-      <div class="card">
-        <div class="card-badge">NES</div>
-        <h3>Neural Equilibrium System</h3>
-        <p>Equilibrium engine. Indexes drift magnitude, calculates imbalance coefficient, and routes corrective pathways to return internal state variables toward defined zero-point thresholds.</p>
-        <ul>
-          <li>Drift indexing and equilibrium tracking</li>
-          <li>Emotional stability and conflict prediction</li>
-          <li>Zero-point correction pathways</li>
-        </ul>
+      <div class="demo-panel" id="demo-tce">
+        <div class="demo-header"><div class="demo-label">TCE — Trinity Consciousness Engine · Prototype</div><button class="demo-close" onclick="hideDemo('tce')">✕ close</button></div>
+        <iframe class="demo-frame" src="tce_smart_mirror.html" frameborder="0"></iframe>
+        <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>Powered by DP-1</span></div>
       </div>
-
-      <div class="card">
-        <div class="card-badge">ABFS</div>
-        <h3>Awareness-Based Feedback System</h3>
-        <p>Closed-loop feedback engine. Monitors live output against target alignment parameters and delivers time-sequenced corrective prompts, warnings, and recalibration cues at the point of deviation.</p>
-        <ul>
-          <li>Instant feedback and alignment cycles</li>
-          <li>Drift warnings and stabilising prompts</li>
-          <li>Pattern restoration and zero-point rebuild</li>
-        </ul>
+      <div class="demo-panel" id="demo-nes">
+        <div class="demo-header"><div class="demo-label">NES — Neural Equilibrium System · Prototype</div><button class="demo-close" onclick="hideDemo('nes')">✕ close</button></div>
+        <iframe class="demo-frame" src="nes_watch_live.html" frameborder="0"></iframe>
+        <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>Powered by DP-1</span></div>
       </div>
-
-      <div class="card">
-        <div class="card-badge">DP-1</div>
-        <h3>Device Pack One</h3>
-        <p>Reduced-footprint deployment package. Implements core scoring, detection, and correction logic at simplified fidelity — designed for early-stage rollout, prototype environments, and app-layer integration.</p>
-        <ul>
-          <li>Awareness scoring and drift detection</li>
-          <li>Quadruality-lite and Trinity-lite modelling</li>
-          <li>Correction outputs for prototype use</li>
-        </ul>
+      <div class="demo-panel" id="demo-abfs">
+        <div class="demo-header"><div class="demo-label">ABFS — Awareness-Based Feedback System · Prototype</div><button class="demo-close" onclick="hideDemo('abfs')">✕ close</button></div>
+        <iframe class="demo-frame" src="abfs_coordinator_live.html" frameborder="0"></iframe>
+        <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>Powered by DP-1</span></div>
       </div>
+      <div class="demo-panel" id="demo-dp1">
+        <div class="demo-header"><div class="demo-label">DP-1 — Data Processor 1 · Prototype</div><button class="demo-close" onclick="hideDemo('dp1')">✕ close</button></div>
+        <iframe class="demo-frame" src="dp1_interactive_demo.html" frameborder="0"></iframe>
+        <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>Core processing engine</span></div>
+      </div>
+    </div>
+  </section>
 
+  <!-- 08 — COMMERCIAL -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">08 — Commercial Structure</div>
+          <h2 class="section-title">Three tiers.<br>One framework.</h2>
+        </div>
+        <p class="section-desc">
+          The pipeline is deliberate. Tier 1 proves the framework works at scale and builds the audience. Tier 2 creates a certified practitioner network. Tier 3 sees a proven framework, a trained workforce, and real data — and licenses the full stack.
+        </p>
+      </div>
+      <div class="cards-3">
+        <div class="card">
+          <div class="card-index">Tier 01 — Consumer</div>
+          <h3>Solo Awareness</h3>
+          <p>General public. The framework in accessible form — a personal awareness tool that proves the model works at scale and generates the data that makes Tiers 2 and 3 credible.</p>
+          <ul><li>Solo Awareness app</li><li>Balance Scale scoring</li><li>£0 – £30 / month</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">Tier 02 — Practitioner</div>
+          <h3>Licensed practitioners</h3>
+          <p>Coaches, therapists, educators. Full framework access, certification, and deployment rights. The practitioner network distributes the framework without SCH doing every deployment.</p>
+          <ul><li>Full 24-layer system</li><li>NARC / YARC / CIST / Øll training</li><li>£5k – £50k licence</li></ul>
+        </div>
+        <div class="card">
+          <div class="card-index">Tier 03 — Enterprise</div>
+          <h3>Full IP access</h3>
+          <p>Corporations, healthcare, technology. Full IP access, device integration, and white-label rights. The complete framework at organisational scale — by arrangement only.</p>
+          <ul><li>Full IP and device integration</li><li>White-label rights</li><li>£500k – £50M+</li></ul>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section class="contact">
+  <section class="contact" id="contact">
     <div class="contact-inner">
-
       <div class="contact-head">
         <h2>Private access</h2>
         <span>Selective enquiries only</span>
       </div>
-
       <form action="https://formspree.io/f/xpqobvev" method="POST">
         <div class="form-grid">
           <input type="text" name="name" placeholder="Name" required>
@@ -523,19 +572,30 @@ footer {
           <textarea name="message" placeholder="Brief enquiry..." required></textarea>
           <input type="hidden" name="_replyto" value="admin@sourcecodeholdings.org">
           <input type="hidden" name="_subject" value="New SCH enquiry">
-          <div class="form-actions">
-            <button type="submit">Submit</button>
-          </div>
+          <div class="form-actions"><button type="submit">Submit</button></div>
         </div>
       </form>
-
     </div>
   </section>
 
-  <footer>
-    Source Code Holdings &bull; All Rights Reserved 2026
-  </footer>
+  <footer>Source Code Holdings &bull; All Rights Reserved 2026</footer>
 
 </div>
+
+<script>
+  let current = null;
+  function showDemo(id) {
+    if (current && current !== id) document.getElementById('demo-'+current).classList.remove('visible');
+    current = id;
+    const el = document.getElementById('demo-'+id);
+    el.classList.add('visible');
+    setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+  }
+  function hideDemo(id) {
+    document.getElementById('demo-'+id).classList.remove('visible');
+    if (current === id) current = null;
+    document.getElementById('devices').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+</script>
 </body>
 </html>
