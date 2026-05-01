@@ -46,7 +46,7 @@ body {
   text-align: center; padding: 60px 0 80px;
 }
 .hero-logo { margin-bottom: 32px; }
-.hero-logo svg { width: 140px; height: auto; display: block; margin: 0 auto; opacity: 0.92; }
+.hero-logo img { width: 140px; height: auto; display: block; margin: 0 auto; opacity: 0.92; }
 .hero-name {
   font-family: 'Cormorant', serif; font-weight: 300;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
@@ -143,6 +143,29 @@ body {
 .demo-frame { width: 100%; height: 760px; background: #0D0D0B; border: none; }
 .demo-footer { padding: 10px 22px; background: var(--bg-soft); border-top: 1px solid var(--line); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; }
 
+/* ASSESSMENT SECTION */
+.assess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.assess-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 18px; padding: 36px 32px; display: flex; flex-direction: column; }
+.assess-card.paid { background: var(--text); color: var(--bg); }
+.assess-tag { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.assess-card.paid .assess-tag { color: rgba(242,241,238,0.45); }
+.assess-title { font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.7rem; line-height: 1.1; margin-bottom: 12px; }
+.assess-card.paid .assess-title { color: var(--bg); }
+.assess-price { font-family: 'Cormorant', serif; font-size: 2.2rem; font-weight: 300; margin-bottom: 4px; }
+.assess-price-sub { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 24px; }
+.assess-card.paid .assess-price-sub { color: rgba(242,241,238,0.45); }
+.assess-desc { font-size: 0.78rem; line-height: 1.85; color: var(--muted); margin-bottom: 24px; flex: 1; }
+.assess-card.paid .assess-desc { color: rgba(242,241,238,0.65); }
+.assess-features { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); padding-top: 16px; }
+.assess-card.paid .assess-features { border-top-color: rgba(242,241,238,0.12); }
+.assess-features li { font-size: 0.72rem; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--line); }
+.assess-card.paid .assess-features li { color: rgba(242,241,238,0.55); border-bottom-color: rgba(242,241,238,0.1); }
+.assess-features li:last-child { border-bottom: none; }
+.assess-btn { font-family: 'Geist Mono', monospace; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 22px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+.assess-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+.assess-btn-paid { font-family: 'Geist Mono', monospace; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 22px; border-radius: 999px; border: 1px solid rgba(242,241,238,0.3); background: rgba(242,241,238,0.1); color: var(--bg); cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+.assess-btn-paid:hover { background: rgba(242,241,238,0.2); }
+
 /* CONTACT */
 .contact { padding: 120px 0 80px; border-top: 1px solid var(--line); }
 .contact-inner { max-width: 680px; margin: auto; }
@@ -172,7 +195,7 @@ footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line);
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  .section-head, .cards, .cards-2, .cards-3, .form-grid, .quote-block { grid-template-columns: 1fr; }
+  .section-head, .cards, .cards-2, .cards-3, .form-grid, .quote-block, .assess-grid { grid-template-columns: 1fr; }
   .section-desc { max-width: 100%; padding-top: 0; }
   .fw-statement, .quote-block { padding: 32px 28px; }
   .contact { padding: 80px 0 60px; }
@@ -545,6 +568,52 @@ footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line);
           <h3>Full IP access</h3>
           <p>Corporations, healthcare, technology. Full IP access, device integration, and white-label rights. The complete framework at organisational scale — by arrangement only.</p>
           <ul><li>Full IP and device integration</li><li>White-label rights</li><li>£500k – £50M+</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 — ASSESSMENTS -->
+  <section class="section" id="assessments">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="section-label">09 — Assessments</div>
+          <h2 class="section-title">Know where<br>you stand.</h2>
+        </div>
+        <p class="section-desc">
+          Two access points into the framework. The free assessment shows you where you are on the Balance Scale right now. The SCH Check maps the full architecture — all 20 Source Codes, your Drift score, and a personalised written report you keep.
+        </p>
+      </div>
+      <div class="assess-grid">
+        <div class="assess-card">
+          <div class="assess-tag">Free · No sign-up</div>
+          <div class="assess-title">Awareness Assessment</div>
+          <div class="assess-price">Free</div>
+          <div class="assess-price-sub">Instant · 3 minutes · No account required</div>
+          <div class="assess-desc">Eight questions mapped to the four Observer Codes. The DP-1 engine scores your responses and returns your current Balance Scale position, Observer Code ratio, and a brief interpretation.</div>
+          <ul class="assess-features">
+            <li>Balance Scale score — your position on the −5 to +5 axis</li>
+            <li>Observer Code ratio — NARC / YARC / CIST / Øll percentages</li>
+            <li>Drift score — gap between conscious and subconscious</li>
+            <li>Plain-language interpretation of your profile</li>
+          </ul>
+          <a class="assess-btn" href="awareness.html">Begin assessment →</a>
+        </div>
+        <div class="assess-card paid">
+          <div class="assess-tag">SCH Check · Full report</div>
+          <div class="assess-title">Full Awareness Report</div>
+          <div class="assess-price">£19.99</div>
+          <div class="assess-price-sub">One-time · Instant report · Yours to keep</div>
+          <div class="assess-desc">Twenty questions across all Source Codes. A complete personalised report: your full architecture scored, Drift calculated, and an 800–1200 word written interpretation of what your profile reveals.</div>
+          <ul class="assess-features">
+            <li>All 20 Source Codes scored individually</li>
+            <li>Full 4×4+4 architecture diagram — your nodes lit up</li>
+            <li>Conscious vs subconscious layer comparison</li>
+            <li>Personalised 6-section written report</li>
+            <li>Downloadable PDF — yours to keep</li>
+          </ul>
+          <a class="assess-btn-paid" href="sch-check.html">Purchase report — £19.99 →</a>
         </div>
       </div>
     </div>
