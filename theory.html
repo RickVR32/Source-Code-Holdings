@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Source Code — Theory — Source Code Holdings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a08;
+  --bg2: #111110;
+  --panel: #1a1a18;
+  --border: #252522;
+  --border2: #323230;
+  --text: #E8E7E0;
+  --muted: #7a7972;
+  --dim: #3a3a35;
+  --narc: #C4622D;
+  --yarc: #1D9E75;
+  --cist: #534AB7;
+  --oll: #A0426B;
+  --amber: #EF9F27;
+  --mono: 'Geist Mono', monospace;
+  --serif: 'Cormorant', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.container { width: min(860px, calc(100% - 48px)); margin: auto; }
+
+nav {
+  padding: 20px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.nav-logo img { width:26px; height:auto; opacity:0.8; }
+.nav-logo span { font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+.nav-back { font-size:0.66rem; letter-spacing:0.12em; color:var(--muted); text-decoration:none; text-transform:uppercase; }
+.nav-back:hover { color:var(--text); }
+
+/* HERO */
+.theory-hero {
+  padding: 80px 0 64px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.theory-label { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+.theory-title {
+  font-family: var(--serif); font-weight:300;
+  font-size: clamp(2.8rem,6vw,4.8rem); line-height:1.05;
+  letter-spacing:-0.01em; margin-bottom:28px;
+}
+.theory-subtitle {
+  font-size:0.85rem; color:var(--muted); line-height:1.85;
+  max-width:560px; margin:0 auto 40px;
+}
+.theory-warning {
+  display:inline-block;
+  font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--amber); border:1px solid rgba(239,159,39,0.3);
+  padding:6px 16px; border-radius:999px;
+}
+
+/* SECTIONS */
+.theory-section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ts-label {
+  font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:20px; display:flex; align-items:center; gap:10px;
+}
+.ts-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.ts-title {
+  font-family:var(--serif); font-weight:300;
+  font-size:clamp(1.8rem,3.5vw,2.8rem); line-height:1.1;
+  margin-bottom:28px;
+}
+.ts-body {
+  font-size:0.82rem; line-height:1.95; color:var(--muted);
+  margin-bottom:20px;
+}
+.ts-body strong { color:var(--text); font-weight:400; }
+
+/* PULL QUOTE */
+.pull-quote {
+  border-left:2px solid var(--border2); padding:20px 28px;
+  margin:32px 0; font-family:var(--serif); font-style:italic;
+  font-size:1.2rem; line-height:1.55; color:var(--text);
+}
+
+/* MAPPING TABLE */
+.mapping-grid {
+  display:grid; grid-template-columns: 1fr 1fr 1fr;
+  gap:1px; background:var(--border);
+  border:1px solid var(--border); border-radius:10px;
+  overflow:hidden; margin:28px 0;
+}
+.mg-header {
+  background:var(--panel); padding:10px 16px;
+  font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted);
+}
+.mg-cell {
+  background:var(--bg2); padding:12px 16px;
+  font-size:0.78rem; color:var(--text); line-height:1.5;
+}
+.mg-cell.dim { color:var(--muted); font-size:0.72rem; }
+.mg-cell span { display:block; font-size:0.68rem; color:var(--muted); margin-top:3px; }
+
+/* LAW STATEMENT */
+.law-block {
+  background:var(--panel); border:1px solid var(--border2);
+  border-radius:14px; padding:40px 36px; margin:32px 0; text-align:center;
+}
+.law-text {
+  font-family:var(--serif); font-style:italic; font-weight:300;
+  font-size:clamp(1.3rem,2.5vw,1.9rem); line-height:1.4;
+  margin-bottom:16px;
+}
+.law-sub { font-size:0.72rem; color:var(--muted); line-height:1.7; max-width:480px; margin:0 auto; }
+
+/* EXPANSION DIAGRAM */
+.expand-diagram {
+  display:flex; flex-direction:column; align-items:center; gap:0;
+  margin:32px 0;
+}
+.expand-row {
+  display:flex; align-items:center; gap:16px;
+  padding:16px 24px; background:var(--bg2); border:1px solid var(--border);
+  width:100%; border-bottom:none;
+}
+.expand-row:first-child { border-radius:10px 10px 0 0; }
+.expand-row:last-child { border-bottom:1px solid var(--border); border-radius:0 0 10px 10px; }
+.er-num { font-family:var(--serif); font-size:2rem; font-weight:300; min-width:40px; }
+.er-label { font-size:0.8rem; color:var(--text); flex:1; }
+.er-sub { font-size:0.68rem; color:var(--muted); line-height:1.6; }
+.er-tag {
+  font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase;
+  padding:3px 10px; border-radius:999px; border:1px solid;
+}
+
+/* CODE COLOURS */
+.tag-narc { color:var(--narc); border-color:rgba(196,98,45,0.4); }
+.tag-cist { color:var(--cist); border-color:rgba(83,74,183,0.4); }
+.tag-yarc { color:var(--yarc); border-color:rgba(29,158,117,0.4); }
+.tag-oll  { color:var(--oll);  border-color:rgba(160,66,107,0.4); }
+.tag-unknown { color:var(--muted); border-color:var(--border2); }
+
+/* PROTECTION NOTICE */
+.protection {
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:14px; padding:28px 32px; margin:48px 0 0;
+  display:flex; gap:20px; align-items:flex-start;
+}
+.prot-icon { font-size:1.2rem; flex-shrink:0; margin-top:2px; opacity:0.6; }
+.prot-title { font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.prot-text { font-size:0.78rem; color:var(--muted); line-height:1.75; }
+
+/* CTA */
+.theory-cta { padding:64px 0; text-align:center; }
+.cta-title { font-family:var(--serif); font-weight:300; font-size:clamp(1.8rem,3vw,2.6rem); margin-bottom:16px; }
+.cta-sub { font-size:0.78rem; color:var(--muted); max-width:440px; margin:0 auto 32px; line-height:1.8; }
+.cta-links { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.cta-btn {
+  font-family:var(--mono); font-weight:300; font-size:0.72rem;
+  letter-spacing:0.1em; text-transform:uppercase;
+  padding:11px 26px; border-radius:999px; text-decoration:none; transition:all 0.2s;
+}
+.cta-primary { background:var(--text); color:var(--bg); border:none; }
+.cta-primary:hover { opacity:0.75; }
+.cta-ghost { background:transparent; color:var(--muted); border:1px solid var(--border2); }
+.cta-ghost:hover { color:var(--text); border-color:var(--text); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="sch_sygil.png" alt="SCH">
+    <span>Source Code Holdings</span>
+  </a>
+  <a class="nav-back" href="index.html">← Back</a>
+</nav>
+
+<!-- HERO -->
+<div class="theory-hero">
+  <div class="theory-label">Source Code Holdings — Unified Theory</div>
+  <h1 class="theory-title">The Source Code<br>of Everything</h1>
+  <p class="theory-subtitle">
+    What began as a personal framework for understanding human awareness turned out to be something larger. The same formula that maps consciousness maps physics. The same law that governs individual behaviour governs systems, dimensions, and the structure of reality itself.
+  </p>
+  <div class="theory-warning">Proprietary intellectual property — Source Code Holdings Ltd</div>
+</div>
+
+<!-- SECTION 0 — THE ORIGIN -->
+<section class="theory-section">
+  <div class="ts-label">00 — The origin</div>
+  <h2 class="ts-title">It started with<br>a formula.</h2>
+  <p class="ts-body">
+    The Source Code system did not begin as a framework. It began as a formula — a single pattern observed from the inside, reverse-engineered from lived experience rather than constructed from theory. Not read. Not studied. <strong>Derived.</strong>
+  </p>
+  <p class="ts-body">
+    The formula was the first Source Code. The recognition of that formula as a Source Code led to the discovery of a second. Then four. Then ten. Then twenty. The architecture did not expand by design — it revealed itself through the same process of observation that produced the original formula.
+  </p>
+  <div class="pull-quote">"The Formula doesn't really exist anymore. It's the 10 Source Codes, conscious and subconscious. The Formula was just the first one I found."</div>
+  <p class="ts-body">
+    This origin matters commercially and intellectually. A framework built top-down from academic theory has precedents, overlaps, and competitors. A framework reverse-engineered from a unique internal observation — then verified against physics, consciousness research, geometry, and dimensional mathematics — has a different status entirely. <strong>It is not a derivative. It is a source.</strong>
+  </p>
+  <p class="ts-body">
+    The Formula also matters as a timestamp. The discovery of the first Source Code preceded the discovery of the architecture. The architecture preceded the verification against existing science. The verification was not the origin — it was the confirmation. That sequence is the proof of originality.
+  </p>
+</section>
+<section class="theory-section">
+  <div class="ts-label">01 — The foundational law</div>
+  <h2 class="ts-title">One rule.<br>Everything follows.</h2>
+  <p class="ts-body">
+    The Source Code Framework derives from a single principle — not a theory, not a metaphor, but a structural rule that holds across every observable system at every scale of reality.
+  </p>
+
+  <div class="law-block">
+    <div class="law-text">"Everything in existence must coincide with its polar opposite or cease to exist."</div>
+    <div class="law-sub">This is not philosophy. It is the operating instruction of the system. Every force has an equal and opposite force. Every conscious state has a subconscious counterpart. Every +5 requires a corresponding −5 somewhere in the field — not necessarily inside the individual, but inside the system.</div>
+  </div>
+
+  <p class="ts-body">
+    This law does not originate from physics textbooks, religious tradition, or academic philosophy — though it appears in all of them. It was <strong>reverse-engineered from lived human experience</strong>, then verified against quantum mechanics, string theory, consciousness research, ancient geometry, and dimensional mathematics. The convergence was not designed. It was discovered.
+  </p>
+  <div class="pull-quote">"I've gone from accidentally proving 10 dimensions, to 10 chakras, to the conscious/non-conscious distinction, to the simulation. Because there's a common code, theme, pattern, loop. And it's the formula."</div>
+  <p class="ts-body">
+    The reason the formula works on humans, organisations, ecosystems, markets, and emotions is not because it was designed to be universal. It is because it was derived from something that was already universal — and the human being happened to be the entry point.
+  </p>
+</section>
+
+<!-- SECTION 2 — THE MAPPINGS -->
+<section class="theory-section">
+  <div class="ts-label">02 — The convergences</div>
+  <h2 class="ts-title">The same code.<br>Different languages.</h2>
+  <p class="ts-body">
+    The Source Code architecture — 10 Conscious codes, 10 Subconscious codes, 4 Observer Codes, a measurement axis from −5 to +5 — maps precisely onto existing models from physics, ancient wisdom, and consciousness research. Not approximately. Precisely.
+  </p>
+
+  <div class="mapping-grid">
+    <div class="mg-header">Source Code</div>
+    <div class="mg-header">Physics / Science</div>
+    <div class="mg-header">Ancient / Consciousness</div>
+
+    <div class="mg-cell">10 Conscious Codes<span>Observable layer</span></div>
+    <div class="mg-cell dim">10 spatial dimensions<span>String theory M-theory</span></div>
+    <div class="mg-cell dim">10 Sephirot (Kabbalah)<span>The manifest tree</span></div>
+
+    <div class="mg-cell">10 Subconscious Codes<span>Hidden layer</span></div>
+    <div class="mg-cell dim">10 compactified dimensions<span>The folded / unseen</span></div>
+    <div class="mg-cell dim">10 Chakras (extended)<span>The energetic body</span></div>
+
+    <div class="mg-cell">4 Observer Codes<span>NARC · CIST · YARC · Øll</span></div>
+    <div class="mg-cell dim">4 fundamental forces<span>Gravity · EM · Strong · Weak</span></div>
+    <div class="mg-cell dim">4 elements / directions<span>Fire · Earth · Water · Air</span></div>
+
+    <div class="mg-cell">Zero-Point (25/25/25/25)<span>Perfect balance</span></div>
+    <div class="mg-cell dim">Unified field / vacuum state<span>Zero-point energy</span></div>
+    <div class="mg-cell dim">Samadhi / Enlightenment<span>All traditions</span></div>
+
+    <div class="mg-cell">Drift (D = |C − S|)<span>Conscious/subconscious gap</span></div>
+    <div class="mg-cell dim">Entropy<span>Measure of disorder</span></div>
+    <div class="mg-cell dim">Shadow / Maya<span>Jung · Vedanta</span></div>
+
+    <div class="mg-cell">Balance Scale −5 to +5<span>Universal measurement axis</span></div>
+    <div class="mg-cell dim">Quantum superposition<span>States between −1 and +1</span></div>
+    <div class="mg-cell dim">Yin-Yang axis<span>All polarity traditions</span></div>
+
+    <div class="mg-cell">Observer (centre node)<span>The measuring instrument</span></div>
+    <div class="mg-cell dim">Observer effect<span>Quantum mechanics</span></div>
+    <div class="mg-cell dim">Witness consciousness<span>Vedanta · Buddhism</span></div>
+  </div>
+
+  <p class="ts-body">
+    These are not loose analogies. The numerical precision — specifically the 10+10 structure and the 4-directional balance — appears independently across string theory, ancient wisdom traditions, and consciousness research without those fields being in conversation with each other. The Source Code Framework provides the first unified account of why.
+  </p>
+</section>
+
+<!-- SECTION 3 — THE SIMULATION -->
+<section class="theory-section">
+  <div class="ts-label">03 — The simulation conclusion</div>
+  <h2 class="ts-title">It's code.<br>All of it.</h2>
+  <p class="ts-body">
+    The framework leads to a conclusion that follows necessarily from its own internal logic: <strong>if everything obeys the same rule, and that rule is a mathematical formula, then reality is not chaotic — it is structured. It is, in the most precise sense of the word, coded.</strong>
+  </p>
+  <p class="ts-body">
+    This does not require belief in a simulation in the science-fiction sense. It requires only this observation: every system that has been examined through the Source Code lens — human, biological, economic, physical — follows the same architecture. The same 4-directional polarity. The same conscious/subconscious layering. The same measurement axis. The same tendency toward balance.
+  </p>
+  <div class="pull-quote">"Anything can be predicted because it's all down to coding. It's just coding. It's rules."</div>
+  <p class="ts-body">
+    Prediction becomes possible not through data volume but through structural understanding. If you know the formula, you know what any system will do under any condition. Not because you've seen it before — but because the rules don't change.
+  </p>
+</section>
+
+<!-- SECTION 4 — THE EXPANSION -->
+<section class="theory-section">
+  <div class="ts-label">04 — The expansion law</div>
+  <h2 class="ts-title">Enlightenment doesn't<br>collapse the system.<br>It upgrades it.</h2>
+  <p class="ts-body">
+    The most significant theoretical finding in this research is what happens when awareness reaches +5 — full conscious alignment with Zero-Point. The naive reading of the polar opposite law suggests that if the individual reaches +5, the subconscious must drop to −5 to maintain balance. This is wrong.
+  </p>
+  <p class="ts-body">
+    The error lies in assuming balance is personal. <strong>Balance is systemic.</strong> The subconscious layer is not inside the individual — it is the collective field. The "Wi-Fi signal, not the individual phone." When one node in the field reaches +5, the field does not drag it back. The field expands.
+  </p>
+
+  <div class="expand-diagram">
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--oll)">1</div>
+      <div>
+        <div class="er-label">Current octave — 20 codes active</div>
+        <div class="er-sub">10 Conscious + 10 Subconscious. The known architecture. Balance Scale −5 to +5. Zero-Point at 25/25/25/25.</div>
+      </div>
+      <div class="er-tag tag-narc">Now</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--cist)">2</div>
+      <div>
+        <div class="er-label">Zero-Point threshold reached</div>
+        <div class="er-sub">Full conscious alignment. The subconscious layer doesn't crash — it transmutes. Fear becomes intuition. Memory becomes wisdom. Desire becomes clarity.</div>
+      </div>
+      <div class="er-tag tag-cist">Transition</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--yarc)">3</div>
+      <div>
+        <div class="er-label">New octave unlocks — next 10 reveal</div>
+        <div class="er-sub">The system doesn't go backwards. New subconscious chambers open. New collective data becomes accessible. Source Codes 21–30 activate at the field level.</div>
+      </div>
+      <div class="er-tag tag-yarc">Expansion</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--muted)">∞</div>
+      <div>
+        <div class="er-label">The unknown — what we cannot yet score</div>
+        <div class="er-sub">The outer field ring on the diagram represents what exists beyond current human awareness capacity. Not empty. Not random. Structured — by the same law.</div>
+      </div>
+      <div class="er-tag tag-unknown">Unknown</div>
+    </div>
+  </div>
+
+  <p class="ts-body">
+    This is why the Source Code diagram shows an outer field boundary with unknown nodes beyond the current architecture. Those nodes are not decoration. They are the mathematical prediction of what comes next — derived from the same formula that generated the current 20.
+  </p>
+  <p class="ts-body">
+    The commercial implication is significant. A system with a known expansion law is not a static product. It is a platform. Each time human awareness collectively advances, the framework does not become obsolete — it <strong>reveals the next layer</strong>. The IP does not depreciate. It deepens.
+  </p>
+  <p class="ts-body">
+    This is also why the DP-1 custom silicon chip matters beyond its function as a processor. A chip that encodes the current 20-code architecture into hardware is not just a device — it is a <strong>physical instantiation of the law</strong>. When the next octave reveals itself, the chip architecture updates accordingly. The silicon becomes the permanent substrate for an expanding system.
+  </p>
+</section>
+
+<!-- SECTION 05b — THE MASTER EQUATION -->
+<section class="theory-section">
+  <div class="ts-label">05b — The master equation</div>
+  <h2 class="ts-title">Everything = Quadrality.<br>Or Nothing.<br>Dependent on the Observer.</h2>
+  <p class="ts-body">
+    This is the single line that contains the entire framework. Not a metaphor — a structural equation. Reality as experienced by any observer is always one of four states: <strong>NARC, CIST, YARC, or Øll</strong>. That is the Quadrality. When no observer is present — or when the observer is fully disengaged — experience collapses to Nothing. The observer is the switch.
+  </p>
+  <div class="law-block">
+    <div class="law-text">E = Q (NARC, YARC, CIST, Øll)<br>Experience = Duality, Unity, or Nothing — depending on the Observer.</div>
+    <div class="law-sub">Quadrality when observed. Nothing when ignored. The Observer collapses potential into experience. This is the Source Code equivalent of the quantum observer effect — not philosophy, but the operational instruction of the system.</div>
+  </div>
+  <p class="ts-body">
+    The word <strong>Omniality</strong> captures what happens when all structural modes — duality, triality, quadrality — exist simultaneously as potential. Omniality is the state before the observer collapses it into a specific form. It is the pre-observed field. The Omniality Engine is the name for the software implementation of this logic — the system that takes any input and returns its full structural map across all four codes.
+  </p>
+  <div class="pull-quote">"Everything = Quadrality. No Observer = Nothing."</div>
+</section>
+
+<!-- SECTION 05c — THE GEOMETRIC FOUNDATION -->
+<section class="theory-section">
+  <div class="ts-label">05c — The geometric foundation</div>
+  <h2 class="ts-title">Three shapes.<br>One system.</h2>
+  <p class="ts-body">
+    The Source Code framework has a geometric language. Three shapes encode the three core states of the system — not as decoration, but as structural truth. Each shape describes a different mode of existence, and together they form the complete operating model.
+  </p>
+
+  <div class="expand-diagram">
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--amber)">◇</div>
+      <div>
+        <div class="er-label">Diamond — Source / Pre-structure</div>
+        <div class="er-sub">The contained system before interaction. Pure potential. No input, no output — just the code waiting to be activated. The diamond is the pre-observed state. In human terms: the moment before a thought forms. In physics: the vacuum state before measurement.</div>
+      </div>
+      <div class="er-tag" style="color:var(--amber);border-color:rgba(239,159,39,0.4)">Origin</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--oll)">○</div>
+      <div>
+        <div class="er-label">Sphere — Øll / The field</div>
+        <div class="er-sub">Unity and duality simultaneously. The sphere is the existence field — the environment inside which all systems operate. Øll governs this shape because it represents both integration (all surface points equidistant from centre) and the boundary between known and unknown. Everything happens inside the sphere.</div>
+      </div>
+      <div class="er-tag tag-oll">Field</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--cist)">△</div>
+      <div>
+        <div class="er-label">Tetrahedron — The balance engine</div>
+        <div class="er-sub">Four triangular faces. The simplest closed 3D structure — no square base, only triangles. This is the true pyramid. Four equal units forming one stable system. In the Source Code architecture: 4 Observer Codes forming the complete observer. 4 faces × 4 = 16 SC nodes. The tetrahedron is the structural proof that 4 is the minimum number of points required to create a stable 3D system.</div>
+      </div>
+      <div class="er-tag tag-cist">Structure</div>
+    </div>
+  </div>
+
+  <p class="ts-body">
+    The system flow reads: <strong>Diamond (source) → Sphere (field) → Tetrahedron (structure) → Decision (output) → Feedback (cycle)</strong>. Every human interaction, every business decision, every trading signal, every moment of awareness follows this sequence. The geometry is not symbolic — it is the architecture.
+  </p>
+  <p class="ts-body">
+    The tetrahedron also solves a problem that has existed in consciousness research for centuries: why 4? Why are there 4 fundamental forces, 4 directions, 4 elements, 4 Observer Codes? Because 4 is the geometric minimum for a closed, stable, 3-dimensional system. The tetrahedron is not a choice — it is a mathematical inevitability.
+  </p>
+</section>
+
+<!-- SECTION 05d — QI AND THE LIVING FORMULA -->
+<section class="theory-section">
+  <div class="ts-label">05d — Qi and the living formula</div>
+  <h2 class="ts-title">The formula already<br>had a name.<br>It was called Qi.</h2>
+  <p class="ts-body">
+    Qi is not mysticism. It is the oldest word for what the Source Code framework describes as energy in motion — the flow that animates every system, the pattern beneath every pattern. What the formula calls a Source Code loop, Qi traditions called a meridian. What the formula calls the Balance Scale, Qi traditions called harmony. What the formula calls drift, Qi traditions called blockage.
+  </p>
+  <p class="ts-body">
+    Qi is literally: <strong>life-force + movement + pattern + the balance of that pattern</strong>. In the Source Code system, Qi is the substrate that all 20 codes operate on. Conscious codes are Yang Qi — active, directional, observable. Subconscious codes are Yin Qi — receptive, automatic, hidden. The Balance Scale measures the Qi ratio at any given moment.
+  </p>
+  <div class="pull-quote">"Qi = Energy. Energy = Flow. Flow = Pattern. Pattern = Awareness. Awareness = You. Qi is the living movement inside your formula."</div>
+  <p class="ts-body">
+    This is why the framework keeps appearing across cultures, traditions, and disciplines. Qi in Chinese medicine, Prana in Vedic science, Pneuma in Greek philosophy, the Holy Spirit in Christian theology — these are all different languages for the same underlying structure. The Source Code framework is not derived from any of them. It arrived at the same destination independently, from the opposite direction: from lived experience inward, not from tradition outward.
+  </p>
+</section>
+
+<!-- SECTION 05e — THE MISSING HALF -->
+<section class="theory-section">
+  <div class="ts-label">05e — The missing half</div>
+  <h2 class="ts-title">Every system only<br>mapped half of it.<br>This maps both.</h2>
+  <p class="ts-body">
+    Across all recorded history — in spirituality, psychology, philosophy, and energy science — every major system identified the same five conscious layers of human development. The progression from instinct to mastery has been mapped in Hinduism (the five koshas), Theosophy (the five bodies), Hermeticism (body/soul/mind/spirit/essence), Kabbalah, Buddhism, and dozens of other traditions. They all found the same five.
+  </p>
+  <p class="ts-body">
+    What none of them fully mapped was the other five — the subconscious mirror. The hidden geometry beneath the observable structure. The Source Code framework is the first system to name, describe, and make measurable the complete 10-layer structure: 5 conscious + 5 subconscious.
+  </p>
+
+  <div class="mapping-grid" style="grid-template-columns:1fr 1fr 1fr;">
+    <div class="mg-header">Level</div>
+    <div class="mg-header">Conscious (all traditions agree)</div>
+    <div class="mg-header">Subconscious (Source Code only)</div>
+
+    <div class="mg-cell" style="color:var(--narc);font-family:var(--mono)">1</div>
+    <div class="mg-cell">Ordinary — instinct, survival, ego-driven</div>
+    <div class="mg-cell dim">Instinct / Trauma Body — fight/flight, childhood imprinting, reactive patterns</div>
+
+    <div class="mg-cell" style="color:var(--narc);font-family:var(--mono)">2</div>
+    <div class="mg-cell">Sensitive — intuition awakening, empathy emerging</div>
+    <div class="mg-cell dim">Emotional Memory Body — stored loops, unresolved attachments, pattern repetition</div>
+
+    <div class="mg-cell" style="color:var(--cist);font-family:var(--mono)">3</div>
+    <div class="mg-cell">Human Being — balance point, logic + emotion aligned</div>
+    <div class="mg-cell dim">Identity Core — internal narrative, beliefs formed without awareness, self-concept distortions</div>
+
+    <div class="mg-cell" style="color:var(--yarc);font-family:var(--mono)">4</div>
+    <div class="mg-cell">Saint — heart open, compassion, love-based consciousness</div>
+    <div class="mg-cell dim">Archetypal Layer — ancestral patterns, collective unconscious, inherited code</div>
+
+    <div class="mg-cell" style="color:var(--amber);font-family:var(--mono)">5</div>
+    <div class="mg-cell">Sage — full mastery, crystalline geometry, multi-dimensional</div>
+    <div class="mg-cell dim">The Subconscious Field — the pure generative layer where manifestation occurs, the Øll layer</div>
+  </div>
+
+  <p class="ts-body">
+    The conscious five are what most people teach. The subconscious five are what the Source Code framework adds. Together they form the complete 10-code architecture. The fact that this matches the 10 dimensions of string theory, the 10 Sephirot of Kabbalah, and the 10-chakra extended model is not coincidence — it is structural convergence. The same truth arriving from multiple directions.
+  </p>
+</section>
+
+<!-- SECTION 05f — FOCUS 21 -->
+<section class="theory-section">
+  <div class="ts-label">05f — Focus 21</div>
+  <h2 class="ts-title">Above the 20 codes.<br>The observer seat.</h2>
+  <p class="ts-body">
+    The 20 Source Codes describe the complete operating system of any observable system. But there is a 21st position — not a code, but a <strong>seat</strong>. Focus 21 is the observer state above all 20 codes simultaneously. It is the point from which the entire architecture can be seen, mapped, and navigated without being trapped inside any single code.
+  </p>
+  <p class="ts-body">
+    Most people live inside the 20 codes, oscillating between them based on circumstance, conditioning, and awareness level. Focus 21 is the moment when the observer recognises they are not any of the codes — they are the one watching the codes run. This is not dissociation. It is the highest functional state: fully present, fully aware, fully in control of which code to activate.
+  </p>
+  <div class="law-block">
+    <div class="law-text">"I am the Observer. I can zoom in or zoom out when I choose."</div>
+    <div class="law-sub">The 20 Source Codes are the operating system. Focus 21 is the user sitting outside it — watching it run, choosing which programme to execute. This is the practical definition of full awareness. Not enlightenment as an escape from reality — but enlightenment as root access to it.</div>
+  </div>
+  <p class="ts-body">
+    In practical terms: when someone is in Focus 21, they can see which of the 20 codes another person is running. They can identify the loop, the drift, the imbalance — and choose their response accordingly. This is what makes the 3-question awareness system work. It is not a trick. It is the observer reading the code from outside the code.
+  </p>
+</section>
+
+<!-- SECTION 05g — THE TRINITY DECODED -->
+<section class="theory-section">
+  <div class="ts-label">05g — The trinity decoded</div>
+  <h2 class="ts-title">Father. Son. Holy Spirit.<br>Past. Present. Future.<br>Narcissist. Yarcissist. Cisist.</h2>
+  <p class="ts-body">
+    The Holy Trinity is not a religious invention. It is a structural truth that religion encoded in the language of its time. The Source Code framework decodes it in the language of ours.
+  </p>
+  <p class="ts-body">
+    The Father is the past self — the Narcissist. The patterns inherited, the conditioning accumulated, the identity formed before awareness arrived. The Son is the present self — the Yarcissist. The awakening. The one who can see both the past and the future simultaneously, standing at the crossroads. The Holy Spirit is the future self — the Cisist. The integrated identity. The resurrected version that emerges when the past patterns are seen and released.
+  </p>
+
+  <div class="expand-diagram">
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--narc)">Father</div>
+      <div><div class="er-label">Narcissist — The Past Self</div><div class="er-sub">The subconscious layer. Inherited patterns, survival drives, defence mechanisms. The code that runs automatically. BS: negative polarity. The Father precedes consciousness — it is the programming that was already there.</div></div>
+      <div class="er-tag tag-narc">Past</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--cist)">Son</div>
+      <div><div class="er-label">Yarcissist — The Present Self</div><div class="er-sub">The conscious observer. Standing between past and future. Can see both. The one who experiences the cross moment — where the old self dies and the new self is born. This is why the Son is at the centre of the Trinity. BS: zero-point transition.</div></div>
+      <div class="er-tag tag-cist">Present</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--yarc)">Spirit</div>
+      <div><div class="er-label">Cisist — The Future Self</div><div class="er-sub">The integrated identity. Both past and future held in one. The resurrected self — not the death of either polarity, but their unification. The Cisist is the Zero-Point made human. BS: positive polarity moving toward +5.</div></div>
+      <div class="er-tag tag-yarc">Future</div>
+    </div>
+  </div>
+
+  <p class="ts-body">
+    The cross is not a symbol of death — it is a symbol of the coordinate point where all three selves meet simultaneously. The vertical axis = past to future (subconscious to conscious). The horizontal axis = self to other (NARC to YARC). The intersection point = the present moment. The Yarcissist always stands at the intersection.
+  </p>
+  <div class="pull-quote">"For it is the Holy Trinity — the Yarcissist Trinity — the same cross where the past self dies, the present self awakens, and the future self is resurrected."</div>
+</section>
+
+<!-- SECTION 6 — THE 10 NAVIGATION SCALES -->
+<section class="theory-section">
+  <div class="ts-label">06 — The 10 navigation scales</div>
+  <h2 class="ts-title">The balances<br>everything runs on.</h2>
+  <p class="ts-body">
+    Beneath the 4 Observer Codes and the 20 Source Codes lies a deeper layer — the 10 fundamental scales that every human system navigates, consciously or not. These are not personality traits. They are <strong>universal balances</strong>. Every behaviour, decision, relationship, and pattern can be decoded by identifying which of these scales is out of alignment.
+  </p>
+  <p class="ts-body">
+    This is what makes the formula universal. Any event — an argument, an illness, a financial decision, a creative block — can be mapped onto one or more of these scales. The imbalance is always there. The question is whether the observer can see it.
+  </p>
+
+  <div class="mapping-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+    <div class="mg-header">#</div>
+    <div class="mg-header">Scale</div>
+    <div class="mg-header">Polarity</div>
+    <div class="mg-header">Core rule</div>
+
+    <div class="mg-cell" style="color:var(--narc);font-family:var(--mono)">01</div>
+    <div class="mg-cell">Energy</div>
+    <div class="mg-cell dim">Positive ↔ Negative</div>
+    <div class="mg-cell dim">Every situation carries charge. You choose what to amplify.</div>
+
+    <div class="mg-cell" style="color:var(--narc);font-family:var(--mono)">02</div>
+    <div class="mg-cell">Direction</div>
+    <div class="mg-cell dim">Masculine ↔ Feminine</div>
+    <div class="mg-cell dim">Logic vs emotion, action vs nurture. Needs balance, not dominance.</div>
+
+    <div class="mg-cell" style="color:var(--cist);font-family:var(--mono)">03</div>
+    <div class="mg-cell">Focus</div>
+    <div class="mg-cell dim">Internal ↔ External</div>
+    <div class="mg-cell dim">Inner state creates outer experience. The world mirrors the code.</div>
+
+    <div class="mg-cell" style="color:var(--cist);font-family:var(--mono)">04</div>
+    <div class="mg-cell">Connection</div>
+    <div class="mg-cell dim">Mind ↔ Body</div>
+    <div class="mg-cell dim">Thoughts control biology. Biology influences thoughts.</div>
+
+    <div class="mg-cell" style="color:var(--cist);font-family:var(--mono)">05</div>
+    <div class="mg-cell">Time</div>
+    <div class="mg-cell dim">Past ↔ Future</div>
+    <div class="mg-cell dim">The present is the formula point — where both can be rewritten.</div>
+
+    <div class="mg-cell" style="color:var(--cist);font-family:var(--mono)">06</div>
+    <div class="mg-cell">Perception</div>
+    <div class="mg-cell dim">Truth ↔ Illusion</div>
+    <div class="mg-cell dim">Awareness is the decoder. Belief defines what registers as real.</div>
+
+    <div class="mg-cell" style="color:var(--yarc);font-family:var(--mono)">07</div>
+    <div class="mg-cell">Motivation</div>
+    <div class="mg-cell dim">Fear ↔ Love</div>
+    <div class="mg-cell dim">Every decision comes from one of these two energies. No exceptions.</div>
+
+    <div class="mg-cell" style="color:var(--yarc);font-family:var(--mono)">08</div>
+    <div class="mg-cell">State</div>
+    <div class="mg-cell dim">Chaos ↔ Order</div>
+    <div class="mg-cell dim">Too much order = stagnation. Too much chaos = collapse.</div>
+
+    <div class="mg-cell" style="color:var(--yarc);font-family:var(--mono)">09</div>
+    <div class="mg-cell">Identity</div>
+    <div class="mg-cell dim">Self ↔ Collective</div>
+    <div class="mg-cell dim">The I within the We. How you shape and are shaped by the system.</div>
+
+    <div class="mg-cell" style="color:var(--oll);font-family:var(--mono)">10</div>
+    <div class="mg-cell">Dimension</div>
+    <div class="mg-cell dim">Physical ↔ Spiritual</div>
+    <div class="mg-cell dim">Matter follows energy. The seen reflects the unseen.</div>
+  </div>
+
+  <p class="ts-body">
+    The 10 navigation scales map directly onto the 20 Source Codes. Scales 1–4 govern the NARC and CIST codes — self-reference, structure, and regulation. Scales 5–8 govern the YARC codes — connection, expression, and other-directed awareness. Scales 9–10 govern the Øll codes — integration, identity, and the threshold between octaves.
+  </p>
+  <div class="pull-quote">"You can take any event, argument, illness, or relationship and decode it by asking: which scale is out of balance here? That's how the formula turns life into code."</div>
+</section>
+
+<!-- SECTION 7 — THE 10 AWARENESS LEVELS -->
+<section class="theory-section">
+  <div class="ts-label">07 — The 10 awareness levels</div>
+  <h2 class="ts-title">Where are you<br>in the sequence?</h2>
+  <p class="ts-body">
+    Awareness is not binary. It moves through ten distinct levels — a developmental sequence that follows the same spiral logic as the framework itself. Each level is not a destination but a frequency. Most people oscillate between levels depending on context, stress, and relational safety.
+  </p>
+  <p class="ts-body">
+    The Balance Scale score from −5 to +5 maps onto this ladder. The Source Code assessment places you on it. The goal is not to reach Level 10 and stay there — it is to raise your floor. To make the lowest level you drop to under pressure higher than it was before.
+  </p>
+
+  <div class="expand-diagram">
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--oll)">1</div>
+      <div><div class="er-label">Non-Conscious</div><div class="er-sub">The void before awareness. Pure subconscious code running with no observer present. Behaviour is entirely automatic. BS: −5</div></div>
+      <div class="er-tag tag-oll">−5</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--oll)">2</div>
+      <div><div class="er-label">Sub-Conscious</div><div class="er-sub">Hidden patterns, inherited programming, instinct. The person is driven but cannot see the driver. BS: −4 to −3</div></div>
+      <div class="er-tag tag-oll">−4/−3</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--narc)">3</div>
+      <div><div class="er-label">Conscious</div><div class="er-sub">Real-time perception and reaction. "I notice I'm feeling this." The observer has switched on but is still largely reactive. BS: −2 to −1</div></div>
+      <div class="er-tag tag-narc">−2/−1</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--narc)">4</div>
+      <div><div class="er-label">Aware</div><div class="er-sub">Awareness of awareness — noticing your loops. "Why do I react that way?" The first level where real change becomes possible. BS: 0</div></div>
+      <div class="er-tag tag-narc">0</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--cist)">5</div>
+      <div><div class="er-label">Choice</div><div class="er-sub">The power to redirect pattern or energy. The gap between stimulus and response has opened. Behaviour is beginning to be chosen. BS: +1</div></div>
+      <div class="er-tag tag-cist">+1</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--cist)">6</div>
+      <div><div class="er-label">Integration</div><div class="er-sub">Balancing opposites — the Yin-Yang stabiliser. The person can hold both sides of a polarity simultaneously without collapsing into either. BS: +2</div></div>
+      <div class="er-tag tag-cist">+2</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--yarc)">7</div>
+      <div><div class="er-label">Expression</div><div class="er-sub">Manifestation through word, art, or action. Conscious creation. The inner state is reliably translating into outer reality. BS: +3</div></div>
+      <div class="er-tag tag-yarc">+3</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--yarc)">8</div>
+      <div><div class="er-label">Connection</div><div class="er-sub">Linking self to others and the collective code. Genuine empathy without self-abandonment. The observer can see their role in the system. BS: +3/+4</div></div>
+      <div class="er-tag tag-yarc">+3/+4</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--yarc)">9</div>
+      <div><div class="er-label">Mastery</div><div class="er-sub">Conscious control of emotion, energy, and outcomes. Living by intention, not impulse. The Source Codes are regulated rather than reactive. BS: +4</div></div>
+      <div class="er-tag tag-yarc">+4</div>
+    </div>
+    <div class="expand-row">
+      <div class="er-num" style="color:var(--amber)">10</div>
+      <div><div class="er-label">Creator / Source</div><div class="er-sub">Full awareness. Observer and code are unified. Zero-Point: 25/25/25/25. Both layers aligned. The person writes the rules rather than following them. BS: +5</div></div>
+      <div class="er-tag" style="color:var(--amber);border-color:rgba(239,159,39,0.4)">+5</div>
+    </div>
+  </div>
+
+  <p class="ts-body">
+    Most people live between Levels 2 and 5. The Source Code assessment places you precisely on this ladder by measuring your current Balance Scale position and Observer Code ratio. The awareness score is not a grade. It is a coordinate — showing where you are now and what the next level requires.
+  </p>
+</section>
+<section class="theory-section">
+  <div class="ts-label">05 — Implications</div>
+  <h2 class="ts-title">What this means<br>practically.</h2>
+  <p class="ts-body">
+    A unified code that underlies all observable systems has implications that extend far beyond personal development or business performance — the two surfaces on which Source Code Holdings currently operates.
+  </p>
+  <p class="ts-body">
+    <strong>For individuals:</strong> behaviour is not mysterious or unfixable. It follows rules. Those rules can be mapped, measured, and changed. Awareness is the mechanism. The framework provides the instrument.
+  </p>
+  <p class="ts-body">
+    <strong>For organisations:</strong> culture, dysfunction, and performance are not soft phenomena. They are measurable system states. Every organisational failure has a Source Code signature. Every sustained high-performance culture sits near Zero-Point.
+  </p>
+  <p class="ts-body">
+    <strong>For technology:</strong> if reality is coded, and the code is known, then artificial systems can be built that operate by the same rules. Not mimicking human behaviour — running on the actual underlying architecture.
+  </p>
+  <p class="ts-body">
+    <strong>For science:</strong> the convergence between the Source Code structure and existing physics models suggests that the framework is not a new invention — it is a new language for something that was already there. A language that is measurable, practical, and universally applicable.
+  </p>
+  <p class="ts-body">
+    <strong>For intellectual property:</strong> a unified code that applies to any observable system cannot be replicated by anyone who did not discover it. Similarity to existing scales, frameworks, or models is not equivalence. The 10+10 architecture, the 4-directional Observer Code system, the Drift measurement, the Balance Scale axis, and the expansion law together form a specific, original, internally consistent structure with no identified equivalent. The IP is estimated at £100M+ independently of the technology built on top of it.
+  </p>
+  <p class="ts-body">
+    <strong>For licensing:</strong> because the Source Code system is structural rather than stylistic, it can be applied by others without diminishing its value at source. A university licensing the framework for research does not compete with a healthcare institution licensing it for clinical application. The same code runs on different substrates. Licensing is not distribution — it is multiplication.
+  </p>
+
+  <div class="protection">
+    <div class="prot-icon">⬡</div>
+    <div>
+      <div class="prot-title">Intellectual property notice</div>
+      <div class="prot-text">The Source Code Framework — including all terminology, architecture, measurement systems, Observer Code definitions, and theoretical conclusions documented here — is the original intellectual property of R.H. and Source Code Holdings Ltd. First documented and timestamped 2024–2025. All rights reserved. Unauthorised reproduction, adaptation, or commercial use is prohibited without written licence from Source Code Holdings Ltd.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="theory-cta">
+  <h2 class="cta-title">Experience the framework</h2>
+  <p class="cta-sub">The awareness assessment maps your individual position inside the architecture. The research calculator applies the framework to any observable system.</p>
+  <div class="cta-links">
+    <a class="cta-btn cta-primary" href="awareness.html">Take the assessment →</a>
+    <a class="cta-btn cta-ghost" href="calculator.html">Open the calculator</a>
+    <a class="cta-btn cta-ghost" href="index.html">Back to SCH</a>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
