@@ -377,6 +377,16 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
   <h1 class="intro-title">Map your<br>Source Code</h1>
   <p class="intro-copy">One question at a time. Each node in the Source Code architecture becomes a question — and the diagram maps your awareness in real time as you answer.</p>
 
+  <div style="background:var(--bg-soft);border:1px solid var(--panel-border);border-radius:12px;padding:20px 24px;margin-bottom:36px;text-align:left;">
+    <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">The 3 awareness bracket questions</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.6;"><span style="color:var(--narc);font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;margin-right:8px;">01</span>Are you more of a certainty person or a possibility person?</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.6;"><span style="color:var(--cist);font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;margin-right:8px;">02</span>When something doesn't make sense, do you fix it fast, try to understand it, or zoom out?</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.6;"><span style="color:var(--yarc);font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;margin-right:8px;">03</span>Do your thoughts feel like "you" — or do you step back and observe them?</div>
+    </div>
+    <div style="font-size:0.68rem;color:var(--muted);margin-top:12px;line-height:1.6;">These three questions place any person into an awareness bracket instantly. The full assessment below maps all 16 Source Code nodes precisely. The questions above are the fast version — the assessment is the complete picture.</div>
+  </div>
+
   <button class="intro-start-btn" onclick="startAssessment()">Begin →</button>
 </div>
 </div>
@@ -695,7 +705,21 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
   </div>
 
   <div class="r-interp">
-    <div class="r-interp-lbl">Interpretation</div>
+    <div class="r-interp-lbl">Your awareness level</div>
+    <div id="r-awareness-level" style="margin-bottom:20px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px;">
+        <div style="font-family:var(--serif);font-size:3rem;font-weight:300;line-height:1;" id="r-level-num">—</div>
+        <div>
+          <div style="font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;" id="r-level-name">—</div>
+          <div style="font-size:0.72rem;color:var(--muted);" id="r-level-bs">Balance Scale —</div>
+        </div>
+      </div>
+      <div style="height:2px;background:var(--line);border-radius:1px;overflow:hidden;margin-bottom:8px;">
+        <div id="r-level-bar" style="height:100%;border-radius:1px;transition:width 1s ease;"></div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--muted);line-height:1.7;" id="r-level-desc">—</div>
+    </div>
+    <div class="r-interp-lbl" style="margin-top:20px;">Interpretation</div>
     <div class="r-interp-text" id="r-interp">—</div>
   </div>
 
@@ -1252,6 +1276,36 @@ function localScore() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// 10 AWARENESS LEVELS
+// ═══════════════════════════════════════════════════════════════════════════
+const AWARENESS_LEVELS = [
+  { level:1,  name:'Non-Conscious',    col:'var(--oll)',   desc:'Behaviour is entirely automatic. The subconscious runs with no observer present. Patterns repeat without recognition.' },
+  { level:2,  name:'Sub-Conscious',    col:'var(--oll)',   desc:'Hidden patterns, inherited programming, and instinct are driving decisions. You are moved but cannot yet see what moves you.' },
+  { level:3,  name:'Conscious',        col:'var(--narc)',  desc:'Real-time perception and reaction. The observer has switched on but is still largely reactive to what it notices.' },
+  { level:4,  name:'Aware',            col:'var(--narc)',  desc:'Awareness of your own loops. This is the first level where genuine change becomes possible.' },
+  { level:5,  name:'Choice',           col:'var(--cist)',  desc:'The gap between stimulus and response has opened. Behaviour is beginning to be chosen rather than compelled.' },
+  { level:6,  name:'Integration',      col:'var(--cist)',  desc:'You can hold both sides of a polarity simultaneously without collapsing into either. The Yin-Yang is in motion.' },
+  { level:7,  name:'Expression',       col:'var(--yarc)',  desc:'Conscious creation. Your inner state reliably translates into outer reality through word, action, and presence.' },
+  { level:8,  name:'Connection',       col:'var(--yarc)',  desc:'Genuine empathy without self-abandonment. You can see your role in the collective system.' },
+  { level:9,  name:'Mastery',          col:'var(--yarc)',  desc:'Living by intention rather than impulse. Emotion is information, not instruction.' },
+  { level:10, name:'Creator / Source', col:'var(--amber)', desc:'Zero-Point. 25/25/25/25. Observer and code unified. You write the rules rather than following them.' },
+];
+
+function getAwarenessLevel(bs) {
+  bs = parseFloat(bs);
+  if (bs <= -4.5) return AWARENESS_LEVELS[0];
+  if (bs <= -2.5) return AWARENESS_LEVELS[1];
+  if (bs <= -0.5) return AWARENESS_LEVELS[2];
+  if (bs <=  0.5) return AWARENESS_LEVELS[3];
+  if (bs <=  1.5) return AWARENESS_LEVELS[4];
+  if (bs <=  2.5) return AWARENESS_LEVELS[5];
+  if (bs <=  3.2) return AWARENESS_LEVELS[6];
+  if (bs <=  3.8) return AWARENESS_LEVELS[7];
+  if (bs <=  4.5) return AWARENESS_LEVELS[8];
+  return AWARENESS_LEVELS[9];
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // RENDER RESULTS
 // ═══════════════════════════════════════════════════════════════════════════
 function renderResults(r) {
@@ -1259,6 +1313,20 @@ function renderResults(r) {
   const bsCol=bs>0.5?'var(--yarc)':bs<-0.5?'var(--narc)':'var(--cist)';
   const name=document.getElementById('obs-name')?.value.trim()||observer;
   document.getElementById('r-obs-lbl').textContent=name+' · '+observer;
+
+  // Awareness level
+  const lvl = getAwarenessLevel(bs);
+  const lvlPct = ((lvl.level-1)/9*100).toFixed(0);
+  const lvlNum = document.getElementById('r-level-num');
+  const lvlName = document.getElementById('r-level-name');
+  const lvlBs = document.getElementById('r-level-bs');
+  const lvlDesc = document.getElementById('r-level-desc');
+  const lvlBar = document.getElementById('r-level-bar');
+  if(lvlNum) { lvlNum.textContent = lvl.level; lvlNum.style.color = lvl.col; }
+  if(lvlName) { lvlName.textContent = lvl.name; lvlName.style.color = lvl.col; }
+  if(lvlBs) lvlBs.textContent = 'Balance Scale ' + (bs>0?'+':'') + bs.toFixed(1) + ' · Level ' + lvl.level + ' of 10';
+  if(lvlDesc) lvlDesc.textContent = lvl.desc;
+  if(lvlBar) { lvlBar.style.width = lvlPct+'%'; lvlBar.style.background = lvl.col; }
   document.getElementById('r-bs').textContent=(bs>0?'+':'')+bs.toFixed(1);
   document.getElementById('r-bs').style.color=bsCol;
   document.getElementById('r-st').textContent=r.awareness_state+' · '+r.bs_state;
