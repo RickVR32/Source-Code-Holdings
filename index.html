@@ -19,7 +19,32 @@
   --line-strong: rgba(0,0,0,0.18);
   --text: #0e0e0c;
   --muted: #7a7972;
+  --grid-line: rgba(100,100,90,0.055);
 }
+
+[data-theme="dark"] {
+  --bg: #0a0a08;
+  --bg-soft: #141412;
+  --panel: #1a1a18;
+  --panel-border: rgba(255,255,255,0.07);
+  --line: rgba(255,255,255,0.06);
+  --line-strong: rgba(255,255,255,0.15);
+  --text: #e8e7e0;
+  --muted: #7a7972;
+  --grid-line: rgba(255,255,255,0.025);
+}
+
+/* DARK MODE TOGGLE */
+.dark-toggle {
+  position: fixed; top: 20px; right: 24px; z-index: 100;
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'Geist Mono', monospace; font-weight: 300;
+  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); background: var(--panel);
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+}
+.dark-toggle:hover { color: var(--text); border-color: var(--text); }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -27,13 +52,14 @@ html { scroll-behavior: smooth; }
 body {
   background-color: var(--bg);
   background-image:
-    linear-gradient(180deg, rgba(100,100,90,0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100,100,90,0.055) 1px, transparent 1px);
+    linear-gradient(180deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 44px 44px;
   color: var(--text);
   font-family: 'Geist Mono', monospace;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s, color 0.4s;
 }
 
 .container { width: min(1200px, calc(100% - 48px)); margin: auto; }
@@ -71,7 +97,8 @@ body {
 .card {
   background: var(--panel); border: 1px solid var(--panel-border);
   border-radius: 18px; padding: 28px 24px;
-  display: flex; flex-direction: column; transition: border-color 0.2s;
+  display: flex; flex-direction: column;
+  transition: border-color 0.2s, background 0.4s;
 }
 .card:hover { border-color: var(--line-strong); }
 .card-index { font-size: 0.62rem; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 20px; opacity: 0.7; }
@@ -205,12 +232,17 @@ footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line);
 </head>
 
 <body>
+<button class="dark-toggle" onclick="toggleDark()" id="dark-btn">
+  <span id="dark-icon">◑</span>
+  <span id="dark-label">Dark</span>
+</button>
+
 <div class="container">
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-logo">
-      <img src="sch_sygil.png" alt="Source Code Holdings" style="width:140px;height:auto;display:block;margin:0 auto;opacity:0.92;">
+      <img id="site-logo" src="sch_sygil.png" alt="Source Code Holdings" style="width:140px;height:auto;display:block;margin:0 auto;opacity:0.92;">
     </div>
     <div class="hero-name">Source Code Holdings</div>
     <div class="hero-divider"></div>
@@ -701,6 +733,23 @@ footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line);
     document.getElementById('demo-'+id).classList.remove('visible');
     if (current === id) current = null;
     document.getElementById('devices').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  // ── DARK MODE ──────────────────────────────────────────────────────────────
+  let isDark = false;
+
+  function toggleDark() {
+    isDark = !isDark;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.getElementById('dark-icon').textContent  = isDark ? '○' : '◑';
+    document.getElementById('dark-label').textContent = isDark ? 'Light' : 'Dark';
+    // Invert logo for dark mode
+    const logo = document.getElementById('site-logo');
+    if (logo) logo.style.filter = isDark ? 'invert(1) brightness(1.8)' : '';
+    // Also invert any nav logos
+    document.querySelectorAll('.nav-logo img').forEach(img => {
+      img.style.filter = isDark ? 'invert(1) brightness(1.8)' : '';
+    });
   }
 </script>
 </body>
