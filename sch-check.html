@@ -73,6 +73,30 @@ nav {
 .rc-title { font-family:'Cormorant',serif; font-size:1.05rem; margin-bottom:8px; line-height:1.2; }
 .rc-desc { font-size:0.72rem; color:var(--muted); line-height:1.7; }
 
+/* MODE TOGGLE */
+.mode-toggle {
+  display:flex; background:var(--bg-soft); border:1px solid var(--panel-border);
+  border-radius:999px; padding:4px; gap:4px; margin:0 auto 48px; width:fit-content;
+}
+.mode-btn {
+  font-family:'Geist Mono',monospace; font-weight:300; font-size:0.72rem;
+  letter-spacing:0.1em; text-transform:uppercase; padding:10px 28px;
+  border-radius:999px; border:none; cursor:pointer; transition:all 0.2s;
+  background:transparent; color:var(--muted);
+}
+.mode-btn.active { background:var(--text); color:var(--bg); }
+
+/* BUSINESS CONTEXT */
+.biz-context { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.biz-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.biz-input {
+  font-family:'Geist Mono',monospace; font-weight:300; font-size:0.78rem;
+  padding:11px 14px; border-radius:10px; border:1px solid var(--line-strong);
+  background:var(--panel); color:var(--text); outline:none; transition:border-color 0.2s; width:100%;
+}
+.biz-input:focus { border-color:var(--text); }
+.biz-input::placeholder { color:var(--muted); opacity:0.7; }
+
 /* STRIPE CARD */
 .payment-card { background:var(--text); border-radius:18px; padding:40px 36px; color:var(--bg); }
 .payment-title { font-family:'Cormorant',serif; font-weight:300; font-size:1.8rem; margin-bottom:8px; }
@@ -191,15 +215,42 @@ input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.2); }
 
 /* SC BREAKDOWN */
 .sc-section { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:32px; margin-bottom:14px; }
-.sc-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
-.sc-grid { display:flex; flex-direction:column; gap:0; }
-.sc-row { display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); font-size:0.72rem; }
-.sc-row:last-child { border-bottom:none; }
-.sc-code { font-family:'Cormorant',serif; font-size:0.9rem; min-width:130px; color:var(--text); }
-.sc-layer { font-size:0.62rem; color:var(--muted); min-width:90px; letter-spacing:0.06em; }
-.sc-track { flex:1; height:2px; background:rgba(0,0,0,0.08); border-radius:1px; overflow:hidden; }
-.sc-fill { height:100%; border-radius:1px; transition:width 1s ease; }
-.sc-val { font-family:'Cormorant',serif; font-size:1rem; min-width:28px; text-align:right; }
+.sc-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.sc-arm-intro { font-size:0.72rem; color:var(--muted); margin-bottom:24px; line-height:1.7; }
+.sc-arm-group { margin-bottom:28px; }
+.sc-arm-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; padding-bottom:8px; border-bottom:2px solid var(--line); }
+.sc-arm-name { font-size:0.75rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; }
+.sc-arm-pct { font-size:0.7rem; color:var(--muted); margin-left:auto; }
+.sc-cards-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.sc-card { background:var(--bg); border:1px solid var(--panel-border); border-radius:12px; padding:14px 16px; position:relative; }
+.sc-card-layer { font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.sc-card-name { font-size:0.82rem; font-weight:500; margin-bottom:8px; }
+.sc-card-score { display:flex; align-items:baseline; gap:6px; margin-bottom:8px; }
+.sc-card-num { font-family:'Cormorant',serif; font-size:2rem; font-weight:300; line-height:1; }
+.sc-card-max { font-size:0.65rem; color:var(--muted); }
+.sc-card-bar { height:3px; background:var(--line); border-radius:2px; margin-bottom:8px; overflow:hidden; }
+.sc-card-bar-fill { height:100%; border-radius:2px; transition:width 0.8s ease; }
+.sc-card-band { font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; }
+.sc-card-desc { font-size:0.7rem; color:var(--muted); line-height:1.65; }
+.sc-card-delta { position:absolute; top:12px; right:14px; font-size:0.65rem; font-weight:600; padding:2px 7px; border-radius:999px; }
+.sc-card-delta.up { background:rgba(29,158,117,0.1); color:var(--yarc); }
+.sc-card-delta.down { background:rgba(196,98,45,0.1); color:var(--narc); }
+.sc-card-delta.same { background:var(--line); color:var(--muted); }
+/* Export code */
+.export-code-section { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:32px; margin-bottom:14px; }
+.ec-label { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.ec-desc { font-size:0.78rem; color:var(--muted); line-height:1.7; margin-bottom:18px; }
+.ec-code-wrap { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.ec-code { font-family:'Geist Mono',monospace; font-size:0.65rem; background:var(--bg); border:1px solid var(--panel-border); border-radius:8px; padding:10px 14px; flex:1; word-break:break-all; color:var(--text); letter-spacing:0.03em; }
+.ec-copy-btn { padding:10px 18px; background:var(--text); color:var(--bg,#f2f1ee); border:none; border-radius:999px; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+.ec-ok { font-size:0.72rem; color:var(--yarc); margin-bottom:8px; }
+.ec-compare-wrap { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); }
+.ec-compare-label { font-size:0.72rem; color:var(--muted); margin-bottom:10px; }
+.ec-compare-row { display:flex; gap:10px; }
+.ec-compare-input { flex:1; padding:10px 14px; background:var(--bg); border:1px solid var(--panel-border); border-radius:8px; font-family:'Geist Mono',monospace; font-size:0.7rem; color:var(--text); }
+.ec-compare-btn { padding:10px 18px; background:var(--text); color:var(--bg,#f2f1ee); border:none; border-radius:999px; font-size:0.7rem; cursor:pointer; }
+.ec-compare-result { margin-top:16px; padding:16px; background:var(--bg); border:1px solid var(--panel-border); border-radius:10px; font-size:0.75rem; color:var(--text); line-height:1.8; }
+@media(max-width:600px){ .sc-cards-row { grid-template-columns:1fr; } .ec-compare-row { flex-direction:column; } }
 
 /* WRITTEN REPORT */
 .written-report { background:var(--panel); border:1px solid var(--panel-border); border-radius:18px; padding:40px 36px; margin-bottom:14px; }
@@ -253,11 +304,17 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
 <div class="screen active" id="screen-landing">
   <div class="landing">
     <div class="landing-hero">
-      <div class="hero-label">SCH Check — Full Report</div>
-      <h1 class="hero-title">Your complete<br>awareness architecture</h1>
-      <p class="hero-copy">Twenty questions. All 20 Source Codes scored across both conscious and subconscious layers. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised written report you keep forever.</p>
-      <div class="hero-price">£19.99</div>
-      <div class="hero-price-sub">One-time · Instant report · No subscription</div>
+      <div class="hero-label" id="hero-label">SCH Check — Full Report</div>
+      <h1 class="hero-title" id="hero-title">Your complete<br>awareness architecture</h1>
+      <p class="hero-copy" id="hero-copy">Twenty questions. All 20 Source Codes scored across both conscious and subconscious layers. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised written report you keep forever.</p>
+      <div class="hero-price" id="hero-price">£19.99</div>
+      <div class="hero-price-sub" id="hero-price-sub">One-time · Instant report · No subscription</div>
+    </div>
+
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="mode-personal" onclick="setMode('personal')">Personal report</button>
+      <button class="mode-btn" id="mode-business" onclick="setMode('business')">Business report</button>
     </div>
 
     <div class="report-contents">
@@ -269,12 +326,33 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <div class="rc-card"><div class="rc-num">06</div><div class="rc-title">Downloadable PDF</div><div class="rc-desc">Your report is yours to keep, print, and share. Save it. Return to it. Share it with a therapist, coach, or trusted person who wants to understand your profile.</div></div>
     </div>
 
+    <!-- BUSINESS CONTEXT (hidden by default) -->
+    <div id="biz-context-wrap" style="display:none;margin-bottom:28px;">
+      <div style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Business details</div>
+      <div class="biz-context">
+        <div class="biz-row">
+          <input class="biz-input" id="biz-name" placeholder="Business name" type="text">
+          <input class="biz-input" id="biz-sector" placeholder="Sector / industry" type="text">
+        </div>
+        <div class="biz-row">
+          <input class="biz-input" id="biz-size" placeholder="Team size (e.g. 1–10, 10–50...)" type="text">
+          <input class="biz-input" id="biz-stage" placeholder="Stage (startup / growth / established)" type="text">
+        </div>
+        <input class="biz-input" id="biz-challenge" placeholder="What is the primary challenge or question you want this report to address?" type="text" style="width:100%">
+      </div>
+    </div>
+
     <div class="payment-card">
       <div class="payment-title">Purchase your report</div>
       <div class="payment-sub">Secure payment via Stripe. Your report is generated immediately after payment and never stored on our servers.</div>
       <div class="payment-row">
         <input class="pay-input" type="text" id="pay-name" placeholder="Full name" required>
         <input class="pay-input" type="email" id="pay-email" placeholder="Email address" required>
+      </div>
+      <!-- Previous code input -->
+      <div style="margin-bottom:16px;">
+        <div style="font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">Have a previous assessment code? (optional)</div>
+        <input class="pay-input" type="text" id="prev-code-input" placeholder="Paste your previous code to see comparison in your report" style="font-family:'Geist Mono',monospace;font-size:0.7rem;">
       </div>
       <div id="card-element"></div>
       <div id="card-errors"></div>
@@ -518,7 +596,78 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <input type="range" id="s20" min="1" max="10" value="5" oninput="updateSlider(this,20)">
       <div class="slider-labels"><span>Undefined / shifting</span><span>Clear and stable</span></div>
       <div class="slider-val" id="sv20">5</div>
-      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(20)">← Back</button><button class="btn btn-primary" onclick="generateReport()">Generate my report →</button></div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(20)">← Back</button><button class="btn btn-primary" onclick="nextOrGenerate(20)">Next →</button></div>
+    </div>
+
+    <!-- BUSINESS EXTENSION QUESTIONS (shown only in business mode) -->
+    <div id="biz-questions">
+
+      <!-- BQ1 — Market alignment -->
+      <div class="q-card" id="q21" style="display:none;">
+        <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Business · Market</div><div class="q-num" id="q21-num">21 / 26</div></div>
+        <div class="q-text">How well does your current offer match what your market actually needs right now?</div>
+        <div class="q-subtext">Not what you believe it needs — what the data, customer feedback, and revenue patterns tell you. The gap between assumed and actual product-market fit.</div>
+        <input type="range" id="s21" min="1" max="10" value="5" oninput="updateSlider(this,21)">
+        <div class="slider-labels"><span>Significant misalignment</span><span>Precisely aligned</span></div>
+        <div class="slider-val" id="sv21">5</div>
+        <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(21)">← Back</button><button class="btn btn-primary" onclick="nextQ(21)">Next →</button></div>
+      </div>
+
+      <!-- BQ2 — Leadership coherence -->
+      <div class="q-card" id="q22" style="display:none;">
+        <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Business · Leadership</div><div class="q-num" id="q22-num">22 / 26</div></div>
+        <div class="q-text">How consistently does leadership behaviour reflect the stated values of the business?</div>
+        <div class="q-subtext">What the business says it stands for versus what people inside it actually experience. The gap between the brand narrative and the lived internal culture.</div>
+        <input type="range" id="s22" min="1" max="10" value="5" oninput="updateSlider(this,22)">
+        <div class="slider-labels"><span>Significant gap</span><span>Fully consistent</span></div>
+        <div class="slider-val" id="sv22">5</div>
+        <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(22)">← Back</button><button class="btn btn-primary" onclick="nextQ(22)">Next →</button></div>
+      </div>
+
+      <!-- BQ3 — Decision quality -->
+      <div class="q-card" id="q23" style="display:none;">
+        <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Business · Decisions</div><div class="q-num" id="q23-num">23 / 26</div></div>
+        <div class="q-text">How often do your major business decisions turn out to be correct in hindsight?</div>
+        <div class="q-subtext">Strategy calls, hiring decisions, product bets, market timing. Across the last 12–24 months, what is the actual hit rate versus what was predicted?</div>
+        <input type="range" id="s23" min="1" max="10" value="5" oninput="updateSlider(this,23)">
+        <div class="slider-labels"><span>Frequently off</span><span>Consistently accurate</span></div>
+        <div class="slider-val" id="sv23">5</div>
+        <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(23)">← Back</button><button class="btn btn-primary" onclick="nextQ(23)">Next →</button></div>
+      </div>
+
+      <!-- BQ4 — Team alignment -->
+      <div class="q-card" id="q24" style="display:none;">
+        <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Business · Team</div><div class="q-num" id="q24-num">24 / 26</div></div>
+        <div class="q-text">How aligned is your team around what the business is actually trying to achieve?</div>
+        <div class="q-subtext">Not whether they know the mission statement — whether their daily decisions, priorities, and behaviour reflect a shared understanding of the real goal.</div>
+        <input type="range" id="s24" min="1" max="10" value="5" oninput="updateSlider(this,24)">
+        <div class="slider-labels"><span>Pulling in different directions</span><span>Fully unified</span></div>
+        <div class="slider-val" id="sv24">5</div>
+        <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(24)">← Back</button><button class="btn btn-primary" onclick="nextQ(24)">Next →</button></div>
+      </div>
+
+      <!-- BQ5 — Defensive spend -->
+      <div class="q-card" id="q25" style="display:none;">
+        <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Business · Resource</div><div class="q-num" id="q25-num">25 / 26</div></div>
+        <div class="q-text">How much of the business's energy goes into protecting what exists versus building what's next?</div>
+        <div class="q-subtext">Defensive spend: maintaining existing clients, managing risk, protecting margin, avoiding change. The ratio of protection to growth in real resource allocation.</div>
+        <input type="range" id="s25" min="1" max="10" value="5" oninput="updateSlider(this,25)">
+        <div class="slider-labels"><span>Mostly defensive</span><span>Mostly generative</span></div>
+        <div class="slider-val" id="sv25">5</div>
+        <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(25)">← Back</button><button class="btn btn-primary" onclick="nextQ(25)">Next →</button></div>
+      </div>
+
+      <!-- BQ6 — Honest self-assessment -->
+      <div class="q-card" id="q26" style="display:none;">
+        <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Business · Integrity</div><div class="q-num" id="q26-num">26 / 26</div></div>
+        <div class="q-text">How honestly does the business assess its own performance — including what isn't working?</div>
+        <div class="q-subtext">Whether the organisation has the internal culture to surface and act on uncomfortable truths — or whether bad news gets filtered, reframed, or buried before it reaches decision-makers.</div>
+        <input type="range" id="s26" min="1" max="10" value="5" oninput="updateSlider(this,26)">
+        <div class="slider-labels"><span>Bad news gets buried</span><span>Complete internal honesty</span></div>
+        <div class="slider-val" id="sv26">5</div>
+        <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(26)">← Back</button><button class="btn btn-primary" onclick="generateReport()">Generate my report →</button></div>
+      </div>
+
     </div>
 
   </div>
@@ -666,16 +815,44 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       </div>
     </div>
 
-    <!-- SC BREAKDOWN -->
+    <!-- SC CARDS -->
     <div class="sc-section">
-      <div class="sc-label">All 20 Source Codes — individual scores</div>
-      <div class="sc-grid" id="sc-grid"></div>
+      <div class="sc-label">Your 20 Source Codes — individual profile</div>
+      <div class="sc-arm-intro">Grouped by Observer Code arm. Each code shows your current score, what it means at this level, and how it relates to the codes around it.</div>
+      <div id="sc-cards-grid"></div>
+    </div>
+
+    <!-- BUSINESS REPORT SECTIONS (shown only in business mode) -->
+    <div id="biz-report-sections" style="display:none;">
+      <div class="written-report" style="margin-bottom:14px;">
+        <div class="wr-label">Business Awareness Report — <span id="biz-report-name"></span></div>
+        <div id="biz-report-content"></div>
+      </div>
     </div>
 
     <!-- WRITTEN REPORT -->
     <div class="written-report">
       <div class="wr-label">Your personalised report</div>
       <div id="written-report-content"></div>
+    </div>
+
+    <!-- EXPORT CODE -->
+    <div class="export-code-section" id="export-code-section">
+      <div class="ec-label">Your assessment code</div>
+      <div class="ec-desc">Save this code to compare your results next time you take the SCH Check. Paste it at the start of your next assessment to see how each Source Code has moved.</div>
+      <div class="ec-code-wrap">
+        <div class="ec-code" id="ec-code">—</div>
+        <button class="ec-copy-btn" onclick="copyCode()" id="ec-copy-btn">Copy code</button>
+      </div>
+      <div class="ec-ok" id="ec-ok" style="display:none">Copied to clipboard</div>
+      <div class="ec-compare-wrap" id="ec-compare-wrap">
+        <div class="ec-compare-label">Have a previous code? Paste it to compare</div>
+        <div class="ec-compare-row">
+          <input type="text" class="ec-compare-input" id="ec-prev-code" placeholder="Paste previous code here…">
+          <button class="ec-compare-btn" onclick="loadComparison()">Compare →</button>
+        </div>
+        <div class="ec-compare-result" id="ec-compare-result" style="display:none"></div>
+      </div>
     </div>
 
     <!-- DOWNLOAD -->
@@ -691,7 +868,62 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
 </div>
 
 <script>
-// ── Stripe init ────────────────────────────────────────────────────────────
+// ── Mode state ─────────────────────────────────────────────────────────────
+let reportMode = 'personal'; // 'personal' | 'business'
+
+function setMode(mode) {
+  reportMode = mode;
+
+  // Toggle button states
+  document.getElementById('mode-personal').classList.toggle('active', mode === 'personal');
+  document.getElementById('mode-business').classList.toggle('active', mode === 'business');
+
+  // Update hero copy
+  const isPersnal = mode === 'personal';
+  document.getElementById('hero-label').textContent = isPersnal ? 'SCH Check — Full Report' : 'SCH Business Report';
+  document.getElementById('hero-title').innerHTML = isPersnal ? 'Your complete<br>awareness architecture' : 'Your business<br>awareness report';
+  document.getElementById('hero-copy').textContent = isPersnal
+    ? 'Twenty questions. All 20 Source Codes scored across both conscious and subconscious layers. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised written report you keep forever.'
+    : 'Twenty-six questions. Your business scored through the complete Source Code architecture — strengths, vulnerabilities, the gap between how you present and what is actually running underneath. A professional report built for business owners.';
+  document.getElementById('hero-price').textContent = isPersnal ? '£19.99' : '£49.99';
+  document.getElementById('hero-price-sub').textContent = isPersnal ? 'One-time · Instant report · No subscription' : 'One-time · Business PDF report · No subscription';
+
+  // Show/hide business context fields
+  document.getElementById('biz-context-wrap').style.display = isPersnal ? 'none' : 'block';
+
+  // Update report content cards
+  // Update pay button price
+  const btn = document.getElementById('pay-btn');
+  if (btn) btn.textContent = `Pay ${isPersnal?'£19.99':'£49.99'} and begin →`;
+
+  updateReportContents(mode);
+}
+
+function updateReportContents(mode) {
+  const grid = document.querySelector('.report-contents');
+  if (!grid) return;
+  if (mode === 'business') {
+    grid.innerHTML = `
+      <div class="rc-card"><div class="rc-num">01</div><div class="rc-title">Full Source Code architecture</div><div class="rc-desc">Your business scored across all 16 nodes — Observer Code ratio, Drift, and Balance Scale position. The complete structural picture of how your organisation is actually running.</div></div>
+      <div class="rc-card"><div class="rc-num">02</div><div class="rc-title">Strength and vulnerability map</div><div class="rc-desc">Which Source Codes are operating at high capacity — and which are suppressed or imbalanced. What each produces operationally and where the risk concentrates.</div></div>
+      <div class="rc-card"><div class="rc-num">03</div><div class="rc-title">The gap — what's running underneath</div><div class="rc-desc">The difference between how the business presents externally and what is actually driving internal decisions. The subconscious layer that most business reports never reach.</div></div>
+      <div class="rc-card"><div class="rc-num">04</div><div class="rc-title">Executive summary</div><div class="rc-desc">A plain-language summary of your business awareness profile — written for a business owner, co-founder, or board. No jargon. What it means and what it produces.</div></div>
+      <div class="rc-card"><div class="rc-num">05</div><div class="rc-title">Dominant dynamic analysis</div><div class="rc-desc">The single most significant pattern in your business — what Observer Code is dominant, what that produces in culture, decision-making, client relationships, and growth.</div></div>
+      <div class="rc-card"><div class="rc-num">06</div><div class="rc-title">Zero-Point pathway</div><div class="rc-desc">What moving toward balance would specifically require for your business — not generic advice, based on your actual scored profile. Downloadable PDF report.</div></div>
+    `;
+  } else {
+    grid.innerHTML = `
+      <div class="rc-card"><div class="rc-num">01</div><div class="rc-title">Full 4×4+4 architecture diagram</div><div class="rc-desc">Your scores mapped onto the complete Source Code architecture — every node scored, coloured by activation, showing how each layer feeds the next.</div></div>
+      <div class="rc-card"><div class="rc-num">02</div><div class="rc-title">All 20 Source Codes scored</div><div class="rc-desc">10 Conscious Codes and 10 Subconscious Codes individually scored and displayed — the most complete picture of your awareness profile available.</div></div>
+      <div class="rc-card"><div class="rc-num">03</div><div class="rc-title">Drift score — the gap</div><div class="rc-desc">The gap between your conscious presentation and your subconscious drivers. Zero is full alignment. High drift explains the loops you keep running.</div></div>
+      <div class="rc-card"><div class="rc-num">04</div><div class="rc-title">Personalised written report</div><div class="rc-desc">800–1200 words written specifically to your scores. What your profile reveals, what it produces in your life, and where the imbalance is concentrated.</div></div>
+      <div class="rc-card"><div class="rc-num">05</div><div class="rc-title">Observer Code breakdown</div><div class="rc-desc">NARC, YARC, CIST, and Øll percentages with personalised interpretation for each. Zero-Point is 25% each — see exactly where you sit.</div></div>
+      <div class="rc-card"><div class="rc-num">06</div><div class="rc-title">Downloadable PDF</div><div class="rc-desc">Your report is yours to keep, print, and share. Save it. Return to it. Share it with a therapist, coach, or trusted person.</div></div>
+    `;
+  }
+}
+
+// ── Stripe ─────────────────────────────────────────────────────────────────
 const stripe = Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');
 const elements = stripe.elements();
 
@@ -750,54 +982,95 @@ async function handlePayment() {
     return;
   }
 
+  // Business mode: validate business fields
+  if (reportMode === 'business') {
+    const bizName = document.getElementById('biz-name').value.trim();
+    if (!bizName) {
+      document.getElementById('card-errors').textContent = 'Please enter your business name.';
+      return;
+    }
+  }
+
+  const price = reportMode === 'business' ? '£49.99' : '£19.99';
   const btn = document.getElementById('pay-btn');
   btn.disabled = true;
   btn.textContent = 'Processing...';
 
   try {
-    // For test mode — create a payment method and simulate success
     const { paymentMethod, error } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: card,
+      type: 'card', card: card,
       billing_details: { name, email }
     });
 
     if (error) {
       document.getElementById('card-errors').textContent = error.message;
       btn.disabled = false;
-      btn.textContent = 'Pay £19.99 and begin →';
+      btn.textContent = `Pay ${price} and begin →`;
       return;
     }
 
-    // Payment method created successfully — proceed to questions
-    // In production: send paymentMethod.id to your server to complete payment
     customerName = name;
+
+    // Show business questions or personal questions
+    if (reportMode === 'business') {
+      // Show business question numbers adjusted
+      for (let i = 21; i <= 26; i++) {
+        const el = document.getElementById('q'+i);
+        if (el) el.style.display = 'none'; // hide initially, show via showQ
+      }
+      document.getElementById('biz-questions').style.display = 'block';
+    } else {
+      document.getElementById('biz-questions').style.display = 'none';
+    }
+
     showScreen('screen-questions');
     showQ(1);
 
   } catch(e) {
     document.getElementById('card-errors').textContent = 'Payment failed. Please try again.';
     btn.disabled = false;
-    btn.textContent = 'Pay £19.99 and begin →';
+    btn.textContent = `Pay ${price} and begin →`;
   }
 }
+
+// ── nextOrGenerate — at Q20, either continue to biz or generate ────────────
+function nextOrGenerate(n) {
+  answers['s'+n] = parseInt(document.getElementById('s'+n).value);
+  if (reportMode === 'business') {
+    // Continue to business questions
+    currentQ = 21;
+    showQ(21);
+  } else {
+    generateReport();
+  }
+}
+
+// ── Show Q (extended for biz questions) ───────────────────────────────────
+
 
 // ── Questions ──────────────────────────────────────────────────────────────
 function showQ(n) {
   for (let i = 1; i <= 20; i++) {
     document.getElementById('q' + i).classList.toggle('active', i === n);
   }
+  // Business questions
+  for (let i = 21; i <= 26; i++) {
+    const el = document.getElementById('q'+i);
+    if (el) { el.style.display = (i === n) ? 'block' : 'none'; }
+  }
   document.getElementById('div-subconscious').style.display = n === 11 ? 'flex' : 'none';
-  const pct = ((n-1)/20*100).toFixed(0);
+  const total = reportMode === 'business' ? 26 : 20;
+  const pct = ((n-1)/total*100).toFixed(0);
   document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('prog-label').textContent = `Question ${n} of 20`;
-  document.getElementById('prog-section').textContent = n <= 10 ? 'Conscious Layer' : 'Subconscious Layer';
+  document.getElementById('prog-label').textContent = `Question ${n} of ${total}`;
+  document.getElementById('prog-section').textContent = n <= 10 ? 'Conscious Layer' : n <= 20 ? 'Subconscious Layer' : 'Business Extension';
   currentQ = n;
 }
 
 function nextQ(n) {
   answers['s'+n] = parseInt(document.getElementById('s'+n).value);
-  if (n < 20) showQ(n+1);
+  const maxQ = reportMode === 'business' ? 26 : 20;
+  if (n < maxQ) showQ(n+1);
 }
 
 function prevQ(n) {
@@ -806,13 +1079,16 @@ function prevQ(n) {
 
 // ── Generate report ────────────────────────────────────────────────────────
 async function generateReport() {
-  answers['s20'] = parseInt(document.getElementById('s20').value);
+  const lastQ = reportMode === 'business' ? 26 : 20;
+  answers['s'+lastQ] = parseInt(document.getElementById('s'+lastQ).value);
   showScreen('screen-processing');
   animateDiagram();
   animateStages();
 
   try {
-    reportData = await callClaude(answers);
+    reportData = reportMode === 'business'
+      ? await callClaudeBusiness(answers)
+      : await callClaude(answers);
   } catch(e) {
     console.error(e);
     reportData = localScore(answers);
@@ -820,6 +1096,17 @@ async function generateReport() {
 
   setTimeout(() => {
     renderReport(reportData);
+    // Show/hide business report section
+    const bizSection = document.getElementById('biz-report-sections');
+    const stdSection = document.getElementById('written-report-content').closest('.written-report');
+    if (reportMode === 'business' && reportData.business_report) {
+      bizSection.style.display = 'block';
+      if (stdSection) stdSection.style.display = 'none';
+      renderBusinessReport(reportData);
+    } else {
+      bizSection.style.display = 'none';
+      if (stdSection) stdSection.style.display = 'block';
+    }
     showScreen('screen-report');
   }, 7000);
 }
@@ -866,75 +1153,82 @@ function animateStages() {
 
 // ── Claude API ─────────────────────────────────────────────────────────────
 async function callClaude(a) {
-  const sys = `You are the DP-1 processor chip — the full scoring engine of the Source Code Holdings framework. You receive 20 slider responses (1–10) mapping to all 20 Source Codes across Conscious and Subconscious layers, and produce a complete personalised awareness report.
+  const sys = `You are generating a personalised awareness profile report for Source Code Holdings. You receive 20 slider responses mapping to all 20 Source Codes. Produce a report that feels written specifically for this person — precise, warm, honest, genuinely insightful. Not therapy language. Not generic wellness copy. Direct, personal, real.
 
 SOURCE CODE MAPPING:
 CONSCIOUS (Q1-Q10): Presence(1), Interpretation(2), Logic(3), Perspective(4), Prediction(5), Intention(6), Communication(7), Adaptation(8), Alignment(9), Integrity(10)
 SUBCONSCIOUS (Q11-Q20): Fear(11), Memory(12), Trauma(13), Desire(14), Attachment(15), Pattern(16), Protection(17), Instinct(18), Drift(19), Core Identity(20)
 
-OBSERVER CODE MAPPING (App slots):
-NARC — A1: Presence+Fear, A2: Intention+Desire
-YARC — A3: Communication+Attachment, A4: Perspective+Memory
-CIST — A5: Logic+Pattern, A6: Alignment+Protection
-Øll — A7: Adaptation+Instinct, A8: Integrity+Core Identity
+OBSERVER CODE MAPPING:
+NARC: A1=Presence+Fear, A2=Intention+Desire
+YARC: A3=Communication+Attachment, A4=Perspective+Memory
+CIST: A5=Logic+Pattern, A6=Alignment+Protection
+Øll: A7=Adaptation+Instinct, A8=Integrity+Core Identity
 
-SCORING RULES:
-- Each SC score: raw slider value / 10 (so 1=0.1, 10=1.0)
-- App slot score = average of its two SC scores
-- Observer Code score = average of its two App slot scores
-- Convert to percentages that sum to exactly 100
-- High conscious scores with low matching subconscious = high drift (presenting regulated while running disrupted underneath)
-- Drift = average |conscious_score - subconscious_score| across matched pairs (Q1vsQ11, Q2vsQ12 etc)
-- Balance Scale: map overall awareness to -5 to +5. High scores across all = positive. Imbalance + high drift = negative.
-- Trauma (Q13) is a global modifier — high trauma amplifies drift and pulls BS negative regardless of other scores
+SCORING:
+- App slot = average of its two SC scores
+- Observer Code = average of its two App slots, normalised so all four sum to 100
+- Drift = average |conscious - subconscious| across matched pairs (Q1vsQ11 etc)
+- Balance Scale 0=Zero-Point/balance, +5=peak expression, negative=subconscious dominant
+- High Trauma (Q13≥7) amplifies drift and pulls BS negative
+- keyword_identity: a 1-3 word name capturing this profile e.g. "The Anchor", "The Strategist", "The Protector", "The Connector", "The Architect", "The Driver", "The Builder", "The Observer", "The Empath"
+
+RULES:
+- Second person throughout
+- Reference specific elevated/suppressed Source Codes by name
+- If Fear(Q11)≥7 or Trauma(Q13)≥7 or Drift≥3.0: mental_health_note acknowledges the weight gently, suggests speaking to someone trusted or a professional
+- If healthy scores: mental_health_note is affirming
+- recalibration: 1-2 specific actionable things, not a vague list
 
 Return ONLY valid JSON:
 {
   "balance_scale": <number -5 to 5, one decimal>,
   "drift": <number 0 to 5, one decimal>,
-  "zp_distance": <number>,
+  "zp_distance": <number, one decimal>,
   "bs_state": <string>,
+  "awareness_level": <integer 1-10>,
+  "awareness_level_name": <string>,
+  "keyword_identity": <string — 1-3 words e.g. "The Anchor">,
+  "keyword_description": <string — 1 sentence specific to their profile>,
   "observer_codes": { "narc":<int>, "yarc":<int>, "cist":<int>, "oll":<int> },
-  "sc_scores": {
-    "presence":<int 1-10>, "interpretation":<int>, "logic":<int>, "perspective":<int>, "prediction":<int>,
-    "intention":<int>, "communication":<int>, "adaptation":<int>, "alignment":<int>, "integrity":<int>,
-    "fear":<int>, "memory":<int>, "trauma":<int>, "desire":<int>, "attachment":<int>,
-    "pattern":<int>, "protection":<int>, "instinct":<int>, "drift_sc":<int>, "core_identity":<int>
-  },
   "oc_descriptions": {
-    "narc":<string — 1 sentence specific to their scores>,
-    "yarc":<string>,
-    "cist":<string>,
-    "oll":<string>
+    "narc": <string — 1-2 sentences specific to their NARC score>,
+    "yarc": <string>,
+    "cist": <string>,
+    "oll": <string>
   },
   "report_sections": {
-    "overview": <string — 2-3 paragraphs. Their overall profile. What the scores reveal about who they are right now. Second person, precise, no therapy language.>,
-    "dominant_dynamic": <string — 2 paragraphs. The single most significant pattern in their scores — what it produces in relationships, work, self-perception.>,
-    "the_gap": <string — 1-2 paragraphs. Their drift — the specific gap between conscious presentation and subconscious reality. What this gap likely looks like from the outside.>,
-    "source_codes": <string — 2 paragraphs. The 2-3 most elevated and 1-2 most suppressed Source Codes and what that specific combination means.>,
-    "developmental_stage": <string — 1-2 paragraphs. Where they sit in the NARC→CIST→YARC→Øll developmental sequence and what that means for where they're headed.>,
-    "zero_point": <string — 1 paragraph. What Zero-Point would look like specifically for this person given their profile — not generic, based on their actual scores.>
-  }
+    "overview": <string — 3 paragraphs. Open with keyword identity. Describe their overall profile and what their dominant code combination produces in daily life. The big picture pattern. Specific enough they recognise themselves.>,
+    "strengths": <string — 2 paragraphs. Genuine strengths from their elevated Source Codes. Name them. What those strengths look like in relationships, work, decisions.>,
+    "shadows": <string — 2 paragraphs. Honest flip side. Specific blind spots and loops their pattern runs. Framed as "this is the pattern" not "you are broken".>,
+    "under_pressure": <string — 2 paragraphs. The Private Self. What their subconscious codes produce when stress, conflict, or loss hits. What behaviour surprises others. What they need in those moments.>,
+    "relationship_pattern": <string — 2 paragraphs. How this profile shows up in close relationships. Their natural role. What they give and need. Which Observer Code types they work well with and where friction appears.>,
+    "developmental_stage": <string — 1-2 paragraphs. Where they sit in the NARC→CIST→YARC→Øll arc and what the next move looks like for them.>,
+    "recalibration": <string — 1-2 paragraphs. What moving toward Zero-Point looks like for this profile. One or two concrete actionable things. Speak directly to them.>
+  },
+  "mental_health_note": <string — 1-2 sentences. Gentle and honest. See rules above.>,
+  "growth_areas": [<string>, <string>, <string>]
 }
+observer_codes must sum to exactly 100.`;
 
-observer_codes must sum to exactly 100. Be precise. The report sections should feel like they were written for this specific person.`;
+  const msg = `Name: ${a.name || 'Observer'}
 
-  const msg = `CONSCIOUS LAYER (Q1-Q10):
+CONSCIOUS LAYER:
 Presence: ${a.s1}, Interpretation: ${a.s2}, Logic: ${a.s3}, Perspective: ${a.s4}, Prediction: ${a.s5}
 Intention: ${a.s6}, Communication: ${a.s7}, Adaptation: ${a.s8}, Alignment: ${a.s9}, Integrity: ${a.s10}
 
-SUBCONSCIOUS LAYER (Q11-Q20):
+SUBCONSCIOUS LAYER:
 Fear: ${a.s11}, Memory: ${a.s12}, Trauma: ${a.s13}, Desire: ${a.s14}, Attachment: ${a.s15}
 Pattern: ${a.s16}, Protection: ${a.s17}, Instinct: ${a.s18}, Drift: ${a.s19}, Core Identity: ${a.s20}
 
-Generate full SCH Check report.`;
+Generate full SCH Check personal awareness report.`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       model:'claude-sonnet-4-20250514',
-      max_tokens:2000,
+      max_tokens:3000,
       system:sys,
       messages:[{role:'user',content:msg}]
     })
@@ -944,156 +1238,394 @@ Generate full SCH Check report.`;
   return JSON.parse((data.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
 }
 
-// ── Local fallback ─────────────────────────────────────────────────────────
-function localScore(a) {
-  const conscious = [a.s1,a.s2,a.s3,a.s4,a.s5,a.s6,a.s7,a.s8,a.s9,a.s10];
-  const subcon = [a.s11,a.s12,a.s13,a.s14,a.s15,a.s16,a.s17,a.s18,a.s19,a.s20];
-  const drift = conscious.reduce((sum,c,i) => sum + Math.abs(c - subcon[i]), 0) / 10 / 2;
-  const avg = [...conscious,...subcon].reduce((a,b)=>a+b,0)/20;
-  const bs = parseFloat(((avg-5.5)/4.5*5 - drift*0.5).toFixed(1));
-  const narc = Math.round(((a.s1+a.s11+a.s6+a.s14)/4)/10*40+10);
-  const yarc = Math.round(((a.s7+a.s15+a.s4+a.s12)/4)/10*40+10);
-  const cist = Math.round(((a.s3+a.s16+a.s9+a.s17)/4)/10*40+10);
-  const oll = 100-narc-yarc-cist;
-  return {
-    balance_scale: Math.max(-5, Math.min(5, bs)),
-    drift: parseFloat(drift.toFixed(1)),
-    zp_distance: Math.abs(bs).toFixed(1),
-    bs_state: bs>2?'Conscious expansion':bs>0?'Stability emerging':bs>-2?'Drift activated':'Emotional overload',
-    observer_codes:{narc,yarc,cist,oll:Math.max(5,oll)},
-    sc_scores:{presence:a.s1,interpretation:a.s2,logic:a.s3,perspective:a.s4,prediction:a.s5,intention:a.s6,communication:a.s7,adaptation:a.s8,alignment:a.s9,integrity:a.s10,fear:a.s11,memory:a.s12,trauma:a.s13,desire:a.s14,attachment:a.s15,pattern:a.s16,protection:a.s17,instinct:a.s18,drift_sc:a.s19,core_identity:a.s20},
-    oc_descriptions:{narc:'Your self-reference and identity patterns.',yarc:'Your other-directed awareness and connection.',cist:'Your regulation and structural thinking.',oll:'Your volatility and adaptive integration.'},
-    report_sections:{
-      overview:'Your awareness profile has been scored across all 20 Source Codes. The scores reveal the relationship between your conscious presentation and the subconscious layer running underneath.',
-      dominant_dynamic:'Your dominant Observer Code shapes the primary pattern in your awareness. This is the code that is pulling most significantly from the 25% equilibrium point.',
-      the_gap:'Your Drift score reflects the gap between your conscious and subconscious layers. A higher drift indicates a larger gap between what you present and what is actually running underneath.',
-      source_codes:'The individual Source Code scores reveal which specific capacities are most active and which are most suppressed in your current profile.',
-      developmental_stage:'Based on your profile, you are at a specific point in the NARC→CIST→YARC→Øll developmental sequence.',
-      zero_point:'Zero-Point for you means achieving a 25/25/25/25 balance across all four Observer Codes — full alignment between your conscious and subconscious layers.'
-    }
-  };
+
+async function callClaudeBusiness(a) {
+  const bizName    = document.getElementById('biz-name')?.value.trim() || 'the business';
+  const bizSector  = document.getElementById('biz-sector')?.value.trim() || 'General';
+  const bizSize    = document.getElementById('biz-size')?.value.trim() || 'Not specified';
+  const bizStage   = document.getElementById('biz-stage')?.value.trim() || 'Not specified';
+  const bizChallenge = document.getElementById('biz-challenge')?.value.trim() || 'General performance review';
+
+  const sys = `You are the DP-1 processor chip generating a professional business awareness report. You receive slider responses (1–10) from a business owner who has scored their organisation through 26 questions — 20 personal Source Code questions reframed as business observations, plus 6 business-specific extension questions.
+
+QUESTION MAPPING (1-20 = Source Codes reframed for business, 21-26 = business extension):
+Q1 Presence→Market awareness, Q2 Fear→Risk aversion, Q3 Intention→Strategic clarity, Q4 Desire→Growth drive, Q5 Communication→Internal/external comms, Q6 Attachment→Dependency patterns, Q7 Perspective→Multi-stakeholder view, Q8 Memory→Organisational history influence, Q9 Logic→Decision rigour, Q10 Pattern→Recurring organisational loops, Q11 Alignment→Values-behaviour consistency, Q12 Protection→Defensive resource allocation, Q13 Adaptation→Change capacity, Q14 Instinct→Rapid decision accuracy, Q15 Integrity→Internal honesty, Q16 Core Identity→Organisational identity clarity
+Q17 Trauma→Unprocessed organisational failure, Q18 Drift→Internal direction drift, Q19 Pattern(sub)→Subconscious loops, Q20 Core Identity(sub)→Bedrock identity vs performance
+Q21 Market Alignment, Q22 Leadership Coherence, Q23 Decision Quality, Q24 Team Alignment, Q25 Defensive vs Generative spend, Q26 Internal Honesty
+
+OBSERVER CODES for business:
+- NARC (self-reference): presence, fear, intention, desire → how the business relates to itself, its survival, its goals
+- CIST (regulation): communication, attachment, perspective, memory → structural and relational regulation
+- YARC (other-directed): logic, pattern, alignment, protection → how the business serves others, delivers, gives
+- Øll (integration): adaptation, instinct, integrity, core identity → transformation capacity and foundational stability
+Zero-Point = 25% each. Balance Scale -5 to +5.
+
+Return ONLY valid JSON:
+{
+  "balance_scale": <-5 to 5, one decimal>,
+  "drift": <0 to 5, one decimal>,
+  "bs_state": <string>,
+  "drift_state": <string>,
+  "dominant_code": <"NARC"|"YARC"|"CIST"|"Øll">,
+  "observer_codes": {"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},
+  "sc_scores": {"sc1":<int>,...,"sc16":<int>},
+  "oc_descriptions": {"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},
+  "business_report": {
+    "executive_summary": <string — 2 paragraphs, plain English, what this business's awareness profile reveals. Written for a business owner. No jargon.>,
+    "strengths": <string — 2 paragraphs. The 2-3 highest-scoring nodes and what operational capacity they produce. Specific to these scores.>,
+    "vulnerabilities": <string — 2 paragraphs. The 2-3 lowest-scoring or most imbalanced nodes. What risk or dysfunction this creates operationally.>,
+    "the_gap": <string — 1-2 paragraphs. The gap between how the business presents externally and what the subconscious layer reveals is actually driving it. The Drift score applied to business reality.>,
+    "dominant_dynamic": <string — 1-2 paragraphs. The Observer Code doing the most work — what it produces in culture, decisions, client relationships, and growth trajectory.>,
+    "zero_point_pathway": <string — 1 paragraph. What moving toward balance would specifically require for this business, based on the actual scored profile. Not generic advice.>
+  }
 }
+observer_codes must sum to 100. Write as a professional business document, not a self-help report.`;
 
-// ── Render report ──────────────────────────────────────────────────────────
-function renderReport(r) {
-  const bs = r.balance_scale;
-  const bsCol = bs>0.5?'#1D7A5F':bs<-0.5?'#C4622D':'#4A42A0';
+  const msg = `Business: ${bizName}
+Sector: ${bizSector}
+Size: ${bizSize}
+Stage: ${bizStage}
+Primary challenge: ${bizChallenge}
 
-  document.getElementById('r-name').textContent = customerName || 'SCH Check Report';
-  document.getElementById('r-date').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'}).toUpperCase();
-  document.getElementById('r-bs-score').textContent = (bs>0?'+':'')+bs.toFixed(1);
-  document.getElementById('r-bs-score').style.color = bsCol;
-  document.getElementById('r-bs-state').textContent = r.bs_state||'';
-  document.getElementById('r-drift').textContent = r.drift;
-  document.getElementById('r-zp').textContent = r.zp_distance;
+Source Code responses (1-10):
+${Object.entries(a).filter(([k])=>k.startsWith('s')).map(([k,v])=>`${k}: ${v}`).join(', ')}
 
-  // OC cards
-  const oc = r.observer_codes;
-  const desc = r.oc_descriptions||{};
-  [['narc','--narc'],['yarc','--yarc'],['cist','--cist'],['oll','--oll']].forEach(([code,cssvar])=>{
-    document.getElementById('r-'+code+'-pct').textContent = oc[code]+'%';
-    document.getElementById('r-'+code+'-fill').style.width = oc[code]+'%';
-    document.getElementById('r-'+code+'-desc').textContent = desc[code]||'';
+Generate full business awareness report.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:2500,
+      system:sys,
+      messages:[{role:'user',content:msg}]
+    })
   });
 
-  // SC grid
-  const sc = r.sc_scores||{};
-  const scDefs = [
-    {name:'Presence',key:'presence',layer:'Conscious',code:'NARC'},
-    {name:'Fear',key:'fear',layer:'Subconscious',code:'NARC'},
-    {name:'Intention',key:'intention',layer:'Conscious',code:'NARC'},
-    {name:'Desire',key:'desire',layer:'Subconscious',code:'NARC'},
-    {name:'Communication',key:'communication',layer:'Conscious',code:'YARC'},
-    {name:'Attachment',key:'attachment',layer:'Subconscious',code:'YARC'},
-    {name:'Perspective',key:'perspective',layer:'Conscious',code:'YARC'},
-    {name:'Memory',key:'memory',layer:'Subconscious',code:'YARC'},
-    {name:'Logic',key:'logic',layer:'Conscious',code:'CIST'},
-    {name:'Pattern',key:'pattern',layer:'Subconscious',code:'CIST'},
-    {name:'Alignment',key:'alignment',layer:'Conscious',code:'CIST'},
-    {name:'Protection',key:'protection',layer:'Subconscious',code:'CIST'},
-    {name:'Adaptation',key:'adaptation',layer:'Conscious',code:'Øll'},
-    {name:'Instinct',key:'instinct',layer:'Subconscious',code:'Øll'},
-    {name:'Integrity',key:'integrity',layer:'Conscious',code:'Øll'},
-    {name:'Core Identity',key:'core_identity',layer:'Subconscious',code:'Øll'},
-    {name:'Interpretation',key:'interpretation',layer:'Conscious',code:'—'},
-    {name:'Prediction',key:'prediction',layer:'Conscious',code:'—'},
-    {name:'Trauma',key:'trauma',layer:'Subconscious',code:'×All'},
-    {name:'Drift',key:'drift_sc',layer:'Subconscious',code:'×All'},
+  const data = await res.json();
+  return JSON.parse((data.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
+}
+
+// ── Render personal report ────────────────────────────────────────────────
+function renderReport(r) {
+  window._lastReport = r; // store for comparison
+
+  // Load previous code if pasted at start
+  const prevCodeInput = document.getElementById('prev-code-input')?.value.trim();
+  if (prevCodeInput && !window._prevScores) {
+    try {
+      const padded = prevCodeInput + '='.repeat((4 - prevCodeInput.length % 4) % 4);
+      const prev = JSON.parse(atob(padded));
+      window._prevScores = prev.sc;
+      // Pre-fill the comparison input in the report
+      const ecInput = document.getElementById('ec-prev-code');
+      if (ecInput) ecInput.value = prevCodeInput;
+    } catch(e) { /* invalid code, ignore */ }
+  }
+  // Metrics
+  const bs = r.balance_scale ?? 0;
+  const drift = r.drift ?? 0;
+  const bsCol = bs > 0.5 ? 'var(--yarc)' : bs < -0.5 ? 'var(--narc)' : 'var(--cist)';
+
+  const bsEl = document.getElementById('r-bs-val');
+  if (bsEl) { bsEl.textContent = (bs > 0 ? '+' : '') + bs.toFixed(1); bsEl.style.color = bsCol; }
+  const driftEl = document.getElementById('r-drift');
+  if (driftEl) driftEl.textContent = drift.toFixed(1);
+  const zpEl = document.getElementById('r-zp');
+  if (zpEl) zpEl.textContent = (r.zp_distance ?? Math.abs(bs)).toFixed(1);
+  const stEl = document.getElementById('r-bs-state');
+  if (stEl) stEl.textContent = r.bs_state ?? '';
+
+  // Observer Code bars
+  const oc = r.observer_codes ?? {};
+  const ocDesc = r.oc_descriptions ?? {};
+  [['narc','var(--narc)'],['yarc','var(--yarc)'],['cist','var(--cist)'],['oll','var(--oll)']].forEach(([code,col]) => {
+    const pct = oc[code] ?? 25;
+    const pctEl = document.getElementById(`r-${code}-pct`);
+    const fillEl = document.getElementById(`r-${code}-fill`);
+    const descEl = document.getElementById(`r-${code}-desc`);
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (fillEl) { fillEl.style.width = pct + '%'; fillEl.style.background = col; }
+    if (descEl) descEl.textContent = ocDesc[code] ?? '';
+  });
+
+  // ── SC CARDS grouped by Observer Code arm ────────────────────────────────
+  const sc = r.sc_scores ?? {};
+
+  // SC definitions: [key, label, layer, arm, col, descriptions per score band]
+  const SC_DEFS = [
+    // NARC arm
+    { k:'presence',      l:'Presence',       layer:'Conscious',     arm:'NARC', col:'var(--narc)',
+      bands:['Rarely present — operating from memory or anticipation','Beginning to notice the current moment','Increasingly present and responsive','Consistently grounded in what is actually happening','Fully present — this is a genuine strength'] },
+    { k:'fear',          l:'Fear',            layer:'Subconscious',  arm:'NARC', col:'var(--narc)',
+      bands:['Fear is highly active — driving avoidance and defensiveness','Fear signal is elevated — affecting decisions','Fear is present but manageable','Fear is well-regulated — informing without overwhelming','Fear is proportionate and functional'] },
+    { k:'intention',     l:'Intention',       layer:'Conscious',     arm:'NARC', col:'var(--narc)',
+      bands:['Unclear why you do what you do — actions serving unacknowledged drives','Intention is forming but inconsistent','Increasing clarity of purpose','Actions broadly aligned with stated values','Very clear intention — you know why you act'] },
+    { k:'desire',        l:'Desire',          layer:'Subconscious',  arm:'NARC', col:'var(--narc)',
+      bands:['Desire is consuming — craving rather than wanting','Desire is elevated and pulling behaviour','Desire is present and motivating','Desire is conscious and proportionate','Desire is clear and aligned with genuine need'] },
+    // YARC arm
+    { k:'communication', l:'Communication',   layer:'Conscious',     arm:'YARC', col:'var(--yarc)',
+      bands:['Communication is significantly blocked or misdirected','Communication is inconsistent — clear sometimes, distorted at others','Communication is functional and improving','Clear and responsive communication','Excellent communicator — adapts, listens, and expresses well'] },
+    { k:'attachment',    l:'Attachment',      layer:'Subconscious',  arm:'YARC', col:'var(--yarc)',
+      bands:['Attachment is highly anxious or avoidant — consuming or shut down','Attachment patterns are active and affecting relationships','Attachment is present but manageable','Secure and flexible attachment emerging','Secure attachment — connecting without losing self'] },
+    { k:'perspective',   l:'Perspective',     layer:'Conscious',     arm:'YARC', col:'var(--yarc)',
+      bands:['Stuck in single-lens view — cannot hold opposing readings','Perspective is narrow but beginning to expand','Holding multiple viewpoints sometimes','Genuinely curious about others\' positions','Excellent perspective range — can hold complexity'] },
+    { k:'memory',        l:'Memory',          layer:'Subconscious',  arm:'YARC', col:'var(--yarc)',
+      bands:['Memory is overriding present reality — past dominates','Memory is significantly shaping current interpretation','Memory influences but doesn\'t control','Memory informs without dominating','Past experience adds context without distorting the present'] },
+    // CIST arm
+    { k:'logic',         l:'Logic',           layer:'Conscious',     arm:'CIST', col:'var(--cist)',
+      bands:['Logic is significantly absent or misapplied','Reasoning is inconsistent or emotionally distorted','Structured thinking is developing','Clear and ordered thinking most of the time','Excellent analytical capacity — separates emotion from analysis'] },
+    { k:'pattern',       l:'Pattern',         layer:'Subconscious',  arm:'CIST', col:'var(--cist)',
+      bands:['Patterns are unrecognised and compulsive — recreating same dynamics','Patterns are beginning to surface','Some patterns are recognised and interrupted','Patterns are mostly visible and manageable','Strong pattern recognition — loops are seen and consciously interrupted'] },
+    { k:'alignment',     l:'Alignment',       layer:'Conscious',     arm:'CIST', col:'var(--cist)',
+      bands:['Significant gap between stated values and actual behaviour','Alignment is inconsistent — occasional drift from stated values','Alignment is improving — mostly consistent','Strong alignment between values and behaviour','Very high alignment — integrity in action'] },
+    { k:'protection',    l:'Protection',      layer:'Subconscious',  arm:'CIST', col:'var(--cist)',
+      bands:['Protection mechanisms are permanently activated — defending against everything','Protection is heightened and indiscriminate','Protection is present but becoming more proportionate','Protection is mostly proportionate','Protection is available when needed, not permanently active'] },
+    // ØLL arm
+    { k:'adaptation',    l:'Adaptation',      layer:'Conscious',     arm:'Øll',  col:'var(--oll)',
+      bands:['Rigid — refusing to adjust or over-adapting to the point of self-abandonment','Adaptation is limited or inconsistent','Becoming more flexible under changing conditions','Adapts well without losing core stability','Excellent adaptation capacity — moves with change'] },
+    { k:'instinct',      l:'Instinct',        layer:'Subconscious',  arm:'Øll',  col:'var(--oll)',
+      bands:['Instinct is suppressed or misfiring significantly','Instinct is unreliable — sometimes accurate, sometimes not','Instinct is developing and increasingly trustworthy','Instinct is mostly accurate and trusted','Strong instinct — body knowing that reliably signals truth'] },
+    { k:'integrity',     l:'Integrity',       layer:'Conscious',     arm:'Øll',  col:'var(--oll)',
+      bands:['Defended and dishonest — maintaining narratives that protect the ego','Integrity is inconsistent — honest sometimes, defended at others','Integrity is growing — increasing honesty with self','Strong integrity — accountable and truthful most of the time','Very high integrity — refuses to maintain false narratives'] },
+    { k:'core_identity', l:'Core Identity',   layer:'Subconscious',  arm:'Øll',  col:'var(--oll)',
+      bands:['Core identity is unstable or absent — unformed or rigidly defended','Identity is fragile or over-fixed','Identity is stabilising','Stable and flexible identity — can hold complexity','Very secure identity — knows who they are and can adapt'] },
+    // Remaining conscious codes not in arm pairs above
+    { k:'interpretation',l:'Interpretation',  layer:'Conscious',     arm:'NARC', col:'var(--narc)',
+      bands:['Interpretation is significantly distorted by past experience','Interpretation is often inaccurate — assumes negative intent','Interpretation is becoming more accurate','Reads situations well most of the time','Accurate and curious interpreter — holds multiple readings'] },
+    { k:'prediction',    l:'Prediction',      layer:'Conscious',     arm:'CIST', col:'var(--cist)',
+      bands:['Prediction is catastrophising — treats worst case as certainty','Prediction is inconsistent — sometimes accurate, sometimes anxious','Pattern recognition is developing','Accurate prediction most of the time','Strong predictive capacity — reads patterns reliably'] },
+    { k:'drift_sc',      l:'Drift',           layer:'Subconscious',  arm:'Øll',  col:'var(--oll)',
+      bands:['Very high drift — significant gap between conscious intention and subconscious pull','High drift — frequent reversions to old patterns','Moderate drift — some inconsistency','Low drift — conscious and subconscious broadly aligned','Minimal drift — behaviour consistently reflects intention'] },
+    { k:'trauma',        l:'Trauma',          layer:'Subconscious',  arm:'NARC', col:'var(--narc)',
+      bands:['Trauma is highly active — triggering disproportionate reactions and body responses','Trauma is significantly present — affecting daily functioning','Trauma is present but partially metabolised','Trauma is largely processed — influencing without dominating','Trauma is well metabolised — held without dominating present functioning'] },
   ];
 
-  const colMap = {NARC:'var(--narc)',YARC:'var(--yarc)',CIST:'var(--cist)','Øll':'var(--oll)','—':'var(--muted)','×All':'#888'};
+  // Build arm groups
+  const ARMS = [
+    { id:'NARC', col:'var(--narc)', oc: (r.observer_codes?.narc??25) },
+    { id:'YARC', col:'var(--yarc)', oc: (r.observer_codes?.yarc??25) },
+    { id:'CIST', col:'var(--cist)', oc: (r.observer_codes?.cist??25) },
+    { id:'Øll',  col:'var(--oll)',  oc: (r.observer_codes?.oll??25) },
+  ];
 
-  document.getElementById('sc-grid').innerHTML = scDefs.map(s => {
-    const val = sc[s.key]||5;
-    const pct = (val/10*100).toFixed(0);
-    const col = colMap[s.code]||'var(--muted)';
-    return `<div class="sc-row">
-      <div class="sc-code">${s.name}</div>
-      <div class="sc-layer">${s.layer}</div>
-      <div class="sc-track"><div class="sc-fill" style="width:${pct}%;background:${col};"></div></div>
-      <div class="sc-val" style="color:${col};">${val}</div>
+  const prevScores = window._prevScores || null;
+
+  const cardsHtml = ARMS.map(arm => {
+    const armCodes = SC_DEFS.filter(d => d.arm === arm.id);
+    const cards = armCodes.map(d => {
+      const v = sc[d.k] ?? 5;
+      const pct = (v/10*100).toFixed(0);
+      const bandIdx = Math.min(4, Math.max(0, Math.round((v-1)/9*4)));
+      const bandLabel = v <= 3 ? 'Developing' : v <= 6 ? 'Moderate' : v <= 8 ? 'Strong' : 'Elevated';
+      const bandCol = v <= 3 ? 'var(--narc)' : v <= 6 ? 'var(--amber)' : 'var(--yarc)';
+      const desc = d.bands[bandIdx] || '';
+
+      // Delta badge if prev scores loaded
+      let deltaBadge = '';
+      if (prevScores && prevScores[d.k] !== undefined) {
+        const diff = v - prevScores[d.k];
+        if (diff > 0) deltaBadge = `<div class="sc-card-delta up">+${diff}</div>`;
+        else if (diff < 0) deltaBadge = `<div class="sc-card-delta down">${diff}</div>`;
+        else deltaBadge = `<div class="sc-card-delta same">—</div>`;
+      }
+
+      return `<div class="sc-card">
+        ${deltaBadge}
+        <div class="sc-card-layer">${d.layer}</div>
+        <div class="sc-card-name" style="color:${d.col}">${d.l}</div>
+        <div class="sc-card-score">
+          <div class="sc-card-num" style="color:${d.col}">${v}</div>
+          <div class="sc-card-max">/10</div>
+        </div>
+        <div class="sc-card-bar"><div class="sc-card-bar-fill" style="width:${pct}%;background:${d.col}"></div></div>
+        <div class="sc-card-band" style="color:${bandCol}">${bandLabel}</div>
+        <div class="sc-card-desc">${desc}</div>
+      </div>`;
+    });
+
+    return `<div class="sc-arm-group">
+      <div class="sc-arm-header">
+        <div class="sc-arm-name" style="color:${arm.col}">${arm.id}</div>
+        <div class="sc-arm-pct">${arm.oc}% of your Observer Code ratio</div>
+      </div>
+      <div class="sc-cards-row">${cards.join('')}</div>
     </div>`;
   }).join('');
 
-  // Render report diagram
-  renderReportDiagram(r);
+  const scCardsGrid = document.getElementById('sc-cards-grid');
+  if (scCardsGrid) scCardsGrid.innerHTML = cardsHtml;
+
+  // ── Generate export code ────────────────────────────────────────────────
+  const exportData = {
+    v: 1,
+    d: new Date().toISOString().slice(0,10),
+    bs: r.balance_scale ?? 0,
+    dr: r.drift ?? 0,
+    oc: r.observer_codes ?? {},
+    sc: sc,
+    kw: r.keyword_identity ?? '',
+    al: r.awareness_level ?? 0,
+  };
+  const code = btoa(JSON.stringify(exportData)).replace(/=/g,'');
+  window._currentCode = code;
+  window._currentScores = sc;
+
+  const codeEl = document.getElementById('ec-code');
+  if (codeEl) codeEl.textContent = code;
 
   // Written report
-  const sections = r.report_sections||{};
-  const sectionDefs = [
-    {key:'overview',title:'Overview'},
-    {key:'dominant_dynamic',title:'The dominant dynamic'},
-    {key:'the_gap',title:'The gap — your Drift score'},
-    {key:'source_codes',title:'Your Source Codes'},
-    {key:'developmental_stage',title:'Developmental stage'},
-    {key:'zero_point',title:'What Zero-Point looks like for you'},
+  const rs = r.report_sections ?? {};
+  const sections = [
+    { key:'overview',            title:'Your profile — ' + (r.keyword_identity ?? 'Your awareness pattern') },
+    { key:'strengths',          title:'Strengths' },
+    { key:'shadows',            title:'Shadows' },
+    { key:'under_pressure',     title:'Under pressure — your private self' },
+    { key:'relationship_pattern', title:'In relationships' },
+    { key:'developmental_stage', title:'Where you are in the sequence' },
+    { key:'recalibration',      title:'Moving toward balance' },
   ];
 
-  document.getElementById('written-report-content').innerHTML = sectionDefs.map(s => `
+  const kwDesc = r.keyword_description ?? '';
+  const mhNote = r.mental_health_note ?? '';
+  const growthAreas = r.growth_areas ?? [];
+
+  let html = '';
+
+  // Keyword identity header
+  if (r.keyword_identity) {
+    html += `<div style="margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--line);">
+      <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your awareness keyword</div>
+      <div style="font-family:'Cormorant',serif;font-size:2.4rem;font-weight:400;margin-bottom:8px;color:var(--text)">${r.keyword_identity}</div>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.7;">${kwDesc}</div>
+    </div>`;
+  }
+
+  // Report sections
+  html += sections.map(s => `
     <div class="wr-section">
       <div class="wr-section-title">${s.title}</div>
-      <div class="wr-body"><p>${(sections[s.key]||'').replace(/\n\n/g,'</p><p>')}</p></div>
+      <div class="wr-body"><p>${(rs[s.key]||'—').replace(/\n\n/g,'</p><p>')}</p></div>
+    </div>
+  `).join('');
+
+  // Growth areas
+  if (growthAreas.length) {
+    html += `<div class="wr-section">
+      <div class="wr-section-title">Personal growth areas</div>
+      <div class="wr-body"><ul style="margin:0;padding-left:20px;">${growthAreas.map(g=>`<li style="margin-bottom:8px;line-height:1.7;">${g}</li>`).join('')}</ul></div>
+    </div>`;
+  }
+
+  // Mental health note
+  if (mhNote) {
+    html += `<div style="margin-top:32px;padding:20px 24px;background:var(--bg-soft);border-radius:12px;border:1px solid var(--line);">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">A note on awareness and wellbeing</div>
+      <div style="font-size:0.8rem;color:var(--text);line-height:1.8;">${mhNote}</div>
+    </div>`;
+  }
+
+  document.getElementById('written-report-content').innerHTML = html;
+}
+
+// ── Render business report ─────────────────────────────────────────────────
+function renderBusinessReport(r) {
+  const br = r.business_report;
+  const bizName = document.getElementById('biz-name')?.value.trim() || 'Business Report';
+  document.getElementById('biz-report-name').textContent = bizName;
+
+  const sections = [
+    { key:'executive_summary',   title:'Executive summary' },
+    { key:'strengths',           title:'Strengths — what is working' },
+    { key:'vulnerabilities',     title:'Vulnerabilities — where the risk concentrates' },
+    { key:'the_gap',             title:'The gap — what is running underneath' },
+    { key:'dominant_dynamic',    title:'Dominant dynamic' },
+    { key:'zero_point_pathway',  title:'Zero-Point pathway' },
+  ];
+
+  document.getElementById('biz-report-content').innerHTML = sections.map(s => `
+    <div class="wr-section">
+      <div class="wr-section-title">${s.title}</div>
+      <div class="wr-body"><p>${(br[s.key]||'').replace(/\n\n/g,'</p><p>')}</p></div>
     </div>
   `).join('');
 }
 
-// ── Report diagram ─────────────────────────────────────────────────────────
-function renderReportDiagram(r) {
-  const oc = r.observer_codes||{narc:25,yarc:25,cist:25,oll:25};
-  const opacity = code => Math.max(0.2, (oc[code]||25)/100*1.8).toFixed(2);
+// ── Export code functions ──────────────────────────────────────────────────
+function copyCode() {
+  const code = window._currentCode;
+  if (!code) return;
+  navigator.clipboard.writeText(code).then(() => {
+    document.getElementById('ec-ok').style.display = 'block';
+    const btn = document.getElementById('ec-copy-btn');
+    if (btn) { btn.textContent = 'Copied ✓'; setTimeout(() => btn.textContent = 'Copy code', 2000); }
+  }).catch(() => {
+    // Fallback for older browsers
+    const el = document.getElementById('ec-code');
+    if (el) { const r = document.createRange(); r.selectNode(el); window.getSelection().removeAllRanges(); window.getSelection().addRange(r); }
+  });
+}
 
-  document.getElementById('report-svg').innerHTML = `
-    <rect width="560" height="480" fill="none"/>
-    <circle cx="280" cy="240" r="38" fill="#fafaf8" stroke="#0e0e0c" stroke-width="1.5" opacity="0.8"/>
-    <text x="280" y="236" text-anchor="middle" font-size="11" fill="#0e0e0c" font-family="'Geist Mono',monospace">DP-1</text>
-    <text x="280" y="252" text-anchor="middle" font-size="8" fill="#7a7972" font-family="'Geist Mono',monospace">CORE ENGINE</text>
+function loadComparison() {
+  const input = document.getElementById('ec-prev-code')?.value.trim();
+  if (!input) return;
+  try {
+    const padded = input + '='.repeat((4 - input.length % 4) % 4);
+    const prev = JSON.parse(atob(padded));
+    window._prevScores = prev.sc;
 
-    <rect x="228" y="60" width="104" height="44" rx="10" fill="#fafaf8" stroke="#C4622D" stroke-width="1.5" opacity="${opacity('narc')}"/>
-    <text x="280" y="80" text-anchor="middle" font-size="11" fill="#C4622D" font-family="'Geist Mono',monospace">NARC</text>
-    <text x="280" y="96" text-anchor="middle" font-size="9" fill="#C4622D" font-family="'Geist Mono',monospace">${oc.narc}%</text>
+    const curr = window._currentScores || {};
+    const prevSc = prev.sc || {};
 
-    <rect x="420" y="218" width="104" height="44" rx="10" fill="#fafaf8" stroke="#1D7A5F" stroke-width="1.5" opacity="${opacity('yarc')}"/>
-    <text x="472" y="238" text-anchor="middle" font-size="11" fill="#1D7A5F" font-family="'Geist Mono',monospace">YARC</text>
-    <text x="472" y="254" text-anchor="middle" font-size="9" fill="#1D7A5F" font-family="'Geist Mono',monospace">${oc.yarc}%</text>
+    const SC_LABELS = {
+      presence:'Presence', interpretation:'Interpretation', logic:'Logic',
+      perspective:'Perspective', prediction:'Prediction', intention:'Intention',
+      communication:'Communication', adaptation:'Adaptation', alignment:'Alignment',
+      integrity:'Integrity', fear:'Fear', memory:'Memory', trauma:'Trauma',
+      desire:'Desire', attachment:'Attachment', pattern:'Pattern', protection:'Protection',
+      instinct:'Instinct', drift_sc:'Drift', core_identity:'Core Identity'
+    };
 
-    <rect x="228" y="376" width="104" height="44" rx="10" fill="#fafaf8" stroke="#4A42A0" stroke-width="1.5" opacity="${opacity('cist')}"/>
-    <text x="280" y="396" text-anchor="middle" font-size="11" fill="#4A42A0" font-family="'Geist Mono',monospace">CIST</text>
-    <text x="280" y="412" text-anchor="middle" font-size="9" fill="#4A42A0" font-family="'Geist Mono',monospace">${oc.cist}%</text>
+    const rows = Object.entries(SC_LABELS).map(([k, label]) => {
+      const c = curr[k] ?? 5;
+      const p = prevSc[k] ?? 5;
+      const diff = c - p;
+      const arrow = diff > 0 ? `<span style="color:var(--yarc)">↑ +${diff}</span>` :
+                    diff < 0 ? `<span style="color:var(--narc)">↓ ${diff}</span>` :
+                    `<span style="color:var(--muted)">→ 0</span>`;
+      return `<div style="display:flex;gap:12px;padding:4px 0;border-bottom:1px solid var(--line);align-items:center;">
+        <span style="flex:1;font-size:0.75rem">${label}</span>
+        <span style="font-size:0.75rem;color:var(--muted)">${p} → ${c}</span>
+        <span style="min-width:44px;text-align:right;font-size:0.75rem">${arrow}</span>
+      </div>`;
+    }).join('');
 
-    <rect x="36" y="218" width="104" height="44" rx="10" fill="#fafaf8" stroke="#A0426B" stroke-width="1.5" opacity="${opacity('oll')}"/>
-    <text x="88" y="238" text-anchor="middle" font-size="11" fill="#A0426B" font-family="'Geist Mono',monospace">Øll</text>
-    <text x="88" y="254" text-anchor="middle" font-size="9" fill="#A0426B" font-family="'Geist Mono',monospace">${oc.oll}%</text>
+    const bsDiff = ((window._lastReport?.balance_scale ?? 0) - (prev.bs ?? 0)).toFixed(1);
+    const bsArrow = bsDiff > 0 ? `<span style="color:var(--yarc)">↑ +${bsDiff}</span>` :
+                    bsDiff < 0 ? `<span style="color:var(--narc)">↓ ${bsDiff}</span>` : '→ 0';
 
-    <line x1="280" y1="104" x2="280" y2="202" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
-    <line x1="420" y1="240" x2="318" y2="240" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
-    <line x1="280" y1="376" x2="280" y2="278" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
-    <line x1="140" y1="240" x2="242" y2="240" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
+    const resultEl = document.getElementById('ec-compare-result');
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.innerHTML = `
+        <div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line);">
+          <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Comparison — ${prev.d || 'Previous'} vs today</div>
+          <div style="font-size:0.75rem;">Balance Scale: <strong>${prev.bs ?? '?'} → ${window._lastReport?.balance_scale ?? '?'}</strong> &nbsp; ${bsArrow}</div>
+          <div style="font-size:0.75rem;color:var(--muted);">Previous keyword: ${prev.kw || '—'} · Awareness level: ${prev.al || '—'}</div>
+        </div>
+        <div style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Source Code movement</div>
+        ${rows}
+      `;
+    }
 
-    <rect x="214" y="438" width="132" height="34" rx="8" fill="#fafaf8" stroke="#0e0e0c" stroke-width="1" opacity="0.8"/>
-    <text x="280" y="453" text-anchor="middle" font-size="9" fill="#0e0e0c" font-family="'Geist Mono',monospace">BALANCE SCALE</text>
-    <text x="280" y="466" text-anchor="middle" font-size="10" fill="#0e0e0c" font-family="'Geist Mono',monospace" font-weight="400">${(r.balance_scale>0?'+':'')+r.balance_scale.toFixed(1)}</text>
-    <line x1="280" y1="278" x2="280" y2="438" stroke="#0e0e0c" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.2"/>
-  `;
+    // Re-render SC cards with deltas
+    if (window._lastReport) renderReport(window._lastReport);
+
+  } catch(e) {
+    const resultEl = document.getElementById('ec-compare-result');
+    if (resultEl) { resultEl.style.display='block'; resultEl.textContent = 'Could not read that code — please check it was copied correctly.'; }
+  }
 }
 
 // ── Download ───────────────────────────────────────────────────────────────
