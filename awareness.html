@@ -1247,20 +1247,59 @@ async function callClaude() {
   const name = document.getElementById('obs-name')?.value.trim()||'';
   const age = document.getElementById('obs-age')?.value.trim()||'';
 
-  const sys=`You are the DP-1 processor generating an awareness profile from Source Code node scores. Observer: ${observer}. Nodes 1-5: 1-1.5=Instinct, 1.5-3=Reaction/Observation, 3-4.5=Regulation, 5=Presence. NARC polar pair YARC. CIST polar pair Øll. Zero-Point=0 on Balance Scale (25% each Observer Code). +5=peak expression threshold. Balance Scale -5 to +5.
+  // Separate conscious and subconscious scores for drift estimation
+  const conNodes = known.filter(n=>n.layer==='C');
+  const subNodes = known.filter(n=>n.layer==='S');
+  const conAvg = conNodes.length ? conNodes.reduce((s,n)=>s+scores[n.id],0)/conNodes.length : 3;
+  const subAvg = subNodes.length ? subNodes.reduce((s,n)=>s+scores[n.id],0)/subNodes.length : 3;
+  const driftEst = Math.abs(conAvg - subAvg).toFixed(1);
+
+  const sys=`You are generating a short personalised awareness profile for Source Code Holdings. This is the FREE assessment — 3 focused sections, warm and honest, specific to this person's scores. Not generic. Not therapy language. Direct, personal, real.
+
+Framework:
+- NARC: self-reference, survival, protection (polar pair: YARC)
+- YARC: other-directed, empathy, giving (polar pair: NARC)
+- CIST: regulation, structure, integration (polar pair: Øll)
+- Øll: volatility, threshold, all-and-nothing (polar pair: CIST)
+- Zero-Point = 0 on Balance Scale (25% each). +5 = peak expression. Negative = subconscious dominant.
+- Drift (gap between conscious and subconscious layers) ≈ ${driftEst}
+
+RULES:
+- Second person throughout
+- Reference specific scored nodes by name where relevant
+- keyword_identity: 1-3 word name for this profile e.g. "The Anchor", "The Strategist", "The Protector", "The Connector", "The Builder"
+- If any subconscious high-fear or high-protection nodes scored ≤ 2 (low regulation) or Balance Scale ≤ -2.5: include gentle mental health awareness note acknowledging the weight, suggesting speaking to someone trusted or a professional
+- mental_health_note should always be present — if scores look healthy, make it affirming
 
 Return ONLY valid JSON:
-{"balance_scale":<-5 to 5, one decimal>,"awareness_avg":<1-10, one decimal>,"awareness_state":<string>,"bs_state":<string>,"observer_codes":{"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},"oc_descriptions":{"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},"unknown_count":<int>,"interpretation":<3-4 sentences, plain, second person>}
+{
+  "balance_scale": <-5 to 5, one decimal>,
+  "awareness_avg": <1-5, one decimal>,
+  "bs_state": <string>,
+  "awareness_state": <string>,
+  "keyword_identity": <string — 1-3 words>,
+  "keyword_description": <string — 1 sentence specific to their profile>,
+  "observer_codes": {"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},
+  "oc_descriptions": {"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},
+  "unknown_count": <int>,
+  "report_sections": {
+    "who_you_are": <string — 2 paragraphs. Open with their keyword. What their dominant code combination produces in daily life. Specific enough they recognise themselves.>,
+    "primary_pattern": <string — 2 paragraphs. The single most significant pattern in their scores — what it produces, what it costs, what it drives. The most honest section.>,
+    "next_move": <string — 1 paragraph. One specific, actionable thing that would move this profile toward balance. Not a list. Speak directly to them.>
+  },
+  "mental_health_note": <string — 1-2 sentences. Gentle, honest. See rules.>
+}
 observer_codes must sum to 100.`;
 
   const msg=`Observer: ${observer}${name?' · '+name:''}${age?' · Age '+age:''}
 Scored nodes (${known.length}):
-${known.map(n=>`${n.name} (${n.code}·${n.layer}): ${scores[n.id]}/10`).join('\n')}
-Unknown nodes (${unknown.length}): ${unknown.map(n=>n.name).join(', ')||'none'}`;
+${known.map(n=>`${n.name} (${n.code}·${n.layer==='C'?'Conscious':'Subconscious'}): ${scores[n.id]}/5`).join('\n')}
+Unknown nodes (${unknown.length}): ${unknown.map(n=>n.name).join(', ')||'none'}
+Estimated drift: ${driftEst}`;
 
   const res=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system:sys,messages:[{role:'user',content:msg}]})
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,system:sys,messages:[{role:'user',content:msg}]})
   });
   const d=await res.json();
   return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
@@ -1361,7 +1400,54 @@ function renderResults(r) {
     </div>`;
   }).join('');
 
-  document.getElementById('r-interp').textContent=r.interpretation;
+  // Build written report from new sections
+  const rs = r.report_sections || {};
+  const mhNote = r.mental_health_note || '';
+  const kwId = r.keyword_identity || '';
+  const kwDesc = r.keyword_description || '';
+
+  let reportHtml = '';
+
+  // Keyword identity
+  if (kwId) {
+    reportHtml += `<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);">
+      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Your awareness keyword</div>
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:400;margin-bottom:6px;color:var(--text)">${kwId}</div>
+      <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;">${kwDesc}</div>
+    </div>`;
+  }
+
+  // Three report sections
+  const sections = [
+    { key:'who_you_are',      title:'Who you are right now' },
+    { key:'primary_pattern',  title:'The primary pattern' },
+    { key:'next_move',        title:'Your next move' },
+  ];
+  reportHtml += sections.map(s => {
+    const txt = rs[s.key] || '';
+    if (!txt) return '';
+    return `<div style="margin-bottom:24px;">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${s.title}</div>
+      <div style="font-size:0.82rem;line-height:1.85;color:var(--text)"><p style="margin:0 0 12px">${txt.replace(/\n\n/g,'</p><p style="margin:0 0 12px">')}</p></div>
+    </div>`;
+  }).join('');
+
+  // Mental health note
+  if (mhNote) {
+    reportHtml += `<div style="margin-top:28px;padding:18px 20px;background:var(--bg-soft,#f5f4f0);border-radius:10px;border:1px solid var(--line);">
+      <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">A note on awareness and wellbeing</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.8;">${mhNote}</div>
+    </div>`;
+  }
+
+  // Upgrade CTA - link to paid report
+  reportHtml += `<div style="margin-top:28px;padding:20px 24px;background:var(--bg-soft,#f5f4f0);border-radius:12px;border:1px solid var(--line);text-align:center;">
+    <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Want the full picture?</div>
+    <div style="font-size:0.82rem;color:var(--text);line-height:1.7;margin-bottom:14px;">The SCH Check maps all 20 Source Codes across both layers — producing a 7-section personalised report including your strengths, shadows, relationship pattern, how you behave under pressure, and your specific recalibration path.</div>
+    <a href="sch-check.html" style="display:inline-block;padding:12px 28px;background:var(--text);color:var(--bg,#f2f1ee);border-radius:999px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">Get the full report — £19.99 →</a>
+  </div>`;
+
+  document.getElementById('r-interp').innerHTML = reportHtml;
   renderResultSVG();
 }
 
