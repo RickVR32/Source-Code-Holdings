@@ -124,6 +124,24 @@ nav {
 
 /* ── QUESTIONS ── */
 .questions-wrap { padding: 48px 0; }
+
+/* Split layout */
+.sch-split-layout { display:grid; grid-template-columns:1fr 1fr; min-height:100vh; }
+.sch-diag-col { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center; padding:32px 24px; border-right:1px solid var(--panel-border); background:var(--bg); }
+.sch-diag-label { font-family:'Geist Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
+.sch-diag-wrap { flex:1; display:flex; align-items:center; max-height:60vh; }
+.sch-diag-wrap svg { width:100%; height:100%; }
+.sch-oc-live { display:flex; flex-direction:column; gap:8px; margin-top:20px; }
+.sch-oc-row { display:flex; align-items:center; gap:10px; }
+.sch-oc-name { font-family:'Geist Mono',monospace; font-size:0.65rem; font-weight:600; min-width:32px; }
+.sch-oc-track { flex:1; height:2px; background:var(--line); border-radius:1px; overflow:hidden; }
+.sch-oc-fill { height:100%; border-radius:1px; width:25%; transition:width 0.6s ease; }
+.sch-oc-pct { font-family:'Geist Mono',monospace; font-size:0.62rem; color:var(--muted); min-width:32px; text-align:right; }
+.sch-q-col { padding:48px 40px; overflow-y:auto; }
+@media(max-width:900px){
+  .sch-split-layout { grid-template-columns:1fr; }
+  .sch-diag-col { display:none; }
+}
 .progress-wrap { margin-bottom:40px; }
 .progress-info { display:flex; justify-content:space-between; font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; margin-bottom:8px; }
 .progress-track { height:2px; background:rgba(0,0,0,0.08); border-radius:1px; overflow:hidden; }
@@ -369,8 +387,213 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
 
 <!-- ── SCREEN 2: QUESTIONS ── -->
 <div class="screen" id="screen-questions">
-  <div class="questions-wrap">
-    <div class="progress-wrap">
+  <div class="sch-split-layout">
+
+    <!-- LEFT — Live diagram -->
+    <div class="sch-diag-col">
+      <div class="sch-diag-label">SOURCE CODE MAP</div>
+      <div class="sch-diag-wrap">
+      <svg id="sc-check-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="450.0,302.0 598.0,450.0 450.0,598.0 302.0,450.0" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="450" cy="450" r="220" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.14"/>
+  <circle cx="450" cy="450" r="300" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.1"/>
+  <circle cx="450" cy="450" r="70" fill="none" stroke="#C8C4BC" stroke-width="0.5" opacity="0.25"/>
+  <line x1="450.0" y1="106.0" x2="450.0" y2="794.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+  <line x1="794.0" y1="450.0" x2="106.0" y2="450.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+  <line x1="450.0" y1="302.0" x2="367.6" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
+  <line x1="367.6" y1="246.0" x2="286.6" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="367.6" y1="246.0" x2="392.8" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="302.0" x2="532.4" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
+  <line x1="532.4" y1="246.0" x2="507.2" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="532.4" y1="246.0" x2="613.4" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="598.0" y1="450.0" x2="654.0" y2="367.6" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
+  <line x1="654.0" y1="367.6" x2="701.6" y2="286.6" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="654.0" y1="367.6" x2="744.5" y2="392.8" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="598.0" y1="450.0" x2="654.0" y2="532.4" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
+  <line x1="654.0" y1="532.4" x2="744.5" y2="507.2" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="654.0" y1="532.4" x2="701.6" y2="613.4" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="598.0" x2="532.4" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
+  <line x1="532.4" y1="654.0" x2="613.4" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="532.4" y1="654.0" x2="507.2" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="598.0" x2="367.6" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
+  <line x1="367.6" y1="654.0" x2="392.8" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="367.6" y1="654.0" x2="286.6" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="302.0" y1="450.0" x2="246.0" y2="532.4" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
+  <line x1="246.0" y1="532.4" x2="198.4" y2="613.4" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="246.0" y1="532.4" x2="155.5" y2="507.2" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="302.0" y1="450.0" x2="246.0" y2="367.6" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
+  <line x1="246.0" y1="367.6" x2="155.5" y2="392.8" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="246.0" y1="367.6" x2="198.4" y2="286.6" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="450" y1="632.0" x2="450" y2="668.0" stroke="#B8B2A8" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.45"/>
+  <circle cx="450" cy="450" r="52" fill="white" stroke="#B0ABA0" stroke-width="1.8" opacity="1"/>
+  <circle cx="450" cy="450" r="39" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.4"/>
+  <circle cx="450" cy="450" r="22" fill="none" stroke="#D4D0C8" stroke-width="0.3" opacity="0.25"/>
+  <line x1="430" y1="450" x2="470" y2="450" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
+  <line x1="450" y1="430" x2="450" y2="470" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
+  <circle cx="450" cy="450" r="3" fill="var(--muted)" opacity="0.4"/>
+  <text id="obs-label" x="450" y="455" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="monospace" opacity="0.7">—</text>
+  <g id="node-narc" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('narc',event)">
+    <polygon points="450.0,272.0 480.0,302.0 450.0,332.0 420.0,302.0" fill="none" stroke="#C4622D" stroke-width="2.2"/>
+    <polygon points="450.0,285.0 467.0,302.0 450.0,319.0 433.0,302.0" fill="none" stroke="#C4622D" stroke-width="0.5" opacity="0.4"/>
+    <text x="450.0" y="301.0" text-anchor="middle" font-size="10" fill="#C4622D" font-family="monospace" letter-spacing="0.06em">NARC</text>
+    <text id="v-narc" x="450.0" y="315.0" text-anchor="middle" font-size="9" fill="#C4622D" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-cist" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('cist',event)">
+    <polygon points="598.0,420.0 628.0,450.0 598.0,480.0 568.0,450.0" fill="none" stroke="#534AB7" stroke-width="2.2"/>
+    <polygon points="598.0,433.0 615.0,450.0 598.0,467.0 581.0,450.0" fill="none" stroke="#534AB7" stroke-width="0.5" opacity="0.4"/>
+    <text x="598.0" y="449.0" text-anchor="middle" font-size="10" fill="#534AB7" font-family="monospace" letter-spacing="0.06em">CIST</text>
+    <text id="v-cist" x="598.0" y="463.0" text-anchor="middle" font-size="9" fill="#534AB7" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-yarc" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('yarc',event)">
+    <polygon points="450.0,568.0 480.0,598.0 450.0,628.0 420.0,598.0" fill="none" stroke="#1D9E75" stroke-width="2.2"/>
+    <polygon points="450.0,581.0 467.0,598.0 450.0,615.0 433.0,598.0" fill="none" stroke="#1D9E75" stroke-width="0.5" opacity="0.4"/>
+    <text x="450.0" y="597.0" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="monospace" letter-spacing="0.06em">YARC</text>
+    <text id="v-yarc" x="450.0" y="611.0" text-anchor="middle" font-size="9" fill="#1D9E75" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-oll" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('oll',event)">
+    <polygon points="302.0,420.0 332.0,450.0 302.0,480.0 272.0,450.0" fill="none" stroke="#A0426B" stroke-width="2.2"/>
+    <polygon points="302.0,433.0 319.0,450.0 302.0,467.0 285.0,450.0" fill="none" stroke="#A0426B" stroke-width="0.5" opacity="0.4"/>
+    <text x="302.0" y="449.0" text-anchor="middle" font-size="10" fill="#A0426B" font-family="monospace" letter-spacing="0.06em">Øll</text>
+    <text id="v-oll" x="302.0" y="463.0" text-anchor="middle" font-size="9" fill="#A0426B" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-a1" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="367.6" cy="246.0" rx="20" ry="11" transform="rotate(-22,367.6,246.0)" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="367.6" y="250.0" text-anchor="middle" font-size="8.5" fill="#C4622D" font-family="monospace">A1</text>
+  </g>
+  <g id="node-a2" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="532.4" cy="246.0" rx="20" ry="11" transform="rotate(22,532.4,246.0)" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="532.4" y="250.0" text-anchor="middle" font-size="8.5" fill="#C4622D" font-family="monospace">A2</text>
+  </g>
+  <g id="node-a3" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="654.0" cy="367.6" rx="20" ry="11" transform="rotate(68,654.0,367.6)" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="654.0" y="371.6" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="monospace">A3</text>
+  </g>
+  <g id="node-a4" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="654.0" cy="532.4" rx="20" ry="11" transform="rotate(112,654.0,532.4)" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="654.0" y="536.4" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="monospace">A4</text>
+  </g>
+  <g id="node-a5" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="532.4" cy="654.0" rx="20" ry="11" transform="rotate(158,532.4,654.0)" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="532.4" y="658.0" text-anchor="middle" font-size="8.5" fill="#1D9E75" font-family="monospace">A5</text>
+  </g>
+  <g id="node-a6" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="367.6" cy="654.0" rx="20" ry="11" transform="rotate(202,367.6,654.0)" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="367.6" y="658.0" text-anchor="middle" font-size="8.5" fill="#1D9E75" font-family="monospace">A6</text>
+  </g>
+  <g id="node-a7" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="246.0" cy="532.4" rx="20" ry="11" transform="rotate(248,246.0,532.4)" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="246.0" y="536.4" text-anchor="middle" font-size="8.5" fill="#A0426B" font-family="monospace">A7</text>
+  </g>
+  <g id="node-a8" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="246.0" cy="367.6" rx="20" ry="11" transform="rotate(292,246.0,367.6)" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="246.0" y="371.6" text-anchor="middle" font-size="8.5" fill="#A0426B" font-family="monospace">A8</text>
+  </g>
+  <g id="node-sc1" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc1',event)">
+    <polygon points="298.7,205.5 276.1,205.2 287.4,185.9" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="286.6" y="202.4" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↑</text>
+    <text x="264.2" y="189.2" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Presence</text>
+  </g>
+  <g id="node-sc2" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc2',event)">
+    <polygon points="389.0,169.0 383.5,147.1 405.1,153.1" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="392.8" y="159.5" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↓</text>
+    <text x="399.8" y="134.5" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Fear</text>
+  </g>
+  <g id="node-sc3" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc3',event)">
+    <polygon points="511.0,169.0 494.9,153.1 516.5,147.1" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="507.2" y="159.5" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↑</text>
+    <text x="500.2" y="134.5" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Intention</text>
+  </g>
+  <g id="node-sc4" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc4',event)">
+    <polygon points="601.3,205.5 612.6,185.9 623.9,205.2" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="613.4" y="202.4" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↓</text>
+    <text x="635.8" y="189.2" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Desire</text>
+  </g>
+  <g id="node-sc5" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc5',event)">
+    <polygon points="694.5,298.7 694.8,276.1 714.1,287.4" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="701.6" y="290.6" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↑</text>
+    <text x="714.8" y="268.2" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Comm.</text>
+  </g>
+  <g id="node-sc6" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc6',event)">
+    <polygon points="731.0,389.0 752.9,383.5 746.9,405.1" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="744.5" y="396.8" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↓</text>
+    <text x="769.5" y="403.8" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Attach.</text>
+  </g>
+  <g id="node-sc7" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc7',event)">
+    <polygon points="731.0,511.0 746.9,494.9 752.9,516.5" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="744.5" y="511.2" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↑</text>
+    <text x="769.5" y="504.2" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Persp.</text>
+  </g>
+  <g id="node-sc8" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc8',event)">
+    <polygon points="694.5,601.3 714.1,612.6 694.8,623.9" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="701.6" y="617.4" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↓</text>
+    <text x="714.8" y="639.8" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Memory</text>
+  </g>
+  <g id="node-sc9" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc9',event)">
+    <polygon points="601.3,694.5 623.9,694.8 612.6,714.1" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="613.4" y="705.6" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↑</text>
+    <text x="635.8" y="718.8" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Logic</text>
+  </g>
+  <g id="node-sc10" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc10',event)">
+    <polygon points="511.0,731.0 516.5,752.9 494.9,746.9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="507.2" y="748.5" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↓</text>
+    <text x="500.2" y="773.5" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Pattern</text>
+  </g>
+  <g id="node-sc11" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc11',event)">
+    <polygon points="389.0,731.0 405.1,746.9 383.5,752.9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="392.8" y="748.5" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↑</text>
+    <text x="399.8" y="773.5" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Align.</text>
+  </g>
+  <g id="node-sc12" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc12',event)">
+    <polygon points="298.7,694.5 287.4,714.1 276.1,694.8" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="286.6" y="705.6" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↓</text>
+    <text x="264.2" y="718.8" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Protect.</text>
+  </g>
+  <g id="node-sc13" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc13',event)">
+    <polygon points="205.5,601.3 205.2,623.9 185.9,612.6" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="198.4" y="617.4" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↑</text>
+    <text x="185.2" y="639.8" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Adapt.</text>
+  </g>
+  <g id="node-sc14" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc14',event)">
+    <polygon points="169.0,511.0 147.1,516.5 153.1,494.9" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="155.5" y="511.2" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↓</text>
+    <text x="130.5" y="504.2" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Instinct</text>
+  </g>
+  <g id="node-sc15" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc15',event)">
+    <polygon points="169.0,389.0 153.1,405.1 147.1,383.5" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="155.5" y="396.8" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↑</text>
+    <text x="130.5" y="403.8" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Integrity</text>
+  </g>
+  <g id="node-sc16" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc16',event)">
+    <polygon points="205.5,298.7 185.9,287.4 205.2,276.1" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="198.4" y="290.6" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↓</text>
+    <text x="185.2" y="268.2" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Core Id.</text>
+  </g>
+  <g id="node-bs" style="opacity:0;transition:opacity 0.5s ease">
+    <polygon points="424,642 476,642 450,674" fill="none" stroke="#D4D0C8" stroke-width="1.3"/>
+    <polygon points="436,650 464,650 450,666" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.5"/>
+    <text x="450" y="657" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="monospace" letter-spacing="0.08em">BALANCE</text>
+    <text id="v-bs" x="450" y="669" text-anchor="middle" font-size="8" fill="var(--muted)" font-family="monospace">—</text>
+  </g>
+  <g opacity="0.28">
+    <polygon points="18,870 30,870 24,856" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
+    <text x="36" y="868" font-size="7.5" fill="var(--muted)" font-family="monospace">↑ Conscious</text>
+    <polygon points="18,880 30,880 24,894" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
+    <text x="36" y="892" font-size="7.5" fill="var(--muted)" font-family="monospace">↓ Subconscious</text>
+  </g>
+      </svg>
+      </div>
+      <!-- OC ratio bars -->
+      <div class="sch-oc-live">
+        <div class="sch-oc-row"><span class="sch-oc-name" style="color:var(--narc)">NARC</span><div class="sch-oc-track"><div class="sch-oc-fill" id="live-narc-fill" style="background:var(--narc)"></div></div><span class="sch-oc-pct" id="live-narc-pct">25%</span></div>
+        <div class="sch-oc-row"><span class="sch-oc-name" style="color:var(--cist)">CIST</span><div class="sch-oc-track"><div class="sch-oc-fill" id="live-cist-fill" style="background:var(--cist)"></div></div><span class="sch-oc-pct" id="live-cist-pct">25%</span></div>
+        <div class="sch-oc-row"><span class="sch-oc-name" style="color:var(--yarc)">YARC</span><div class="sch-oc-track"><div class="sch-oc-fill" id="live-yarc-fill" style="background:var(--yarc)"></div></div><span class="sch-oc-pct" id="live-yarc-pct">25%</span></div>
+        <div class="sch-oc-row"><span class="sch-oc-name" style="color:var(--oll)">Øll</span><div class="sch-oc-track"><div class="sch-oc-fill" id="live-oll-fill" style="background:var(--oll)"></div></div><span class="sch-oc-pct" id="live-oll-pct">25%</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT — Questions -->
+    <div class="sch-q-col">
+      <div class="progress-wrap">
       <div class="progress-info">
         <span id="prog-label">Question 1 of 20</span>
         <span id="prog-section">Conscious Layer</span>
@@ -379,8 +602,6 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
     </div>
 
     <!-- CONSCIOUS LAYER — 10 questions -->
-    <div class="layer-divider" id="div-conscious">Twenty questions across the four Observer Code arms</div>
-    <div class="layer-divider" style="color:var(--narc);" id="div-narc">NARC Arm — Self, survival, identity</div>
     <!-- Q1 Presence · Shutdown -->
     <div class="q-card active" id="q1">
       <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Presence · Shutdown</div><div class="q-num">1 / 20</div></div>
@@ -431,7 +652,6 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <div class="slider-val" id="sv5">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(5)">← Back</button><button class="btn btn-primary" onclick="nextQ(5)">Next →</button></div>
     </div>
-    <div class="layer-divider" style="color:var(--yarc);" id="div-yarc">YARC Arm — Connection, expression, relationship</div>
     <!-- Q6 Communication · Drain -->
     <div class="q-card" id="q6">
       <div class="q-meta"><div class="q-badge" style="border-color:var(--yarc);color:var(--yarc)">Communication · Drain</div><div class="q-num">6 / 20</div></div>
@@ -482,7 +702,6 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <div class="slider-val" id="sv10">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(10)">← Back</button><button class="btn btn-primary" onclick="nextQ(10)">Next →</button></div>
     </div>
-    <div class="layer-divider" style="color:var(--cist);" id="div-cist">CIST Arm — Structure, regulation, internal order</div>
     <!-- Q11 Pattern · Routine -->
     <div class="q-card" id="q11">
       <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Pattern · Routine</div><div class="q-num">11 / 20</div></div>
@@ -533,7 +752,6 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <div class="slider-val" id="sv15">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(15)">← Back</button><button class="btn btn-primary" onclick="nextQ(15)">Next →</button></div>
     </div>
-    <div class="layer-divider" style="color:var(--oll);" id="div-oll">Øll Arm — Integration, threshold, volatility</div>
     <!-- Q16 Adaptation · Change -->
     <div class="q-card" id="q16">
       <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Adaptation · Change</div><div class="q-num">16 / 20</div></div>
@@ -585,7 +803,10 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(20)">← Back</button><button class="btn btn-primary" onclick="nextOrGenerate(20)">Complete →</button></div>
     </div>
 
-        <!-- BUSINESS EXTENSION QUESTIONS (shown only in business mode) -->
+        </div><!-- end sch-q-col -->
+  </div><!-- end sch-split-layout -->
+
+    <!-- BUSINESS EXTENSION QUESTIONS (shown only in business mode) -->
     <div id="biz-questions">
 
       <!-- BQ1 — Market alignment -->
@@ -929,6 +1150,112 @@ function testBypass() {
   showQ(1);
 }
 
+// ── Q to node mapping (paid assessment) ───────────────────────────────────
+// Each question maps to specific SC nodes in the diagram
+const Q_NODE_MAP = {
+  1:  ['node-sc1',  'node-a1',  'node-narc'],  // Presence/Shutdown → sc1, A1, NARC
+  2:  ['node-sc2',  'node-a1',  'node-narc'],  // Fear/Masking → sc2, A1, NARC
+  3:  ['node-sc3',  'node-a2',  'node-narc'],  // Interpretation → sc3, A2, NARC
+  4:  ['node-sc4',  'node-a2',  'node-narc'],  // Desire → sc4, A2, NARC
+  5:  ['node-sc3',  'node-a2',  'node-narc'],  // Intention → sc3, A2, NARC
+  6:  ['node-sc5',  'node-a3',  'node-cist'],  // Communication/Drain → sc5, A3, CIST
+  7:  ['node-sc6',  'node-a3',  'node-cist'],  // Attachment → sc6, A3, CIST
+  8:  ['node-sc5',  'node-a3',  'node-cist'],  // Expression → sc5, A3, CIST
+  9:  ['node-sc7',  'node-a4',  'node-cist'],  // Perspective → sc7, A4, CIST
+  10: ['node-sc8',  'node-a4',  'node-cist'],  // Memory → sc8, A4, CIST
+  11: ['node-sc10', 'node-a5',  'node-yarc'],  // Pattern/Routine → sc10, A5, YARC
+  12: ['node-sc9',  'node-a5',  'node-yarc'],  // Logic/Hyperfocus → sc9, A5, YARC
+  13: ['node-sc11', 'node-a6',  'node-yarc'],  // Alignment/Masking → sc11, A6, YARC
+  14: ['node-sc12', 'node-a6',  'node-yarc'],  // Protection/Sensory → sc12, A6, YARC
+  15: ['node-sc10', 'node-a5',  'node-yarc'],  // Pattern/Regulation → sc10, A5, YARC
+  16: ['node-sc13', 'node-a7',  'node-oll'],   // Adaptation → sc13, A7, Øll
+  17: ['node-sc16', 'node-a8',  'node-oll'],   // Core Identity → sc16, A8, Øll
+  18: ['node-sc14', 'node-a7',  'node-oll'],   // Instinct/Sensory → sc14, A7, Øll
+  19: ['node-sc14', 'node-a7',  'node-oll'],   // Drift/Shutdown → sc14, A7, Øll
+  20: ['node-sc15', 'node-a8',  'node-oll'],   // Integrity → sc15, A8, Øll
+};
+
+// Score accumulator for live OC bars
+const qScores = {};
+
+function lightDiagramNode(qNum, val) {
+  const nodes = Q_NODE_MAP[qNum];
+  if (!nodes) return;
+  // Store score
+  qScores[qNum] = val;
+  // Map score 1-5: low score = high activation = brighter node
+  // 1=fully activated (bright), 5=regulated (softer)
+  const activation = 1 - ((val-1)/4); // 1→1.0, 3→0.5, 5→0.0
+  const op = (0.25 + activation * 0.7).toFixed(2);
+
+  const svg = document.getElementById('sc-check-diagram');
+  if (!svg) return;
+
+  nodes.forEach(nodeId => {
+    const el = svg.getElementById ? svg.getElementById(nodeId) : document.getElementById(nodeId);
+    if (el) {
+      el.style.opacity = op;
+      el.style.transition = 'opacity 0.5s ease';
+    }
+  });
+
+  // Update live OC bars
+  updateLiveOCBars();
+}
+
+function highlightCurrentArm(qNum) {
+  const nodes = Q_NODE_MAP[qNum];
+  if (!nodes) return;
+  const svg = document.getElementById('sc-check-diagram');
+  if (!svg) return;
+  // Pulse the relevant OC diamond
+  const ocNode = nodes[2];
+  const el = document.getElementById(ocNode);
+  if (el) {
+    const prev = el.style.opacity || '0.35';
+    el.style.opacity = '0.8';
+    setTimeout(() => { el.style.opacity = parseFloat(prev) > 0.4 ? prev : '0.45'; }, 400);
+  }
+}
+
+function updateLiveOCBars() {
+  // NARC = Q1-Q5, YARC = Q6-Q10 (note: CIST in our arm map, but display label)
+  // Actually: Q1-5=NARC, Q6-10=CIST, Q11-15=YARC, Q16-20=Øll
+  const armQs = { narc:[1,2,3,4,5], cist:[6,7,8,9,10], yarc:[11,12,13,14,15], oll:[16,17,18,19,20] };
+  const totals = {};
+  let totalAnswered = 0;
+
+  Object.entries(armQs).forEach(([arm, qs]) => {
+    const answered = qs.filter(q => qScores[q] !== undefined);
+    if (answered.length) {
+      // Low score = high activation = higher OC contribution
+      const avg = answered.reduce((s,q) => s + (6 - qScores[q]), 0) / answered.length; // invert: 1→5, 5→1
+      totals[arm] = avg * answered.length;
+      totalAnswered += answered.length;
+    } else {
+      totals[arm] = 0;
+    }
+  });
+
+  const total = Object.values(totals).reduce((s,v) => s+v, 0) || 1;
+  const pcts = {};
+  Object.keys(totals).forEach(arm => {
+    pcts[arm] = totalAnswered === 0 ? 25 : Math.round(totals[arm]/total*100);
+  });
+
+  // Ensure sum = 100
+  const sum = Object.values(pcts).reduce((s,v) => s+v, 0);
+  if (sum !== 100 && totalAnswered > 0) pcts.oll += (100 - sum);
+
+  ['narc','cist','yarc','oll'].forEach(arm => {
+    const pct = pcts[arm] ?? 25;
+    const fill = document.getElementById(`live-${arm}-fill`);
+    const pctEl = document.getElementById(`live-${arm}-pct`);
+    if (fill) fill.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+  });
+}
+
 // ── Stripe ─────────────────────────────────────────────────────────────────
 const stripe = Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');
 const elements = stripe.elements();
@@ -959,14 +1286,16 @@ let reportData = null;
 
 // ── Slider ─────────────────────────────────────────────────────────────────
 function updateSlider(input, n) {
-  const pct = ((input.value - 1) / 9 * 100).toFixed(1);
+  const pct = ((input.value - 1) / 4 * 100).toFixed(1); // 1-5 scale
   input.style.setProperty('--pct', pct + '%');
   document.getElementById('sv' + n).textContent = input.value;
   answers['s' + n] = parseInt(input.value);
+  // Light up corresponding diagram node
+  if (n <= 20) lightDiagramNode(n, parseInt(input.value));
 }
 
 for (let i = 1; i <= 20; i++) {
-  answers['s' + i] = 5;
+  answers['s' + i] = 3; // default midpoint for 1-5
   const el = document.getElementById('s' + i);
   if (el) updateSlider(el, i);
 }
@@ -1064,12 +1393,21 @@ function showQ(n) {
     const el = document.getElementById('q'+i);
     if (el) { el.style.display = (i === n) ? 'block' : 'none'; }
   }
-  document.getElementById('div-subconscious').style.display = n === 11 ? 'flex' : 'none';
+  const divSub = document.getElementById('div-subconscious');
+  if (divSub) divSub.style.display = 'none'; // hidden in new layout
+
   const total = reportMode === 'business' ? 26 : 20;
   const pct = ((n-1)/total*100).toFixed(0);
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-label').textContent = `Question ${n} of ${total}`;
-  document.getElementById('prog-section').textContent = n <= 10 ? 'Conscious Layer' : n <= 20 ? 'Subconscious Layer' : 'Business Extension';
+
+  // Arm label
+  const armLabels = {1:'NARC — Self, survival, identity',6:'CIST — Structure, regulation, order',11:'YARC — Connection, expression, relationship',16:'Øll — Integration, threshold, volatility'};
+  const currentArm = n <= 5 ? 1 : n <= 10 ? 6 : n <= 15 ? 11 : 16;
+  document.getElementById('prog-section').textContent = armLabels[currentArm] || '';
+
+  // Highlight current arm in diagram
+  if (n <= 20) highlightCurrentArm(n);
   currentQ = n;
 }
 
