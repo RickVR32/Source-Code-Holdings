@@ -682,15 +682,38 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 <div class="results-wrap">
   <div class="r-hero">
     <div class="r-lbl">Awareness profile — <span id="r-obs-lbl">Human</span></div>
-    <div class="r-score-big" id="r-bs">—</div>
-    <div class="r-state-lbl" id="r-st">—</div>
+
+    <!-- AWARENESS LEVEL — top, this is the primary output -->
+    <div id="r-awareness-level" style="margin-bottom:24px;">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px;justify-content:center;">
+        <div style="font-family:var(--serif);font-size:5rem;font-weight:300;line-height:1;" id="r-level-num">—</div>
+        <div style="text-align:left;">
+          <div style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;" id="r-level-name">—</div>
+          <div style="font-size:0.72rem;color:var(--muted);" id="r-level-bs">Balance Scale —</div>
+        </div>
+      </div>
+      <div style="height:2px;background:var(--line);border-radius:1px;overflow:hidden;margin-bottom:10px;max-width:320px;margin-left:auto;margin-right:auto;">
+        <div id="r-level-bar" style="height:100%;border-radius:1px;transition:width 1s ease;"></div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;max-width:380px;margin:0 auto;" id="r-level-desc">—</div>
+    </div>
+
+    <!-- BS SCORE — secondary, with explanation -->
+    <div style="margin-bottom:8px;">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Balance Scale score</div>
+      <div class="r-score-big" id="r-bs">—</div>
+      <div class="r-state-lbl" id="r-st">—</div>
+    </div>
     <div class="r-divider"></div>
+    <div style="font-size:0.72rem;color:var(--muted);line-height:1.8;max-width:420px;margin:0 auto 8px;">
+      The Balance Scale runs from −5 (collapse) through 0 (Zero-Point / balance) to +5 (peak expression). Your score reflects your answers across all 16 nodes — a midpoint score of 3 on every slider produces approximately −2 to −3, reflecting the subconscious layer weighting in the scoring model.
+    </div>
     <div class="r-summary" id="r-sum">—</div>
   </div>
 
   <div class="r-diagram-wrap">
     <div class="r-diagram-lbl">Your Source Code map</div>
-    <svg id="result-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" width="100%"></svg>
+    <svg id="result-svg" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%"></svg>
   </div>
 
   <div class="r-grid">
@@ -705,32 +728,15 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
   </div>
 
   <div class="r-interp">
-    <div class="r-interp-lbl">Your awareness level</div>
-    <div id="r-awareness-level" style="margin-bottom:20px;">
-      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px;">
-        <div style="font-family:var(--serif);font-size:3rem;font-weight:300;line-height:1;" id="r-level-num">—</div>
-        <div>
-          <div style="font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;" id="r-level-name">—</div>
-          <div style="font-size:0.72rem;color:var(--muted);" id="r-level-bs">Balance Scale —</div>
-        </div>
-      </div>
-      <div style="height:2px;background:var(--line);border-radius:1px;overflow:hidden;margin-bottom:8px;">
-        <div id="r-level-bar" style="height:100%;border-radius:1px;transition:width 1s ease;"></div>
-      </div>
-      <div style="font-size:0.75rem;color:var(--muted);line-height:1.7;" id="r-level-desc">—</div>
-    </div>
-    <div class="r-interp-lbl" style="margin-top:20px;">Interpretation</div>
+    <div class="r-interp-lbl">Interpretation</div>
+    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:12px;line-height:1.6;">This assessment is a structured interpretive tool. It is not a clinical diagnostic instrument and is not a substitute for professional psychological support.</div>
     <div class="r-interp-text" id="r-interp">—</div>
   </div>
 
   <div class="r-cta">
     <div class="r-cta-title">Get the full picture</div>
     <div class="r-cta-sub">The SCH Check maps all 20 Source Codes across conscious and subconscious layers — producing a personalised written report of what your profile reveals and what it is producing in your life.</div>
-    <div class="r-email-row">
-      <input type="email" class="r-email-in" id="r-email" placeholder="your@email.com">
-      <button class="r-email-btn" onclick="submitEmail()">Notify me</button>
-    </div>
-    <div class="r-email-ok" id="r-email-ok">You're on the list.</div>
+    <a href="sch-check.html" class="r-email-btn" style="display:inline-block;text-decoration:none;margin-top:8px;">Get the full report — £19.99 →</a>
   </div>
 
   <div class="retake-row"><span class="retake-lnk" onclick="retake()">Retake assessment</span></div>
@@ -890,7 +896,7 @@ function awarenessState(v) {
   if (v<=1.5) return {label:'Instinct',desc:'Subconscious fully dominant. Øll and NARC running. Pre-reflective awareness.',col:'var(--oll)'};
   if (v<=3) return {label:'Reaction / Observation',desc:'NARC→CIST transition. Patterns becoming visible. Beginning to observe.',col:'var(--narc)'};
   if (v<=4.5) return {label:'Regulation',desc:'CIST and YARC rising. Conscious expanding. Choice returning.',col:'var(--cist)'};
-  return {label:'Presence',desc:'Zero-Point. 25/25/25/25. Both layers fully aligned.',col:'var(--yarc)'};
+  return {label:'Peak Expression',desc:'25/25/25/25. Both layers aligned. Peak expression threshold reached.',col:'var(--yarc)'};
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1241,7 +1247,7 @@ async function callClaude() {
   const name = document.getElementById('obs-name')?.value.trim()||'';
   const age = document.getElementById('obs-age')?.value.trim()||'';
 
-  const sys=`You are the DP-1 processor generating an awareness profile from Source Code node scores. Observer: ${observer}. Nodes 1-5: 1-1.5=Instinct, 1.5-3=Reaction/Observation, 3-4.5=Regulation, 5=Presence. NARC polar pair YARC. CIST polar pair Øll. Zero-Point=25% each. Balance Scale -5 to +5.
+  const sys=`You are the DP-1 processor generating an awareness profile from Source Code node scores. Observer: ${observer}. Nodes 1-5: 1-1.5=Instinct, 1.5-3=Reaction/Observation, 3-4.5=Regulation, 5=Presence. NARC polar pair YARC. CIST polar pair Øll. Zero-Point=0 on Balance Scale (25% each Observer Code). +5=peak expression threshold. Balance Scale -5 to +5.
 
 Return ONLY valid JSON:
 {"balance_scale":<-5 to 5, one decimal>,"awareness_avg":<1-10, one decimal>,"awareness_state":<string>,"bs_state":<string>,"observer_codes":{"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},"oc_descriptions":{"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},"unknown_count":<int>,"interpretation":<3-4 sentences, plain, second person>}
@@ -1288,7 +1294,7 @@ const AWARENESS_LEVELS = [
   { level:7,  name:'Expression',       col:'var(--yarc)',  desc:'Conscious creation. Your inner state reliably translates into outer reality through word, action, and presence.' },
   { level:8,  name:'Connection',       col:'var(--yarc)',  desc:'Genuine empathy without self-abandonment. You can see your role in the collective system.' },
   { level:9,  name:'Mastery',          col:'var(--yarc)',  desc:'Living by intention rather than impulse. Emotion is information, not instruction.' },
-  { level:10, name:'Creator / Source', col:'var(--amber)', desc:'Zero-Point. 25/25/25/25. Observer and code unified. You write the rules rather than following them.' },
+  { level:10, name:'Creator / Source', col:'var(--amber)', desc:'Peak expression threshold. 25/25/25/25 — Observer Code ratio fully balanced. Both layers aligned. The point from which the next developmental cycle begins.' },
 ];
 
 function getAwarenessLevel(bs) {
@@ -1363,11 +1369,13 @@ function renderResultSVG() {
   const live=document.getElementById('main-diagram');
   const result=document.getElementById('result-svg');
   result.innerHTML=live.innerHTML;
+  // Remove all inline style overrides so nodes show at their locked opacity
   NODES.forEach(n=>{
     const el=result.querySelector('#'+n.svgId);
     if(!el) return;
     const v=scores[n.id];
-    el.style.opacity=v===null||v===undefined?'0.06':(0.08+(v/10)*.85).toFixed(2);
+    // Scale is 1-5, map to 0.15-0.95 opacity range
+    el.style.opacity=v===null||v===undefined?'0.08':(0.15+(v/5)*.75).toFixed(2);
   });
 }
 
