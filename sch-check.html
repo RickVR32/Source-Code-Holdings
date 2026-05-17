@@ -931,10 +931,21 @@ function updateReportContents(mode) {
 // ── TEST BYPASS (remove before go-live) ────────────────────────────────────
 function testBypass() {
   const name = document.getElementById('pay-name')?.value.trim() || 'Test User';
-  answers = { name };
+  // Clear and set name — answers is const so mutate it
+  Object.keys(answers).forEach(k => delete answers[k]);
+  answers.name = name;
+
   reportMode = document.querySelector('.mode-btn.active')?.dataset?.mode || 'personal';
+
+  if (reportMode === 'business') {
+    document.getElementById('biz-questions').style.display = 'block';
+  } else {
+    const biz = document.getElementById('biz-questions');
+    if (biz) biz.style.display = 'none';
+  }
+
   showScreen('screen-questions');
-  startQuestions();
+  showQ(1);
 }
 
 // ── Stripe ─────────────────────────────────────────────────────────────────
