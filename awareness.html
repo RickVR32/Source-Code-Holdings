@@ -375,7 +375,7 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 <div class="intro">
   <div class="intro-label">Awareness Assessment</div>
   <h1 class="intro-title">Map your<br>Source Code</h1>
-  <p class="intro-copy">One question at a time. Each node in the Source Code architecture becomes a question — and the diagram maps your awareness in real time as you answer.</p>
+  <p class="intro-copy">Eight questions. Fast, honest, direct. Each one maps to one of the four Observer Code arms — enough to place you on the awareness scale and show your dominant pattern. Takes 2 minutes. The full picture is in the paid assessment.</p>
 
   <div style="background:var(--bg-soft);border:1px solid var(--panel-border);border-radius:12px;padding:20px 24px;margin-bottom:36px;text-align:left;">
     <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">The 3 awareness bracket questions</div>
@@ -755,112 +755,112 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 const NODES = [
   {id:'sc1', name:'Presence',      code:'NARC', slot:'A1', layer:'Conscious',    col:'#C4622D', svgId:'node-sc1', appId:'node-a1', ocId:'node-narc',
    profiles:{
-    Human:{k:true,  q:'How fully present are you in the current moment — not replaying the past or rehearsing the future?', lo:'Rarely present', hi:'Fully here'},
+    Human:{k:true,  q:'When a conversation gets emotionally charged, do you stay in it — or does part of you go somewhere else?', lo:'I go blank or withdraw', hi:'I stay present and grounded'},
     Plant:{k:true,  q:'Phototropic response rate — how actively is this organism orienting toward its resources?', lo:'Low response', hi:'High response'},
     Organisation:{k:true, q:'How present is this organisation in its market — aware of real-time signals rather than historical assumptions?', lo:'Lagging behind', hi:'Fully present'},
     Animal:{k:true, q:'How alert and environmentally aware is this animal in its current context?', lo:'Low alertness', hi:'Fully alert'}}},
 
   {id:'sc2', name:'Fear',          code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc2', appId:'node-a1', ocId:'node-narc',
    profiles:{
-    Human:{k:true,  q:'How much does unconscious fear shape your decisions — steering you away from things before consciously evaluating them?', lo:'Rarely drives me', hi:'Constantly present'},
+    Human:{k:false,  q:'How much does unconscious fear shape your decisions — steering you away from things before consciously evaluating them?', lo:'Rarely drives me', hi:'Constantly present'},
     Plant:{k:true,  q:'Stress response intensity — how strongly does this organism react to environmental threat signals?', lo:'Low response', hi:'High stress response'},
     Organisation:{k:true, q:'How much does survival anxiety drive decisions beneath the stated strategy?', lo:'Low fear drive', hi:'Fear dominant'},
     Animal:{k:true, q:'How dominant is the threat-response system in this animal\'s behavioural pattern?', lo:'Low threat response', hi:'Threat dominant'}}},
 
   {id:'sc3', name:'Intention',     code:'NARC', slot:'A2', layer:'Conscious',    col:'#C4622D', svgId:'node-sc3', appId:'node-a2', ocId:'node-narc',
    profiles:{
-    Human:{k:true,  q:'How clear is your sense of purpose behind your actions — do you act from direction or from habit?', lo:'Habit and circumstance', hi:'Defined intention'},
+    Human:{k:true,  q:'How much energy do you spend managing how you come across to other people?', lo:'Significant — always monitoring', hi:'Very little — same everywhere'},
     Plant:{k:false, u:'Plants do not demonstrate conscious goal-directed intention. Node unknown.'},
     Organisation:{k:true, q:'How clearly defined and actively pursued is the organisation\'s strategic intention?', lo:'Vague or absent', hi:'Precisely defined'},
     Animal:{k:true, q:'How goal-directed is this animal\'s behaviour?', lo:'Reactive only', hi:'Goal-directed'}}},
 
   {id:'sc4', name:'Desire',        code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc4', appId:'node-a2', ocId:'node-narc',
    profiles:{
-    Human:{k:true,  q:'How aware are you of the subconscious pull beneath your conscious goals — what are you really moving toward?', lo:'Unaware of the pull', hi:'Fully aware'},
+    Human:{k:false,  q:'How aware are you of the subconscious pull beneath your conscious goals — what are you really moving toward?', lo:'Unaware of the pull', hi:'Fully aware'},
     Plant:{k:true,  q:'Resource-seeking drive beyond current sufficiency.', lo:'Low drive', hi:'Strong expansion drive'},
     Organisation:{k:true, q:'What subconscious pull drives the organisation beyond its stated goals?', lo:'Unexamined', hi:'Clearly identified'},
     Animal:{k:true, q:'How strongly are instinctive drives operating beneath learned behaviour?', lo:'Suppressed', hi:'Dominant'}}},
 
   {id:'sc5', name:'Communication', code:'CIST', slot:'A3', layer:'Conscious',    col:'#534AB7', svgId:'node-sc5', appId:'node-a3', ocId:'node-cist',
    profiles:{
-    Human:{k:true,  q:'How effectively do you express and receive information — does what you say accurately reflect what you mean?', lo:'Frequently misread', hi:'Clear in both directions'},
+    Human:{k:true,  q:'When you have something important to say, how accurately does what comes out match what you actually meant?', lo:'They often diverge', hi:'Usually accurate'},
     Plant:{k:true,  q:'Chemical signalling output — how actively is this organism communicating via volatile compounds or mycorrhizal networks?', lo:'Low signalling', hi:'Active signalling'},
     Organisation:{k:true, q:'How clear and effective is internal and external communication across the system?', lo:'Poor flow', hi:'Highly effective'},
     Animal:{k:true, q:'How sophisticated and intentional is this animal\'s communication?', lo:'Minimal', hi:'Sophisticated'}}},
 
   {id:'sc6', name:'Attachment',    code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc6', appId:'node-a3', ocId:'node-cist',
    profiles:{
-    Human:{k:true,  q:'How much do your emotional bonds shape your decisions beneath awareness — including over-giving or over-controlling?', lo:'Minimal pull', hi:'Strongly attachment-driven'},
+    Human:{k:false,  q:'How much do your emotional bonds shape your decisions beneath awareness — including over-giving or over-controlling?', lo:'Minimal pull', hi:'Strongly attachment-driven'},
     Plant:{k:true,  q:'Symbiotic dependency — how strongly bonded to specific organisms or conditions for survival?', lo:'Low dependency', hi:'High dependency'},
     Organisation:{k:true, q:'How attached is the organisation to legacy or identity in ways that constrain adaptation?', lo:'Low attachment', hi:'Heavily constrained'},
     Animal:{k:true, q:'How strongly does social bonding influence this animal\'s behaviour?', lo:'Solitary', hi:'Deeply bonded'}}},
 
   {id:'sc7', name:'Perspective',   code:'CIST', slot:'A4', layer:'Conscious',    col:'#534AB7', svgId:'node-sc7', appId:'node-a4', ocId:'node-cist',
    profiles:{
-    Human:{k:true,  q:'Can you hold multiple viewpoints simultaneously — understanding another\'s position without abandoning your own?', lo:'One view at a time', hi:'Multiple simultaneously'},
+    Human:{k:true,  q:'When someone upsets you, how quickly can you see it from their side without losing your own position?', lo:'I struggle to step outside my view', hi:'Naturally — both stay clear'},
     Plant:{k:false, u:'Multi-perspective awareness requires a centralised nervous system. Unknown for plants.'},
     Organisation:{k:true, q:'How capable is the organisation of holding multiple stakeholder perspectives simultaneously?', lo:'Single viewpoint dominant', hi:'Multi-perspective'},
     Animal:{k:false, u:'Whether animals hold simultaneous perspective beyond immediate context is an open research question.'}}},
 
   {id:'sc8', name:'Memory',        code:'CIST', slot:'A4', layer:'Subconscious', col:'#534AB7', svgId:'node-sc8', appId:'node-a4', ocId:'node-cist',
    profiles:{
-    Human:{k:true,  q:'How much does past experience colour how you read the present — are old events shaping current interpretation?', lo:'See now clearly', hi:'Past always present'},
+    Human:{k:false,  q:'How much does past experience colour how you read the present — are old events shaping current interpretation?', lo:'See now clearly', hi:'Past always present'},
     Plant:{k:true,  q:'Epigenetic memory — how much does previous environmental exposure influence current responses?', lo:'Low memory influence', hi:'Strong memory shaping'},
     Organisation:{k:true, q:'How strongly does organisational history shape current decision-making?', lo:'History irrelevant', hi:'Strongly shaped by past'},
     Animal:{k:true, q:'How much does learned memory shape this animal\'s current patterns?', lo:'Low memory influence', hi:'Memory dominant'}}},
 
   {id:'sc9', name:'Logic',         code:'YARC', slot:'A5', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc9', appId:'node-a5', ocId:'node-yarc',
    profiles:{
-    Human:{k:true,  q:'How structured and rational is your thinking under pressure — can you reason clearly when stakes are high?', lo:'Reactive / scattered', hi:'Clear and structured'},
+    Human:{k:true,  q:'When your routine or plans are disrupted unexpectedly, what happens inside you?', lo:'Significant distress — affects my whole day', hi:'Minor adjustment — I adapt quickly'},
     Plant:{k:false, u:'Formal logical reasoning requires neural architecture not present in plants.'},
     Organisation:{k:true, q:'How rigorously does the organisation apply structured reasoning versus defaulting to intuition or politics?', lo:'Low rigour', hi:'Highly rigorous'},
     Animal:{k:false, u:'Formal reasoning capacity is highly variable across species. Requires species-specific data.'}}},
 
   {id:'sc10', name:'Pattern',      code:'YARC', slot:'A5', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc10', appId:'node-a5', ocId:'node-yarc',
    profiles:{
-    Human:{k:true,  q:'How aware are you of the loops you keep running — repeating behavioural sequences despite conscious awareness?', lo:'Mostly unaware', hi:'Can see my loops clearly'},
+    Human:{k:false,  q:'How aware are you of the loops you keep running — repeating behavioural sequences despite conscious awareness?', lo:'Mostly unaware', hi:'Can see my loops clearly'},
     Plant:{k:true,  q:'Growth pattern regularity — how consistent and adaptive are this organism\'s structural patterns?', lo:'Irregular', hi:'Highly consistent'},
     Organisation:{k:true, q:'What recurring patterns persist across leadership changes, restructures, and strategy refreshes?', lo:'Fresh each time', hi:'Deep recurring loops'},
     Animal:{k:true, q:'How ingrained are this animal\'s habitual patterns?', lo:'Flexible', hi:'Deeply ingrained'}}},
 
   {id:'sc11', name:'Alignment',    code:'YARC', slot:'A6', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc11', appId:'node-a6', ocId:'node-yarc',
    profiles:{
-    Human:{k:true,  q:'How consistent are your values and actual behaviour — particularly under stress when the cost is real?', lo:'Significant gap', hi:'Fully consistent'},
+    Human:{k:true,  q:'How consistent is the version of you that people see with the version you experience privately?', lo:'Very different — I perform most of the time', hi:'Very similar — what people see is who I am'},
     Plant:{k:true,  q:'Phenotypic alignment — how well does this organism\'s form match the optimal strategy for its environment?', lo:'Misaligned', hi:'Perfectly aligned'},
     Organisation:{k:true, q:'How consistently does the organisation act in accordance with stated values when costly?', lo:'Values are performance', hi:'Deeply lived'},
     Animal:{k:true, q:'How well does this animal\'s behaviour align with its biological drives?', lo:'Misaligned', hi:'Fully aligned'}}},
 
   {id:'sc12', name:'Protection',   code:'YARC', slot:'A6', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc',
    profiles:{
-    Human:{k:true,  q:'How much energy goes into defending against perceived threats — are defensive mechanisms consuming significant resource?', lo:'Low defensive load', hi:'Constant high defence'},
+    Human:{k:false, q:'How much energy goes into defending against perceived threats — are defensive mechanisms consuming significant resource?', lo:'Low defensive load', hi:'Constant high defence'},
     Plant:{k:true,  q:'Defensive compound production — how actively is this organism synthesising protective mechanisms?', lo:'Low defence', hi:'High defence output'},
     Organisation:{k:true, q:'How much organisational energy is consumed by defending territory or reputation at the cost of growth?', lo:'Growth-focused', hi:'Heavily defensive'},
     Animal:{k:true, q:'How dominant are defensive behaviours in this animal\'s repertoire?', lo:'Low defence', hi:'Defence dominant'}}},
 
   {id:'sc13', name:'Adaptation',   code:'Øll',  slot:'A7', layer:'Conscious',    col:'#A0426B', svgId:'node-sc13', appId:'node-a7', ocId:'node-oll',
    profiles:{
-    Human:{k:true,  q:'How well do you respond to changing conditions — not just tolerating change in theory but actually updating your approach?', lo:'Resist change', hi:'Adapt fluidly'},
+    Human:{k:true,  q:'After spending extended time with people — even people you like — how do you feel?', lo:'Depleted — need significant time alone', hi:'Energised or neutral'},
     Plant:{k:true,  q:'Phenotypic plasticity — how significantly does this organism modify structure in response to environmental change?', lo:'Rigid form', hi:'High plasticity'},
     Organisation:{k:true, q:'How capable is the organisation of genuinely adapting versus performing adaptation without changing?', lo:'Rigid', hi:'Genuinely adaptive'},
     Animal:{k:true, q:'How readily does this animal modify its behaviour in response to novel conditions?', lo:'Slow to adapt', hi:'Rapidly adaptive'}}},
 
   {id:'sc14', name:'Instinct',     code:'Øll',  slot:'A7', layer:'Subconscious', col:'#A0426B', svgId:'node-sc14', appId:'node-a7', ocId:'node-oll',
    profiles:{
-    Human:{k:true,  q:'How accurate are your immediate gut responses — do pre-conscious rapid reactions tend to serve you well?', lo:'Often misleads me', hi:'Consistently accurate'},
+    Human:{k:false,  q:'How accurate are your immediate gut responses — do pre-conscious rapid reactions tend to serve you well?', lo:'Often misleads me', hi:'Consistently accurate'},
     Plant:{k:true,  q:'Tropism responsiveness — how rapidly and accurately does this organism respond to directional stimuli?', lo:'Slow response', hi:'Rapid accurate response'},
     Organisation:{k:true, q:'How accurate are the organisation\'s rapid intuitive responses made before full analysis?', lo:'Frequently wrong', hi:'Consistently accurate'},
     Animal:{k:true, q:'How accurate and well-calibrated are this animal\'s instinctive responses?', lo:'Poor calibration', hi:'Well-calibrated'}}},
 
   {id:'sc15', name:'Integrity',    code:'Øll',  slot:'A8', layer:'Conscious',    col:'#A0426B', svgId:'node-sc15', appId:'node-a8', ocId:'node-oll',
    profiles:{
-    Human:{k:true,  q:'How honest are you with yourself about who you are — including the patterns that don\'t serve you?', lo:'Significant blind spots', hi:'Clear self-perception'},
+    Human:{k:true,  q:'How honest are you about what you actually need — with yourself and with others?', lo:'I present as needing less than I do', hi:'I name what I need'},
     Plant:{k:false, u:'Integrity as self-honesty requires a reflective self-model. Unknown for plants.'},
     Organisation:{k:true, q:'How honest is the organisation with itself — acknowledging failure rather than managing narrative?', lo:'Narrative managed', hi:'Fully honest internally'},
     Animal:{k:false, u:'Whether animals maintain a reflective self-model capable of integrity is an open question.'}}},
 
   {id:'sc16', name:'Core Identity',code:'Øll',  slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a8', ocId:'node-oll',
    profiles:{
-    Human:{k:true,  q:'How clearly defined is your deepest sense of self — the bedrock beneath all your roles and achievements?', lo:'Undefined / shifting', hi:'Clear and stable'},
+    Human:{k:false,  q:'How clearly defined is your deepest sense of self — the bedrock beneath all your roles and achievements?', lo:'Undefined / shifting', hi:'Clear and stable'},
     Plant:{k:true,  q:'Genetic identity expression — how consistently does this organism express its core programme across variable conditions?', lo:'Variable expression', hi:'Consistent expression'},
     Organisation:{k:true, q:'What is the stable core of this organisation beneath branding and leadership — and how clearly is it expressed?', lo:'Unclear or absent', hi:'Clearly expressed'},
     Animal:{k:true, q:'How stable and consistent is this animal\'s fundamental character across contexts?', lo:'Highly variable', hi:'Stable and consistent'}}},
