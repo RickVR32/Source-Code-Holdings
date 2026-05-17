@@ -358,6 +358,11 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
       <div id="card-errors"></div>
       <button class="pay-btn" id="pay-btn" onclick="handlePayment()">Pay £19.99 and begin →</button>
       <div class="pay-secure">🔒 &nbsp;Secured by Stripe · SSL encrypted · No card data stored</div>
+      <!-- TEST BYPASS — remove before go-live -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.15);text-align:center;">
+        <div style="font-size:0.62rem;color:rgba(255,255,255,0.4);margin-bottom:8px;letter-spacing:0.1em;text-transform:uppercase;">Dev testing only</div>
+        <button onclick="testBypass()" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.6);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer;letter-spacing:0.08em;">Skip payment →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -921,6 +926,15 @@ function updateReportContents(mode) {
       <div class="rc-card"><div class="rc-num">06</div><div class="rc-title">Downloadable PDF</div><div class="rc-desc">Your report is yours to keep, print, and share. Save it. Return to it. Share it with a therapist, coach, or trusted person.</div></div>
     `;
   }
+}
+
+// ── TEST BYPASS (remove before go-live) ────────────────────────────────────
+function testBypass() {
+  const name = document.getElementById('pay-name')?.value.trim() || 'Test User';
+  answers = { name };
+  reportMode = document.querySelector('.mode-btn.active')?.dataset?.mode || 'personal';
+  showScreen('screen-questions');
+  startQuestions();
 }
 
 // ── Stripe ─────────────────────────────────────────────────────────────────
