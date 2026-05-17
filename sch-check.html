@@ -306,7 +306,7 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
     <div class="landing-hero">
       <div class="hero-label" id="hero-label">SCH Check — Full Report</div>
       <h1 class="hero-title" id="hero-title">Your complete<br>awareness architecture</h1>
-      <p class="hero-copy" id="hero-copy">Twenty questions. All 20 Source Codes scored across both conscious and subconscious layers. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised written report you keep forever.</p>
+      <p class="hero-copy" id="hero-copy">Twenty questions drawn from therapeutic assessment methodology — mapped onto the Source Code framework. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised report that reads like it was written for you specifically.</p>
       <div class="hero-price" id="hero-price">£19.99</div>
       <div class="hero-price-sub" id="hero-price-sub">One-time · Instant report · No subscription</div>
     </div>
@@ -379,232 +379,213 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
     </div>
 
     <!-- CONSCIOUS LAYER — 10 questions -->
-    <div class="layer-divider" id="div-conscious">Conscious Layer — what you show</div>
-
-    <!-- Q1 Presence -->
+    <div class="layer-divider" id="div-conscious">Twenty questions across the four Observer Code arms</div>
+    <div class="layer-divider" style="color:var(--narc);" id="div-narc">NARC Arm — Self, survival, identity</div>
+    <!-- Q1 Presence · Shutdown -->
     <div class="q-card active" id="q1">
-      <div class="q-meta"><div class="q-badge">Conscious · Presence</div><div class="q-num">1 / 20</div></div>
-      <div class="q-text">How fully present are you in the current moment?</div>
-      <div class="q-subtext">Your ability to be genuinely here — not replaying the past or rehearsing the future — in conversations, decisions, and everyday experience.</div>
-      <input type="range" id="s1" min="1" max="10" value="5" oninput="updateSlider(this,1)">
-      <div class="slider-labels"><span>Rarely present</span><span>Fully present</span></div>
-      <div class="slider-val" id="sv1">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Presence · Shutdown</div><div class="q-num">1 / 20</div></div>
+      <div class="q-text">When a conversation becomes emotionally intense, what happens to your ability to stay in it?</div>
+      <div class="q-subtext">Not how you appear — what actually happens inside. Whether you remain present and accessible or whether part of you disappears.</div>
+      <input type="range" id="s1" min="1" max="5" value="3" oninput="updateSlider(this,1)">
+      <div class="slider-labels"><span>I shut down or go blank</span><span>I stay present and grounded</span></div>
+      <div class="slider-val" id="sv1">3</div>
       <div class="q-nav"><div></div><button class="btn btn-primary" onclick="nextQ(1)">Next →</button></div>
     </div>
-
-    <!-- Q2 Interpretation -->
+    <!-- Q2 Fear · Masking -->
     <div class="q-card" id="q2">
-      <div class="q-meta"><div class="q-badge">Conscious · Interpretation</div><div class="q-num">2 / 20</div></div>
-      <div class="q-text">How accurately do you read situations and information?</div>
-      <div class="q-subtext">Whether you process what is actually happening or filter it through assumptions, prior experience, and emotional state.</div>
-      <input type="range" id="s2" min="1" max="10" value="5" oninput="updateSlider(this,2)">
-      <div class="slider-labels"><span>Heavily filtered</span><span>Highly accurate</span></div>
-      <div class="slider-val" id="sv2">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Fear · Masking</div><div class="q-num">2 / 20</div></div>
+      <div class="q-text">How much energy do you spend managing how you come across to other people?</div>
+      <div class="q-subtext">The constant monitoring, adjusting, and performing. The work that others don't see but that you feel the cost of.</div>
+      <input type="range" id="s2" min="1" max="5" value="3" oninput="updateSlider(this,2)">
+      <div class="slider-labels"><span>Significant — always monitoring</span><span>Very little — I'm the same everywhere</span></div>
+      <div class="slider-val" id="sv2">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(2)">← Back</button><button class="btn btn-primary" onclick="nextQ(2)">Next →</button></div>
     </div>
-
-    <!-- Q3 Logic -->
+    <!-- Q3 Interpretation · Literal -->
     <div class="q-card" id="q3">
-      <div class="q-meta"><div class="q-badge">Conscious · Logic</div><div class="q-num">3 / 20</div></div>
-      <div class="q-text">How structured and rational is your thinking under pressure?</div>
-      <div class="q-subtext">Your ability to reason clearly when it matters — not just when conditions are easy, but when stakes are high and emotions are activated.</div>
-      <input type="range" id="s3" min="1" max="10" value="5" oninput="updateSlider(this,3)">
-      <div class="slider-labels"><span>Reactive / scattered</span><span>Clear and structured</span></div>
-      <div class="slider-val" id="sv3">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Interpretation · Literal</div><div class="q-num">3 / 20</div></div>
+      <div class="q-text">When someone says something ambiguous, what is your default response?</div>
+      <div class="q-subtext">Whether you naturally read context and subtext or whether you need it made explicit before you feel safe acting on it.</div>
+      <input type="range" id="s3" min="1" max="5" value="3" oninput="updateSlider(this,3)">
+      <div class="slider-labels"><span>I take it at face value</span><span>I read between the lines naturally</span></div>
+      <div class="slider-val" id="sv3">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(3)">← Back</button><button class="btn btn-primary" onclick="nextQ(3)">Next →</button></div>
     </div>
-
-    <!-- Q4 Perspective -->
+    <!-- Q4 Desire · Intensity -->
     <div class="q-card" id="q4">
-      <div class="q-meta"><div class="q-badge">Conscious · Perspective</div><div class="q-num">4 / 20</div></div>
-      <div class="q-text">Can you hold multiple viewpoints simultaneously?</div>
-      <div class="q-subtext">The ability to understand someone else's position without abandoning your own — to see the full picture rather than only your angle.</div>
-      <input type="range" id="s4" min="1" max="10" value="5" oninput="updateSlider(this,4)">
-      <div class="slider-labels"><span>One view at a time</span><span>Multiple simultaneously</span></div>
-      <div class="slider-val" id="sv4">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Desire · Intensity</div><div class="q-num">4 / 20</div></div>
+      <div class="q-text">When something genuinely interests you, how does the rest of your life relate to it?</div>
+      <div class="q-subtext">The pull of deep interest — whether it enriches everything or consumes everything.</div>
+      <input type="range" id="s4" min="1" max="5" value="3" oninput="updateSlider(this,4)">
+      <div class="slider-labels"><span>Everything else fades — hours disappear</span><span>I engage deeply but maintain proportion</span></div>
+      <div class="slider-val" id="sv4">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(4)">← Back</button><button class="btn btn-primary" onclick="nextQ(4)">Next →</button></div>
     </div>
-
-    <!-- Q5 Prediction -->
+    <!-- Q5 Intention · Identity -->
     <div class="q-card" id="q5">
-      <div class="q-meta"><div class="q-badge">Conscious · Prediction</div><div class="q-num">5 / 20</div></div>
-      <div class="q-text">How accurately do you anticipate outcomes?</div>
-      <div class="q-subtext">Pattern recognition applied forward — whether your predictions about people, situations, and consequences tend to be accurate.</div>
-      <input type="range" id="s5" min="1" max="10" value="5" oninput="updateSlider(this,5)">
-      <div class="slider-labels"><span>Frequently surprised</span><span>Usually accurate</span></div>
-      <div class="slider-val" id="sv5">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Intention · Identity</div><div class="q-num">5 / 20</div></div>
+      <div class="q-text">How clearly can you separate what you actually want from what you have been conditioned to want?</div>
+      <div class="q-subtext">The difference between your own wants and the inherited, learned, or performed wants that feel like yours but may not be.</div>
+      <input type="range" id="s5" min="1" max="5" value="3" oninput="updateSlider(this,5)">
+      <div class="slider-labels"><span>The two feel identical most of the time</span><span>I know the difference clearly</span></div>
+      <div class="slider-val" id="sv5">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(5)">← Back</button><button class="btn btn-primary" onclick="nextQ(5)">Next →</button></div>
     </div>
-
-    <!-- Q6 Intention -->
+    <div class="layer-divider" style="color:var(--yarc);" id="div-yarc">YARC Arm — Connection, expression, relationship</div>
+    <!-- Q6 Communication · Drain -->
     <div class="q-card" id="q6">
-      <div class="q-meta"><div class="q-badge">Conscious · Intention</div><div class="q-num">6 / 20</div></div>
-      <div class="q-text">How clear is your sense of purpose behind your actions?</div>
-      <div class="q-subtext">Whether you act from a defined internal direction or tend to respond to circumstance, expectation, or habit without conscious choice.</div>
-      <input type="range" id="s6" min="1" max="10" value="5" oninput="updateSlider(this,6)">
-      <div class="slider-labels"><span>Unclear / reactive</span><span>Clear and deliberate</span></div>
-      <div class="slider-val" id="sv6">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--yarc);color:var(--yarc)">Communication · Drain</div><div class="q-num">6 / 20</div></div>
+      <div class="q-text">After spending extended time with people — even people you like — how do you feel?</div>
+      <div class="q-subtext">Not whether you enjoy it. What it costs your system. How much recovery time your nervous system needs afterwards.</div>
+      <input type="range" id="s6" min="1" max="5" value="3" oninput="updateSlider(this,6)">
+      <div class="slider-labels"><span>Depleted — I need significant time alone</span><span>Energised or neutral — people don't drain me</span></div>
+      <div class="slider-val" id="sv6">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(6)">← Back</button><button class="btn btn-primary" onclick="nextQ(6)">Next →</button></div>
     </div>
-
-    <!-- Q7 Communication -->
+    <!-- Q7 Attachment · Relationship -->
     <div class="q-card" id="q7">
-      <div class="q-meta"><div class="q-badge">Conscious · Communication</div><div class="q-num">7 / 20</div></div>
-      <div class="q-text">How effectively do you express and receive information?</div>
-      <div class="q-subtext">Both directions — how clearly you communicate what you mean, and how accurately you receive what others are actually saying.</div>
-      <input type="range" id="s7" min="1" max="10" value="5" oninput="updateSlider(this,7)">
-      <div class="slider-labels"><span>Frequently misread</span><span>Clear in both directions</span></div>
-      <div class="slider-val" id="sv7">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--yarc);color:var(--yarc)">Attachment · Relationship</div><div class="q-num">7 / 20</div></div>
+      <div class="q-text">In your closest relationships, which pattern is most familiar to you?</div>
+      <div class="q-subtext">The pattern underneath the relationship — what you do to keep people, or what happens when you sense them pulling away.</div>
+      <input type="range" id="s7" min="1" max="5" value="3" oninput="updateSlider(this,7)">
+      <div class="slider-labels"><span>I work hard to keep people close</span><span>I trust the connection — I don't maintain it anxiously</span></div>
+      <div class="slider-val" id="sv7">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(7)">← Back</button><button class="btn btn-primary" onclick="nextQ(7)">Next →</button></div>
     </div>
-
-    <!-- Q8 Adaptation -->
+    <!-- Q8 Communication · Expression -->
     <div class="q-card" id="q8">
-      <div class="q-meta"><div class="q-badge">Conscious · Adaptation</div><div class="q-num">8 / 20</div></div>
-      <div class="q-text">How well do you respond to changing conditions?</div>
-      <div class="q-subtext">Flexibility under real pressure — not just tolerating change in theory, but actually updating your approach when circumstances shift.</div>
-      <input type="range" id="s8" min="1" max="10" value="5" oninput="updateSlider(this,8)">
-      <div class="slider-labels"><span>Resist change</span><span>Adapt fluidly</span></div>
-      <div class="slider-val" id="sv8">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--yarc);color:var(--yarc)">Communication · Expression</div><div class="q-num">8 / 20</div></div>
+      <div class="q-text">When you have something important to say, how accurately does what comes out match what you meant?</div>
+      <div class="q-subtext">The gap between what is inside and what is expressed. Whether your words carry what you actually feel and think.</div>
+      <input type="range" id="s8" min="1" max="5" value="3" oninput="updateSlider(this,8)">
+      <div class="slider-labels"><span>Rarely — what I mean and what I say diverge</span><span>Usually — I can express myself accurately</span></div>
+      <div class="slider-val" id="sv8">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(8)">← Back</button><button class="btn btn-primary" onclick="nextQ(8)">Next →</button></div>
     </div>
-
-    <!-- Q9 Alignment -->
+    <!-- Q9 Perspective · Empathy -->
     <div class="q-card" id="q9">
-      <div class="q-meta"><div class="q-badge">Conscious · Alignment</div><div class="q-num">9 / 20</div></div>
-      <div class="q-text">How consistent are your values and your actual behaviour?</div>
-      <div class="q-subtext">The gap between what you believe in and how you actually act — particularly under stress, when the cost of living your values is real.</div>
-      <input type="range" id="s9" min="1" max="10" value="5" oninput="updateSlider(this,9)">
-      <div class="slider-labels"><span>Significant gap</span><span>Fully consistent</span></div>
-      <div class="slider-val" id="sv9">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--yarc);color:var(--yarc)">Perspective · Empathy</div><div class="q-num">9 / 20</div></div>
+      <div class="q-text">When someone is upset, how naturally do you understand why without them having to explain it?</div>
+      <div class="q-subtext">Whether emotional states in others are legible to you instinctively or whether you need more data than most people seem to.</div>
+      <input type="range" id="s9" min="1" max="5" value="3" oninput="updateSlider(this,9)">
+      <div class="slider-labels"><span>I struggle — I need more context than most</span><span>I read emotional states without words</span></div>
+      <div class="slider-val" id="sv9">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(9)">← Back</button><button class="btn btn-primary" onclick="nextQ(9)">Next →</button></div>
     </div>
-
-    <!-- Q10 Integrity -->
+    <!-- Q10 Memory · Relationships -->
     <div class="q-card" id="q10">
-      <div class="q-meta"><div class="q-badge">Conscious · Integrity</div><div class="q-num">10 / 20</div></div>
-      <div class="q-text">How honest are you with yourself about who you are?</div>
-      <div class="q-subtext">Not moral honesty — awareness honesty. Whether you can see your own patterns clearly, including the ones that don't serve you.</div>
-      <input type="range" id="s10" min="1" max="10" value="5" oninput="updateSlider(this,10)">
-      <div class="slider-labels"><span>Significant blind spots</span><span>Clear self-perception</span></div>
-      <div class="slider-val" id="sv10">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--yarc);color:var(--yarc)">Memory · Relationships</div><div class="q-num">10 / 20</div></div>
+      <div class="q-text">When a relationship ends or changes significantly, how long does it stay with you?</div>
+      <div class="q-subtext">Not grief — that is normal. Whether the loss layers over how you see new relationships and new people.</div>
+      <input type="range" id="s10" min="1" max="5" value="3" oninput="updateSlider(this,10)">
+      <div class="slider-labels"><span>A long time — it colours what comes after</span><span>I grieve it and move forward cleanly</span></div>
+      <div class="slider-val" id="sv10">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(10)">← Back</button><button class="btn btn-primary" onclick="nextQ(10)">Next →</button></div>
     </div>
-
-    <!-- SUBCONSCIOUS DIVIDER -->
-    <div class="layer-divider" id="div-subconscious" style="display:none;">Subconscious Layer — what drives you</div>
-
-    <!-- Q11 Fear -->
+    <div class="layer-divider" style="color:var(--cist);" id="div-cist">CIST Arm — Structure, regulation, internal order</div>
+    <!-- Q11 Pattern · Routine -->
     <div class="q-card" id="q11">
-      <div class="q-meta"><div class="q-badge">Subconscious · Fear</div><div class="q-num">11 / 20</div></div>
-      <div class="q-text">How much does fear shape your decisions without you choosing it?</div>
-      <div class="q-subtext">Not conscious caution — the fear that runs quietly underneath and steers you away from things before you've consciously evaluated them.</div>
-      <input type="range" id="s11" min="1" max="10" value="5" oninput="updateSlider(this,11)">
-      <div class="slider-labels"><span>Rarely drives me</span><span>Constantly present</span></div>
-      <div class="slider-val" id="sv11">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Pattern · Routine</div><div class="q-num">11 / 20</div></div>
+      <div class="q-text">When your routine is disrupted unexpectedly, what happens inside you?</div>
+      <div class="q-subtext">The internal experience — not how you appear. Whether disruption to structure triggers something real in your system.</div>
+      <input type="range" id="s11" min="1" max="5" value="3" oninput="updateSlider(this,11)">
+      <div class="slider-labels"><span>Significant distress — it affects my whole day</span><span>Minor adjustment — I adapt without losing my footing</span></div>
+      <div class="slider-val" id="sv11">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(11)">← Back</button><button class="btn btn-primary" onclick="nextQ(11)">Next →</button></div>
     </div>
-
-    <!-- Q12 Memory -->
+    <!-- Q12 Logic · Hyperfocus -->
     <div class="q-card" id="q12">
-      <div class="q-meta"><div class="q-badge">Subconscious · Memory</div><div class="q-num">12 / 20</div></div>
-      <div class="q-text">How much does past experience colour how you read the present?</div>
-      <div class="q-subtext">Whether old events — good or bad — are actively shaping how you interpret current people, situations, and what feels safe or possible.</div>
-      <input type="range" id="s12" min="1" max="10" value="5" oninput="updateSlider(this,12)">
-      <div class="slider-labels"><span>I see now clearly</span><span>Past is always present</span></div>
-      <div class="slider-val" id="sv12">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Logic · Hyperfocus</div><div class="q-num">12 / 20</div></div>
+      <div class="q-text">When you are working on something that fully engages you, how aware are you of time passing?</div>
+      <div class="q-subtext">The quality of absorption. Whether you can engage completely and still maintain a relationship with ordinary time.</div>
+      <input type="range" id="s12" min="1" max="5" value="3" oninput="updateSlider(this,12)">
+      <div class="slider-labels"><span>Not at all — hours disappear without me noticing</span><span>Fully aware — I engage deeply and track time</span></div>
+      <div class="slider-val" id="sv12">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(12)">← Back</button><button class="btn btn-primary" onclick="nextQ(12)">Next →</button></div>
     </div>
-
-    <!-- Q13 Trauma -->
+    <!-- Q13 Alignment · Masking -->
     <div class="q-card" id="q13">
-      <div class="q-meta"><div class="q-badge">Subconscious · Trauma</div><div class="q-num">13 / 20</div></div>
-      <div class="q-text">How much unprocessed experience is still running as background?</div>
-      <div class="q-subtext">Events that haven't been fully integrated — that still produce automatic reactions, avoidance, or emotional responses disproportionate to the trigger.</div>
-      <input type="range" id="s13" min="1" max="10" value="5" oninput="updateSlider(this,13)">
-      <div class="slider-labels"><span>Little unprocessed</span><span>Significant background load</span></div>
-      <div class="slider-val" id="sv13">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Alignment · Masking</div><div class="q-num">13 / 20</div></div>
+      <div class="q-text">How consistent is the version of you that people see with the version you experience privately?</div>
+      <div class="q-subtext">The distance between your performed self and your actual self. Whether you are presenting or whether you are present.</div>
+      <input type="range" id="s13" min="1" max="5" value="3" oninput="updateSlider(this,13)">
+      <div class="slider-labels"><span>Very different — I perform most of the time</span><span>Very similar — what people see is who I am</span></div>
+      <div class="slider-val" id="sv13">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(13)">← Back</button><button class="btn btn-primary" onclick="nextQ(13)">Next →</button></div>
     </div>
-
-    <!-- Q14 Desire -->
+    <!-- Q14 Protection · Sensory -->
     <div class="q-card" id="q14">
-      <div class="q-meta"><div class="q-badge">Subconscious · Desire</div><div class="q-num">14 / 20</div></div>
-      <div class="q-text">How aware are you of what is actually pulling you forward?</div>
-      <div class="q-subtext">The subconscious drive beneath your conscious goals — what you're really moving toward, which may or may not match what you say you want.</div>
-      <input type="range" id="s14" min="1" max="10" value="5" oninput="updateSlider(this,14)">
-      <div class="slider-labels"><span>Unclear what drives me</span><span>Fully aware of my pull</span></div>
-      <div class="slider-val" id="sv14">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Protection · Sensory</div><div class="q-num">14 / 20</div></div>
+      <div class="q-text">When your environment becomes too loud, bright, or busy, what does your system do?</div>
+      <div class="q-subtext">Whether sensory input is processed as information or whether it overrides your functioning and forces withdrawal.</div>
+      <input type="range" id="s14" min="1" max="5" value="3" oninput="updateSlider(this,14)">
+      <div class="slider-labels"><span>I need to leave — it overrides my system</span><span>I adjust and manage — it doesn't override me</span></div>
+      <div class="slider-val" id="sv14">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(14)">← Back</button><button class="btn btn-primary" onclick="nextQ(14)">Next →</button></div>
     </div>
-
-    <!-- Q15 Attachment -->
+    <!-- Q15 Pattern · Regulation -->
     <div class="q-card" id="q15">
-      <div class="q-meta"><div class="q-badge">Subconscious · Attachment</div><div class="q-num">15 / 20</div></div>
-      <div class="q-text">How much do your emotional bonds shape your behaviour?</div>
-      <div class="q-subtext">Whether attachment to people, outcomes, or identities is driving decisions beneath your awareness — including over-giving, over-protecting, or over-controlling.</div>
-      <input type="range" id="s15" min="1" max="10" value="5" oninput="updateSlider(this,15)">
-      <div class="slider-labels"><span>Minimal attachment pull</span><span>Strongly attachment-driven</span></div>
-      <div class="slider-val" id="sv15">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Pattern · Regulation</div><div class="q-num">15 / 20</div></div>
+      <div class="q-text">Do you have specific routines, rituals, or repeated behaviours that help you feel regulated?</div>
+      <div class="q-subtext">Whether you rely on structure to maintain stability. Whether certain patterns are essential rather than optional.</div>
+      <input type="range" id="s15" min="1" max="5" value="3" oninput="updateSlider(this,15)">
+      <div class="slider-labels"><span>Yes — they are essential, not optional</span><span>Rarely — I don't rely on specific patterns</span></div>
+      <div class="slider-val" id="sv15">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(15)">← Back</button><button class="btn btn-primary" onclick="nextQ(15)">Next →</button></div>
     </div>
-
-    <!-- Q16 Pattern -->
+    <div class="layer-divider" style="color:var(--oll);" id="div-oll">Øll Arm — Integration, threshold, volatility</div>
+    <!-- Q16 Adaptation · Change -->
     <div class="q-card" id="q16">
-      <div class="q-meta"><div class="q-badge">Subconscious · Pattern</div><div class="q-num">16 / 20</div></div>
-      <div class="q-text">How aware are you of the loops you keep running?</div>
-      <div class="q-subtext">Repeating behavioural sequences — the same relationship dynamic, the same self-sabotage, the same emotional cycle — playing out despite conscious awareness.</div>
-      <input type="range" id="s16" min="1" max="10" value="5" oninput="updateSlider(this,16)">
-      <div class="slider-labels"><span>Mostly unaware</span><span>Can see my loops clearly</span></div>
-      <div class="slider-val" id="sv16">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Adaptation · Change</div><div class="q-num">16 / 20</div></div>
+      <div class="q-text">When circumstances change significantly and without warning, where do you land?</div>
+      <div class="q-subtext">The honest aftermath of sudden change. How long your system needs to find its footing and what happens in the gap.</div>
+      <input type="range" id="s16" min="1" max="5" value="3" oninput="updateSlider(this,16)">
+      <div class="slider-labels"><span>Dysregulated for a sustained period</span><span>Uncomfortable briefly then functional</span></div>
+      <div class="slider-val" id="sv16">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(16)">← Back</button><button class="btn btn-primary" onclick="nextQ(16)">Next →</button></div>
     </div>
-
-    <!-- Q17 Protection -->
+    <!-- Q17 Core Identity · Social -->
     <div class="q-card" id="q17">
-      <div class="q-meta"><div class="q-badge">Subconscious · Protection</div><div class="q-num">17 / 20</div></div>
-      <div class="q-text">How much energy goes into defending against perceived threats?</div>
-      <div class="q-subtext">The subconscious defensive layer — whether you're spending significant internal resource on protection that may be unnecessary given your actual current circumstances.</div>
-      <input type="range" id="s17" min="1" max="10" value="5" oninput="updateSlider(this,17)">
-      <div class="slider-labels"><span>Low defensive load</span><span>Constant high defence</span></div>
-      <div class="slider-val" id="sv17">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Core Identity · Social</div><div class="q-num">17 / 20</div></div>
+      <div class="q-text">After a period of sustained social performance, who do you return to when you are alone?</div>
+      <div class="q-subtext">Whether you find yourself — quickly and clearly — or whether extended social periods leave you unsure of who you are.</div>
+      <input type="range" id="s17" min="1" max="5" value="3" oninput="updateSlider(this,17)">
+      <div class="slider-labels"><span>I'm not sure — I lose track of myself</span><span>Myself — clearly, quickly, without much recovery</span></div>
+      <div class="slider-val" id="sv17">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(17)">← Back</button><button class="btn btn-primary" onclick="nextQ(17)">Next →</button></div>
     </div>
-
-    <!-- Q18 Instinct -->
+    <!-- Q18 Instinct · Sensory -->
     <div class="q-card" id="q18">
-      <div class="q-meta"><div class="q-badge">Subconscious · Instinct</div><div class="q-num">18 / 20</div></div>
-      <div class="q-text">How accurate are your immediate gut responses?</div>
-      <div class="q-subtext">Whether your pre-conscious rapid reactions tend to serve you well — or whether they frequently lead you somewhere you have to correct from.</div>
-      <input type="range" id="s18" min="1" max="10" value="5" oninput="updateSlider(this,18)">
-      <div class="slider-labels"><span>Often misleads me</span><span>Consistently accurate</span></div>
-      <div class="slider-val" id="sv18">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Instinct · Sensory</div><div class="q-num">18 / 20</div></div>
+      <div class="q-text">How much does your physical environment affect your internal state?</div>
+      <div class="q-subtext">Light, sound, temperature, texture, smell. Whether your environment is neutral background or something that registers strongly in your system.</div>
+      <input type="range" id="s18" min="1" max="5" value="3" oninput="updateSlider(this,18)">
+      <div class="slider-labels"><span>Significantly — sensory input registers strongly</span><span>Minimally — my environment rarely overrides me</span></div>
+      <div class="slider-val" id="sv18">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(18)">← Back</button><button class="btn btn-primary" onclick="nextQ(18)">Next →</button></div>
     </div>
-
-    <!-- Q19 Drift -->
+    <!-- Q19 Drift · Shutdown -->
     <div class="q-card" id="q19">
-      <div class="q-meta"><div class="q-badge">Subconscious · Drift</div><div class="q-num">19 / 20</div></div>
-      <div class="q-text">How much does your subconscious pull you away from balance?</div>
-      <div class="q-subtext">The felt sense of being pulled off course by something internal — an undercurrent that disrupts your stability even when external conditions are fine.</div>
-      <input type="range" id="s19" min="1" max="10" value="5" oninput="updateSlider(this,19)">
-      <div class="slider-labels"><span>Rarely feel the pull</span><span>Constant internal drift</span></div>
-      <div class="slider-val" id="sv19">5</div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Drift · Shutdown</div><div class="q-num">19 / 20</div></div>
+      <div class="q-text">When you reach your limit — emotionally, socially, or sensorially — what does that look like?</div>
+      <div class="q-subtext">The endpoint. Whether you signal it and take what you need, or whether you disappear entirely.</div>
+      <input type="range" id="s19" min="1" max="5" value="3" oninput="updateSlider(this,19)">
+      <div class="slider-labels"><span>Complete withdrawal — I go unreachable</span><span>I signal it clearly and take what I need</span></div>
+      <div class="slider-val" id="sv19">3</div>
       <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(19)">← Back</button><button class="btn btn-primary" onclick="nextQ(19)">Next →</button></div>
     </div>
-
-    <!-- Q20 Core Identity -->
+    <!-- Q20 Integrity · Threshold -->
     <div class="q-card" id="q20">
-      <div class="q-meta"><div class="q-badge">Subconscious · Core Identity</div><div class="q-num">20 / 20</div></div>
-      <div class="q-text">How clearly defined is your deepest sense of self?</div>
-      <div class="q-subtext">Not your roles or achievements — the bedrock self that exists underneath all of that. How stable and clear is that foundation when everything else is stripped away.</div>
-      <input type="range" id="s20" min="1" max="10" value="5" oninput="updateSlider(this,20)">
-      <div class="slider-labels"><span>Undefined / shifting</span><span>Clear and stable</span></div>
-      <div class="slider-val" id="sv20">5</div>
-      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(20)">← Back</button><button class="btn btn-primary" onclick="nextOrGenerate(20)">Next →</button></div>
+      <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Integrity · Threshold</div><div class="q-num">20 / 20</div></div>
+      <div class="q-text">How honest are you — with yourself and others — about what you actually need versus what you present as needing?</div>
+      <div class="q-subtext">The gap between your real needs and your presented needs. Whether you have learned to name what you actually need or whether you still minimise it.</div>
+      <input type="range" id="s20" min="1" max="5" value="3" oninput="updateSlider(this,20)">
+      <div class="slider-labels"><span>The gap is large — I present as needing less</span><span>The gap is small — I name what I actually need</span></div>
+      <div class="slider-val" id="sv20">3</div>
+      <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(20)">← Back</button><button class="btn btn-primary" onclick="nextOrGenerate(20)">Complete →</button></div>
     </div>
 
-    <!-- BUSINESS EXTENSION QUESTIONS (shown only in business mode) -->
+        <!-- BUSINESS EXTENSION QUESTIONS (shown only in business mode) -->
     <div id="biz-questions">
 
       <!-- BQ1 — Market alignment -->
@@ -612,9 +593,9 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
         <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Business · Market</div><div class="q-num" id="q21-num">21 / 26</div></div>
         <div class="q-text">How well does your current offer match what your market actually needs right now?</div>
         <div class="q-subtext">Not what you believe it needs — what the data, customer feedback, and revenue patterns tell you. The gap between assumed and actual product-market fit.</div>
-        <input type="range" id="s21" min="1" max="10" value="5" oninput="updateSlider(this,21)">
+        <input type="range" id="s21" min="1" max="5" value="3" oninput="updateSlider(this,21)">
         <div class="slider-labels"><span>Significant misalignment</span><span>Precisely aligned</span></div>
-        <div class="slider-val" id="sv21">5</div>
+        <div class="slider-val" id="sv21">3</div>
         <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(21)">← Back</button><button class="btn btn-primary" onclick="nextQ(21)">Next →</button></div>
       </div>
 
@@ -623,9 +604,9 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
         <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Business · Leadership</div><div class="q-num" id="q22-num">22 / 26</div></div>
         <div class="q-text">How consistently does leadership behaviour reflect the stated values of the business?</div>
         <div class="q-subtext">What the business says it stands for versus what people inside it actually experience. The gap between the brand narrative and the lived internal culture.</div>
-        <input type="range" id="s22" min="1" max="10" value="5" oninput="updateSlider(this,22)">
+        <input type="range" id="s22" min="1" max="5" value="3" oninput="updateSlider(this,22)">
         <div class="slider-labels"><span>Significant gap</span><span>Fully consistent</span></div>
-        <div class="slider-val" id="sv22">5</div>
+        <div class="slider-val" id="sv22">3</div>
         <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(22)">← Back</button><button class="btn btn-primary" onclick="nextQ(22)">Next →</button></div>
       </div>
 
@@ -634,9 +615,9 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
         <div class="q-meta"><div class="q-badge" style="border-color:var(--cist);color:var(--cist)">Business · Decisions</div><div class="q-num" id="q23-num">23 / 26</div></div>
         <div class="q-text">How often do your major business decisions turn out to be correct in hindsight?</div>
         <div class="q-subtext">Strategy calls, hiring decisions, product bets, market timing. Across the last 12–24 months, what is the actual hit rate versus what was predicted?</div>
-        <input type="range" id="s23" min="1" max="10" value="5" oninput="updateSlider(this,23)">
+        <input type="range" id="s23" min="1" max="5" value="3" oninput="updateSlider(this,23)">
         <div class="slider-labels"><span>Frequently off</span><span>Consistently accurate</span></div>
-        <div class="slider-val" id="sv23">5</div>
+        <div class="slider-val" id="sv23">3</div>
         <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(23)">← Back</button><button class="btn btn-primary" onclick="nextQ(23)">Next →</button></div>
       </div>
 
@@ -645,9 +626,9 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
         <div class="q-meta"><div class="q-badge" style="border-color:var(--narc);color:var(--narc)">Business · Team</div><div class="q-num" id="q24-num">24 / 26</div></div>
         <div class="q-text">How aligned is your team around what the business is actually trying to achieve?</div>
         <div class="q-subtext">Not whether they know the mission statement — whether their daily decisions, priorities, and behaviour reflect a shared understanding of the real goal.</div>
-        <input type="range" id="s24" min="1" max="10" value="5" oninput="updateSlider(this,24)">
+        <input type="range" id="s24" min="1" max="5" value="3" oninput="updateSlider(this,24)">
         <div class="slider-labels"><span>Pulling in different directions</span><span>Fully unified</span></div>
-        <div class="slider-val" id="sv24">5</div>
+        <div class="slider-val" id="sv24">3</div>
         <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(24)">← Back</button><button class="btn btn-primary" onclick="nextQ(24)">Next →</button></div>
       </div>
 
@@ -656,9 +637,9 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
         <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Business · Resource</div><div class="q-num" id="q25-num">25 / 26</div></div>
         <div class="q-text">How much of the business's energy goes into protecting what exists versus building what's next?</div>
         <div class="q-subtext">Defensive spend: maintaining existing clients, managing risk, protecting margin, avoiding change. The ratio of protection to growth in real resource allocation.</div>
-        <input type="range" id="s25" min="1" max="10" value="5" oninput="updateSlider(this,25)">
+        <input type="range" id="s25" min="1" max="5" value="3" oninput="updateSlider(this,25)">
         <div class="slider-labels"><span>Mostly defensive</span><span>Mostly generative</span></div>
-        <div class="slider-val" id="sv25">5</div>
+        <div class="slider-val" id="sv25">3</div>
         <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(25)">← Back</button><button class="btn btn-primary" onclick="nextQ(25)">Next →</button></div>
       </div>
 
@@ -667,9 +648,9 @@ footer { text-align:center; padding:32px 0; border-top:1px solid var(--line); fo
         <div class="q-meta"><div class="q-badge" style="border-color:var(--oll);color:var(--oll)">Business · Integrity</div><div class="q-num" id="q26-num">26 / 26</div></div>
         <div class="q-text">How honestly does the business assess its own performance — including what isn't working?</div>
         <div class="q-subtext">Whether the organisation has the internal culture to surface and act on uncomfortable truths — or whether bad news gets filtered, reframed, or buried before it reaches decision-makers.</div>
-        <input type="range" id="s26" min="1" max="10" value="5" oninput="updateSlider(this,26)">
+        <input type="range" id="s26" min="1" max="5" value="3" oninput="updateSlider(this,26)">
         <div class="slider-labels"><span>Bad news gets buried</span><span>Complete internal honesty</span></div>
-        <div class="slider-val" id="sv26">5</div>
+        <div class="slider-val" id="sv26">3</div>
         <div class="q-nav"><button class="btn btn-ghost" onclick="prevQ(26)">← Back</button><button class="btn btn-primary" onclick="generateReport()">Generate my report →</button></div>
       </div>
 
@@ -888,7 +869,7 @@ function setMode(mode) {
   document.getElementById('hero-label').textContent = isPersnal ? 'SCH Check — Full Report' : 'SCH Business Report';
   document.getElementById('hero-title').innerHTML = isPersnal ? 'Your complete<br>awareness architecture' : 'Your business<br>awareness report';
   document.getElementById('hero-copy').textContent = isPersnal
-    ? 'Twenty questions. All 20 Source Codes scored across both conscious and subconscious layers. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised written report you keep forever.'
+    ? 'Twenty questions drawn from therapeutic assessment methodology — mapped onto the Source Code framework. Your full Observer Code ratio, Drift score, Balance Scale position, and a personalised report that reads like it was written for you specifically.'
     : 'Twenty-six questions. Your business scored through the complete Source Code architecture — strengths, vulnerabilities, the gap between how you present and what is actually running underneath. A professional report built for business owners.';
   document.getElementById('hero-price').textContent = isPersnal ? '£19.99' : '£49.99';
   document.getElementById('hero-price-sub').textContent = isPersnal ? 'One-time · Instant report · No subscription' : 'One-time · Business PDF report · No subscription';
@@ -1180,15 +1161,44 @@ function animateStages() {
 async function callClaude(a) {
   const sys = `You are generating a personalised awareness profile report for Source Code Holdings. You receive 20 slider responses mapping to all 20 Source Codes. Produce a report that feels written specifically for this person — precise, warm, honest, genuinely insightful. Not therapy language. Not generic wellness copy. Direct, personal, real.
 
-SOURCE CODE MAPPING:
-CONSCIOUS (Q1-Q10): Presence(1), Interpretation(2), Logic(3), Perspective(4), Prediction(5), Intention(6), Communication(7), Adaptation(8), Alignment(9), Integrity(10)
-SUBCONSCIOUS (Q11-Q20): Fear(11), Memory(12), Trauma(13), Desire(14), Attachment(15), Pattern(16), Protection(17), Instinct(18), Drift(19), Core Identity(20)
+QUESTION MAPPING (1-5 scale, 3=midpoint):
+NARC ARM:
+Q1=Presence/Shutdown (how present under emotional intensity)
+Q2=Fear/Masking (energy spent managing perception)
+Q3=Interpretation/Literal thinking (reading context vs taking at face value)
+Q4=Desire/Special interests (depth of interest vs consuming obsession)
+Q5=Intention/Identity (clarity of own wants vs conditioned wants)
 
-OBSERVER CODE MAPPING:
-NARC: A1=Presence+Fear, A2=Intention+Desire
-YARC: A3=Communication+Attachment, A4=Perspective+Memory
-CIST: A5=Logic+Pattern, A6=Alignment+Protection
-Øll: A7=Adaptation+Instinct, A8=Integrity+Core Identity
+YARC ARM:
+Q6=Communication/Social drain (cost of extended social time)
+Q7=Attachment/Relationship pattern (anxious pursuit vs secure trust)
+Q8=Communication/Expression (accuracy of self-expression)
+Q9=Perspective/Empathy (natural emotional literacy vs needs context)
+Q10=Memory/Relationships (past loss colouring present connections)
+
+CIST ARM:
+Q11=Pattern/Routine (distress when routine disrupted)
+Q12=Logic/Hyperfocus (awareness of time during deep engagement)
+Q13=Alignment/Masking (performed vs authentic self)
+Q14=Protection/Sensory (sensory environment impact on functioning)
+Q15=Pattern/Regulation (reliance on rituals for self-regulation)
+
+Øll ARM:
+Q16=Adaptation/Change (recovery time after sudden disruption)
+Q17=Core Identity/Social (clarity of self after extended social performance)
+Q18=Instinct/Sensory (physical environment impact on internal state)
+Q19=Drift/Shutdown (endpoint behaviour — signal vs disappear)
+Q20=Integrity/Threshold (gap between real needs and presented needs)
+
+SCORING (1-5 scale):
+- Q1-Q5: NARC arm. Lower scores = higher activation of that code
+- Q6-Q10: YARC arm. Lower scores = higher activation
+- Q11-Q15: CIST arm. Lower scores = higher activation
+- Q16-Q20: Øll arm. Lower scores = higher activation
+- High activation of a code = it is dominant in this profile
+- Drift = gap between arms that should balance (NARC vs YARC, CIST vs Øll)
+- Balance Scale: high across all arms = positive. High activation of NARC/Øll with low YARC/CIST = negative.
+- Trauma signals: Q1 ≤ 2 (shutdown), Q2 ≤ 2 (heavy masking), Q14 ≤ 2 (sensory overwhelm), Q19 ≤ 2 (complete shutdown) — these are high-weight signals
 
 SCORING:
 - App slot = average of its two SC scores
@@ -1236,17 +1246,37 @@ Return ONLY valid JSON:
 }
 observer_codes must sum to exactly 100.`;
 
-  const msg = `Name: ${a.name || 'Observer'}
+  const msg = `Name: ${a.name || 'Observer'} (Scale: 1=highly activated/challenging, 5=regulated/functional)
 
-CONSCIOUS LAYER:
-Presence: ${a.s1}, Interpretation: ${a.s2}, Logic: ${a.s3}, Perspective: ${a.s4}, Prediction: ${a.s5}
-Intention: ${a.s6}, Communication: ${a.s7}, Adaptation: ${a.s8}, Alignment: ${a.s9}, Integrity: ${a.s10}
+NARC ARM (Self, survival, identity):
+Q1 Presence/Shutdown: ${a.s1}
+Q2 Fear/Masking: ${a.s2}
+Q3 Interpretation/Literal: ${a.s3}
+Q4 Desire/Intensity: ${a.s4}
+Q5 Intention/Identity: ${a.s5}
 
-SUBCONSCIOUS LAYER:
-Fear: ${a.s11}, Memory: ${a.s12}, Trauma: ${a.s13}, Desire: ${a.s14}, Attachment: ${a.s15}
-Pattern: ${a.s16}, Protection: ${a.s17}, Instinct: ${a.s18}, Drift: ${a.s19}, Core Identity: ${a.s20}
+YARC ARM (Connection, expression, relationship):
+Q6 Communication/Drain: ${a.s6}
+Q7 Attachment/Relationship: ${a.s7}
+Q8 Communication/Expression: ${a.s8}
+Q9 Perspective/Empathy: ${a.s9}
+Q10 Memory/Relationships: ${a.s10}
 
-Generate full SCH Check personal awareness report.`;
+CIST ARM (Structure, regulation, order):
+Q11 Pattern/Routine: ${a.s11}
+Q12 Logic/Hyperfocus: ${a.s12}
+Q13 Alignment/Masking: ${a.s13}
+Q14 Protection/Sensory: ${a.s14}
+Q15 Pattern/Regulation: ${a.s15}
+
+Øll ARM (Integration, threshold, volatility):
+Q16 Adaptation/Change: ${a.s16}
+Q17 Core Identity/Social: ${a.s17}
+Q18 Instinct/Sensory: ${a.s18}
+Q19 Drift/Shutdown: ${a.s19}
+Q20 Integrity/Threshold: ${a.s20}
+
+Note: 1=highly activated (challenging/present), 5=well-regulated (functional/managed). Generate full SCH Check personal awareness report.`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
