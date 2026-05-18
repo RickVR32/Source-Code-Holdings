@@ -1576,6 +1576,15 @@ function initStripe() {
   if (mount) cardElement.mount('#card-element');
 }
 
+function startPaidAssessment() {
+  scores = {};
+  NODES.forEach(n => { scores[n.id] = undefined; });
+  // Reset all nodes
+  NODES.forEach(n => { if(typeof resetNode === 'function') resetNode(n.svgId); });
+  showScreen('screen-assessment');
+  goToQ(1);
+}
+
 function handleIntroCTA() {
   const name = document.getElementById('obs-name')?.value.trim();
   if (!name) { document.getElementById('obs-name').focus(); return; }
@@ -1592,13 +1601,13 @@ async function handlePayment() {
   const btn = document.getElementById('pay-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
   try {
-    const {paymentMethod, error} = await stripe.createPaymentMethod({type:'card',card:cardElement});
-    if (error) { 
+    const {paymentMethod, error} = await stripe.createPaymentMethod({type:'card', card:cardElement});
+    if (error) {
       document.getElementById('card-errors').textContent = error.message;
       if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
       return;
     }
-    startAssessment();
+    startPaidAssessment();
   } catch(e) {
     if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
   }
@@ -1606,7 +1615,7 @@ async function handlePayment() {
 
 function devBypass() {
   if (!document.getElementById('obs-name').value) document.getElementById('obs-name').value = 'Test User';
-  startAssessment();
+  startPaidAssessment();
 }
 
 // Intercept startAssessment to load comparison code
