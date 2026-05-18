@@ -1132,23 +1132,23 @@ function updateReportContents(mode) {
 
 // ── TEST BYPASS (remove before go-live) ────────────────────────────────────
 function testBypass() {
-  const name = document.getElementById('pay-name')?.value.trim() || 'Test User';
-  // Clear and set name — answers is const so mutate it
-  Object.keys(answers).forEach(k => delete answers[k]);
-  answers.name = name;
-
-  reportMode = document.querySelector('.mode-btn.active')?.dataset?.mode || 'personal';
-
-  if (reportMode === 'business') {
-    document.getElementById('biz-questions').style.display = 'block';
-  } else {
+  try {
+    const nameEl = document.getElementById('pay-name');
+    const name = nameEl?.value?.trim() || 'Test User';
+    Object.keys(answers).forEach(k => delete answers[k]);
+    answers.name = name;
+    reportMode = 'personal';
+    document.getElementById('mode-personal').classList.add('active');
+    document.getElementById('mode-business').classList.remove('active');
     const biz = document.getElementById('biz-questions');
     if (biz) biz.style.display = 'none';
+    showScreen('screen-questions');
+    initDiagram();
+    showQ(1);
+  } catch(e) {
+    console.error('Bypass error:', e);
+    alert('Bypass error: ' + e.message);
   }
-
-  showScreen('screen-questions');
-  initDiagram();
-  showQ(1);
 }
 
 // ── Q to node mapping (paid assessment) ───────────────────────────────────
@@ -1422,8 +1422,8 @@ function nextOrGenerate(n) {
     currentQ = 21;
     showQ(21);
   } else {
-    revealAllNodes(); // show full diagram before switching screen
-    setTimeout(() => generateReport(), 800); // brief pause so user sees it
+    revealAllNodes();
+    generateReport();
   }
 }
 
