@@ -758,9 +758,15 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
   </div>
 
   <div class="r-interp">
-    <div class="r-interp-lbl">Interpretation</div>
-    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:12px;line-height:1.6;">This assessment is a structured interpretive tool. It is not a clinical diagnostic instrument and is not a substitute for professional psychological support.</div>
-    <div class="r-interp-text" id="r-interp">—</div>
+    <div class="r-interp-lbl">Your written report</div>
+    <div id="r-interp">
+      <div style="text-align:center;padding:32px 0;">
+        <div style="font-family:'Cormorant',serif;font-size:2.2rem;font-weight:300;margin-bottom:12px;color:var(--text);">Your profile has been received.</div>
+        <div style="font-size:0.82rem;color:var(--muted);line-height:1.85;max-width:420px;margin:0 auto 24px;">Your scores have been sent to Source Code Holdings. A personalised written report — covering your profile, strengths, shadows, relationship patterns, and recalibration path — will be delivered to your email within 48 hours.</div>
+        <div style="display:inline-block;padding:14px 28px;background:var(--text);color:var(--bg,#f2f1ee);border-radius:999px;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;">Expect your report within 48 hours</div>
+        <div style="margin-top:20px;font-size:0.72rem;color:var(--muted);">Check your spam folder if it doesn't arrive. Questions? <a href="mailto:info@sourcecodeholdings.org" style="color:var(--text);">info@sourcecodeholdings.org</a></div>
+      </div>
+    </div>
   </div>
 
   <div class="r-cta" id="r-export-section">
@@ -1189,88 +1195,122 @@ function hideTooltip() {
 // ═══════════════════════════════════════════════════════════════════════════
 async function submitAssessment() {
   const btn = document.getElementById('ar-gen-btn');
-  btn.disabled = true; btn.textContent = 'Generating…';
-  try {
-    lastResult = await callClaude();
-  } catch(e) {
-    console.error(e);
-    lastResult = localScore();
-  }
+  btn.disabled = true; btn.textContent = 'Calculating your profile…';
+
+  // Calculate scores locally — no API needed
+  lastResult = localScore();
   renderResults(lastResult);
   showScreen('screen-results');
-  btn.disabled = false; btn.textContent = 'Generate my report →';
+
+  // Email the full score breakdown to SCH
+  await sendScoresToSCH(lastResult);
+
+  btn.disabled = false; btn.textContent = 'View my profile';
 }
 
-async function callClaude() {
-  const known = NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
-  const name = document.getElementById('obs-name')?.value.trim()||'';
-  const age = document.getElementById('obs-age')?.value.trim()||'';
+async function sendScoresToSCH(r) {
+  const name = document.getElementById('obs-name')?.value.trim() || 'Unknown';
+  const age  = document.getElementById('obs-age')?.value.trim()  || '—';
+  const email = document.getElementById('pay-email')?.value.trim() || '—';
 
-  const conNodes = NODES.filter(n=>n.layer==='Conscious'&&scores[n.id]);
-  const subNodes = NODES.filter(n=>n.layer==='Subconscious'&&scores[n.id]);
-  const conAvg = conNodes.length ? conNodes.reduce((s,n)=>s+scores[n.id],0)/conNodes.length : 3;
-  const subAvg = subNodes.length ? subNodes.reduce((s,n)=>s+scores[n.id],0)/subNodes.length : 3;
-  const driftEst = Math.abs(conAvg-subAvg).toFixed(1);
+  // Build score breakdown string
+  const scoreBreakdown = NODES.map((n,i) =>
+    `Q${i+1} ${n.name} (${n.code} · ${n.layer}): ${scores[n.id] ?? '—'}/5`
+  ).join('\n');
 
-  const sys=`You are generating a personalised SCH Check awareness report. 20 therapeutic questions mapped onto the Source Code framework (scale 1-5, 1=highly activated/challenging, 5=regulated/functional). Produce a report that feels written specifically for this person.
+  const oc = r.observer_codes || {};
+  const summary = [
+    `Name: ${name}`,
+    `Age: ${age}`,
+    `Email: ${email}`,
+    ``,
+    `BALANCE SCALE: ${r.balance_scale > 0 ? '+' : ''}${r.balance_scale}`,
+    `AWARENESS LEVEL: ${r.awareness_level} — ${r.awareness_level_name}`,
+    `DRIFT: ${r.drift}`,
+    ``,
+    `OBSERVER CODE RATIO:`,
+    `  NARC: ${oc.narc}%`,
+    `  CIST: ${oc.cist}%`,
+    `  YARC: ${oc.yarc}%`,
+    `  Øll:  ${oc.oll}%`,
+    ``,
+    `ALL 20 NODE SCORES (1=activated, 5=regulated):`,
+    scoreBreakdown,
+  ].join('\n');
 
-QUESTION MAPPING:
-NARC ARM (Q1-Q5): Presence, Fear/Masking, Interpretation, Desire, Intention
-CIST ARM (Q6-Q10): Communication/Drain, Attachment, Expression, Perspective/Empathy, Memory
-YARC ARM (Q11-Q15): Pattern/Routine, Logic/Hyperfocus, Alignment/Masking, Protection/Sensory, Instinct/Regulation
-Øll ARM (Q16-Q20): Adaptation/Change, Core Identity, Instinct/Sensory, Drift/Shutdown, Integrity/Threshold
-
-SCORING: Low score = high activation of that code. Drift ≈ ${driftEst}.
-If Q2≤2 (heavy masking) or Q4≤2 (shutdown) or Q14≤2 (sensory overwhelm) or Q19≤2 (disappears): flag gently in mental_health_note.
-
-Return ONLY valid JSON:
-{
-  "balance_scale":<-5 to 5, one decimal>,
-  "drift":<0 to 5, one decimal>,
-  "bs_state":<string>,
-  "awareness_level":<1-10>,
-  "awareness_level_name":<string>,
-  "keyword_identity":<string — 1-3 words e.g. "The Anchor">,
-  "keyword_description":<string — 1 sentence specific to their profile>,
-  "observer_codes":{"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},
-  "oc_descriptions":{"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},
-  "report_sections":{
-    "overview":<3 paragraphs — open with keyword, describe dominant code combination in daily life, the big picture pattern>,
-    "strengths":<2 paragraphs — specific elevated Source Codes named, what those strengths look like>,
-    "shadows":<2 paragraphs — honest flip side, specific blind spots and loops, "this is the pattern" not "you are broken">,
-    "under_pressure":<2 paragraphs — Private Self, what subconscious codes produce under stress, what they need>,
-    "relationship_pattern":<2 paragraphs — natural role, what they give and need, where friction appears>,
-    "developmental_stage":<1-2 paragraphs — where they sit in the NARC→CIST→YARC→Øll arc>,
-    "recalibration":<1-2 paragraphs — one or two specific actionable things, speak directly to them>
-  },
-  "mental_health_note":<1-2 sentences — gentle if needed, affirming if healthy>,
-  "growth_areas":[<string>,<string>,<string>]
+  try {
+    await fetch('https://formspree.io/f/xpqobvev', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        _subject: `SCH Check Report Request — ${name}`,
+        name, age, email,
+        balance_scale: r.balance_scale,
+        awareness_level: r.awareness_level,
+        awareness_level_name: r.awareness_level_name,
+        drift: r.drift,
+        observer_codes: JSON.stringify(oc),
+        full_breakdown: summary,
+        source: 'sch-check-paid'
+      })
+    });
+  } catch(e) {
+    console.log('Email notification failed silently:', e);
+  }
 }
-observer_codes must sum to 100.`;
 
-  const scores_str = NODES.map((n,i)=>`Q${i+1} ${n.name}: ${scores[n.id]??3}`).join('\n');
-  const msg=`Name: ${name||'Observer'}${age?' · Age '+age:''}\nScale: 1=highly activated, 5=regulated\n\n${scores_str}`;
 
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,system:sys,messages:[{role:'user',content:msg}]})
-  });
-  const d=await res.json();
-  return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
-}
 function localScore() {
-  const known=NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
-  const avg=known.reduce((s,n)=>s+scores[n.id],0)/known.length;
-  const bs=parseFloat(((avg-5.5)/4.5*5).toFixed(1));
-  const byCode={NARC:[],CIST:[],YARC:[],'Øll':[]};
-  known.forEach(n=>byCode[n.code].push(scores[n.id]));
-  const total=Object.values(byCode).reduce((s,v)=>s+v.reduce((a,b)=>a+b,0),0)||1;
-  const np=Math.round(byCode.NARC.reduce((a,b)=>a+b,0)/total*100)||25;
-  const cp=Math.round(byCode.CIST.reduce((a,b)=>a+b,0)/total*100)||25;
-  const yp=Math.round(byCode.YARC.reduce((a,b)=>a+b,0)/total*100)||25;
-  const op=100-np-cp-yp;
-  const st=awarenessState(avg);
-  return {balance_scale:bs,awareness_avg:parseFloat(avg.toFixed(1)),awareness_state:st.label,bs_state:st.label,observer_codes:{narc:np,yarc:yp,cist:cp,oll:op},oc_descriptions:{narc:'Self-reference patterns.',yarc:'Other-directed awareness.',cist:'Regulation capacity.',oll:'Integration and volatility.'},unknown_count:NODES.filter(n=>scores[n.id]===null).length,interpretation:'Your awareness profile has been mapped across the Source Code nodes. The Observer Code ratio shows where energy is concentrated in this system.'};
+  const known = NODES.filter(n => scores[n.id] !== null && scores[n.id] !== undefined);
+  const avg = known.length ? known.reduce((s,n) => s + scores[n.id], 0) / known.length : 3;
+
+  // Balance Scale: 1=activated(negative), 5=regulated(positive)
+  // avg 5 → +5, avg 3 → 0, avg 1 → -5
+  const bs = parseFloat(((avg - 3) / 2 * 5).toFixed(1));
+
+  // Drift: gap between conscious and subconscious averages
+  const conNodes = NODES.filter(n => n.layer === 'Conscious' && scores[n.id]);
+  const subNodes = NODES.filter(n => n.layer === 'Subconscious' && scores[n.id]);
+  const conAvg = conNodes.length ? conNodes.reduce((s,n) => s + scores[n.id], 0) / conNodes.length : avg;
+  const subAvg = subNodes.length ? subNodes.reduce((s,n) => s + scores[n.id], 0) / subNodes.length : avg;
+  const drift = parseFloat(Math.abs(conAvg - subAvg).toFixed(1));
+
+  // Observer Code ratios — higher score = more regulated = less dominant activation
+  // Invert so high scores reduce dominance (5 = regulated, contributes less to "activated" ratio)
+  const byCode = {NARC:[], CIST:[], YARC:[], 'Øll':[]};
+  known.forEach(n => { if (byCode[n.code]) byCode[n.code].push(6 - scores[n.id]); }); // invert
+  const rawTotals = Object.fromEntries(Object.entries(byCode).map(([k,v]) => [k, v.reduce((a,b)=>a+b,0)||1]));
+  const grandTotal = Object.values(rawTotals).reduce((a,b)=>a+b, 0) || 1;
+  const narc = Math.round(rawTotals.NARC / grandTotal * 100);
+  const cist = Math.round(rawTotals.CIST / grandTotal * 100);
+  const yarc = Math.round(rawTotals.YARC / grandTotal * 100);
+  const oll  = 100 - narc - cist - yarc;
+
+  // Awareness level from Balance Scale
+  const lvl = getAwarenessLevel(bs);
+
+  // SC scores object for export code
+  const sc = {};
+  NODES.forEach(n => { sc[n.id] = scores[n.id] ?? null; });
+
+  return {
+    balance_scale: bs,
+    drift,
+    zp_distance: parseFloat(Math.abs(bs).toFixed(1)),
+    bs_state: bs > 1 ? 'Stability emerging' : bs < -1 ? 'Drift activated' : 'Zero-Point proximity',
+    awareness_level: lvl.level,
+    awareness_level_name: lvl.name,
+    awareness_state: lvl.name,
+    observer_codes: { narc, cist, yarc, oll },
+    oc_descriptions: {
+      narc: 'Self-reference and survival patterns.',
+      cist: 'Regulation and integration capacity.',
+      yarc: 'Other-directed awareness and empathy.',
+      oll:  'Integration, volatility, and threshold states.'
+    },
+    sc_scores: sc,
+    unknown_count: NODES.filter(n => scores[n.id] === null).length,
+  };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1353,66 +1393,12 @@ function renderResults(r) {
     </div>`;
   }).join('');
 
-  // Build written report from new sections
-  const rs = r.report_sections || {};
-  const mhNote = r.mental_health_note || '';
-  const kwId = r.keyword_identity || '';
-  const kwDesc = r.keyword_description || '';
-
-  let reportHtml = '';
-
-  // Keyword identity
-  if (kwId) {
-    reportHtml += `<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);">
-      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Your awareness keyword</div>
-      <div style="font-family:var(--serif);font-size:2rem;font-weight:400;margin-bottom:6px;color:var(--text)">${kwId}</div>
-      <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;">${kwDesc}</div>
-    </div>`;
-  }
-
-  // Seven paid report sections
-  const sections = [
-    { key:'overview',             title:'Your profile — ' + (r.keyword_identity||'') },
-    { key:'strengths',            title:'Strengths' },
-    { key:'shadows',              title:'Shadows' },
-    { key:'under_pressure',       title:'Under pressure — your private self' },
-    { key:'relationship_pattern', title:'In relationships' },
-    { key:'developmental_stage',  title:'Where you are in the sequence' },
-    { key:'recalibration',        title:'Moving toward balance' },
-  ];
-  reportHtml += sections.map(s => {
-    const txt = rs[s.key] || '';
-    if (!txt) return '';
-    return `<div style="margin-bottom:24px;">
-      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${s.title}</div>
-      <div style="font-size:0.82rem;line-height:1.85;color:var(--text)"><p style="margin:0 0 12px">${txt.replace(/\n\n/g,'</p><p style="margin:0 0 12px">')}</p></div>
-    </div>`;
-  }).join('');
-
-  // Mental health note
-  if (mhNote) {
-    reportHtml += `<div style="margin-top:28px;padding:18px 20px;background:var(--bg-soft,#f5f4f0);border-radius:10px;border:1px solid var(--line);">
-      <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">A note on awareness and wellbeing</div>
-      <div style="font-size:0.78rem;color:var(--text);line-height:1.8;">${mhNote}</div>
-    </div>`;
-  }
-
-  // Growth areas
-  if (r.growth_areas?.length) {
-    reportHtml += `<div style="margin-top:24px;">
-      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Personal growth areas</div>
-      <ul style="margin:0;padding-left:20px;">${r.growth_areas.map(g=>`<li style="margin-bottom:8px;font-size:0.8rem;line-height:1.7;color:var(--text)">${g}</li>`).join('')}</ul>
-    </div>`;
-  }
-
-  document.getElementById('r-interp').innerHTML = reportHtml;
-
   // Generate export code
   const exportData = {
     v:2, d:new Date().toISOString().slice(0,10),
     bs:r.balance_scale, dr:r.drift,
     oc:r.observer_codes, sc:scores,
-    kw:r.keyword_identity, al:r.awareness_level
+    al:r.awareness_level
   };
   const code = btoa(JSON.stringify(exportData)).replace(/=/g,'');
   const codeEl = document.getElementById('r-export-code');
