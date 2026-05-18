@@ -1147,60 +1147,116 @@ function testBypass() {
   }
 
   showScreen('screen-questions');
+  initDiagram();
   showQ(1);
 }
 
 // ── Q to node mapping (paid assessment) ───────────────────────────────────
 // Each question maps to specific SC nodes in the diagram
 const Q_NODE_MAP = {
-  1:  ['node-sc1',  'node-a1',  'node-narc'],  // Presence/Shutdown → sc1, A1, NARC
-  2:  ['node-sc2',  'node-a1',  'node-narc'],  // Fear/Masking → sc2, A1, NARC
-  3:  ['node-sc3',  'node-a2',  'node-narc'],  // Interpretation → sc3, A2, NARC
-  4:  ['node-sc4',  'node-a2',  'node-narc'],  // Desire → sc4, A2, NARC
-  5:  ['node-sc3',  'node-a2',  'node-narc'],  // Intention → sc3, A2, NARC
-  6:  ['node-sc5',  'node-a3',  'node-cist'],  // Communication/Drain → sc5, A3, CIST
-  7:  ['node-sc6',  'node-a3',  'node-cist'],  // Attachment → sc6, A3, CIST
-  8:  ['node-sc5',  'node-a3',  'node-cist'],  // Expression → sc5, A3, CIST
-  9:  ['node-sc7',  'node-a4',  'node-cist'],  // Perspective → sc7, A4, CIST
-  10: ['node-sc8',  'node-a4',  'node-cist'],  // Memory → sc8, A4, CIST
-  11: ['node-sc10', 'node-a5',  'node-yarc'],  // Pattern/Routine → sc10, A5, YARC
-  12: ['node-sc9',  'node-a5',  'node-yarc'],  // Logic/Hyperfocus → sc9, A5, YARC
-  13: ['node-sc11', 'node-a6',  'node-yarc'],  // Alignment/Masking → sc11, A6, YARC
-  14: ['node-sc12', 'node-a6',  'node-yarc'],  // Protection/Sensory → sc12, A6, YARC
-  15: ['node-sc10', 'node-a5',  'node-yarc'],  // Pattern/Regulation → sc10, A5, YARC
-  16: ['node-sc13', 'node-a7',  'node-oll'],   // Adaptation → sc13, A7, Øll
-  17: ['node-sc16', 'node-a8',  'node-oll'],   // Core Identity → sc16, A8, Øll
-  18: ['node-sc14', 'node-a7',  'node-oll'],   // Instinct/Sensory → sc14, A7, Øll
-  19: ['node-sc14', 'node-a7',  'node-oll'],   // Drift/Shutdown → sc14, A7, Øll
-  20: ['node-sc15', 'node-a8',  'node-oll'],   // Integrity → sc15, A8, Øll
+  1:  ['node-sc1',  'node-a1',  'node-narc'],
+  2:  ['node-sc2',  'node-a1',  'node-narc'],
+  3:  ['node-sc3',  'node-a2',  'node-narc'],
+  4:  ['node-sc4',  'node-a2',  'node-narc'],
+  5:  ['node-sc3',  'node-a2',  'node-narc'],
+  6:  ['node-sc5',  'node-a3',  'node-cist'],
+  7:  ['node-sc6',  'node-a3',  'node-cist'],
+  8:  ['node-sc5',  'node-a3',  'node-cist'],
+  9:  ['node-sc7',  'node-a4',  'node-cist'],
+  10: ['node-sc8',  'node-a4',  'node-cist'],
+  11: ['node-sc10', 'node-a5',  'node-yarc'],
+  12: ['node-sc9',  'node-a5',  'node-yarc'],
+  13: ['node-sc11', 'node-a6',  'node-yarc'],
+  14: ['node-sc12', 'node-a6',  'node-yarc'],
+  15: ['node-sc10', 'node-a5',  'node-yarc'],
+  16: ['node-sc13', 'node-a7',  'node-oll'],
+  17: ['node-sc16', 'node-a8',  'node-oll'],
+  18: ['node-sc14', 'node-a7',  'node-oll'],
+  19: ['node-sc14', 'node-a7',  'node-oll'],
+  20: ['node-sc15', 'node-a8',  'node-oll'],
 };
 
-// Score accumulator for live OC bars
+const ALL_DIAGRAM_NODES = [
+  'node-narc','node-cist','node-yarc','node-oll',
+  'node-a1','node-a2','node-a3','node-a4','node-a5','node-a6','node-a7','node-a8',
+  'node-sc1','node-sc2','node-sc3','node-sc4','node-sc5','node-sc6','node-sc7','node-sc8',
+  'node-sc9','node-sc10','node-sc11','node-sc12','node-sc13','node-sc14','node-sc15','node-sc16',
+  'node-bs','ld-bs-node'
+];
+
 const qScores = {};
+
+// Call once when questions screen opens — hide everything
+function initDiagram() {
+  const svg = document.getElementById('sc-check-diagram');
+  if (!svg) return;
+  ALL_DIAGRAM_NODES.forEach(id => {
+    const el = svg.querySelector('#' + id) || document.getElementById(id);
+    if (el) { el.style.opacity = '0'; el.style.transition = 'opacity 0.5s ease'; }
+  });
+}
 
 function lightDiagramNode(qNum, val) {
   const nodes = Q_NODE_MAP[qNum];
   if (!nodes) return;
-  // Store score
   qScores[qNum] = val;
-  // Map score 1-5: low score = high activation = brighter node
-  // 1=fully activated (bright), 5=regulated (softer)
-  const activation = 1 - ((val-1)/4); // 1→1.0, 3→0.5, 5→0.0
-  const op = (0.25 + activation * 0.7).toFixed(2);
+
+  const activation = 1 - ((val - 1) / 4); // 1→1.0, 3→0.5, 5→0.0
+  const brightOp = (0.35 + activation * 0.6).toFixed(2);  // current q: bright
+  const dimOp    = (0.12 + activation * 0.3).toFixed(2);  // past q: dimmer
 
   const svg = document.getElementById('sc-check-diagram');
   if (!svg) return;
 
-  nodes.forEach(nodeId => {
-    const el = svg.getElementById ? svg.getElementById(nodeId) : document.getElementById(nodeId);
-    if (el) {
-      el.style.opacity = op;
-      el.style.transition = 'opacity 0.5s ease';
-    }
+  // Dim all previously answered nodes
+  Object.entries(qScores).forEach(([q, v]) => {
+    const n = parseInt(q);
+    if (n === qNum) return;
+    const prevNodes = Q_NODE_MAP[n];
+    if (!prevNodes) return;
+    const prevAct = 1 - ((v - 1) / 4);
+    const prevOp = (0.12 + prevAct * 0.3).toFixed(2);
+    prevNodes.forEach(id => {
+      const el = svg.querySelector('#' + id) || document.getElementById(id);
+      if (el) el.style.opacity = prevOp;
+    });
   });
 
-  // Update live OC bars
+  // Bright highlight for current question's nodes
+  nodes.forEach(id => {
+    const el = svg.querySelector('#' + id) || document.getElementById(id);
+    if (el) el.style.opacity = brightOp;
+  });
+
   updateLiveOCBars();
+}
+
+function revealAllNodes() {
+  // Called after final question — show full diagram at scored opacity
+  const svg = document.getElementById('sc-check-diagram');
+  if (!svg) return;
+
+  // Light all answered nodes at final score
+  Object.entries(qScores).forEach(([q, v]) => {
+    const nodes = Q_NODE_MAP[parseInt(q)];
+    if (!nodes) return;
+    const act = 1 - ((v - 1) / 4);
+    const op = (0.25 + act * 0.7).toFixed(2);
+    nodes.forEach(id => {
+      const el = svg.querySelector('#' + id) || document.getElementById(id);
+      if (el) el.style.opacity = op;
+    });
+  });
+
+  // Also light OC diamonds proportionally
+  const armQs = { 'node-narc':[1,2,3,4,5], 'node-cist':[6,7,8,9,10], 'node-yarc':[11,12,13,14,15], 'node-oll':[16,17,18,19,20] };
+  Object.entries(armQs).forEach(([ocId, qs]) => {
+    const avg = qs.reduce((s,q) => s + (qScores[q] ?? 3), 0) / qs.length;
+    const act = 1 - ((avg - 1) / 4);
+    const op = (0.3 + act * 0.6).toFixed(2);
+    const el = svg.querySelector('#' + ocId) || document.getElementById(ocId);
+    if (el) el.style.opacity = op;
+  });
 }
 
 function highlightCurrentArm(qNum) {
@@ -1208,45 +1264,37 @@ function highlightCurrentArm(qNum) {
   if (!nodes) return;
   const svg = document.getElementById('sc-check-diagram');
   if (!svg) return;
-  // Pulse the relevant OC diamond
-  const ocNode = nodes[2];
-  const el = document.getElementById(ocNode);
+  const ocId = nodes[2];
+  const el = svg.querySelector('#' + ocId) || document.getElementById(ocId);
   if (el) {
-    const prev = el.style.opacity || '0.35';
-    el.style.opacity = '0.8';
-    setTimeout(() => { el.style.opacity = parseFloat(prev) > 0.4 ? prev : '0.45'; }, 400);
+    el.style.opacity = '0.7';
+    setTimeout(() => {
+      const v = qScores[qNum] ?? 3;
+      const act = 1 - ((v-1)/4);
+      el.style.opacity = (0.12 + act*0.3).toFixed(2);
+    }, 600);
   }
 }
 
 function updateLiveOCBars() {
-  // NARC = Q1-Q5, YARC = Q6-Q10 (note: CIST in our arm map, but display label)
-  // Actually: Q1-5=NARC, Q6-10=CIST, Q11-15=YARC, Q16-20=Øll
   const armQs = { narc:[1,2,3,4,5], cist:[6,7,8,9,10], yarc:[11,12,13,14,15], oll:[16,17,18,19,20] };
   const totals = {};
   let totalAnswered = 0;
-
   Object.entries(armQs).forEach(([arm, qs]) => {
     const answered = qs.filter(q => qScores[q] !== undefined);
     if (answered.length) {
-      // Low score = high activation = higher OC contribution
-      const avg = answered.reduce((s,q) => s + (6 - qScores[q]), 0) / answered.length; // invert: 1→5, 5→1
+      const avg = answered.reduce((s,q) => s + (6 - qScores[q]), 0) / answered.length;
       totals[arm] = avg * answered.length;
       totalAnswered += answered.length;
-    } else {
-      totals[arm] = 0;
-    }
+    } else { totals[arm] = 0; }
   });
-
   const total = Object.values(totals).reduce((s,v) => s+v, 0) || 1;
   const pcts = {};
   Object.keys(totals).forEach(arm => {
     pcts[arm] = totalAnswered === 0 ? 25 : Math.round(totals[arm]/total*100);
   });
-
-  // Ensure sum = 100
   const sum = Object.values(pcts).reduce((s,v) => s+v, 0);
   if (sum !== 100 && totalAnswered > 0) pcts.oll += (100 - sum);
-
   ['narc','cist','yarc','oll'].forEach(arm => {
     const pct = pcts[arm] ?? 25;
     const fill = document.getElementById(`live-${arm}-fill`);
@@ -1359,9 +1407,8 @@ async function handlePayment() {
     }
 
     showScreen('screen-questions');
+    initDiagram();
     showQ(1);
-
-  } catch(e) {
     document.getElementById('card-errors').textContent = 'Payment failed. Please try again.';
     btn.disabled = false;
     btn.textContent = `Pay ${price} and begin →`;
@@ -1372,11 +1419,11 @@ async function handlePayment() {
 function nextOrGenerate(n) {
   answers['s'+n] = parseInt(document.getElementById('s'+n).value);
   if (reportMode === 'business') {
-    // Continue to business questions
     currentQ = 21;
     showQ(21);
   } else {
-    generateReport();
+    revealAllNodes(); // show full diagram before switching screen
+    setTimeout(() => generateReport(), 800); // brief pause so user sees it
   }
 }
 
