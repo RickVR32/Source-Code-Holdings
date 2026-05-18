@@ -11,61 +11,61 @@
 <style>
 /* ── THEME TOKENS ── */
 [data-theme="light"] {
---bg: #f2f1ee;
---bg-soft: #e9e8e3;
---panel: #fafaf8;
---panel-border: rgba(0,0,0,0.09);
---line: rgba(0,0,0,0.08);
---line-strong: rgba(0,0,0,0.18);
---text: #0e0e0c;
---muted: #7a7972;
---dim: #b8b5aa;
---card-bg: #fafaf8;
---input-bg: #fafaf8;
---svg-line: #D4D0C8;
---svg-fill: #fafaf8;
+  --bg: #f2f1ee;
+  --bg-soft: #e9e8e3;
+  --panel: #fafaf8;
+  --panel-border: rgba(0,0,0,0.09);
+  --line: rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.18);
+  --text: #0e0e0c;
+  --muted: #7a7972;
+  --dim: #b8b5aa;
+  --card-bg: #fafaf8;
+  --input-bg: #fafaf8;
+  --svg-line: #D4D0C8;
+  --svg-fill: #fafaf8;
 }
 [data-theme="dark"] {
---bg: #0a0a08;
---bg-soft: #141412;
---panel: #1a1a18;
---panel-border: rgba(255,255,255,0.07);
---line: rgba(255,255,255,0.06);
---line-strong: rgba(255,255,255,0.15);
---text: #e8e7e0;
---muted: #7a7972;
---dim: #4a4a45;
---card-bg: #1a1a18;
---input-bg: #111110;
---svg-line: #2C2C28;
---svg-fill: #111110;
+  --bg: #0a0a08;
+  --bg-soft: #141412;
+  --panel: #1a1a18;
+  --panel-border: rgba(255,255,255,0.07);
+  --line: rgba(255,255,255,0.06);
+  --line-strong: rgba(255,255,255,0.15);
+  --text: #e8e7e0;
+  --muted: #7a7972;
+  --dim: #4a4a45;
+  --card-bg: #1a1a18;
+  --input-bg: #111110;
+  --svg-line: #2C2C28;
+  --svg-fill: #111110;
 }
 
 :root {
---narc: #C4622D;
---yarc: #1D9E75;
---cist: #534AB7;
---oll: #A0426B;
---unknown: #7a7972;
---mono: 'Geist Mono', monospace;
---serif: 'Cormorant', serif;
+  --narc: #C4622D;
+  --yarc: #1D9E75;
+  --cist: #534AB7;
+  --oll: #A0426B;
+  --unknown: #7a7972;
+  --mono: 'Geist Mono', monospace;
+  --serif: 'Cormorant', serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-background: var(--bg);
-background-image:
-linear-gradient(180deg, rgba(100,100,90,0.04) 1px, transparent 1px),
-linear-gradient(90deg, rgba(100,100,90,0.04) 1px, transparent 1px);
-background-size: 44px 44px;
-color: var(--text);
-font-family: var(--mono);
-font-weight: 300;
--webkit-font-smoothing: antialiased;
-min-height: 100vh;
-transition: background 0.4s, color 0.4s;
+  background: var(--bg);
+  background-image:
+    linear-gradient(180deg, rgba(100,100,90,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100,100,90,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background 0.4s, color 0.4s;
 }
 
 [data-theme="dark"] body { background-image: linear-gradient(180deg,rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px); }
@@ -74,9 +74,9 @@ transition: background 0.4s, color 0.4s;
 
 /* NAV */
 nav {
-padding: 18px 0;
-display: flex; align-items: center; justify-content: space-between;
-border-bottom: 1px solid var(--line);
+  padding: 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line);
 }
 .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
 .nav-logo img { width:26px; height:auto; opacity:0.85; }
@@ -87,10 +87,10 @@ border-bottom: 1px solid var(--line);
 
 /* DARK MODE TOGGLE */
 .dark-toggle {
-display:flex; align-items:center; gap:6px; cursor:pointer;
-font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);
-background:none; border:none; padding:4px 10px;
-border:1px solid var(--line-strong); border-radius:999px; transition:all 0.2s;
+  display:flex; align-items:center; gap:6px; cursor:pointer;
+  font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);
+  background:none; border:none; padding:4px 10px;
+  border:1px solid var(--line-strong); border-radius:999px; transition:all 0.2s;
 }
 .dark-toggle:hover { color:var(--text); border-color:var(--text); }
 .toggle-icon { font-size:0.9rem; }
@@ -100,7 +100,7 @@ border:1px solid var(--line-strong); border-radius:999px; transition:all 0.2s;
 .screen.active { display:block; }
 
 /* ═══════════════════════════════════════════
-INTRO SCREEN
+   INTRO SCREEN
 ═══════════════════════════════════════════ */
 .intro { padding: 64px 0; max-width: 680px; margin: 0 auto; text-align: center; }
 .intro-label { font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
@@ -110,8 +110,8 @@ INTRO SCREEN
 /* Observer type select */
 .obs-type-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:40px; }
 .obs-type-btn {
-background:var(--panel); border:1px solid var(--panel-border); border-radius:12px;
-padding:16px 12px; cursor:pointer; transition:all 0.2s; text-align:center;
+  background:var(--panel); border:1px solid var(--panel-border); border-radius:12px;
+  padding:16px 12px; cursor:pointer; transition:all 0.2s; text-align:center;
 }
 .obs-type-btn:hover { border-color:var(--line-strong); }
 .obs-type-btn.active { border-color:var(--text); background:var(--text); color:var(--bg); }
@@ -121,64 +121,64 @@ padding:16px 12px; cursor:pointer; transition:all 0.2s; text-align:center;
 .otb-desc { font-size:0.65rem; color:var(--muted); line-height:1.4; }
 
 .intro-start-btn {
-font-family:var(--mono); font-weight:300; font-size:0.72rem; letter-spacing:0.12em;
-text-transform:uppercase; background:var(--text); color:var(--bg);
-padding:13px 40px; border:none; border-radius:999px; cursor:pointer; transition:opacity 0.2s;
+  font-family:var(--mono); font-weight:300; font-size:0.72rem; letter-spacing:0.12em;
+  text-transform:uppercase; background:var(--text); color:var(--bg);
+  padding:13px 40px; border:none; border-radius:999px; cursor:pointer; transition:opacity 0.2s;
 }
 .intro-start-btn:hover { opacity:0.75; }
 
 /* ═══════════════════════════════════════════
-ASSESSMENT LAYOUT
+   ASSESSMENT LAYOUT
 ═══════════════════════════════════════════ */
 .assess-layout {
-display:grid;
-grid-template-columns: 1fr 440px;
-min-height: calc(100vh - 63px);
+  display:grid;
+  grid-template-columns: 1fr 440px;
+  min-height: calc(100vh - 63px);
 }
 
 /* LEFT: DIAGRAM */
 .diagram-col {
-border-right: 1px solid var(--line);
-padding: 16px 20px;
-display: flex;
-flex-direction: column;
-gap: 12px;
-position: sticky;
-top: 63px;
-height: calc(100vh - 63px);
-overflow: hidden;
+  border-right: 1px solid var(--line);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 63px;
+  height: calc(100vh - 63px);
+  overflow: hidden;
 }
 
 .diag-svg-wrap {
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
-position: relative;
-min-height: 0;
-overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
 }
 
 #main-diagram {
-width: 100%;
-height: 100%;
-max-height: 100%;
-display: block;
-overflow: visible;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: block;
+  overflow: visible;
 }
 
 .diag-header {
-display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
 }
 .diag-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
 .diag-progress-text { font-size:0.65rem; letter-spacing:0.1em; color:var(--muted); }
 
 /* NODE TOOLTIP */
 .node-tooltip {
-position:absolute; background:var(--panel); border:1px solid var(--line-strong);
-border-radius:10px; padding:12px 16px; font-size:12px; max-width:220px;
-display:none; z-index:50; box-shadow:0 8px 32px rgba(0,0,0,0.15);
-pointer-events:none;
+  position:absolute; background:var(--panel); border:1px solid var(--line-strong);
+  border-radius:10px; padding:12px 16px; font-size:12px; max-width:220px;
+  display:none; z-index:50; box-shadow:0 8px 32px rgba(0,0,0,0.15);
+  pointer-events:none;
 }
 [data-theme="dark"] .node-tooltip { box-shadow:0 8px 32px rgba(0,0,0,0.6); }
 .nt-name { font-family:var(--mono); font-size:10px; font-weight:400; margin-bottom:4px; }
@@ -196,16 +196,16 @@ pointer-events:none;
 
 /* RIGHT: QUESTIONS */
 .q-col {
-display:flex; flex-direction:column;
-height:calc(100vh - 63px);
-position:sticky; top:63px;
-overflow:hidden;
+  display:flex; flex-direction:column;
+  height:calc(100vh - 63px);
+  position:sticky; top:63px;
+  overflow:hidden;
 }
 
 /* OBSERVER CARD (Q0) */
 .observer-card {
-flex:1; overflow-y:auto; padding:28px;
-display:flex; flex-direction:column; justify-content:center; gap:20px;
+  flex:1; overflow-y:auto; padding:28px;
+  display:flex; flex-direction:column; justify-content:center; gap:20px;
 }
 .observer-card::-webkit-scrollbar { width:3px; }
 .observer-card::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:2px; }
@@ -216,9 +216,9 @@ display:flex; flex-direction:column; justify-content:center; gap:20px;
 .oc-field { display:flex; flex-direction:column; gap:6px; }
 .oc-field-label { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
 .oc-input {
-font-family:var(--mono); font-weight:300; font-size:0.85rem;
-padding:11px 14px; border-radius:10px; border:1px solid var(--line-strong);
-background:var(--input-bg); color:var(--text); outline:none; transition:border-color 0.2s; width:100%;
+  font-family:var(--mono); font-weight:300; font-size:0.85rem;
+  padding:11px 14px; border-radius:10px; border:1px solid var(--line-strong);
+  background:var(--input-bg); color:var(--text); outline:none; transition:border-color 0.2s; width:100%;
 }
 .oc-input:focus { border-color:var(--text); }
 .oc-input::placeholder { color:var(--muted); opacity:0.6; }
@@ -231,8 +231,8 @@ background:var(--input-bg); color:var(--text); outline:none; transition:border-c
 
 /* QUESTION CARD */
 .q-card-wrap {
-flex:1; overflow-y:auto; padding:28px;
-display:flex; flex-direction:column; justify-content:center; gap:0;
+  flex:1; overflow-y:auto; padding:28px;
+  display:flex; flex-direction:column; justify-content:center; gap:0;
 }
 .q-card-wrap::-webkit-scrollbar { width:3px; }
 .q-card-wrap::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:2px; }
@@ -255,13 +255,13 @@ display:flex; flex-direction:column; justify-content:center; gap:0;
 .q-slider-row { display:flex; align-items:center; gap:12px; }
 
 input[type=range] {
-flex:1; -webkit-appearance:none; height:2px;
-background:linear-gradient(90deg,var(--text) 0%,var(--text) var(--pct,44%),var(--line-strong) var(--pct,44%),var(--line-strong) 100%);
-border-radius:1px; outline:none; cursor:pointer;
+  flex:1; -webkit-appearance:none; height:2px;
+  background:linear-gradient(90deg,var(--text) 0%,var(--text) var(--pct,44%),var(--line-strong) var(--pct,44%),var(--line-strong) 100%);
+  border-radius:1px; outline:none; cursor:pointer;
 }
 input[type=range]::-webkit-slider-thumb {
--webkit-appearance:none; width:16px; height:16px; border-radius:50%;
-background:var(--panel); border:2px solid var(--text); cursor:pointer; transition:transform 0.1s;
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--panel); border:2px solid var(--text); cursor:pointer; transition:transform 0.1s;
 }
 input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
 input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
@@ -273,8 +273,8 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 /* NAV BUTTONS */
 .q-nav-row { display:flex; align-items:center; justify-content:space-between; margin-top:8px; }
 .q-btn {
-font-family:var(--mono); font-weight:300; font-size:0.72rem; letter-spacing:0.1em;
-text-transform:uppercase; padding:10px 24px; border-radius:999px; border:none; cursor:pointer; transition:all 0.2s;
+  font-family:var(--mono); font-weight:300; font-size:0.72rem; letter-spacing:0.1em;
+  text-transform:uppercase; padding:10px 24px; border-radius:999px; border:none; cursor:pointer; transition:all 0.2s;
 }
 .q-btn-primary { background:var(--text); color:var(--bg); }
 .q-btn-primary:hover { opacity:0.75; }
@@ -287,8 +287,8 @@ text-transform:uppercase; padding:10px 24px; border-radius:999px; border:none; c
 
 /* AWARENESS REVEAL (shown after all answered) */
 .awareness-reveal {
-display:none; flex-direction:column; gap:16px; text-align:center; padding:28px;
-flex:1; justify-content:center;
+  display:none; flex-direction:column; gap:16px; text-align:center; padding:28px;
+  flex:1; justify-content:center;
 }
 .awareness-reveal.visible { display:flex; animation:step-in 0.5s ease; }
 .ar-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
@@ -298,16 +298,16 @@ flex:1; justify-content:center;
 .ar-track { height:2px; background:var(--line); border-radius:1px; overflow:hidden; }
 .ar-fill { height:100%; border-radius:1px; transition:width 0.8s ease; }
 .ar-generate-btn {
-font-family:var(--mono); font-weight:300; font-size:0.72rem; letter-spacing:0.12em;
-text-transform:uppercase; background:var(--text); color:var(--bg);
-padding:12px 32px; border:none; border-radius:999px; cursor:pointer; transition:opacity 0.2s;
-margin:0 auto;
+  font-family:var(--mono); font-weight:300; font-size:0.72rem; letter-spacing:0.12em;
+  text-transform:uppercase; background:var(--text); color:var(--bg);
+  padding:12px 32px; border:none; border-radius:999px; cursor:pointer; transition:opacity 0.2s;
+  margin:0 auto;
 }
 .ar-generate-btn:hover { opacity:0.75; }
 .ar-generate-btn:disabled { opacity:0.35; cursor:not-allowed; }
 
 /* ═══════════════════════════════════════════
-RESULTS SCREEN
+   RESULTS SCREEN
 ═══════════════════════════════════════════ */
 .results-wrap { padding:56px 0 80px; max-width:800px; margin:0 auto; }
 .r-hero { text-align:center; margin-bottom:48px; }
@@ -346,11 +346,11 @@ RESULTS SCREEN
 .retake-lnk { font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); cursor:pointer; border-bottom:1px solid var(--line-strong); padding-bottom:2px; }
 
 @media(max-width:900px) {
-.assess-layout { grid-template-columns:1fr; }
-.diagram-col { position:static; height:auto; border-right:none; border-bottom:1px solid var(--line); }
-.q-col { position:static; height:auto; }
-.obs-type-row { grid-template-columns:repeat(2,1fr); }
-.r-grid { grid-template-columns:1fr; }
+  .assess-layout { grid-template-columns:1fr; }
+  .diagram-col { position:static; height:auto; border-right:none; border-bottom:1px solid var(--line); }
+  .q-col { position:static; height:auto; }
+  .obs-type-row { grid-template-columns:repeat(2,1fr); }
+  .r-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -358,116 +358,1180 @@ RESULTS SCREEN
 <div class="container">
 
 <nav>
-<a class="nav-logo" href="index.html">
-<img src="sch_sygil.png" alt="SCH">
-<span>Source Code Holdings</span>
-</a>
-<div class="nav-right">
-<button class="dark-toggle" onclick="toggleDark()">
-<span class="toggle-icon" id="theme-icon">◑</span>
-<span id="theme-label">Dark</span>
-</button>
-<a class="nav-back" href="index.html">← Back</a>
-</div>
+  <a class="nav-logo" href="index.html">
+    <img src="sch_sygil.png" alt="SCH">
+    <span>Source Code Holdings</span>
+  </a>
+  <div class="nav-right">
+    <button class="dark-toggle" onclick="toggleDark()">
+      <span class="toggle-icon" id="theme-icon">◑</span>
+      <span id="theme-label">Dark</span>
+    </button>
+    <a class="nav-back" href="index.html">← Back</a>
+  </div>
 </nav>
 
 <!-- ═══ INTRO ═══ -->
 <div class="screen active" id="screen-intro">
 <div class="intro">
-<div class="intro-label">SCH Check — Full Awareness Report</div>
-<h1 class="intro-title">Your complete<br>awareness profile</h1>
-<p class="intro-copy">Twenty questions drawn from therapeutic assessment methodology. Your full Observer Code ratio, Drift score, Balance Scale position, awareness level, and a personalised written report.</p>
+  <div class="intro-label">SCH Check — Full Awareness Report</div>
+  <h1 class="intro-title">Your complete<br>awareness profile</h1>
+  <p class="intro-copy">Twenty questions drawn from therapeutic assessment methodology. Your full Observer Code ratio, Drift score, Balance Scale position, awareness level, and a personalised written report.</p>
 
-<div class="oc-field" style="margin-bottom:16px;">
-<div class="oc-field-label">Name</div>
-<input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()">
-</div>
-<div class="oc-field" style="margin-bottom:20px;">
-<div class="oc-field-label">Age (optional)</div>
-<input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120">
-</div>
+  <div class="oc-field" style="margin-bottom:16px;">
+    <div class="oc-field-label">Name</div>
+    <input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()">
+  </div>
+  <div class="oc-field" style="margin-bottom:20px;">
+    <div class="oc-field-label">Age (optional)</div>
+    <input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120">
+  </div>
 
-<div style="margin-bottom:24px;">
-<div class="oc-field-label" style="margin-bottom:12px;">Awareness scale</div>
-<div class="scale-bands">
-<div class="scale-band-item"><div class="sbi-range" style="color:var(--oll)">1–3</div><div class="sbi-label">Instinct</div></div>
-<div class="scale-band-item"><div class="sbi-range" style="color:var(--narc)">4–6</div><div class="sbi-label">Reaction</div></div>
-<div class="scale-band-item"><div class="sbi-range" style="color:var(--cist)">7–9</div><div class="sbi-label">Regulation</div></div>
-<div class="scale-band-item"><div class="sbi-range" style="color:var(--yarc)">10</div><div class="sbi-label">Presence</div></div>
-</div>
-</div>
+  <div style="margin-bottom:24px;">
+    <div class="oc-field-label" style="margin-bottom:12px;">Awareness scale</div>
+    <div class="scale-bands">
+      <div class="scale-band-item"><div class="sbi-range" style="color:var(--oll)">1–3</div><div class="sbi-label">Instinct</div></div>
+      <div class="scale-band-item"><div class="sbi-range" style="color:var(--narc)">4–6</div><div class="sbi-label">Reaction</div></div>
+      <div class="scale-band-item"><div class="sbi-range" style="color:var(--cist)">7–9</div><div class="sbi-label">Regulation</div></div>
+      <div class="scale-band-item"><div class="sbi-range" style="color:var(--yarc)">10</div><div class="sbi-label">Presence</div></div>
+    </div>
+  </div>
 
-<div style="margin-bottom:16px;">
-<input class="oc-input" id="prev-code-input" type="text" placeholder="Previous assessment code (optional — paste to compare)">
-</div>
+  <div style="margin-bottom:16px;">
+    <input class="oc-input" id="prev-code-input" type="text" placeholder="Previous assessment code (optional — paste to compare)">
+  </div>
 
-<!-- Payment step (shown after name entered) -->
-<div id="payment-wrap" style="display:none;margin-bottom:20px;background:var(--text);border-radius:16px;padding:28px;color:var(--bg);">
-<div style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;opacity:0.6;">Secure payment</div>
-<div style="font-family:var(--serif);font-size:1.6rem;font-weight:300;margin-bottom:4px;">Personal Report — £19.99</div>
-<div style="font-size:0.72rem;opacity:0.6;margin-bottom:20px;">One-time · Instant report · Yours to keep</div>
-<input id="pay-email" type="email" placeholder="Email address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:var(--bg);font-family:var(--serif);font-size:0.9rem;margin-bottom:12px;box-sizing:border-box;">
-<div id="card-element" style="margin-bottom:12px;padding:12px;background:rgba(255,255,255,0.1);border-radius:8px;border:1px solid rgba(255,255,255,0.2);"></div>
-<div id="card-errors" style="color:#ff6b6b;font-size:0.75rem;margin-bottom:8px;"></div>
-<button id="pay-btn" onclick="handlePayment()" style="width:100%;padding:14px;background:var(--bg);color:var(--text);border:none;border-radius:999px;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Pay £19.99 and begin →</button>
-<div style="font-size:0.65rem;opacity:0.5;text-align:center;margin-top:10px;">🔒 Secured by Stripe · SSL encrypted</div>
-</div>
+  <!-- Payment step (shown after name entered) -->
+  <div id="payment-wrap" style="display:none;margin-bottom:20px;background:var(--text);border-radius:16px;padding:28px;color:var(--bg);">
+    <div style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;opacity:0.6;">Secure payment</div>
+    <div style="font-family:var(--serif);font-size:1.6rem;font-weight:300;margin-bottom:4px;">Personal Report — £19.99</div>
+    <div style="font-size:0.72rem;opacity:0.6;margin-bottom:20px;">One-time · Instant report · Yours to keep</div>
+    <input id="pay-email" type="email" placeholder="Email address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:var(--bg);font-family:var(--serif);font-size:0.9rem;margin-bottom:12px;box-sizing:border-box;">
+    <div id="card-element" style="margin-bottom:12px;padding:12px;background:rgba(255,255,255,0.1);border-radius:8px;border:1px solid rgba(255,255,255,0.2);"></div>
+    <div id="card-errors" style="color:#ff6b6b;font-size:0.75rem;margin-bottom:8px;"></div>
+    <button id="pay-btn" onclick="handlePayment()" style="width:100%;padding:14px;background:var(--bg);color:var(--text);border:none;border-radius:999px;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Pay £19.99 and begin →</button>
+    <div style="font-size:0.65rem;opacity:0.5;text-align:center;margin-top:10px;">🔒 Secured by Stripe · SSL encrypted</div>
+  </div>
 
-<button class="intro-start-btn" id="intro-cta-btn" onclick="handleIntroCTA()">Continue →</button>
+  <button class="intro-start-btn" id="intro-cta-btn" onclick="handleIntroCTA()">Continue →</button>
 
-<!-- DEV BYPASS — remove before go-live -->
-<div style="text-align:center;margin-top:12px;">
-<button onclick="devBypass()" style="background:none;border:1px solid var(--line);color:var(--muted);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer;">Skip payment (dev) →</button>
+  <!-- DEV BYPASS — remove before go-live -->
+  <div style="text-align:center;margin-top:12px;">
+    <button onclick="devBypass()" style="background:none;border:1px solid var(--line);color:var(--muted);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer;">Skip payment (dev) →</button>
+  </div>
 </div>
 </div>
-</div>
-
 <!-- ═══ ASSESSMENT ═══ -->
 <div class="screen" id="screen-assessment">
 <div class="assess-layout">
 
-<!-- LEFT: SACRED GEOMETRY DIAGRAM -->
-<div class="diagram-col">
-<div class="diag-header">
-<div class="diag-label">Source Code map</div>
-<div class="diag-progress-text" id="diag-prog-text">Observer</div>
+  <!-- LEFT: SACRED GEOMETRY DIAGRAM -->
+  <div class="diagram-col">
+    <div class="diag-header">
+      <div class="diag-label">Source Code map</div>
+      <div class="diag-progress-text" id="diag-prog-text">Observer</div>
+    </div>
+
+    <div class="diag-svg-wrap">
+      <svg id="main-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="450.0,302.0 598.0,450.0 450.0,598.0 302.0,450.0" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="450" cy="450" r="220" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.14"/>
+  <circle cx="450" cy="450" r="300" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.1"/>
+  <circle cx="450" cy="450" r="70" fill="none" stroke="#C8C4BC" stroke-width="0.5" opacity="0.25"/>
+  <line x1="450.0" y1="106.0" x2="450.0" y2="794.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+  <line x1="794.0" y1="450.0" x2="106.0" y2="450.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+  <line x1="450.0" y1="302.0" x2="367.6" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
+  <line x1="367.6" y1="246.0" x2="286.6" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="367.6" y1="246.0" x2="392.8" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="302.0" x2="532.4" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
+  <line x1="532.4" y1="246.0" x2="507.2" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="532.4" y1="246.0" x2="613.4" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="598.0" y1="450.0" x2="654.0" y2="367.6" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
+  <line x1="654.0" y1="367.6" x2="701.6" y2="286.6" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="654.0" y1="367.6" x2="744.5" y2="392.8" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="598.0" y1="450.0" x2="654.0" y2="532.4" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
+  <line x1="654.0" y1="532.4" x2="744.5" y2="507.2" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="654.0" y1="532.4" x2="701.6" y2="613.4" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="598.0" x2="532.4" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
+  <line x1="532.4" y1="654.0" x2="613.4" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="532.4" y1="654.0" x2="507.2" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="598.0" x2="367.6" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
+  <line x1="367.6" y1="654.0" x2="392.8" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="367.6" y1="654.0" x2="286.6" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="302.0" y1="450.0" x2="246.0" y2="532.4" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
+  <line x1="246.0" y1="532.4" x2="198.4" y2="613.4" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="246.0" y1="532.4" x2="155.5" y2="507.2" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="302.0" y1="450.0" x2="246.0" y2="367.6" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
+  <line x1="246.0" y1="367.6" x2="155.5" y2="392.8" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="246.0" y1="367.6" x2="198.4" y2="286.6" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="450" y1="632.0" x2="450" y2="668.0" stroke="#B8B2A8" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.45"/>
+  <circle cx="450" cy="450" r="52" fill="white" stroke="#B0ABA0" stroke-width="1.8" opacity="1"/>
+  <circle cx="450" cy="450" r="39" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.4"/>
+  <circle cx="450" cy="450" r="22" fill="none" stroke="#D4D0C8" stroke-width="0.3" opacity="0.25"/>
+  <line x1="430" y1="450" x2="470" y2="450" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
+  <line x1="450" y1="430" x2="450" y2="470" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
+  <circle cx="450" cy="450" r="3" fill="var(--muted)" opacity="0.4"/>
+  <text id="obs-label" x="450" y="455" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="monospace" opacity="0.7">—</text>
+  <g id="node-narc" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('narc',event)">
+    <polygon points="450.0,272.0 480.0,302.0 450.0,332.0 420.0,302.0" fill="none" stroke="#C4622D" stroke-width="2.2"/>
+    <polygon points="450.0,285.0 467.0,302.0 450.0,319.0 433.0,302.0" fill="none" stroke="#C4622D" stroke-width="0.5" opacity="0.4"/>
+    <text x="450.0" y="301.0" text-anchor="middle" font-size="10" fill="#C4622D" font-family="monospace" letter-spacing="0.06em">NARC</text>
+    <text id="v-narc" x="450.0" y="315.0" text-anchor="middle" font-size="9" fill="#C4622D" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-cist" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('cist',event)">
+    <polygon points="598.0,420.0 628.0,450.0 598.0,480.0 568.0,450.0" fill="none" stroke="#534AB7" stroke-width="2.2"/>
+    <polygon points="598.0,433.0 615.0,450.0 598.0,467.0 581.0,450.0" fill="none" stroke="#534AB7" stroke-width="0.5" opacity="0.4"/>
+    <text x="598.0" y="449.0" text-anchor="middle" font-size="10" fill="#534AB7" font-family="monospace" letter-spacing="0.06em">CIST</text>
+    <text id="v-cist" x="598.0" y="463.0" text-anchor="middle" font-size="9" fill="#534AB7" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-yarc" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('yarc',event)">
+    <polygon points="450.0,568.0 480.0,598.0 450.0,628.0 420.0,598.0" fill="none" stroke="#1D9E75" stroke-width="2.2"/>
+    <polygon points="450.0,581.0 467.0,598.0 450.0,615.0 433.0,598.0" fill="none" stroke="#1D9E75" stroke-width="0.5" opacity="0.4"/>
+    <text x="450.0" y="597.0" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="monospace" letter-spacing="0.06em">YARC</text>
+    <text id="v-yarc" x="450.0" y="611.0" text-anchor="middle" font-size="9" fill="#1D9E75" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-oll" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('oll',event)">
+    <polygon points="302.0,420.0 332.0,450.0 302.0,480.0 272.0,450.0" fill="none" stroke="#A0426B" stroke-width="2.2"/>
+    <polygon points="302.0,433.0 319.0,450.0 302.0,467.0 285.0,450.0" fill="none" stroke="#A0426B" stroke-width="0.5" opacity="0.4"/>
+    <text x="302.0" y="449.0" text-anchor="middle" font-size="10" fill="#A0426B" font-family="monospace" letter-spacing="0.06em">Øll</text>
+    <text id="v-oll" x="302.0" y="463.0" text-anchor="middle" font-size="9" fill="#A0426B" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-a1" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="367.6" cy="246.0" rx="20" ry="11" transform="rotate(-22,367.6,246.0)" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="367.6" y="250.0" text-anchor="middle" font-size="8.5" fill="#C4622D" font-family="monospace">A1</text>
+  </g>
+  <g id="node-a2" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="532.4" cy="246.0" rx="20" ry="11" transform="rotate(22,532.4,246.0)" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="532.4" y="250.0" text-anchor="middle" font-size="8.5" fill="#C4622D" font-family="monospace">A2</text>
+  </g>
+  <g id="node-a3" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="654.0" cy="367.6" rx="20" ry="11" transform="rotate(68,654.0,367.6)" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="654.0" y="371.6" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="monospace">A3</text>
+  </g>
+  <g id="node-a4" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="654.0" cy="532.4" rx="20" ry="11" transform="rotate(112,654.0,532.4)" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="654.0" y="536.4" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="monospace">A4</text>
+  </g>
+  <g id="node-a5" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="532.4" cy="654.0" rx="20" ry="11" transform="rotate(158,532.4,654.0)" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="532.4" y="658.0" text-anchor="middle" font-size="8.5" fill="#1D9E75" font-family="monospace">A5</text>
+  </g>
+  <g id="node-a6" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="367.6" cy="654.0" rx="20" ry="11" transform="rotate(202,367.6,654.0)" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="367.6" y="658.0" text-anchor="middle" font-size="8.5" fill="#1D9E75" font-family="monospace">A6</text>
+  </g>
+  <g id="node-a7" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="246.0" cy="532.4" rx="20" ry="11" transform="rotate(248,246.0,532.4)" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="246.0" y="536.4" text-anchor="middle" font-size="8.5" fill="#A0426B" font-family="monospace">A7</text>
+  </g>
+  <g id="node-a8" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="246.0" cy="367.6" rx="20" ry="11" transform="rotate(292,246.0,367.6)" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="246.0" y="371.6" text-anchor="middle" font-size="8.5" fill="#A0426B" font-family="monospace">A8</text>
+  </g>
+  <g id="node-sc1" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc1',event)">
+    <polygon points="298.7,205.5 276.1,205.2 287.4,185.9" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="286.6" y="202.4" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↑</text>
+    <text x="264.2" y="189.2" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Presence</text>
+  </g>
+  <g id="node-sc2" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc2',event)">
+    <polygon points="389.0,169.0 383.5,147.1 405.1,153.1" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="392.8" y="159.5" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↓</text>
+    <text x="399.8" y="134.5" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Fear</text>
+  </g>
+  <g id="node-sc3" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc3',event)">
+    <polygon points="511.0,169.0 494.9,153.1 516.5,147.1" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="507.2" y="159.5" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↑</text>
+    <text x="500.2" y="134.5" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Intention</text>
+  </g>
+  <g id="node-sc4" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc4',event)">
+    <polygon points="601.3,205.5 612.6,185.9 623.9,205.2" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="613.4" y="202.4" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↓</text>
+    <text x="635.8" y="189.2" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Desire</text>
+  </g>
+  <g id="node-sc5" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc5',event)">
+    <polygon points="694.5,298.7 694.8,276.1 714.1,287.4" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="701.6" y="290.6" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↑</text>
+    <text x="714.8" y="268.2" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Comm.</text>
+  </g>
+  <g id="node-sc6" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc6',event)">
+    <polygon points="731.0,389.0 752.9,383.5 746.9,405.1" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="744.5" y="396.8" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↓</text>
+    <text x="769.5" y="403.8" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Attach.</text>
+  </g>
+  <g id="node-sc7" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc7',event)">
+    <polygon points="731.0,511.0 746.9,494.9 752.9,516.5" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="744.5" y="511.2" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↑</text>
+    <text x="769.5" y="504.2" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Persp.</text>
+  </g>
+  <g id="node-sc8" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc8',event)">
+    <polygon points="694.5,601.3 714.1,612.6 694.8,623.9" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="701.6" y="617.4" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↓</text>
+    <text x="714.8" y="639.8" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Memory</text>
+  </g>
+  <g id="node-sc9" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc9',event)">
+    <polygon points="601.3,694.5 623.9,694.8 612.6,714.1" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="613.4" y="705.6" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↑</text>
+    <text x="635.8" y="718.8" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Logic</text>
+  </g>
+  <g id="node-sc10" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc10',event)">
+    <polygon points="511.0,731.0 516.5,752.9 494.9,746.9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="507.2" y="748.5" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↓</text>
+    <text x="500.2" y="773.5" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Pattern</text>
+  </g>
+  <g id="node-sc11" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc11',event)">
+    <polygon points="389.0,731.0 405.1,746.9 383.5,752.9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="392.8" y="748.5" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↑</text>
+    <text x="399.8" y="773.5" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Align.</text>
+  </g>
+  <g id="node-sc12" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc12',event)">
+    <polygon points="298.7,694.5 287.4,714.1 276.1,694.8" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="286.6" y="705.6" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↓</text>
+    <text x="264.2" y="718.8" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Protect.</text>
+  </g>
+  <g id="node-sc13" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc13',event)">
+    <polygon points="205.5,601.3 205.2,623.9 185.9,612.6" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="198.4" y="617.4" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↑</text>
+    <text x="185.2" y="639.8" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Adapt.</text>
+  </g>
+  <g id="node-sc14" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc14',event)">
+    <polygon points="169.0,511.0 147.1,516.5 153.1,494.9" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="155.5" y="511.2" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↓</text>
+    <text x="130.5" y="504.2" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Instinct</text>
+  </g>
+  <g id="node-sc15" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc15',event)">
+    <polygon points="169.0,389.0 153.1,405.1 147.1,383.5" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="155.5" y="396.8" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↑</text>
+    <text x="130.5" y="403.8" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Integrity</text>
+  </g>
+  <g id="node-sc16" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc16',event)">
+    <polygon points="205.5,298.7 185.9,287.4 205.2,276.1" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="198.4" y="290.6" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↓</text>
+    <text x="185.2" y="268.2" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Core Id.</text>
+  </g>
+  <g id="node-bs" style="opacity:0;transition:opacity 0.5s ease">
+    <polygon points="424,642 476,642 450,674" fill="none" stroke="#D4D0C8" stroke-width="1.3"/>
+    <polygon points="436,650 464,650 450,666" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.5"/>
+    <text x="450" y="657" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="monospace" letter-spacing="0.08em">BALANCE</text>
+    <text id="v-bs" x="450" y="669" text-anchor="middle" font-size="8" fill="var(--muted)" font-family="monospace">—</text>
+  </g>
+  <g opacity="0.28">
+    <polygon points="18,870 30,870 24,856" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
+    <text x="36" y="868" font-size="7.5" fill="var(--muted)" font-family="monospace">↑ Conscious</text>
+    <polygon points="18,880 30,880 24,894" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
+    <text x="36" y="892" font-size="7.5" fill="var(--muted)" font-family="monospace">↓ Subconscious</text>
+  </g>
+      </svg>
+
+      <!-- Tooltip -->
+      <div class="node-tooltip" id="node-tooltip">
+        <div class="nt-name" id="nt-name">—</div>
+        <div class="nt-meta" id="nt-meta">—</div>
+        <div class="nt-desc" id="nt-desc">—</div>
+        <div class="nt-score" id="nt-score">—</div>
+      </div>
+    </div>
+
+    <!-- OC strip -->
+    <div class="oc-strip">
+      <div class="oc-mini">
+        <div class="oc-mini-label" style="color:var(--narc)">NARC</div>
+        <div class="oc-mini-track"><div class="oc-mini-fill" id="oc-narc" style="width:25%;background:var(--narc)"></div></div>
+        <div class="oc-mini-pct" id="ocp-narc">25%</div>
+      </div>
+      <div class="oc-mini">
+        <div class="oc-mini-label" style="color:var(--cist)">CIST</div>
+        <div class="oc-mini-track"><div class="oc-mini-fill" id="oc-cist" style="width:25%;background:var(--cist)"></div></div>
+        <div class="oc-mini-pct" id="ocp-cist">25%</div>
+      </div>
+      <div class="oc-mini">
+        <div class="oc-mini-label" style="color:var(--yarc)">YARC</div>
+        <div class="oc-mini-track"><div class="oc-mini-fill" id="oc-yarc" style="width:25%;background:var(--yarc)"></div></div>
+        <div class="oc-mini-pct" id="ocp-yarc">25%</div>
+      </div>
+      <div class="oc-mini">
+        <div class="oc-mini-label" style="color:var(--oll)">Øll</div>
+        <div class="oc-mini-track"><div class="oc-mini-fill" id="oc-oll" style="width:25%;background:var(--oll)"></div></div>
+        <div class="oc-mini-pct" id="ocp-oll">25%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: QUESTIONS -->
+  <div class="q-col">
+    <div class="q-progress-bar"><div class="q-progress-fill" id="q-prog-fill" style="width:0%"></div></div>
+
+    <!-- Q0: OBSERVER CARD -->
+    <div class="observer-card" id="q-step-0">
+      <div>
+        <div class="oc-title">Who are you?</div>
+        <div class="oc-sub">Enter your details to personalise your report. This is your Observer node — the centre of the architecture.</div>
+      </div>
+      <div class="oc-field">
+        <div class="oc-field-label">Name</div>
+        <input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()">
+      </div>
+      <div class="oc-field">
+        <div class="oc-field-label">Age</div>
+        <input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120">
+      </div>
+
+      <div>
+        <div class="oc-field-label" style="margin-bottom:12px;">Awareness scale</div>
+        <div class="scale-bands">
+          <div class="scale-band-item"><div class="sbi-range" style="color:var(--oll)">1–3</div><div class="sbi-label">Instinct</div></div>
+          <div class="scale-band-item"><div class="sbi-range" style="color:var(--narc)">4–6</div><div class="sbi-label">Reaction</div></div>
+          <div class="scale-band-item"><div class="sbi-range" style="color:var(--cist)">7–9</div><div class="sbi-label">Regulation</div></div>
+          <div class="scale-band-item"><div class="sbi-range" style="color:var(--yarc)">10</div><div class="sbi-label">Presence</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="q-btn q-btn-primary" onclick="goToQ(1)">Begin scoring →</button>
+      </div>
+    </div>
+
+    <!-- QUESTION STEPS (built by JS) -->
+    <div class="q-card-wrap" id="q-card-wrap" style="display:none;"></div>
+
+    <!-- AWARENESS REVEAL -->
+    <div class="awareness-reveal" id="awareness-reveal">
+      <div class="ar-label">Your awareness score</div>
+      <div class="ar-score" id="ar-score">—</div>
+      <div class="ar-state" id="ar-state">—</div>
+      <div class="ar-desc" id="ar-desc">—</div>
+      <div class="ar-track"><div class="ar-fill" id="ar-fill" style="width:0%"></div></div>
+      <button class="ar-generate-btn" id="ar-gen-btn" onclick="submitAssessment()">Generate my report →</button>
+    </div>
+
+  </div>
+</div>
 </div>
 
-<div class="diag-svg-wrap">
-<svg id="main-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-<polygon points="450.0,302.0 598.0,450.0 450.0,598.0 302.0,450.0" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
-<circle cx="450" cy="450" r="220" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.14"/>
-<circle cx="450" cy="450" r="300" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.1"/>
-<circle cx="450" cy="450" r="70" fill="none" stroke="#C8C4BC" stroke-width="0.5" opacity="0.25"/>
-<line x1="450.0" y1="106.0" x2="450.0" y2="794.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
-<line x1="794.0" y1="450.0" x2="106.0" y2="450.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
-<line x1="450.0" y1="302.0" x2="367.6" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
-<line x1="367.6" y1="246.0" x2="286.6" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
-<line x1="367.6" y1="246.0" x2="392.8" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
-<line x1="450.0" y1="302.0" x2="532.4" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
-<line x1="532.4" y1="246.0" x2="507.2" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
-<line x1="532.4" y1="246.0" x2="613.4" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
-<line x1="598.0" y1="450.0" x2="654.0" y2="367.6" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
-<line x1="654.0" y1="367.6" x2="701.6" y2="286.6" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
-<line x1="654.0" y1="367.6" x2="744.5" y2="392.8" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
-<line x1="598.0" y1="450.0" x2="654.0" y2="532.4" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
-<line x1="654.0" y1="532.4" x2="744.5" y2="507.2" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
-<line x1="654.0" y1="532.4" x2="701.6" y2="613.4" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
-<line x1="450.0" y1="598.0" x2="532.4" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
-<line x1="532.4" y1="654.0" x2="613.4" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
-<line x1="532.4" y1="654.0" x2="507.2" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
-<line x1="450.0" y1="598.0" x2="367.6" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
-<line x1="367.6" y1="654.0" x2="392.8" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
-<line x1="367.6" y1="654.0" x2="286.6" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
-<line x1="302.0" y1="450.0" x2="246.0" y2="532.4" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
-<line x1="246.0" y1="532.4" x2="198.4" y2="613.4" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
-<line x1="246.0" y1="532.4" x2="155.5" y2="507.2" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
-<line x1="302.0" y1="450.0" x2="246.0" y2="367.6" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
-<line x1="246.0" y1="367.6" x2="155.5" y2="392.8" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
-<line x1="246.0" y1="367.6" x2="198.4" y2="286.6" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
-<line x1="450" y1="632.0" x2="450" y2="668.0" stroke="#B8B2A8" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.45"/>
-<circle cx="450" cy="450" r="52" fill="white" stroke="#B0ABA0" stroke-width="1.8" opacity="1"/>
-<circle cx="450" cy="450" r="39" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.4"/>
-<circle cx="450" cy="450" r="22" fill="none" stroke="#D4D0C8" stroke-width="0.3" opacity="0.25"/>
-<line x1="430" y1="450" x2="470" y2="450" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
-<line x1="450" y1="430" x2="450"
+<!-- ═══ RESULTS ═══ -->
+<div class="screen" id="screen-results">
+<div class="results-wrap">
+  <div class="r-hero">
+    <div class="r-lbl">Awareness profile — <span id="r-obs-lbl">Human</span></div>
+
+    <!-- AWARENESS LEVEL — top, this is the primary output -->
+    <div id="r-awareness-level" style="margin-bottom:24px;">
+      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px;justify-content:center;">
+        <div style="font-family:var(--serif);font-size:5rem;font-weight:300;line-height:1;" id="r-level-num">—</div>
+        <div style="text-align:left;">
+          <div style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;" id="r-level-name">—</div>
+          <div style="font-size:0.72rem;color:var(--muted);" id="r-level-bs">Balance Scale —</div>
+        </div>
+      </div>
+      <div style="height:2px;background:var(--line);border-radius:1px;overflow:hidden;margin-bottom:10px;max-width:320px;margin-left:auto;margin-right:auto;">
+        <div id="r-level-bar" style="height:100%;border-radius:1px;transition:width 1s ease;"></div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;max-width:380px;margin:0 auto;" id="r-level-desc">—</div>
+    </div>
+
+    <!-- BS SCORE — secondary, with explanation -->
+    <div style="margin-bottom:8px;">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Balance Scale score</div>
+      <div class="r-score-big" id="r-bs">—</div>
+      <div class="r-state-lbl" id="r-st">—</div>
+    </div>
+    <div class="r-divider"></div>
+    <div style="font-size:0.72rem;color:var(--muted);line-height:1.8;max-width:420px;margin:0 auto 8px;">
+      The Balance Scale runs from −5 (collapse) through 0 (Zero-Point / balance) to +5 (peak expression). Your score reflects your answers across all 16 nodes — a midpoint score of 3 on every slider produces approximately −2 to −3, reflecting the subconscious layer weighting in the scoring model.
+    </div>
+    <div class="r-summary" id="r-sum">—</div>
+  </div>
+
+  <div class="r-diagram-wrap">
+    <div class="r-diagram-lbl">Your Source Code map</div>
+    <svg id="result-svg" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="100%"></svg>
+  </div>
+
+  <div class="r-grid">
+    <div class="r-card">
+      <div class="r-card-lbl">Observer Code ratio</div>
+      <div id="r-oc-bars"></div>
+    </div>
+    <div class="r-card">
+      <div class="r-card-lbl">Node scores</div>
+      <div id="r-nodes"></div>
+    </div>
+  </div>
+
+  <div class="r-interp">
+    <div class="r-interp-lbl">Interpretation</div>
+    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:12px;line-height:1.6;">This assessment is a structured interpretive tool. It is not a clinical diagnostic instrument and is not a substitute for professional psychological support.</div>
+    <div class="r-interp-text" id="r-interp">—</div>
+  </div>
+
+  <div class="r-cta" id="r-export-section">
+    <div class="r-cta-title">Your assessment code</div>
+    <div class="r-cta-sub">Save this code to compare your results next time. Paste it at the start of your next assessment to see how each Source Code has moved.</div>
+    <div id="r-export-code" style="font-family:var(--mono,monospace);font-size:0.62rem;word-break:break-all;background:rgba(255,255,255,0.1);padding:12px;border-radius:8px;margin-bottom:12px;letter-spacing:0.03em;line-height:1.6;">—</div>
+    <button onclick="copyExportCode()" style="background:var(--bg);color:var(--text);border:none;padding:10px 24px;border-radius:999px;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Copy code</button>
+  </div>
+
+  <div class="retake-row"><span class="retake-lnk" onclick="retake()">Retake assessment</span></div>
+</div>
+</div>
+
+</div><!-- /container -->
+
+<!-- Close tooltip on outside click -->
+<div id="tooltip-overlay" style="position:fixed;inset:0;z-index:40;display:none;" onclick="hideTooltip()"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// NODE DEFINITIONS
+// ═══════════════════════════════════════════════════════════════════════════
+const NODES = [
+  {id:'sc1', name:'Presence', code:'NARC', slot:'A1', layer:'Conscious', col:'#C4622D', svgId:'node-sc1', appId:'node-a1', ocId:'node-narc',
+   profiles:{ Human:{k:true, q:"When a conversation becomes emotionally intense, what happens to your ability to stay in it?", sub:"Not how you appear — what actually happens inside. Whether you remain present and accessible or whether part of you disappears.", lo:"I shut down or go blank", hi:"I stay present and grounded"} }},
+  {id:'sc2', name:'Fear', code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc2', appId:'node-a1', ocId:'node-narc',
+   profiles:{ Human:{k:true, q:"How much energy do you spend managing how you come across to other people?", sub:"The constant monitoring and adjusting. The work others don't see but you feel the cost of every day.", lo:"Significant — always monitoring", hi:"Very little — I'm the same everywhere"} }},
+  {id:'sc3', name:'Interpretation', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc3', appId:'node-a2', ocId:'node-narc',
+   profiles:{ Human:{k:true, q:"When someone says something ambiguous, what is your default response?", sub:"Whether you naturally read context and subtext or whether you need it made explicit before you feel safe acting on it.", lo:"I take it at face value", hi:"I read between the lines naturally"} }},
+  {id:'sc4', name:'Desire', code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc4', appId:'node-a2', ocId:'node-narc',
+   profiles:{ Human:{k:true, q:"When something genuinely interests you, how does the rest of your life relate to it?", sub:"The pull of deep interest — whether it enriches everything or consumes everything.", lo:"Everything else fades — hours disappear", hi:"I engage deeply but maintain proportion"} }},
+  {id:'sc5', name:'Intention', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc5', appId:'node-a2', ocId:'node-narc',
+   profiles:{ Human:{k:true, q:"How clearly can you separate what you actually want from what you have been conditioned to want?", sub:"The difference between your own wants and inherited wants that feel like yours but may not be.", lo:"The two feel identical most of the time", hi:"I know the difference clearly"} }},
+  {id:'sc6', name:'Communication', code:'CIST', slot:'A3', layer:'Conscious', col:'#534AB7', svgId:'node-sc6', appId:'node-a3', ocId:'node-cist',
+   profiles:{ Human:{k:true, q:"After spending extended time with people — even people you like — how do you feel?", sub:"Not whether you enjoy it. What it costs your system. How much recovery time your nervous system needs afterwards.", lo:"Depleted — I need significant time alone", hi:"Energised or neutral — people don't drain me"} }},
+  {id:'sc7', name:'Attachment', code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc7', appId:'node-a3', ocId:'node-cist',
+   profiles:{ Human:{k:true, q:"In your closest relationships, which pattern is most familiar to you?", sub:"The pattern underneath the relationship — what you do to keep people, or what happens when you sense them pulling away.", lo:"I work hard to keep people close", hi:"I trust the connection — I don't maintain it anxiously"} }},
+  {id:'sc8', name:'Expression', code:'CIST', slot:'A4', layer:'Conscious', col:'#534AB7', svgId:'node-sc8', appId:'node-a4', ocId:'node-cist',
+   profiles:{ Human:{k:true, q:"When you have something important to say, how accurately does what comes out match what you actually meant?", sub:"The gap between what is inside and what is expressed. Whether your words carry what you actually feel.", lo:"Rarely — what I mean and what I say diverge", hi:"Usually — I can express myself accurately"} }},
+  {id:'sc9', name:'Perspective', code:'CIST', slot:'A4', layer:'Conscious', col:'#534AB7', svgId:'node-sc9', appId:'node-a4', ocId:'node-cist',
+   profiles:{ Human:{k:true, q:"When someone is upset, how naturally do you understand why without them having to explain it?", sub:"Whether emotional states in others are legible to you instinctively or whether you need more data than most people seem to.", lo:"I struggle — I need more context than most", hi:"I read emotional states without words"} }},
+  {id:'sc10', name:'Memory', code:'CIST', slot:'A5', layer:'Subconscious', col:'#534AB7', svgId:'node-sc10', appId:'node-a5', ocId:'node-cist',
+   profiles:{ Human:{k:true, q:"When a relationship ends or changes significantly, how long does it stay with you?", sub:"Not grief — that is normal. Whether the loss layers over how you see new relationships and new people.", lo:"A long time — it colours what comes after", hi:"I grieve it and move forward cleanly"} }},
+  {id:'sc11', name:'Pattern', code:'YARC', slot:'A5', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc11', appId:'node-a5', ocId:'node-yarc',
+   profiles:{ Human:{k:true, q:"When your routine is disrupted unexpectedly, what happens inside you?", sub:"The internal experience — not how you appear. Whether disruption to structure triggers something real in your system.", lo:"Significant distress — it affects my whole day", hi:"Minor adjustment — I adapt without losing my footing"} }},
+  {id:'sc12', name:'Logic', code:'YARC', slot:'A6', layer:'Conscious', col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc',
+   profiles:{ Human:{k:true, q:"When you are working on something that fully engages you, how aware are you of time passing?", sub:"The quality of absorption. Whether you can engage completely and still maintain a relationship with ordinary time.", lo:"Not at all — hours disappear without me noticing", hi:"Fully aware — I engage deeply and track time"} }},
+  {id:'sc13', name:'Alignment', code:'YARC', slot:'A6', layer:'Conscious', col:'#1D9E75', svgId:'node-sc13', appId:'node-a6', ocId:'node-yarc',
+   profiles:{ Human:{k:true, q:"How consistent is the version of you that people see with the version you experience privately?", sub:"The distance between your performed self and your actual self. Whether you are presenting or present.", lo:"Very different — I perform most of the time", hi:"Very similar — what people see is who I am"} }},
+  {id:'sc14', name:'Protection', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc14', appId:'node-a7', ocId:'node-yarc',
+   profiles:{ Human:{k:true, q:"When your environment becomes too loud, bright, or busy, what does your system do?", sub:"Whether sensory input is processed as information or overrides your functioning and forces withdrawal.", lo:"I need to leave — it overrides my system", hi:"I adjust and manage — it doesn't override me"} }},
+  {id:'sc15', name:'Instinct', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc15', appId:'node-a7', ocId:'node-yarc',
+   profiles:{ Human:{k:true, q:"Do you have specific routines, rituals, or repeated behaviours that help you feel regulated?", sub:"Whether you rely on structure to maintain stability. Whether certain patterns are essential rather than optional.", lo:"Yes — they are essential, not optional", hi:"Rarely — I don't rely on specific patterns"} }},
+  {id:'sc16', name:'Adaptation', code:'Øll', slot:'A7', layer:'Conscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a7', ocId:'node-oll',
+   profiles:{ Human:{k:true, q:"When circumstances change significantly and without warning, where do you land?", sub:"The honest aftermath of sudden change. How long your system needs to find its footing and what happens in the gap.", lo:"Dysregulated for a sustained period", hi:"Uncomfortable briefly then functional"} }},
+  {id:'sc17', name:'Core Identity', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a8', ocId:'node-oll',
+   profiles:{ Human:{k:true, q:"After a period of sustained social performance, who do you return to when you are alone?", sub:"Whether you find yourself — quickly and clearly — or whether extended social periods leave you unsure of who you are.", lo:"I'm not sure — I lose track of myself", hi:"Myself — clearly, quickly, without much recovery"} }},
+  {id:'sc18', name:'Instinct2', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc15', appId:'node-a8', ocId:'node-oll',
+   profiles:{ Human:{k:true, q:"How much does your physical environment affect your internal state?", sub:"Light, sound, temperature, texture, smell. Whether your environment is neutral background or something that registers strongly.", lo:"Significantly — sensory input registers strongly", hi:"Minimally — my environment rarely overrides me"} }},
+  {id:'sc19', name:'Drift', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc14', appId:'node-a8', ocId:'node-oll',
+   profiles:{ Human:{k:true, q:"When you reach your limit — emotionally, socially, or sensorially — what does that look like?", sub:"The endpoint. Whether you signal it and take what you need, or whether you disappear entirely.", lo:"Complete withdrawal — I go unreachable", hi:"I signal it clearly and take what I need"} }},
+  {id:'sc20', name:'Integrity', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc4', appId:'node-a8', ocId:'node-oll',
+   profiles:{ Human:{k:true, q:"How honest are you — with yourself and others — about what you actually need versus what you present as needing?", sub:"The gap between your real needs and your presented needs. Whether you have learned to name what you actually need.", lo:"The gap is large — I present as needing less", hi:"The gap is small — I name what I actually need"} }},
+];
+
+const OC_INFO = {
+  obs:  {name:'Observer',      meta:'The centre — all inputs feed here', desc:'The subject of observation. The system being scored. All 16 Source Code nodes ultimately feed their data back to this point.', col:'#7a7972'},
+  narc: {name:'NARC',          meta:'Observer Code · Self / Intake', desc:'Self-reference, protection, identity, drive. The code governing how the system relates to itself. Polar pair: YARC.', col:'#C4622D'},
+  cist: {name:'CIST',          meta:'Observer Code · Regulation', desc:'Structure, communication, balance, containing. The code governing how the system regulates itself and its relationships. Polar pair: Øll.', col:'#534AB7'},
+  yarc: {name:'YARC',          meta:'Observer Code · Other / Giving', desc:'Other-directed awareness, delivery, service, contribution. The polar opposite of NARC. Governs how the system orients toward others.', col:'#1D9E75'},
+  oll:  {name:'Øll',           meta:'Observer Code · Integration', desc:'Transformation, volatility, instinct, core identity. The polar opposite of CIST. Holds the potential for both dissolution and renewal.', col:'#A0426B'},
+  a1:   {name:'App Slot A1',   meta:'NARC · Presence + Fear', desc:'Two Source Codes feed this slot: Presence (conscious) and Fear (subconscious). Together they determine how the system shows up and what drives it from underneath.', col:'#C4622D'},
+  a2:   {name:'App Slot A2',   meta:'NARC · Intention + Desire', desc:'Intention (conscious direction) and Desire (subconscious pull) feed this slot. The gap between them is a key drift indicator.', col:'#C4622D'},
+  a3:   {name:'App Slot A3',   meta:'CIST · Communication + Attachment', desc:'How the system expresses itself (conscious) and what it is bonded to beneath the surface (subconscious).', col:'#534AB7'},
+  a4:   {name:'App Slot A4',   meta:'CIST · Perspective + Memory', desc:'The ability to hold multiple views (conscious) and the weight of historical experience shaping current interpretation (subconscious).', col:'#534AB7'},
+  a5:   {name:'App Slot A5',   meta:'YARC · Logic + Pattern', desc:'Structured reasoning (conscious) and the loops running underneath (subconscious). Together they reveal whether analysis is genuinely free or pattern-constrained.', col:'#1D9E75'},
+  a6:   {name:'App Slot A6',   meta:'YARC · Alignment + Protection', desc:'Values-behaviour consistency (conscious) and the defensive resource consumption running beneath (subconscious).', col:'#1D9E75'},
+  a7:   {name:'App Slot A7',   meta:'Øll · Adaptation + Instinct', desc:'Conscious change capacity and subconscious rapid-response accuracy. Determines whether transformation is chosen or reactive.', col:'#A0426B'},
+  a8:   {name:'App Slot A8',   meta:'Øll · Integrity + Core Identity', desc:'Conscious self-honesty and the deepest subconscious self-definition. The foundation beneath all other nodes.', col:'#A0426B'},
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════════
+let observer = 'Human';
+let scores = {};
+let currentStep = 0; // 0 = observer card, 1-16 = node questions
+let lastResult = null;
+let isDark = false;
+
+function awarenessState(v) {
+  if (!v||v<=0) return {label:'—',desc:'Score your nodes to map your position.',col:'var(--muted)'};
+  if (v<=1.5) return {label:'Instinct',desc:'Subconscious fully dominant. Øll and NARC running. Pre-reflective awareness.',col:'var(--oll)'};
+  if (v<=3) return {label:'Reaction / Observation',desc:'NARC→CIST transition. Patterns becoming visible. Beginning to observe.',col:'var(--narc)'};
+  if (v<=4.5) return {label:'Regulation',desc:'CIST and YARC rising. Conscious expanding. Choice returning.',col:'var(--cist)'};
+  return {label:'Peak Expression',desc:'25/25/25/25. Both layers aligned. Peak expression threshold reached.',col:'var(--yarc)'};
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DARK MODE
+// ═══════════════════════════════════════════════════════════════════════════
+function toggleDark() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent = isDark ? '○' : '◑';
+  document.getElementById('theme-label').textContent = isDark ? 'Light' : 'Dark';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// OBSERVER SELECT
+// ═══════════════════════════════════════════════════════════════════════════
+function selObs(o) {
+  observer = o;
+  document.querySelectorAll('.obs-type-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('ob-'+o).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════════════════════════════
+function startAssessment() {
+  scores = {};
+  currentStep = 0;
+  // Only mark unknowns as null — known nodes start undefined (unanswered)
+  NODES.forEach(n => {
+    scores[n.id] = n.profiles[observer]?.k ? undefined : null;
+    resetNode(n.svgId);
+  });
+  showScreen('screen-assessment');
+  showStep(0);
+  ['node-a1','node-a2','node-a3','node-a4','node-a5','node-a6','node-a7','node-a8'].forEach(id=>{
+    const el=document.getElementById(id);if(el){el.style.opacity='0.2';}
+  });
+  ['node-narc','node-cist','node-yarc','node-oll'].forEach(id=>{
+    const el=document.getElementById(id);if(el){el.style.opacity='0.25';}
+  });
+}
+
+function resetNode(id) {
+  const el = document.getElementById(id);
+  // All nodes start invisible — revealed only when their question is reached
+  if (el) { el.style.opacity = '0'; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// BUILD & SHOW STEPS
+// ═══════════════════════════════════════════════════════════════════════════
+function showStep(step) {
+  currentStep = step;
+  const totalKnown = NODES.filter(n=>n.profiles[observer]?.k).length;
+  const pct = step === 0 ? 0 : (step / totalKnown * 100).toFixed(0);
+  document.getElementById('q-prog-fill').style.width = pct + '%';
+
+  if (step === 0) {
+    document.getElementById('q-step-0').style.display = 'flex';
+    document.getElementById('q-card-wrap').style.display = 'none';
+    document.getElementById('awareness-reveal').classList.remove('visible');
+    document.getElementById('diag-prog-text').textContent = 'Observer';
+    return;
+  }
+
+  document.getElementById('q-step-0').style.display = 'none';
+  document.getElementById('awareness-reveal').classList.remove('visible');
+  document.getElementById('q-card-wrap').style.display = 'flex';
+
+  // Get the step-th known node
+  const knownNodes = NODES.filter(n=>n.profiles[observer]?.k);
+
+  if (step > knownNodes.length) {
+    // All answered — show awareness reveal
+    showAwarenessReveal();
+    return;
+  }
+
+  const n = knownNodes[step - 1];
+  const p = n.profiles[observer];
+  document.getElementById('diag-prog-text').textContent = `${step} / ${knownNodes.length}`;
+
+  // Build question card
+  const wrap = document.getElementById('q-card-wrap');
+  wrap.innerHTML = `
+    <div class="q-step active">
+      <div class="q-meta-row">
+        <div class="q-geo-dot" style="background:${n.col}"></div>
+        <span class="q-code-label" style="color:${n.col}">${n.code} · ${n.slot}</span>
+        <span class="q-layer-label">${n.layer}</span>
+      </div>
+      <div class="q-node-name">${n.name}</div>
+      <div class="q-question">${p.q}</div>
+      <div class="q-slider-wrap">
+        <div class="q-slider-row">
+          <input type="range" id="active-slider" min="1" max="5" value="${scores[n.id]||3}"
+            oninput="onSlide('${n.id}',this.value)" style="--pct:${((scores[n.id]||3)-1)/4*100}%">
+          <div class="q-val-big" id="active-val" style="color:${n.col}">${scores[n.id]||3}</div>
+        </div>
+        <div class="q-slider-labels"><span>${p.lo||'Low'}</span><span>${p.hi||'High'}</span></div>
+        <div class="q-band-label" id="active-band">${awarenessState(scores[n.id]||5).label}</div>
+      </div>
+      <div class="q-nav-row">
+        <button class="q-btn q-btn-ghost" onclick="goToQ(${step-1})" ${step===1?'style="visibility:hidden"':''}>← Back</button>
+        <button class="q-btn q-btn-primary" onclick="goToQ(${step+1})">${step===knownNodes.length?'See my score →':'Next →'}</button>
+      </div>
+    </div>
+  `;
+
+  // Highlight active node in diagram
+  highlightNode(n);
+  pulseNode(n.svgId);
+}
+
+function goToQ(step) {
+  // Save current slider value — default to 5 if user hasn't moved it
+  if (currentStep > 0) {
+    const knownNodes = NODES.filter(n=>n.profiles[observer]?.k);
+    const n = knownNodes[currentStep-1];
+    if (n) {
+      const slider = document.getElementById('active-slider');
+      const val = slider ? parseInt(slider.value) : 5;
+      scores[n.id] = val;
+      lightNode(n.svgId, val, n.col);
+      updateOCBars();
+    }
+  }
+  showStep(step);
+}
+
+function updateObsNode() {
+  const name = document.getElementById('obs-name')?.value.trim()||'—';
+  const label = document.getElementById('obs-label');
+  if (label) label.textContent = name.length > 8 ? name.slice(0,8)+'…' : name;
+  // Light up observer node
+  const el = document.getElementById('main-diagram').querySelector('circle');
+  if (el) el.style.opacity = name && name !== '—' ? '0.7' : '0.5';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SLIDER
+// ═══════════════════════════════════════════════════════════════════════════
+function onSlide(id, rawVal) {
+  const val = parseInt(rawVal);
+  scores[id] = val;
+  const pct = ((val-1)/4*100).toFixed(1);
+  const slider = document.getElementById('active-slider');
+  if (slider) slider.style.setProperty('--pct', pct+'%');
+  const valEl = document.getElementById('active-val');
+  if (valEl) { valEl.textContent = val; }
+  const bandEl = document.getElementById('active-band');
+  const st = awarenessState(val);
+  if (bandEl) { bandEl.textContent = st.label; bandEl.style.color = st.col; }
+
+  // Live update node
+  const n = NODES.find(x=>x.id===id);
+  if (n) lightNode(n.svgId, val, n.col);
+  updateOCBars();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DIAGRAM NODE ANIMATION
+// ═══════════════════════════════════════════════════════════════════════════
+function lightNode(svgId, val, col) {
+  const el = document.getElementById(svgId);
+  if (!el) return;
+  // 0.28 at score 1 → 0.95 at score 10
+  const op = (0.55 + (val / 5) * 0.4).toFixed(2);
+  el.style.opacity = op;
+  // Restore fill and stroke on all shapes inside this group
+  el.querySelectorAll('polygon,ellipse,circle').forEach((shape, i) => {
+    if (i === 0) {
+      shape.setAttribute('fill', 'none');
+      shape.setAttribute('stroke', col);
+    } else {
+      // Inner decorative shapes
+      shape.setAttribute('stroke', col);
+      shape.style.opacity = '0.4';
+    }
+  });
+}
+
+function pulseNode(svgId) {} // handled by highlightNode
+
+function highlightNode(n) {
+  const curEl = document.getElementById(n.svgId);
+  if (curEl) {
+    curEl.style.opacity = '0.7';
+    // Restore stroke so it's visible for scoring
+    curEl.querySelectorAll('polygon,ellipse,circle').forEach((shape, i) => {
+      shape.setAttribute('stroke', i === 0 ? n.col : 'transparent');
+      if (i === 0) shape.setAttribute('fill', 'none');
+    });
+    // Faintly reveal parent App slot
+    const appEl = document.getElementById(n.appId);
+    if (appEl && parseFloat(appEl.style.opacity || 0) < 0.35) {
+      appEl.style.opacity = '0.35';
+      appEl.querySelectorAll('ellipse').forEach(s => s.setAttribute('stroke', n.col));
+    }
+    // Faintly reveal OC diamond
+    const ocEl = document.getElementById(n.ocId);
+    if (ocEl && parseFloat(ocEl.style.opacity || 0) < 0.25) {
+      ocEl.style.opacity = '0.25';
+      ocEl.querySelectorAll('polygon').forEach((s, i) => {
+        if (i === 0) s.setAttribute('stroke', n.col);
+      });
+    }
+  }
+}
+
+function updateOCBars() {
+  const byCode = {NARC:[],CIST:[],YARC:[],'Øll':[]};
+  NODES.forEach(n=>{
+    if(scores[n.id]!==null && scores[n.id]!==undefined)
+      byCode[n.code].push(scores[n.id]);
+  });
+  const avgs={};
+  Object.entries(byCode).forEach(([k,v])=>{avgs[k]=v.length?v.reduce((a,b)=>a+b,0)/v.length:0;});
+  const total=Object.values(avgs).reduce((a,b)=>a+b,0)||1;
+  const keyMap={NARC:'narc',CIST:'cist',YARC:'yarc','Øll':'oll'};
+  const ocColors = {narc:'#C4622D', cist:'#534AB7', yarc:'#1D9E75', oll:'#A0426B'};
+  Object.entries(avgs).forEach(([k,avg])=>{
+    if(avg===0) return;
+    const key=keyMap[k];
+    const pct=Math.round(avg/total*100);
+    const bar=document.getElementById('oc-'+key);
+    const lbl=document.getElementById('ocp-'+key);
+    const vEl=document.getElementById('v-'+key);
+    if(bar) bar.style.width=pct+'%';
+    if(lbl) lbl.textContent=pct+'%';
+    if(vEl) vEl.textContent=pct+'%';
+    const ocEl=document.getElementById('node-'+key);
+    if(ocEl){
+      const newOp = (0.45+(avg/10)*0.5).toFixed(2);
+      ocEl.style.opacity = newOp;
+      // Restore stroke colour when first becoming visible
+      ocEl.querySelectorAll('polygon').forEach((s,i)=>{
+        s.setAttribute('stroke', i===0 ? ocColors[key] : 'transparent');
+        if(i===0) s.setAttribute('fill','none');
+      });
+    }
+  });
+
+  // Balance scale — only fully reveal when all answered
+  const answered=NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
+  if(answered.length){
+    const avg=answered.reduce((s,n)=>s+scores[n.id],0)/answered.length;
+    const bs=((avg-3)/2*5).toFixed(1);
+    const bsEl=document.getElementById('v-bs');
+    if(bsEl) bsEl.textContent=(parseFloat(bs)>0?'+':'')+bs;
+    const bsNode=document.getElementById('node-bs');
+    const bsFrac = answered.length / NODES.filter(n=>n.profiles[observer]?.k).length;
+    if(bsNode) bsNode.style.opacity=(bsFrac * 0.85).toFixed(2);
+  }
+
+  // App slot opacities — restore stroke when revealed
+  const slotMap={'A1':['sc1','sc2'],'A2':['sc3','sc4'],'A3':['sc5','sc6'],'A4':['sc7','sc8'],'A5':['sc9','sc10'],'A6':['sc11','sc12'],'A7':['sc13','sc14'],'A8':['sc15','sc16']};
+  const slotCols={'A1':'#C4622D','A2':'#C4622D','A3':'#534AB7','A4':'#534AB7','A5':'#1D9E75','A6':'#1D9E75','A7':'#A0426B','A8':'#A0426B'};
+  Object.entries(slotMap).forEach(([slot,ids])=>{
+    const vals=ids.map(id=>scores[id]).filter(v=>v!==null&&v!==undefined);
+    if(!vals.length) return;
+    const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+    const el=document.getElementById('node-'+slot.toLowerCase());
+    if(el){
+      el.style.opacity=(0.35+(avg/10)*0.55).toFixed(2);
+      el.querySelectorAll('ellipse').forEach(s=>s.setAttribute('stroke',slotCols[slot]));
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AWARENESS REVEAL
+// ═══════════════════════════════════════════════════════════════════════════
+function showAwarenessReveal() {
+  document.getElementById('q-card-wrap').style.display = 'none';
+  document.getElementById('q-step-0').style.display = 'none';
+
+  const known = NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
+  const avg = known.reduce((s,n)=>s+scores[n.id],0)/known.length;
+  const st = awarenessState(avg);
+
+  document.getElementById('ar-score').textContent = avg.toFixed(1);
+  document.getElementById('ar-score').style.color = st.col;
+  document.getElementById('ar-state').textContent = st.label;
+  document.getElementById('ar-state').style.color = st.col;
+  document.getElementById('ar-desc').textContent = st.desc;
+  document.getElementById('ar-fill').style.width = (avg/5*100)+'%';
+  document.getElementById('ar-fill').style.background = st.col;
+  document.getElementById('diag-prog-text').textContent = 'Complete';
+
+  document.getElementById('awareness-reveal').classList.add('visible');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TOOLTIP
+// ═══════════════════════════════════════════════════════════════════════════
+function showTooltip(id, event) {
+  event.stopPropagation();
+  const info = OC_INFO[id] || NODES.find(n=>n.id===id);
+  if (!info) return;
+
+  const isOC = !!OC_INFO[id];
+  const name = isOC ? OC_INFO[id].name : info.name;
+  const meta = isOC ? OC_INFO[id].meta : `${info.code} · ${info.slot} · ${info.layer}`;
+  const desc = isOC ? OC_INFO[id].desc : (info.profiles[observer]?.q || info.profiles[observer]?.u || '—');
+  const scoreVal = scores[id] !== undefined && scores[id] !== null ? scores[id]+'/10' : '—';
+
+  document.getElementById('nt-name').textContent = name;
+  document.getElementById('nt-meta').textContent = meta;
+  document.getElementById('nt-desc').textContent = desc;
+  document.getElementById('nt-score').textContent = scoreVal;
+  document.getElementById('nt-score').style.color = isOC ? OC_INFO[id].col : (info.col||'var(--muted)');
+
+  const tt = document.getElementById('node-tooltip');
+  const svgWrap = document.querySelector('.diag-svg-wrap');
+  const rect = svgWrap.getBoundingClientRect();
+  tt.style.display = 'block';
+  tt.style.left = Math.min(event.clientX - rect.left + 12, rect.width - 240) + 'px';
+  tt.style.top = Math.min(event.clientY - rect.top - 20, rect.height - 160) + 'px';
+  document.getElementById('tooltip-overlay').style.display = 'block';
+}
+
+function hideTooltip() {
+  document.getElementById('node-tooltip').style.display = 'none';
+  document.getElementById('tooltip-overlay').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════════════════════════════════════════
+async function submitAssessment() {
+  const btn = document.getElementById('ar-gen-btn');
+  btn.disabled = true; btn.textContent = 'Generating…';
+  try {
+    lastResult = await callClaude();
+  } catch(e) {
+    console.error(e);
+    lastResult = localScore();
+  }
+  renderResults(lastResult);
+  showScreen('screen-results');
+  btn.disabled = false; btn.textContent = 'Generate my report →';
+}
+
+async function callClaude() {
+  const known = NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
+  const name = document.getElementById('obs-name')?.value.trim()||'';
+  const age = document.getElementById('obs-age')?.value.trim()||'';
+
+  const conNodes = NODES.filter(n=>n.layer==='Conscious'&&scores[n.id]);
+  const subNodes = NODES.filter(n=>n.layer==='Subconscious'&&scores[n.id]);
+  const conAvg = conNodes.length ? conNodes.reduce((s,n)=>s+scores[n.id],0)/conNodes.length : 3;
+  const subAvg = subNodes.length ? subNodes.reduce((s,n)=>s+scores[n.id],0)/subNodes.length : 3;
+  const driftEst = Math.abs(conAvg-subAvg).toFixed(1);
+
+  const sys=`You are generating a personalised SCH Check awareness report. 20 therapeutic questions mapped onto the Source Code framework (scale 1-5, 1=highly activated/challenging, 5=regulated/functional). Produce a report that feels written specifically for this person.
+
+QUESTION MAPPING:
+NARC ARM (Q1-Q5): Presence, Fear/Masking, Interpretation, Desire, Intention
+CIST ARM (Q6-Q10): Communication/Drain, Attachment, Expression, Perspective/Empathy, Memory
+YARC ARM (Q11-Q15): Pattern/Routine, Logic/Hyperfocus, Alignment/Masking, Protection/Sensory, Instinct/Regulation
+Øll ARM (Q16-Q20): Adaptation/Change, Core Identity, Instinct/Sensory, Drift/Shutdown, Integrity/Threshold
+
+SCORING: Low score = high activation of that code. Drift ≈ ${driftEst}.
+If Q2≤2 (heavy masking) or Q4≤2 (shutdown) or Q14≤2 (sensory overwhelm) or Q19≤2 (disappears): flag gently in mental_health_note.
+
+Return ONLY valid JSON:
+{
+  "balance_scale":<-5 to 5, one decimal>,
+  "drift":<0 to 5, one decimal>,
+  "bs_state":<string>,
+  "awareness_level":<1-10>,
+  "awareness_level_name":<string>,
+  "keyword_identity":<string — 1-3 words e.g. "The Anchor">,
+  "keyword_description":<string — 1 sentence specific to their profile>,
+  "observer_codes":{"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},
+  "oc_descriptions":{"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},
+  "report_sections":{
+    "overview":<3 paragraphs — open with keyword, describe dominant code combination in daily life, the big picture pattern>,
+    "strengths":<2 paragraphs — specific elevated Source Codes named, what those strengths look like>,
+    "shadows":<2 paragraphs — honest flip side, specific blind spots and loops, "this is the pattern" not "you are broken">,
+    "under_pressure":<2 paragraphs — Private Self, what subconscious codes produce under stress, what they need>,
+    "relationship_pattern":<2 paragraphs — natural role, what they give and need, where friction appears>,
+    "developmental_stage":<1-2 paragraphs — where they sit in the NARC→CIST→YARC→Øll arc>,
+    "recalibration":<1-2 paragraphs — one or two specific actionable things, speak directly to them>
+  },
+  "mental_health_note":<1-2 sentences — gentle if needed, affirming if healthy>,
+  "growth_areas":[<string>,<string>,<string>]
+}
+observer_codes must sum to 100.`;
+
+  const scores_str = NODES.map((n,i)=>`Q${i+1} ${n.name}: ${scores[n.id]??3}`).join('\n');
+  const msg=`Name: ${name||'Observer'}${age?' · Age '+age:''}\nScale: 1=highly activated, 5=regulated\n\n${scores_str}`;
+
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,system:sys,messages:[{role:'user',content:msg}]})
+  });
+  const d=await res.json();
+  return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
+}
+function localScore() {
+  const known=NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
+  const avg=known.reduce((s,n)=>s+scores[n.id],0)/known.length;
+  const bs=parseFloat(((avg-5.5)/4.5*5).toFixed(1));
+  const byCode={NARC:[],CIST:[],YARC:[],'Øll':[]};
+  known.forEach(n=>byCode[n.code].push(scores[n.id]));
+  const total=Object.values(byCode).reduce((s,v)=>s+v.reduce((a,b)=>a+b,0),0)||1;
+  const np=Math.round(byCode.NARC.reduce((a,b)=>a+b,0)/total*100)||25;
+  const cp=Math.round(byCode.CIST.reduce((a,b)=>a+b,0)/total*100)||25;
+  const yp=Math.round(byCode.YARC.reduce((a,b)=>a+b,0)/total*100)||25;
+  const op=100-np-cp-yp;
+  const st=awarenessState(avg);
+  return {balance_scale:bs,awareness_avg:parseFloat(avg.toFixed(1)),awareness_state:st.label,bs_state:st.label,observer_codes:{narc:np,yarc:yp,cist:cp,oll:op},oc_descriptions:{narc:'Self-reference patterns.',yarc:'Other-directed awareness.',cist:'Regulation capacity.',oll:'Integration and volatility.'},unknown_count:NODES.filter(n=>scores[n.id]===null).length,interpretation:'Your awareness profile has been mapped across the Source Code nodes. The Observer Code ratio shows where energy is concentrated in this system.'};
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 10 AWARENESS LEVELS
+// ═══════════════════════════════════════════════════════════════════════════
+const AWARENESS_LEVELS = [
+  { level:1,  name:'Non-Conscious',    col:'var(--oll)',   desc:'Behaviour is entirely automatic. The subconscious runs with no observer present. Patterns repeat without recognition.' },
+  { level:2,  name:'Sub-Conscious',    col:'var(--oll)',   desc:'Hidden patterns, inherited programming, and instinct are driving decisions. You are moved but cannot yet see what moves you.' },
+  { level:3,  name:'Conscious',        col:'var(--narc)',  desc:'Real-time perception and reaction. The observer has switched on but is still largely reactive to what it notices.' },
+  { level:4,  name:'Aware',            col:'var(--narc)',  desc:'Awareness of your own loops. This is the first level where genuine change becomes possible.' },
+  { level:5,  name:'Choice',           col:'var(--cist)',  desc:'The gap between stimulus and response has opened. Behaviour is beginning to be chosen rather than compelled.' },
+  { level:6,  name:'Integration',      col:'var(--cist)',  desc:'You can hold both sides of a polarity simultaneously without collapsing into either. The Yin-Yang is in motion.' },
+  { level:7,  name:'Expression',       col:'var(--yarc)',  desc:'Conscious creation. Your inner state reliably translates into outer reality through word, action, and presence.' },
+  { level:8,  name:'Connection',       col:'var(--yarc)',  desc:'Genuine empathy without self-abandonment. You can see your role in the collective system.' },
+  { level:9,  name:'Mastery',          col:'var(--yarc)',  desc:'Living by intention rather than impulse. Emotion is information, not instruction.' },
+  { level:10, name:'Creator / Source', col:'var(--amber)', desc:'Peak expression threshold. 25/25/25/25 — Observer Code ratio fully balanced. Both layers aligned. The point from which the next developmental cycle begins.' },
+];
+
+function getAwarenessLevel(bs) {
+  bs = parseFloat(bs);
+  if (bs <= -4.5) return AWARENESS_LEVELS[0];
+  if (bs <= -2.5) return AWARENESS_LEVELS[1];
+  if (bs <= -0.5) return AWARENESS_LEVELS[2];
+  if (bs <=  0.5) return AWARENESS_LEVELS[3];
+  if (bs <=  1.5) return AWARENESS_LEVELS[4];
+  if (bs <=  2.5) return AWARENESS_LEVELS[5];
+  if (bs <=  3.2) return AWARENESS_LEVELS[6];
+  if (bs <=  3.8) return AWARENESS_LEVELS[7];
+  if (bs <=  4.5) return AWARENESS_LEVELS[8];
+  return AWARENESS_LEVELS[9];
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RENDER RESULTS
+// ═══════════════════════════════════════════════════════════════════════════
+function renderResults(r) {
+  const bs=r.balance_scale;
+  const bsCol=bs>0.5?'var(--yarc)':bs<-0.5?'var(--narc)':'var(--cist)';
+  const name=document.getElementById('obs-name')?.value.trim()||observer;
+  document.getElementById('r-obs-lbl').textContent=name+' · '+observer;
+
+  // Awareness level
+  const lvl = getAwarenessLevel(bs);
+  const lvlPct = ((lvl.level-1)/9*100).toFixed(0);
+  const lvlNum = document.getElementById('r-level-num');
+  const lvlName = document.getElementById('r-level-name');
+  const lvlBs = document.getElementById('r-level-bs');
+  const lvlDesc = document.getElementById('r-level-desc');
+  const lvlBar = document.getElementById('r-level-bar');
+  if(lvlNum) { lvlNum.textContent = lvl.level; lvlNum.style.color = lvl.col; }
+  if(lvlName) { lvlName.textContent = lvl.name; lvlName.style.color = lvl.col; }
+  if(lvlBs) lvlBs.textContent = 'Balance Scale ' + (bs>0?'+':'') + bs.toFixed(1) + ' · Level ' + lvl.level + ' of 10';
+  if(lvlDesc) lvlDesc.textContent = lvl.desc;
+  if(lvlBar) { lvlBar.style.width = lvlPct+'%'; lvlBar.style.background = lvl.col; }
+  document.getElementById('r-bs').textContent=(bs>0?'+':'')+bs.toFixed(1);
+  document.getElementById('r-bs').style.color=bsCol;
+  document.getElementById('r-st').textContent=r.awareness_state+' · '+r.bs_state;
+  document.getElementById('r-sum').textContent=r.interpretation;
+
+  const oc=r.observer_codes;const desc=r.oc_descriptions||{};
+  const cols={narc:'var(--narc)',yarc:'var(--yarc)',cist:'var(--cist)',oll:'var(--oll)'};
+  const names={narc:'NARC',yarc:'YARC',cist:'CIST',oll:'Øll'};
+  document.getElementById('r-oc-bars').innerHTML=Object.entries(oc).map(([k,pct])=>`
+    <div class="r-oc-row">
+      <div class="r-oc-name" style="color:${cols[k]}">${names[k]}</div>
+      <div class="r-oc-trk"><div class="r-oc-fill" style="width:${pct}%;background:${cols[k]}"></div></div>
+      <div class="r-oc-pct" style="color:${cols[k]}">${pct}%</div>
+    </div>
+    <div class="r-oc-desc">${desc[k]||''}</div>
+  `).join('');
+
+  document.getElementById('r-nodes').innerHTML=NODES.map(n=>{
+    const v=scores[n.id];const uk=v===null||v===undefined;
+    const st=uk?null:awarenessState(v);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line);font-size:.72rem;">
+      <div style="width:6px;height:6px;border-radius:50%;background:${uk?'var(--dim)':n.col};opacity:${uk?.3:1};flex-shrink:0"></div>
+      <span style="flex:1;color:${uk?'var(--dim)':'var(--text)'}">${n.name}</span>
+      <span style="font-family:var(--serif);font-size:1rem;color:${uk?'var(--dim)':n.col}">${uk?'?':v}</span>
+      ${!uk?`<span style="font-size:.62rem;color:${st.col};min-width:54px;text-align:right">${st.label.split(' ')[0]}</span>`:''}
+    </div>`;
+  }).join('');
+
+  // Build written report from new sections
+  const rs = r.report_sections || {};
+  const mhNote = r.mental_health_note || '';
+  const kwId = r.keyword_identity || '';
+  const kwDesc = r.keyword_description || '';
+
+  let reportHtml = '';
+
+  // Keyword identity
+  if (kwId) {
+    reportHtml += `<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);">
+      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Your awareness keyword</div>
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:400;margin-bottom:6px;color:var(--text)">${kwId}</div>
+      <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;">${kwDesc}</div>
+    </div>`;
+  }
+
+  // Seven paid report sections
+  const sections = [
+    { key:'overview',             title:'Your profile — ' + (r.keyword_identity||'') },
+    { key:'strengths',            title:'Strengths' },
+    { key:'shadows',              title:'Shadows' },
+    { key:'under_pressure',       title:'Under pressure — your private self' },
+    { key:'relationship_pattern', title:'In relationships' },
+    { key:'developmental_stage',  title:'Where you are in the sequence' },
+    { key:'recalibration',        title:'Moving toward balance' },
+  ];
+  reportHtml += sections.map(s => {
+    const txt = rs[s.key] || '';
+    if (!txt) return '';
+    return `<div style="margin-bottom:24px;">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${s.title}</div>
+      <div style="font-size:0.82rem;line-height:1.85;color:var(--text)"><p style="margin:0 0 12px">${txt.replace(/\n\n/g,'</p><p style="margin:0 0 12px">')}</p></div>
+    </div>`;
+  }).join('');
+
+  // Mental health note
+  if (mhNote) {
+    reportHtml += `<div style="margin-top:28px;padding:18px 20px;background:var(--bg-soft,#f5f4f0);border-radius:10px;border:1px solid var(--line);">
+      <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">A note on awareness and wellbeing</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.8;">${mhNote}</div>
+    </div>`;
+  }
+
+  // Growth areas
+  if (r.growth_areas?.length) {
+    reportHtml += `<div style="margin-top:24px;">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Personal growth areas</div>
+      <ul style="margin:0;padding-left:20px;">${r.growth_areas.map(g=>`<li style="margin-bottom:8px;font-size:0.8rem;line-height:1.7;color:var(--text)">${g}</li>`).join('')}</ul>
+    </div>`;
+  }
+
+  document.getElementById('r-interp').innerHTML = reportHtml;
+
+  // Generate export code
+  const exportData = {
+    v:2, d:new Date().toISOString().slice(0,10),
+    bs:r.balance_scale, dr:r.drift,
+    oc:r.observer_codes, sc:scores,
+    kw:r.keyword_identity, al:r.awareness_level
+  };
+  const code = btoa(JSON.stringify(exportData)).replace(/=/g,'');
+  const codeEl = document.getElementById('r-export-code');
+  if (codeEl) codeEl.textContent = code;
+  window._exportCode = code;
+
+  renderResultSVG();
+}
+
+function copyExportCode() {
+  if (!window._exportCode) return;
+  navigator.clipboard.writeText(window._exportCode).then(() => {
+    const btn = event.target;
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = 'Copy code', 2000);
+  });
+}
+
+function renderResultSVG() {
+  const live=document.getElementById('main-diagram');
+  const result=document.getElementById('result-svg');
+  result.innerHTML=live.innerHTML;
+  // Remove all inline style overrides so nodes show at their locked opacity
+  NODES.forEach(n=>{
+    const el=result.querySelector('#'+n.svgId);
+    if(!el) return;
+    const v=scores[n.id];
+    // Scale is 1-5, map to 0.15-0.95 opacity range
+    el.style.opacity=v===null||v===undefined?'0.08':(0.15+(v/5)*.75).toFixed(2);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// EMAIL + RETAKE
+// ═══════════════════════════════════════════════════════════════════════════
+async function submitEmail() {
+  const e=document.getElementById('r-email').value.trim();
+  if(!e||!e.includes('@')) return;
+  try{await fetch('https://formspree.io/f/xpqobvev',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:e,_subject:'SCH Awareness v3',observer,source:'awareness-v3'})});}catch(err){}
+  document.getElementById('r-email-ok').style.display='block';
+  document.getElementById('r-email').disabled=true;
+  document.querySelector('.r-email-btn').disabled=true;
+}
+
+function retake() { scores={}; lastResult=null; showScreen('screen-intro'); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// Stripe
+const stripe = Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');
+const elements = stripe.elements();
+let cardElement;
+
+function initStripe() {
+  if (cardElement) return;
+  cardElement = elements.create('card', {style:{base:{fontFamily:"'Cormorant',serif",fontSize:'16px',color:'rgba(242,241,238,0.9)'}}});
+  const mount = document.getElementById('card-element');
+  if (mount) cardElement.mount('#card-element');
+}
+
+function startPaidAssessment() {
+  scores = {};
+  currentStep = 0;
+  NODES.forEach(n => {
+    scores[n.id] = n.profiles[observer]?.k ? undefined : null;
+    resetNode(n.svgId);
+  });
+  showScreen('screen-assessment');
+  showStep(1);
+}
+
+function handleIntroCTA() {
+  const name = document.getElementById('obs-name')?.value.trim();
+  if (!name) { document.getElementById('obs-name').focus(); return; }
+  const wrap = document.getElementById('payment-wrap');
+  if (wrap.style.display === 'none') {
+    wrap.style.display = 'block';
+    document.getElementById('intro-cta-btn').textContent = 'Pay £19.99 and begin →';
+    document.getElementById('intro-cta-btn').onclick = handlePayment;
+    initStripe();
+  } else { handlePayment(); }
+}
+
+async function handlePayment() {
+  const btn = document.getElementById('pay-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
+  try {
+    const {paymentMethod, error} = await stripe.createPaymentMethod({type:'card', card:cardElement});
+    if (error) {
+      document.getElementById('card-errors').textContent = error.message;
+      if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
+      return;
+    }
+    startPaidAssessment();
+  } catch(e) {
+    if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
+  }
+}
+
+function devBypass() {
+  if (!document.getElementById('obs-name').value) document.getElementById('obs-name').value = 'Test User';
+  startPaidAssessment();
+}
+
+// Load comparison code on DOMContentLoaded
+window.addEventListener('DOMContentLoaded', () => {
+  const prevCode = document.getElementById('prev-code-input')?.value;
+  if (prevCode) {
+    try {
+      const padded = prevCode + '='.repeat((4-prevCode.length%4)%4);
+      window._prevProfile = JSON.parse(atob(padded));
+    } catch(e) {}
+  }
+});
+
+</script>
+</body>
+</html>
