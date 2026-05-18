@@ -1631,6 +1631,70 @@ function testBypass() {
 
 // ── Q to node mapping (paid assessment) ───────────────────────────────────
 // Each question maps to specific SC nodes in the diagram
+
+const SC_NODE_COLS = {
+  'node-sc1': 'var(--narc)',  'node-sc2': 'var(--narc)',
+  'node-sc3': 'var(--narc)',  'node-sc4': 'var(--narc)',
+  'node-sc5': 'var(--cist)',  'node-sc6': 'var(--cist)',
+  'node-sc7': 'var(--cist)',  'node-sc8': 'var(--cist)',
+  'node-sc9': 'var(--yarc)',  'node-sc10':'var(--yarc)',
+  'node-sc11':'var(--yarc)',  'node-sc12':'var(--yarc)',
+  'node-sc13':'var(--oll)',   'node-sc14':'var(--oll)',
+  'node-sc15':'var(--oll)',   'node-sc16':'var(--oll)',
+  'node-a1':  'var(--narc)',  'node-a2':  'var(--narc)',
+  'node-a3':  'var(--cist)',  'node-a4':  'var(--cist)',
+  'node-a5':  'var(--yarc)',  'node-a6':  'var(--yarc)',
+  'node-a7':  'var(--oll)',   'node-a8':  'var(--oll)',
+  'node-narc':'var(--narc)',  'node-cist':'var(--cist)',
+  'node-yarc':'var(--yarc)',  'node-oll': 'var(--oll)',
+};
+
+// Exact same lightNode as free version — restores stroke/fill on shapes
+function lightNode(svgId, val, col) {
+  const el = document.getElementById(svgId);
+  if (!el) return;
+  const op = (0.55 + (val / 5) * 0.4).toFixed(2);
+  el.style.opacity = op;
+  el.style.transition = 'opacity 0.4s ease';
+  el.querySelectorAll('polygon,ellipse,circle').forEach((shape, i) => {
+    if (i === 0) {
+      shape.setAttribute('fill', 'none');
+      shape.setAttribute('stroke', col);
+    } else {
+      shape.setAttribute('stroke', col);
+      shape.style.opacity = '0.4';
+    }
+  });
+}
+
+// Highlight current node (show at 0.7, reveal app slot and OC diamond faintly)
+function highlightCurrentNode(nodes, col) {
+  if (!nodes) return;
+  const [svgId, appId, ocId] = nodes;
+  const el = document.getElementById(svgId);
+  if (el) {
+    el.style.opacity = '0.7';
+    el.querySelectorAll('polygon,ellipse,circle').forEach((shape, i) => {
+      shape.setAttribute('stroke', i === 0 ? col : 'transparent');
+      if (i === 0) shape.setAttribute('fill', 'none');
+    });
+  }
+  // Faintly reveal app slot
+  const appEl = document.getElementById(appId);
+  if (appEl && parseFloat(appEl.style.opacity || 0) < 0.35) {
+    appEl.style.opacity = '0.35';
+    appEl.querySelectorAll('ellipse').forEach(s => s.setAttribute('stroke', col));
+  }
+  // Faintly reveal OC diamond
+  const ocEl = document.getElementById(ocId);
+  if (ocEl && parseFloat(ocEl.style.opacity || 0) < 0.25) {
+    ocEl.style.opacity = '0.25';
+    ocEl.querySelectorAll('polygon').forEach((s, i) => {
+      if (i === 0) s.setAttribute('stroke', col);
+    });
+  }
+}
+
 const Q_NODE_MAP = {
   1:  ['node-sc1',  'node-a1',  'node-narc'],
   2:  ['node-sc2',  'node-a1',  'node-narc'],
@@ -1668,7 +1732,13 @@ const qScores = {};
 function initDiagram() {
   ALL_DIAGRAM_NODES.forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.style.opacity = '0'; el.style.transition = 'opacity 0.4s ease'; }
+    if (!el) return;
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.4s ease';
+    // Reset all strokes so they are invisible at start
+    el.querySelectorAll('polygon,ellipse,circle').forEach(shape => {
+      shape.setAttribute('stroke', 'transparent');
+    });
   });
 }
 
@@ -1676,50 +1746,37 @@ function lightDiagramNode(qNum, val) {
   const nodes = Q_NODE_MAP[qNum];
   if (!nodes) return;
   qScores[qNum] = val;
-
-  // Use same opacity logic as free version: 0.55 + (val/5)*0.4
-  const op = (0.55 + (val / 5) * 0.4).toFixed(2);
-
-  // Lock this question's nodes at scored opacity
-  nodes.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) { el.style.opacity = op; el.style.transition = 'opacity 0.4s ease'; }
-  });
-
+  const [svgId, appId, ocId] = nodes;
+  const col = SC_NODE_COLS[svgId] || 'var(--muted)';
+  lightNode(svgId, val, col);
   updateLiveOCBars();
 }
 
+
 function revealAllNodes() {
-  // Light everything at scored opacity — same formula as free version
+  // Use exact same lightNode as free version for each answered node
   Object.entries(qScores).forEach(([q, v]) => {
     const nodes = Q_NODE_MAP[parseInt(q)];
     if (!nodes) return;
-    const op = (0.55 + (v / 5) * 0.4).toFixed(2);
-    nodes.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.opacity = op;
-    });
+    const [svgId] = nodes;
+    const col = SC_NODE_COLS[svgId] || 'var(--muted)';
+    lightNode(svgId, v, col);
   });
-  // OC diamonds — average of their arm scores
+  // OC diamonds and app slots — average of their arm
   const armQs = { 'node-narc':[1,2,3,4,5], 'node-cist':[6,7,8,9,10], 'node-yarc':[11,12,13,14,15], 'node-oll':[16,17,18,19,20] };
-  Object.entries(armQs).forEach(([ocId, qs]) => {
+  const appArmQs = { 'node-a1':[1,2],'node-a2':[3,4,5],'node-a3':[6,7,8],'node-a4':[9,10],'node-a5':[11,12],'node-a6':[13,14,15],'node-a7':[16,18,19],'node-a8':[17,20] };
+  [...Object.entries(armQs), ...Object.entries(appArmQs)].forEach(([id, qs]) => {
     const avg = qs.reduce((s,q) => s + (qScores[q] ?? 3), 0) / qs.length;
-    const op = (0.55 + (avg / 5) * 0.4).toFixed(2);
-    const el = document.getElementById(ocId);
-    if (el) el.style.opacity = op;
+    const col = SC_NODE_COLS[id] || 'var(--muted)';
+    lightNode(id, avg, col);
   });
 }
 
 function highlightCurrentArm(qNum) {
-  // Pulse the OC diamond for the current arm — same as free version highlightNode
   const nodes = Q_NODE_MAP[qNum];
   if (!nodes) return;
-  const ocId = nodes[2];
-  const el = document.getElementById(ocId);
-  if (!el) return;
-  const prev = el.style.opacity || '0';
-  el.style.opacity = '0.65';
-  setTimeout(() => { el.style.opacity = prev; }, 400);
+  const col = SC_NODE_COLS[nodes[0]] || 'var(--muted)';
+  highlightCurrentNode(nodes, col);
 }
 
 function updateLiveOCBars() {
