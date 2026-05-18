@@ -1409,6 +1409,8 @@ async function handlePayment() {
     showScreen('screen-questions');
     initDiagram();
     showQ(1);
+
+  } catch(e) {
     document.getElementById('card-errors').textContent = 'Payment failed. Please try again.';
     btn.disabled = false;
     btn.textContent = `Pay ${price} and begin →`;
