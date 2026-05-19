@@ -771,7 +771,11 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 
   <div class="r-cta">
     <div class="r-cta-title">What happens next</div>
-    <div class="r-cta-sub">Your written report — including your keyword identity, strengths, shadows, relationship pattern, how you behave under pressure, and your specific recalibration path — will be in your inbox within 48 hours. Your assessment code will be included in the report so you can track your movement over time.</div>
+    <div class="r-cta-sub">Your written report — keyword identity, strengths, shadows, relationship pattern, under pressure, and your recalibration path — will be in your inbox within 48 hours. Your assessment code is included so you can track your movement over time.</div>
+    <div id="r-code-display" style="margin:16px 0;padding:14px;background:rgba(255,255,255,0.08);border-radius:10px;font-family:monospace;font-size:0.8rem;letter-spacing:0.15em;word-break:break-all;"></div>
+    <div style="font-size:0.68rem;opacity:0.6;margin-bottom:16px;">Your 20-digit assessment code — save this for your next assessment</div>
+    <a id="r-mailto-btn" href="#" style="display:none;padding:12px 28px;background:var(--bg);color:var(--text);border-radius:999px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">Send my results to SCH →</a>
+    <div style="margin-top:12px;font-size:0.68rem;opacity:0.6;">If the above button doesn't open your email app, email <strong>info@sourcecodeholdings.org</strong> with your name and assessment code.</div>
   </div>
 
   <div class="retake-row"><span class="retake-lnk" onclick="retake()">Retake assessment</span></div>
@@ -1206,56 +1210,57 @@ async function submitAssessment() {
   btn.disabled = false; btn.textContent = 'View my profile';
 }
 
+function generate20DigitCode() {
+  // Each digit = the score for that question (1-5), Q1 through Q20
+  return NODES.map((n,i) => scores[n.id] ?? 3).join('');
+}
+
 async function sendScoresToSCH(r) {
-  const name = document.getElementById('obs-name')?.value.trim() || 'Unknown';
-  const age  = document.getElementById('obs-age')?.value.trim()  || '—';
-  const email = document.getElementById('pay-email')?.value.trim() || '—';
+  const name  = document.getElementById('obs-name')?.value.trim() || 'Unknown';
+  const age   = document.getElementById('obs-age')?.value.trim()  || 'Not provided';
+  const email = document.getElementById('pay-email')?.value.trim() || 'Not provided';
+  const code  = window._assessmentCode || generate20DigitCode();
+  const oc    = r.observer_codes || {};
 
-  // Build score breakdown string
-  const scoreBreakdown = NODES.map((n,i) =>
-    `Q${i+1} ${n.name} (${n.code} · ${n.layer}): ${scores[n.id] ?? '—'}/5`
-  ).join('\n');
+  const scoreLines = NODES.map((n,i) =>
+    `Q${String(i+1).padStart(2,'0')} ${n.name.padEnd(16)} (${n.code}·${n.layer.slice(0,3)}): ${scores[n.id] ?? '—'}/5`
+  ).join('%0A');
 
-  const oc = r.observer_codes || {};
-  const summary = [
-    `Name: ${name}`,
-    `Age: ${age}`,
+  const body = [
+    `SCH CHECK — NEW REPORT REQUEST`,
+    ``,
+    `CLIENT DETAILS`,
+    `Name:  ${name}`,
+    `Age:   ${age}`,
     `Email: ${email}`,
     ``,
-    `BALANCE SCALE: ${r.balance_scale > 0 ? '+' : ''}${r.balance_scale}`,
-    `AWARENESS LEVEL: ${r.awareness_level} — ${r.awareness_level_name}`,
-    `DRIFT: ${r.drift}`,
+    `ASSESSMENT CODE (20 digits):`,
+    code,
     ``,
-    `OBSERVER CODE RATIO:`,
-    `  NARC: ${oc.narc}%`,
-    `  CIST: ${oc.cist}%`,
-    `  YARC: ${oc.yarc}%`,
-    `  Øll:  ${oc.oll}%`,
+    `PROFILE SUMMARY`,
+    `Balance Scale:   ${r.balance_scale > 0 ? '+' : ''}${r.balance_scale}  (${r.bs_state})`,
+    `Awareness Level: ${r.awareness_level} — ${r.awareness_level_name}`,
+    `Drift:           ${r.drift}`,
     ``,
-    `ALL 20 NODE SCORES (1=activated, 5=regulated):`,
-    scoreBreakdown,
-  ].join('\n');
+    `OBSERVER CODE RATIO`,
+    `NARC: ${oc.narc}%  CIST: ${oc.cist}%  YARC: ${oc.yarc}%  Øll: ${oc.oll}%`,
+    ``,
+    `ALL 20 NODE SCORES (1=activated, 5=regulated)`,
+    ...NODES.map((n,i) => `Q${String(i+1).padStart(2,'0')} ${n.name}: ${scores[n.id] ?? '?'}/5`),
+  ].join('%0A');
 
-  try {
-    await fetch('https://formspree.io/f/xpqobvev', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({
-        _subject: `SCH Check Report Request — ${name}`,
-        name, age, email,
-        balance_scale: r.balance_scale,
-        awareness_level: r.awareness_level,
-        awareness_level_name: r.awareness_level_name,
-        drift: r.drift,
-        observer_codes: JSON.stringify(oc),
-        full_breakdown: summary,
-        assessment_code: window._exportCode || '—',
-        source: 'sch-check-paid'
-      })
-    });
-  } catch(e) {
-    console.log('Email notification failed silently:', e);
+  const subject = encodeURIComponent(`SCH Check — ${name} — Level ${r.awareness_level}`);
+  const mailtoLink = `mailto:info@sourcecodeholdings.org?subject=${subject}&body=${body.replace(/ /g,'%20')}`;
+
+  // Show the mailto link in a visible button on the results screen
+  const ctaEl = document.getElementById('r-mailto-btn');
+  if (ctaEl) {
+    ctaEl.href = mailtoLink;
+    ctaEl.style.display = 'inline-block';
   }
+
+  // Also try to auto-open (works on most devices)
+  try { window.location.href = mailtoLink; } catch(e) {}
 }
 
 
@@ -1405,6 +1410,11 @@ function renderResults(r) {
     al:r.awareness_level
   };
   window._exportCode = btoa(JSON.stringify(exportData)).replace(/=/g,'');
+  window._assessmentCode = generate20DigitCode();
+
+  // Display 20-digit code
+  const codeDisplay = document.getElementById('r-code-display');
+  if (codeDisplay) codeDisplay.textContent = window._assessmentCode;
 
   renderResultSVG();
 }
