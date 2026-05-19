@@ -769,11 +769,9 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
     </div>
   </div>
 
-  <div class="r-cta" id="r-export-section">
-    <div class="r-cta-title">Your assessment code</div>
-    <div class="r-cta-sub">Save this code to compare your results next time. Paste it at the start of your next assessment to see how each Source Code has moved.</div>
-    <div id="r-export-code" style="font-family:var(--mono,monospace);font-size:0.62rem;word-break:break-all;background:rgba(255,255,255,0.1);padding:12px;border-radius:8px;margin-bottom:12px;letter-spacing:0.03em;line-height:1.6;">—</div>
-    <button onclick="copyExportCode()" style="background:var(--bg);color:var(--text);border:none;padding:10px 24px;border-radius:999px;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Copy code</button>
+  <div class="r-cta">
+    <div class="r-cta-title">What happens next</div>
+    <div class="r-cta-sub">Your written report — including your keyword identity, strengths, shadows, relationship pattern, how you behave under pressure, and your specific recalibration path — will be in your inbox within 48 hours. Your assessment code will be included in the report so you can track your movement over time.</div>
   </div>
 
   <div class="retake-row"><span class="retake-lnk" onclick="retake()">Retake assessment</span></div>
@@ -958,8 +956,8 @@ function showStep(step) {
       <div class="q-question">${p.q}</div>
       <div class="q-slider-wrap">
         <div class="q-slider-row">
-          <input type="range" id="active-slider" min="1" max="5" value="${scores[n.id]||3}"
-            oninput="onSlide('${n.id}',this.value)" style="--pct:${((scores[n.id]||3)-1)/4*100}%">
+          <input type="range" id="active-slider" min="1" max="5" value="${scores[n.id] !== undefined ? scores[n.id] : (Math.floor(Math.random()*4)+1)}"
+            oninput="onSlide('${n.id}',this.value)" style="--pct:${scores[n.id] !== undefined ? ((scores[n.id]-1)/4*100) : Math.floor(Math.random()*100)}%">
           <div class="q-val-big" id="active-val" style="color:${n.col}">${scores[n.id]||3}</div>
         </div>
         <div class="q-slider-labels"><span>${p.lo||'Low'}</span><span>${p.hi||'High'}</span></div>
@@ -1251,6 +1249,7 @@ async function sendScoresToSCH(r) {
         drift: r.drift,
         observer_codes: JSON.stringify(oc),
         full_breakdown: summary,
+        assessment_code: window._exportCode || '—',
         source: 'sch-check-paid'
       })
     });
@@ -1297,7 +1296,12 @@ function localScore() {
     balance_scale: bs,
     drift,
     zp_distance: parseFloat(Math.abs(bs).toFixed(1)),
-    bs_state: bs > 1 ? 'Stability emerging' : bs < -1 ? 'Drift activated' : 'Zero-Point proximity',
+    bs_state: bs >= 4.5 ? 'Peak expression · Creator threshold' :
+                  bs > 2.5  ? 'Mastery · Expression' :
+                  bs > 0.5  ? 'Stability emerging' :
+                  bs > -0.5 ? 'Zero-Point proximity' :
+                  bs > -2.5 ? 'Drift activated' :
+                  bs > -4.5 ? 'Subconscious dominant' : 'Collapse · Reset',
     awareness_level: lvl.level,
     awareness_level_name: lvl.name,
     awareness_state: lvl.name,
@@ -1393,17 +1397,14 @@ function renderResults(r) {
     </div>`;
   }).join('');
 
-  // Generate export code
+  // Generate export code — sent in the written report, not displayed here
   const exportData = {
     v:2, d:new Date().toISOString().slice(0,10),
     bs:r.balance_scale, dr:r.drift,
     oc:r.observer_codes, sc:scores,
     al:r.awareness_level
   };
-  const code = btoa(JSON.stringify(exportData)).replace(/=/g,'');
-  const codeEl = document.getElementById('r-export-code');
-  if (codeEl) codeEl.textContent = code;
-  window._exportCode = code;
+  window._exportCode = btoa(JSON.stringify(exportData)).replace(/=/g,'');
 
   renderResultSVG();
 }
