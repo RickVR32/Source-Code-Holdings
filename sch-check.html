@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
-<script src="https://js.stripe.com/v3/"></script>
 <style>
 /* ── THEME TOKENS ── */
 [data-theme="light"] {
@@ -281,26 +280,6 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 .q-btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--line-strong); }
 .q-btn-ghost:hover { color:var(--text); border-color:var(--text); }
 
-/* Answer buttons */
-.q-answers { display:flex; flex-direction:column; gap:8px; margin:20px 0 24px; }
-.q-answer-btn {
-  display:flex; align-items:flex-start; gap:14px; width:100%;
-  padding:13px 16px; background:var(--bg); border:1.5px solid var(--line);
-  border-radius:12px; cursor:pointer; text-align:left;
-  font-family:var(--serif); font-size:0.88rem; color:var(--text);
-  line-height:1.5; transition:border-color 0.15s, background 0.15s;
-}
-.q-answer-btn:hover { border-color:var(--text); }
-.q-answer-btn.selected { font-weight:500; }
-.q-answer-num {
-  display:flex; align-items:center; justify-content:center;
-  width:24px; height:24px; min-width:24px; border-radius:50%;
-  background:var(--line); color:var(--muted);
-  font-family:var(--mono,monospace); font-size:0.7rem; font-weight:600;
-  transition:background 0.15s, color 0.15s; flex-shrink:0; margin-top:1px;
-}
-.q-answer-text { flex:1; }
-
 /* PROGRESS BAR */
 .q-progress-bar { height:2px; background:var(--line); flex-shrink:0; }
 .q-progress-fill { height:100%; background:var(--text); transition:width 0.5s ease; }
@@ -372,6 +351,45 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
   .obs-type-row { grid-template-columns:repeat(2,1fr); }
   .r-grid { grid-template-columns:1fr; }
 }
+
+/* Diagram flip card */
+.diag-svg-wrap { perspective: 1400px; }
+.diag-flip-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.diag-flip-inner.flipped { transform: rotateY(180deg); }
+.diag-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.diag-face svg { width: 100%; height: 100%; }
+.diag-face-back { transform: rotateY(180deg); }
+.diag-layer-badge {
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); text-align: center; margin-top: 8px; transition: color 0.5s;
+}
+/* Answer buttons */
+.q-answers { display:flex; flex-direction:column; gap:8px; margin:20px 0 24px; }
+.q-answer-btn {
+  display:flex; align-items:flex-start; gap:14px; width:100%;
+  padding:13px 16px; background:var(--bg); border:1.5px solid var(--line);
+  border-radius:12px; cursor:pointer; text-align:left;
+  font-family:var(--serif); font-size:0.88rem; color:var(--text);
+  line-height:1.5; transition:border-color 0.15s, background 0.15s;
+}
+.q-answer-btn:hover { border-color:var(--text); }
+.q-answer-btn.selected { font-weight:500; }
+.q-answer-num {
+  display:flex; align-items:center; justify-content:center;
+  width:24px; height:24px; min-width:24px; border-radius:50%;
+  background:var(--line); color:var(--muted);
+  font-family:var(--mono,monospace); font-size:0.7rem; font-weight:600;
+  transition:background 0.15s, color 0.15s; flex-shrink:0; margin-top:1px;
+}
+.q-answer-text { flex:1; }
 </style>
 </head>
 <body>
@@ -396,8 +414,7 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 <div class="intro">
   <div class="intro-label">SCH Check — Full Awareness Report</div>
   <h1 class="intro-title">Your complete<br>awareness profile</h1>
-  <p class="intro-copy">Twenty questions drawn from therapeutic assessment methodology. Your full Observer Code ratio, Drift score, Balance Scale position, awareness level, and a personalised written report.</p>
-
+  <p class="intro-copy">40 questions across the conscious and subconscious layers. Your Observer Code ratio, Balance Scale position, awareness level, and a personalised written report within 48 hours.</p>
   <div class="oc-field" style="margin-bottom:16px;">
     <div class="oc-field-label">Name</div>
     <input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()">
@@ -406,36 +423,22 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
     <div class="oc-field-label">Age (optional)</div>
     <input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120">
   </div>
-
-  <div style="margin-bottom:24px;">
-    <div class="oc-field-label" style="margin-bottom:12px;">Awareness scale</div>
-    <div class="scale-bands">
-      <div class="scale-band-item"><div class="sbi-range" style="color:var(--oll)">1–3</div><div class="sbi-label">Instinct</div></div>
-      <div class="scale-band-item"><div class="sbi-range" style="color:var(--narc)">4–6</div><div class="sbi-label">Reaction</div></div>
-      <div class="scale-band-item"><div class="sbi-range" style="color:var(--cist)">7–9</div><div class="sbi-label">Regulation</div></div>
-      <div class="scale-band-item"><div class="sbi-range" style="color:var(--yarc)">10</div><div class="sbi-label">Presence</div></div>
-    </div>
+  <div class="oc-field" style="margin-bottom:24px;">
+    <div class="oc-field-label">Previous assessment code (optional)</div>
+    <input class="oc-input" id="prev-code-input" type="text" placeholder="Paste to compare with previous results">
   </div>
-
-  <div style="margin-bottom:16px;">
-    <input class="oc-input" id="prev-code-input" type="text" placeholder="Previous assessment code (optional — paste to compare)">
-  </div>
-
-  <!-- Payment step (shown after name entered) -->
+  <!-- Payment -->
   <div id="payment-wrap" style="display:none;margin-bottom:20px;background:var(--text);border-radius:16px;padding:28px;color:var(--bg);">
     <div style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;opacity:0.6;">Secure payment</div>
     <div style="font-family:var(--serif);font-size:1.6rem;font-weight:300;margin-bottom:4px;">Personal Report — £19.99</div>
-    <div style="font-size:0.72rem;opacity:0.6;margin-bottom:20px;">One-time · Instant report · Yours to keep</div>
+    <div style="font-size:0.72rem;opacity:0.6;margin-bottom:20px;">One-time · Report delivered within 48 hours</div>
     <input id="pay-email" type="email" placeholder="Email address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:var(--bg);font-family:var(--serif);font-size:0.9rem;margin-bottom:12px;box-sizing:border-box;">
     <div id="card-element" style="margin-bottom:12px;padding:12px;background:rgba(255,255,255,0.1);border-radius:8px;border:1px solid rgba(255,255,255,0.2);"></div>
     <div id="card-errors" style="color:#ff6b6b;font-size:0.75rem;margin-bottom:8px;"></div>
     <button id="pay-btn" onclick="handlePayment()" style="width:100%;padding:14px;background:var(--bg);color:var(--text);border:none;border-radius:999px;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Pay £19.99 and begin →</button>
     <div style="font-size:0.65rem;opacity:0.5;text-align:center;margin-top:10px;">🔒 Secured by Stripe · SSL encrypted</div>
   </div>
-
   <button class="intro-start-btn" id="intro-cta-btn" onclick="handleIntroCTA()">Continue →</button>
-
-  <!-- DEV BYPASS — remove before go-live -->
   <div style="text-align:center;margin-top:12px;">
     <button onclick="devBypass()" style="background:none;border:1px solid var(--line);color:var(--muted);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer;">Skip payment (dev) →</button>
   </div>
@@ -452,8 +455,9 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
       <div class="diag-progress-text" id="diag-prog-text">Observer</div>
     </div>
 
-    <div class="diag-svg-wrap">
-      <svg id="main-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <div class="diag-svg-wrap" style="position:relative;flex:1;">
+      <div class="diag-flip-inner" id="diag-flip-inner">
+        <div class="diag-face diag-face-front"><svg id="main-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <polygon points="450.0,302.0 598.0,450.0 450.0,598.0 302.0,450.0" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
   <circle cx="450" cy="450" r="220" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.14"/>
   <circle cx="450" cy="450" r="300" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.1"/>
@@ -640,15 +644,198 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
     <polygon points="18,880 30,880 24,894" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
     <text x="36" y="892" font-size="7.5" fill="var(--muted)" font-family="monospace">↓ Subconscious</text>
   </g>
-      </svg>
-
-      <!-- Tooltip -->
-      <div class="node-tooltip" id="node-tooltip">
-        <div class="nt-name" id="nt-name">—</div>
-        <div class="nt-meta" id="nt-meta">—</div>
-        <div class="nt-desc" id="nt-desc">—</div>
-        <div class="nt-score" id="nt-score">—</div>
+      </svg></div>
+        <div class="diag-face diag-face-back"><svg id="sub-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="450.0,302.0 598.0,450.0 450.0,598.0 302.0,450.0" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="450" cy="450" r="220" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.14"/>
+  <circle cx="450" cy="450" r="300" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.1"/>
+  <circle cx="450" cy="450" r="70" fill="none" stroke="#C8C4BC" stroke-width="0.5" opacity="0.25"/>
+  <line x1="450.0" y1="106.0" x2="450.0" y2="794.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+  <line x1="794.0" y1="450.0" x2="106.0" y2="450.0" stroke="#C8C4BC" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+  <line x1="450.0" y1="302.0" x2="367.6" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
+  <line x1="367.6" y1="246.0" x2="286.6" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="367.6" y1="246.0" x2="392.8" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="302.0" x2="532.4" y2="246.0" stroke="#C4622D" stroke-width="1.2" opacity="0.35"/>
+  <line x1="532.4" y1="246.0" x2="507.2" y2="155.5" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="532.4" y1="246.0" x2="613.4" y2="198.4" stroke="#C4622D" stroke-width="1" opacity="0.28"/>
+  <line x1="598.0" y1="450.0" x2="654.0" y2="367.6" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
+  <line x1="654.0" y1="367.6" x2="701.6" y2="286.6" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="654.0" y1="367.6" x2="744.5" y2="392.8" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="598.0" y1="450.0" x2="654.0" y2="532.4" stroke="#534AB7" stroke-width="1.2" opacity="0.35"/>
+  <line x1="654.0" y1="532.4" x2="744.5" y2="507.2" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="654.0" y1="532.4" x2="701.6" y2="613.4" stroke="#534AB7" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="598.0" x2="532.4" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
+  <line x1="532.4" y1="654.0" x2="613.4" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="532.4" y1="654.0" x2="507.2" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="450.0" y1="598.0" x2="367.6" y2="654.0" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/>
+  <line x1="367.6" y1="654.0" x2="392.8" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="367.6" y1="654.0" x2="286.6" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
+  <line x1="302.0" y1="450.0" x2="246.0" y2="532.4" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
+  <line x1="246.0" y1="532.4" x2="198.4" y2="613.4" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="246.0" y1="532.4" x2="155.5" y2="507.2" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="302.0" y1="450.0" x2="246.0" y2="367.6" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/>
+  <line x1="246.0" y1="367.6" x2="155.5" y2="392.8" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="246.0" y1="367.6" x2="198.4" y2="286.6" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+  <line x1="450" y1="632.0" x2="450" y2="668.0" stroke="#B8B2A8" stroke-width="0.8" stroke-dasharray="3 4" opacity="0.45"/>
+  <circle cx="450" cy="450" r="52" fill="white" stroke="#B0ABA0" stroke-width="1.8" opacity="1"/>
+  <circle cx="450" cy="450" r="39" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.4"/>
+  <circle cx="450" cy="450" r="22" fill="none" stroke="#D4D0C8" stroke-width="0.3" opacity="0.25"/>
+  <line x1="430" y1="450" x2="470" y2="450" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
+  <line x1="450" y1="430" x2="450" y2="470" stroke="#D4D0C8" stroke-width="0.5" opacity="0.35"/>
+  <circle cx="450" cy="450" r="3" fill="var(--muted)" opacity="0.4"/>
+  <text id="obs-label" x="450" y="455" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="monospace" opacity="0.7">—</text>
+  <g id="node-narc" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('narc',event)">
+    <polygon points="450.0,272.0 480.0,302.0 450.0,332.0 420.0,302.0" fill="none" stroke="#C4622D" stroke-width="2.2"/>
+    <polygon points="450.0,285.0 467.0,302.0 450.0,319.0 433.0,302.0" fill="none" stroke="#C4622D" stroke-width="0.5" opacity="0.4"/>
+    <text x="450.0" y="301.0" text-anchor="middle" font-size="10" fill="#C4622D" font-family="monospace" letter-spacing="0.06em">NARC</text>
+    <text id="v-narc" x="450.0" y="315.0" text-anchor="middle" font-size="9" fill="#C4622D" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-cist" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('cist',event)">
+    <polygon points="598.0,420.0 628.0,450.0 598.0,480.0 568.0,450.0" fill="none" stroke="#534AB7" stroke-width="2.2"/>
+    <polygon points="598.0,433.0 615.0,450.0 598.0,467.0 581.0,450.0" fill="none" stroke="#534AB7" stroke-width="0.5" opacity="0.4"/>
+    <text x="598.0" y="449.0" text-anchor="middle" font-size="10" fill="#534AB7" font-family="monospace" letter-spacing="0.06em">CIST</text>
+    <text id="v-cist" x="598.0" y="463.0" text-anchor="middle" font-size="9" fill="#534AB7" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-yarc" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('yarc',event)">
+    <polygon points="450.0,568.0 480.0,598.0 450.0,628.0 420.0,598.0" fill="none" stroke="#1D9E75" stroke-width="2.2"/>
+    <polygon points="450.0,581.0 467.0,598.0 450.0,615.0 433.0,598.0" fill="none" stroke="#1D9E75" stroke-width="0.5" opacity="0.4"/>
+    <text x="450.0" y="597.0" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="monospace" letter-spacing="0.06em">YARC</text>
+    <text id="v-yarc" x="450.0" y="611.0" text-anchor="middle" font-size="9" fill="#1D9E75" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-oll" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('oll',event)">
+    <polygon points="302.0,420.0 332.0,450.0 302.0,480.0 272.0,450.0" fill="none" stroke="#A0426B" stroke-width="2.2"/>
+    <polygon points="302.0,433.0 319.0,450.0 302.0,467.0 285.0,450.0" fill="none" stroke="#A0426B" stroke-width="0.5" opacity="0.4"/>
+    <text x="302.0" y="449.0" text-anchor="middle" font-size="10" fill="#A0426B" font-family="monospace" letter-spacing="0.06em">Øll</text>
+    <text id="v-oll" x="302.0" y="463.0" text-anchor="middle" font-size="9" fill="#A0426B" font-family="monospace" opacity="0.7">—</text>
+  </g>
+  <g id="node-a1" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="367.6" cy="246.0" rx="20" ry="11" transform="rotate(-22,367.6,246.0)" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="367.6" y="250.0" text-anchor="middle" font-size="8.5" fill="#C4622D" font-family="monospace">A1</text>
+  </g>
+  <g id="node-a2" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="532.4" cy="246.0" rx="20" ry="11" transform="rotate(22,532.4,246.0)" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="532.4" y="250.0" text-anchor="middle" font-size="8.5" fill="#C4622D" font-family="monospace">A2</text>
+  </g>
+  <g id="node-a3" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="654.0" cy="367.6" rx="20" ry="11" transform="rotate(68,654.0,367.6)" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="654.0" y="371.6" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="monospace">A3</text>
+  </g>
+  <g id="node-a4" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="654.0" cy="532.4" rx="20" ry="11" transform="rotate(112,654.0,532.4)" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="654.0" y="536.4" text-anchor="middle" font-size="8.5" fill="#534AB7" font-family="monospace">A4</text>
+  </g>
+  <g id="node-a5" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="532.4" cy="654.0" rx="20" ry="11" transform="rotate(158,532.4,654.0)" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="532.4" y="658.0" text-anchor="middle" font-size="8.5" fill="#1D9E75" font-family="monospace">A5</text>
+  </g>
+  <g id="node-a6" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="367.6" cy="654.0" rx="20" ry="11" transform="rotate(202,367.6,654.0)" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="367.6" y="658.0" text-anchor="middle" font-size="8.5" fill="#1D9E75" font-family="monospace">A6</text>
+  </g>
+  <g id="node-a7" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="246.0" cy="532.4" rx="20" ry="11" transform="rotate(248,246.0,532.4)" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="246.0" y="536.4" text-anchor="middle" font-size="8.5" fill="#A0426B" font-family="monospace">A7</text>
+  </g>
+  <g id="node-a8" style="opacity:0;transition:opacity 0.5s ease">
+    <ellipse cx="246.0" cy="367.6" rx="20" ry="11" transform="rotate(292,246.0,367.6)" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="246.0" y="371.6" text-anchor="middle" font-size="8.5" fill="#A0426B" font-family="monospace">A8</text>
+  </g>
+  <g id="node-sc1" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc1',event)">
+    <polygon points="298.7,205.5 276.1,205.2 287.4,185.9" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="286.6" y="202.4" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↑</text>
+    <text x="264.2" y="189.2" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Presence</text>
+  </g>
+  <g id="node-sc2" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc2',event)">
+    <polygon points="389.0,169.0 383.5,147.1 405.1,153.1" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="392.8" y="159.5" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↓</text>
+    <text x="399.8" y="134.5" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Fear</text>
+  </g>
+  <g id="node-sc3" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc3',event)">
+    <polygon points="511.0,169.0 494.9,153.1 516.5,147.1" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="507.2" y="159.5" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↑</text>
+    <text x="500.2" y="134.5" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Intention</text>
+  </g>
+  <g id="node-sc4" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc4',event)">
+    <polygon points="601.3,205.5 612.6,185.9 623.9,205.2" fill="none" stroke="#C4622D" stroke-width="2.5"/>
+    <text x="613.4" y="202.4" text-anchor="middle" font-size="8" fill="#C4622D" font-family="monospace">↓</text>
+    <text x="635.8" y="189.2" text-anchor="middle" font-size="7" fill="#C4622D" font-family="monospace" opacity="0.8">Desire</text>
+  </g>
+  <g id="node-sc5" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc5',event)">
+    <polygon points="694.5,298.7 694.8,276.1 714.1,287.4" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="701.6" y="290.6" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↑</text>
+    <text x="714.8" y="268.2" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Comm.</text>
+  </g>
+  <g id="node-sc6" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc6',event)">
+    <polygon points="731.0,389.0 752.9,383.5 746.9,405.1" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="744.5" y="396.8" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↓</text>
+    <text x="769.5" y="403.8" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Attach.</text>
+  </g>
+  <g id="node-sc7" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc7',event)">
+    <polygon points="731.0,511.0 746.9,494.9 752.9,516.5" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="744.5" y="511.2" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↑</text>
+    <text x="769.5" y="504.2" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Persp.</text>
+  </g>
+  <g id="node-sc8" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc8',event)">
+    <polygon points="694.5,601.3 714.1,612.6 694.8,623.9" fill="none" stroke="#534AB7" stroke-width="2.5"/>
+    <text x="701.6" y="617.4" text-anchor="middle" font-size="8" fill="#534AB7" font-family="monospace">↓</text>
+    <text x="714.8" y="639.8" text-anchor="middle" font-size="7" fill="#534AB7" font-family="monospace" opacity="0.8">Memory</text>
+  </g>
+  <g id="node-sc9" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc9',event)">
+    <polygon points="601.3,694.5 623.9,694.8 612.6,714.1" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="613.4" y="705.6" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↑</text>
+    <text x="635.8" y="718.8" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Logic</text>
+  </g>
+  <g id="node-sc10" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc10',event)">
+    <polygon points="511.0,731.0 516.5,752.9 494.9,746.9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="507.2" y="748.5" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↓</text>
+    <text x="500.2" y="773.5" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Pattern</text>
+  </g>
+  <g id="node-sc11" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc11',event)">
+    <polygon points="389.0,731.0 405.1,746.9 383.5,752.9" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="392.8" y="748.5" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↑</text>
+    <text x="399.8" y="773.5" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Align.</text>
+  </g>
+  <g id="node-sc12" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc12',event)">
+    <polygon points="298.7,694.5 287.4,714.1 276.1,694.8" fill="none" stroke="#1D9E75" stroke-width="2.5"/>
+    <text x="286.6" y="705.6" text-anchor="middle" font-size="8" fill="#1D9E75" font-family="monospace">↓</text>
+    <text x="264.2" y="718.8" text-anchor="middle" font-size="7" fill="#1D9E75" font-family="monospace" opacity="0.8">Protect.</text>
+  </g>
+  <g id="node-sc13" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc13',event)">
+    <polygon points="205.5,601.3 205.2,623.9 185.9,612.6" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="198.4" y="617.4" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↑</text>
+    <text x="185.2" y="639.8" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Adapt.</text>
+  </g>
+  <g id="node-sc14" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc14',event)">
+    <polygon points="169.0,511.0 147.1,516.5 153.1,494.9" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="155.5" y="511.2" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↓</text>
+    <text x="130.5" y="504.2" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Instinct</text>
+  </g>
+  <g id="node-sc15" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc15',event)">
+    <polygon points="169.0,389.0 153.1,405.1 147.1,383.5" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="155.5" y="396.8" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↑</text>
+    <text x="130.5" y="403.8" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Integrity</text>
+  </g>
+  <g id="node-sc16" style="opacity:0;transition:opacity 0.5s ease;cursor:pointer" onclick="showTooltip('sc16',event)">
+    <polygon points="205.5,298.7 185.9,287.4 205.2,276.1" fill="none" stroke="#A0426B" stroke-width="2.5"/>
+    <text x="198.4" y="290.6" text-anchor="middle" font-size="8" fill="#A0426B" font-family="monospace">↓</text>
+    <text x="185.2" y="268.2" text-anchor="middle" font-size="7" fill="#A0426B" font-family="monospace" opacity="0.8">Core Id.</text>
+  </g>
+  <g id="node-bs" style="opacity:0;transition:opacity 0.5s ease">
+    <polygon points="424,642 476,642 450,674" fill="none" stroke="#D4D0C8" stroke-width="1.3"/>
+    <polygon points="436,650 464,650 450,666" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.5"/>
+    <text x="450" y="657" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="monospace" letter-spacing="0.08em">BALANCE</text>
+    <text id="v-bs" x="450" y="669" text-anchor="middle" font-size="8" fill="var(--muted)" font-family="monospace">—</text>
+  </g>
+  <g opacity="0.28">
+    <polygon points="18,870 30,870 24,856" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
+    <text x="36" y="868" font-size="7.5" fill="var(--muted)" font-family="monospace">↑ Conscious</text>
+    <polygon points="18,880 30,880 24,894" fill="none" stroke="var(--muted)" stroke-width="0.7"/>
+    <text x="36" y="892" font-size="7.5" fill="var(--muted)" font-family="monospace">↓ Subconscious</text>
+  </g>
+      </svg></div>
       </div>
+    </div>
+    <div class="diag-layer-badge" id="diag-layer-badge">Part 1 — Conscious layer</div>
     </div>
 
     <!-- OC strip -->
@@ -681,37 +868,7 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
     <div class="q-progress-bar"><div class="q-progress-fill" id="q-prog-fill" style="width:0%"></div></div>
 
     <!-- Q0: OBSERVER CARD -->
-    <div class="observer-card" id="q-step-0">
-      <div>
-        <div class="oc-title">Who are you?</div>
-        <div class="oc-sub">Enter your details to personalise your report. This is your Observer node — the centre of the architecture.</div>
-      </div>
-      <div class="oc-field">
-        <div class="oc-field-label">Name</div>
-        <input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()">
-      </div>
-      <div class="oc-field">
-        <div class="oc-field-label">Age</div>
-        <input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120">
-      </div>
-
-      <div>
-        <div class="oc-field-label" style="margin-bottom:12px;">Awareness scale</div>
-        <div class="scale-bands">
-          <div class="scale-band-item"><div class="sbi-range" style="color:var(--oll)">1–3</div><div class="sbi-label">Instinct</div></div>
-          <div class="scale-band-item"><div class="sbi-range" style="color:var(--narc)">4–6</div><div class="sbi-label">Reaction</div></div>
-          <div class="scale-band-item"><div class="sbi-range" style="color:var(--cist)">7–9</div><div class="sbi-label">Regulation</div></div>
-          <div class="scale-band-item"><div class="sbi-range" style="color:var(--yarc)">10</div><div class="sbi-label">Presence</div></div>
-        </div>
-      </div>
-
-      <div style="display:flex;justify-content:flex-end;">
-        <button class="q-btn q-btn-primary" onclick="goToQ(1)">Begin scoring →</button>
-      </div>
-    </div>
-
-    <!-- QUESTION STEPS (built by JS) -->
-    <div class="q-card-wrap" id="q-card-wrap" style="display:none;"></div>
+        <div class="q-card-wrap" id="q-card-wrap" style="display:none;"></div>
 
     <!-- AWARENESS REVEAL -->
     <div class="awareness-reveal" id="awareness-reveal">
@@ -778,24 +935,15 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
   </div>
 
   <div class="r-interp">
-    <div class="r-interp-lbl">Your written report</div>
-    <div id="r-interp">
-      <div style="text-align:center;padding:32px 0;">
-        <div style="font-family:'Cormorant',serif;font-size:2.2rem;font-weight:300;margin-bottom:12px;color:var(--text);">Your profile has been received.</div>
-        <div style="font-size:0.82rem;color:var(--muted);line-height:1.85;max-width:420px;margin:0 auto 24px;">Your scores have been sent to Source Code Holdings. A personalised written report — covering your profile, strengths, shadows, relationship patterns, and recalibration path — will be delivered to your email within 48 hours.</div>
-        <div style="display:inline-block;padding:14px 28px;background:var(--text);color:var(--bg,#f2f1ee);border-radius:999px;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;">Expect your report within 48 hours</div>
-        <div style="margin-top:20px;font-size:0.72rem;color:var(--muted);">Check your spam folder if it doesn't arrive. Questions? <a href="mailto:info@sourcecodeholdings.org" style="color:var(--text);">info@sourcecodeholdings.org</a></div>
-      </div>
-    </div>
+    <div class="r-interp-lbl">Interpretation</div>
+    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:12px;line-height:1.6;">This assessment is a structured interpretive tool. It is not a clinical diagnostic instrument and is not a substitute for professional psychological support.</div>
+    <div class="r-interp-text" id="r-interp">—</div>
   </div>
 
   <div class="r-cta">
-    <div class="r-cta-title">What happens next</div>
-    <div class="r-cta-sub">Your written report — keyword identity, strengths, shadows, relationship pattern, under pressure, and your recalibration path — will be in your inbox within 48 hours. Your assessment code is included so you can track your movement over time.</div>
-    <div id="r-code-display" style="margin:16px 0;padding:14px;background:rgba(255,255,255,0.08);border-radius:10px;font-family:monospace;font-size:0.8rem;letter-spacing:0.15em;word-break:break-all;"></div>
-    <div style="font-size:0.68rem;opacity:0.6;margin-bottom:16px;">Your 20-digit assessment code — save this for your next assessment</div>
-    <a id="r-mailto-btn" href="#" style="display:none;padding:12px 28px;background:var(--bg);color:var(--text);border-radius:999px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">Send my results to SCH →</a>
-    <div style="margin-top:12px;font-size:0.68rem;opacity:0.6;">If the above button doesn't open your email app, email <strong>info@sourcecodeholdings.org</strong> with your name and assessment code.</div>
+    <div class="r-cta-title">Get the full picture</div>
+    <div class="r-cta-sub">The SCH Check maps all 20 Source Codes across conscious and subconscious layers — producing a personalised written report of what your profile reveals and what it is producing in your life.</div>
+    <a href="sch-check.html" class="r-email-btn" style="display:inline-block;text-decoration:none;margin-top:8px;">Get the full report — £19.99 →</a>
   </div>
 
   <div class="retake-row"><span class="retake-lnk" onclick="retake()">Retake assessment</span></div>
@@ -812,98 +960,67 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 // NODE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════════════════
 const NODES = [
-  // ── NARC ARM — Self, identity, intention ─────────────────────────────────
-  {id:'sc1', name:'Intention', code:'NARC', slot:'A1', layer:'Conscious', col:'#C4622D', svgId:'node-sc1', appId:'node-a1', ocId:'node-narc', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I feel clear about what I genuinely want from life — my goals reflect my own values rather than outside expectations.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc2', name:'Intention', code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc2', appId:'node-a1', ocId:'node-narc', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I often pursue things because they are expected of me rather than because I truly want them.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc3', name:'Presence', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc3', appId:'node-a2', ocId:'node-narc', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I am able to stay mentally present during important moments and notice my emotional state before reacting.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc4', name:'Presence', code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc4', appId:'node-a2', ocId:'node-narc', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"My mind frequently drifts away from the present moment — I often react emotionally before fully understanding a situation.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc5', name:'Self-Awareness', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc5', appId:'node-a2', ocId:'node-narc', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I regularly reflect on my own behaviour and try to understand why I feel certain emotions instead of simply reacting.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-
-  // ── CIST ARM — Structure, regulation, logic ──────────────────────────────
-  {id:'sc6', name:'Self-Awareness', code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc6', appId:'node-a3', ocId:'node-cist', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I rarely question whether my reactions may be influenced by personal bias — I tend to justify my behaviour instead of deeply examining it.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc7', name:'Logic', code:'CIST', slot:'A3', layer:'Conscious', col:'#534AB7', svgId:'node-sc7', appId:'node-a3', ocId:'node-cist', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I can separate emotional reactions from logical reasoning when necessary and am willing to question my own beliefs if new evidence appears.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc8', name:'Logic', code:'CIST', slot:'A4', layer:'Subconscious', col:'#534AB7', svgId:'node-sc8', appId:'node-a4', ocId:'node-cist', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I can become emotionally attached to beliefs even when evidence challenges them — I sometimes defend beliefs more than I investigate them.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc9', name:'Pattern', code:'CIST', slot:'A4', layer:'Conscious', col:'#534AB7', svgId:'node-sc9', appId:'node-a4', ocId:'node-cist', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I notice recurring patterns in my behaviour over time and can identify cycles that repeatedly appear in my life.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc10', name:'Pattern', code:'CIST', slot:'A5', layer:'Subconscious', col:'#534AB7', svgId:'node-sc10', appId:'node-a5', ocId:'node-cist', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I often repeat behaviours I later regret — I sometimes fall back into habits I promised to change even when I recognise the cycle.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-
-  // ── YARC ARM — Connection, empathy, purpose ──────────────────────────────
-  {id:'sc11', name:'Connection', code:'YARC', slot:'A5', layer:'Conscious', col:'#1D9E75', svgId:'node-sc11', appId:'node-a5', ocId:'node-yarc', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I genuinely try to understand other people's perspectives and value meaningful connection more than status or appearance.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc12', name:'Connection', code:'YARC', slot:'A6', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I often assume people misunderstand me — I sometimes withdraw emotionally instead of expressing how I truly feel.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc13', name:'Purpose', code:'YARC', slot:'A6', layer:'Conscious', col:'#1D9E75', svgId:'node-sc13', appId:'node-a6', ocId:'node-yarc', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I feel my life has direction and meaning beyond short-term survival — I regularly think about my long-term purpose.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc14', name:'Purpose', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc14', appId:'node-a7', ocId:'node-yarc', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I sometimes feel like I am moving through life without real direction — I often focus more on avoiding failure than pursuing meaning.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc15', name:'Balance', code:'YARC', slot:'A7', layer:'Conscious', col:'#1D9E75', svgId:'node-sc15', appId:'node-a7', ocId:'node-yarc', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I can usually remain emotionally stable during stressful situations and consider multiple perspectives before forming conclusions.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-
-  // ── Øll ARM — Integration, volatility, threshold ─────────────────────────
-  {id:'sc16', name:'Balance', code:'Øll', slot:'A7', layer:'Subconscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a7', ocId:'node-oll', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"Negative emotions can stay with me long after situations are over — stress can quickly overwhelm my thinking.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc17', name:'Core Self', code:'Øll', slot:'A8', layer:'Conscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a8', ocId:'node-oll', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"I feel connected to who I truly am beneath social roles — I rarely feel the need to become someone different to gain approval.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc18', name:'Core Self', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc15', appId:'node-a8', ocId:'node-oll', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I change parts of myself depending on who I am around — I sometimes feel unsure who the real me actually is.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc19', name:'Integrity', code:'Øll', slot:'A8', layer:'Conscious', col:'#A0426B', svgId:'node-sc14', appId:'node-a8', ocId:'node-oll', reversed:false,
-   profiles:{ Human:{k:true,
-    q:"My actions usually align with the values I claim to believe in — I try to remain honest with myself even when the truth feels uncomfortable.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc20', name:'Integrity', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc4', appId:'node-a8', ocId:'node-oll', reversed:true,
-   profiles:{ Human:{k:true,
-    q:"I occasionally behave in ways that conflict with what I believe is right — I sometimes compromise my values to avoid discomfort.",
-    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc1',name:'Intention',code:'NARC',slot:'A1',layer:'Conscious',col:'#C4622D',svgId:'node-sc1',appId:'node-a1',ocId:'node-narc',reversed:false,
+   profiles:{Human:{k:true,q:"I feel clear about what I genuinely want from life — my goals reflect my own values rather than outside expectations.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc2',name:'Intention',code:'NARC',slot:'A1',layer:'Subconscious',col:'#C4622D',svgId:'node-sc2',appId:'node-a1',ocId:'node-narc',reversed:true,
+   profiles:{Human:{k:true,q:"I often pursue things because they are expected of me rather than because I truly want them.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc3',name:'Presence',code:'NARC',slot:'A2',layer:'Conscious',col:'#C4622D',svgId:'node-sc3',appId:'node-a2',ocId:'node-narc',reversed:false,
+   profiles:{Human:{k:true,q:"I am able to stay mentally present during important moments and notice my emotional state before reacting.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc4',name:'Presence',code:'NARC',slot:'A2',layer:'Subconscious',col:'#C4622D',svgId:'node-sc4',appId:'node-a2',ocId:'node-narc',reversed:true,
+   profiles:{Human:{k:true,q:"My mind frequently drifts away from the present moment — I often react emotionally before fully understanding a situation.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc5',name:'Self-Awareness',code:'NARC',slot:'A2',layer:'Conscious',col:'#C4622D',svgId:'node-sc5',appId:'node-a2',ocId:'node-narc',reversed:false,
+   profiles:{Human:{k:true,q:"I regularly reflect on my own behaviour and try to understand why I feel certain emotions instead of simply reacting.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc6',name:'Self-Awareness',code:'CIST',slot:'A3',layer:'Subconscious',col:'#534AB7',svgId:'node-sc6',appId:'node-a3',ocId:'node-cist',reversed:true,
+   profiles:{Human:{k:true,q:"I rarely question whether my reactions may be influenced by personal bias — I tend to justify my behaviour instead of examining it.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc7',name:'Logic',code:'CIST',slot:'A3',layer:'Conscious',col:'#534AB7',svgId:'node-sc7',appId:'node-a3',ocId:'node-cist',reversed:false,
+   profiles:{Human:{k:true,q:"I can separate emotional reactions from logical reasoning when necessary and am willing to question my own beliefs if new evidence appears.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc8',name:'Logic',code:'CIST',slot:'A4',layer:'Subconscious',col:'#534AB7',svgId:'node-sc8',appId:'node-a4',ocId:'node-cist',reversed:true,
+   profiles:{Human:{k:true,q:"I can become emotionally attached to beliefs even when evidence challenges them — I sometimes defend beliefs more than I investigate them.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc9',name:'Pattern',code:'CIST',slot:'A4',layer:'Conscious',col:'#534AB7',svgId:'node-sc9',appId:'node-a4',ocId:'node-cist',reversed:false,
+   profiles:{Human:{k:true,q:"I notice recurring patterns in my behaviour over time and can identify cycles that repeatedly appear in my life.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc10',name:'Pattern',code:'CIST',slot:'A5',layer:'Subconscious',col:'#534AB7',svgId:'node-sc10',appId:'node-a5',ocId:'node-cist',reversed:true,
+   profiles:{Human:{k:true,q:"I often repeat behaviours I later regret — I sometimes fall back into habits I promised to change even when I recognise the cycle.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc11',name:'Connection',code:'YARC',slot:'A5',layer:'Conscious',col:'#1D9E75',svgId:'node-sc11',appId:'node-a5',ocId:'node-yarc',reversed:false,
+   profiles:{Human:{k:true,q:"I genuinely try to understand other people's perspectives and value meaningful connection more than status or appearance.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc12',name:'Connection',code:'YARC',slot:'A6',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc12',appId:'node-a6',ocId:'node-yarc',reversed:true,
+   profiles:{Human:{k:true,q:"I often assume people misunderstand me — I sometimes withdraw emotionally instead of expressing how I truly feel.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc13',name:'Purpose',code:'YARC',slot:'A6',layer:'Conscious',col:'#1D9E75',svgId:'node-sc13',appId:'node-a6',ocId:'node-yarc',reversed:false,
+   profiles:{Human:{k:true,q:"I feel my life has direction and meaning beyond short-term survival — I regularly think about my long-term purpose.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc14',name:'Purpose',code:'YARC',slot:'A7',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc14',appId:'node-a7',ocId:'node-yarc',reversed:true,
+   profiles:{Human:{k:true,q:"I sometimes feel like I am moving through life without real direction — I often focus more on avoiding failure than pursuing meaning.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc15',name:'Balance',code:'YARC',slot:'A7',layer:'Conscious',col:'#1D9E75',svgId:'node-sc15',appId:'node-a7',ocId:'node-yarc',reversed:false,
+   profiles:{Human:{k:true,q:"I can usually remain emotionally stable during stressful situations and consider multiple perspectives before forming conclusions.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc16',name:'Balance',code:'Øll',slot:'A7',layer:'Subconscious',col:'#A0426B',svgId:'node-sc16',appId:'node-a7',ocId:'node-oll',reversed:true,
+   profiles:{Human:{k:true,q:"Negative emotions can stay with me long after situations are over — stress can quickly overwhelm my thinking.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc17',name:'Core Self',code:'Øll',slot:'A8',layer:'Conscious',col:'#A0426B',svgId:'node-sc16',appId:'node-a8',ocId:'node-oll',reversed:false,
+   profiles:{Human:{k:true,q:"I feel connected to who I truly am beneath social roles — I rarely feel the need to become someone different to gain approval.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc18',name:'Core Self',code:'Øll',slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc15',appId:'node-a8',ocId:'node-oll',reversed:true,
+   profiles:{Human:{k:true,q:"I change parts of myself depending on who I am around — I sometimes feel unsure who the real me actually is.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc19',name:'Integrity',code:'Øll',slot:'A8',layer:'Conscious',col:'#A0426B',svgId:'node-sc14',appId:'node-a8',ocId:'node-oll',reversed:false,
+   profiles:{Human:{k:true,q:"My actions usually align with the values I claim to believe in — I try to remain honest with myself even when the truth feels uncomfortable.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc20',name:'Integrity',code:'Øll',slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc4',appId:'node-a8',ocId:'node-oll',reversed:true,
+   profiles:{Human:{k:true,q:"I occasionally behave in ways that conflict with what I believe is right — I sometimes compromise my values to avoid discomfort.",
+   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
 ];
-
-// Which questions are in each layer
-const CONSCIOUS_IDS = ['sc1','sc3','sc5','sc7','sc9','sc11','sc13','sc15','sc17','sc19'];
-const SUBCONSCIOUS_IDS = ['sc2','sc4','sc6','sc8','sc10','sc12','sc14','sc16','sc18','sc20'];
 
 const OC_INFO = {
   obs:  {name:'Observer',      meta:'The centre — all inputs feed here', desc:'The subject of observation. The system being scored. All 16 Source Code nodes ultimately feed their data back to this point.', col:'#7a7972'},
@@ -1018,49 +1135,29 @@ function showStep(step) {
   const p = n.profiles[observer];
   document.getElementById('diag-prog-text').textContent = `${step} / ${knownNodes.length}`;
 
-  // Build question card with selectable answers
+  // Build question card
   const wrap = document.getElementById('q-card-wrap');
-  const isReversed = n.reversed === true;
-  const rawAnswers = p.answers || ["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"];
-  const displayAnswers = isReversed ? [...rawAnswers].reverse() : rawAnswers;
-  const currentScore = scores[n.id];
-  const isLastQuestion = step === knownNodes.length;
-  const isLayerTransition = step === 10; // after Q10, before Q11
-
-  const answersHtml = displayAnswers.map((ans, displayIdx) => {
-    const actualScore = isReversed ? (rawAnswers.length - displayIdx) : (displayIdx + 1);
-    const isSelected = currentScore === actualScore;
-    return `<button class="q-answer-btn ${isSelected ? 'selected' : ''}"
-      onclick="selectAnswer('${n.id}', ${actualScore}, this, '${n.col}')"
-      data-score="${actualScore}"
-      style="${isSelected ? `border-color:${n.col};background:${n.col}18;` : ''}">
-      <span class="q-answer-num" style="${isSelected ? `background:${n.col};color:#fff` : ''}">${actualScore}</span>
-      <span class="q-answer-text">${ans}</span>
-    </button>`;
-  }).join('');
-
-  // Layer label
-  const layerTag = n.layer === 'Subconscious'
-    ? `<span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--narc);opacity:0.8;margin-left:6px;">Subconscious</span>`
-    : `<span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--cist);opacity:0.8;margin-left:6px;">Conscious</span>`;
-
   wrap.innerHTML = `
     <div class="q-step active">
       <div class="q-meta-row">
         <div class="q-geo-dot" style="background:${n.col}"></div>
         <span class="q-code-label" style="color:${n.col}">${n.code} · ${n.slot}</span>
-        ${layerTag}
+        <span class="q-layer-label">${n.layer}</span>
       </div>
       <div class="q-node-name">${n.name}</div>
       <div class="q-question">${p.q}</div>
-      <div class="q-answers" id="q-answers">${answersHtml}</div>
+      <div class="q-slider-wrap">
+        <div class="q-slider-row">
+          <input type="range" id="active-slider" min="1" max="5" value="${scores[n.id]||3}"
+            oninput="onSlide('${n.id}',this.value)" style="--pct:${((scores[n.id]||3)-1)/4*100}%">
+          <div class="q-val-big" id="active-val" style="color:${n.col}">${scores[n.id]||3}</div>
+        </div>
+        <div class="q-slider-labels"><span>${p.lo||'Low'}</span><span>${p.hi||'High'}</span></div>
+        <div class="q-band-label" id="active-band">${awarenessState(scores[n.id]||5).label}</div>
+      </div>
       <div class="q-nav-row">
         <button class="q-btn q-btn-ghost" onclick="goToQ(${step-1})" ${step===1?'style="visibility:hidden"':''}>← Back</button>
-        <button class="q-btn q-btn-primary" id="q-next-btn"
-          onclick="${isLastQuestion ? 'finishAssessment()' : (step === 10 ? `showLayerTransition(${step+1})` : `goToQ(${step+1})`)}"
-          ${currentScore === undefined ? 'style="opacity:0.4;pointer-events:none"' : ''}>
-          ${isLastQuestion ? 'Complete →' : step === 10 ? 'Continue →' : 'Next →'}
-        </button>
+        <button class="q-btn q-btn-primary" onclick="goToQ(${step+1})">${step===knownNodes.length?'See my score →':'Next →'}</button>
       </div>
     </div>
   `;
@@ -1098,9 +1195,6 @@ function updateObsNode() {
 // ═══════════════════════════════════════════════════════════════════════════
 // SLIDER
 // ═══════════════════════════════════════════════════════════════════════════
-
-
-
 function onSlide(id, rawVal) {
   const val = parseInt(rawVal);
   scores[id] = val;
@@ -1289,214 +1383,97 @@ function hideTooltip() {
 // ═══════════════════════════════════════════════════════════════════════════
 // SUBMIT
 // ═══════════════════════════════════════════════════════════════════════════
-
-// ── Layer transition (between conscious and subconscious) ──────────────────
-function showLayerTransition(nextStep) {
-  // First save current answer if any
-  const knownNodes = NODES.filter(n=>n.profiles[observer]?.k);
-  const n = knownNodes[currentStep-1];
-
-  // Clone the live diagram into the transition screen
-  const liveDiag = document.getElementById('main-diagram') || document.getElementById('sc-check-diagram');
-  const wrap = document.getElementById('transition-diagram-wrap');
-  if (liveDiag && wrap) {
-    const clone = liveDiag.cloneNode(true);
-    clone.style.width = '100%';
-    clone.style.height = '100%';
-    clone.removeAttribute('id');
-    wrap.innerHTML = '';
-    wrap.appendChild(clone);
-  }
-
-  const screen = document.getElementById('layer-transition-screen');
-  screen.style.display = 'flex';
-
-  // Animate rotation after a short delay
-  setTimeout(() => {
-    const diagClone = wrap.querySelector('svg');
-    if (diagClone) {
-      diagClone.style.transition = 'transform 1.8s cubic-bezier(0.4,0,0.2,1)';
-      diagClone.style.transform = 'rotate(180deg)';
-    }
-  }, 400);
-
-  window._nextStepAfterTransition = nextStep;
-}
-
-function continueToSubconscious() {
-  const screen = document.getElementById('layer-transition-screen');
-  screen.style.display = 'none';
-  // Rotate the live diagram 180deg to signal layer change
-  const liveDiag = document.getElementById('main-diagram') || document.getElementById('sc-check-diagram');
-  if (liveDiag) {
-    liveDiag.style.transition = 'transform 1s ease';
-    liveDiag.style.transform = 'rotate(180deg)';
-    setTimeout(() => {
-      liveDiag.style.transition = 'transform 0.6s ease';
-      liveDiag.style.transform = 'rotate(0deg)';
-    }, 1200);
-  }
-  goToQ(window._nextStepAfterTransition || 11);
-}
-
-function finishAssessment() {
-  // Save last answer via goToQ beyond the end
-  goToQ(21);
-}
-
-// selectAnswer function
-function selectAnswer(nodeId, actualScore, btn, col) {
-  scores[nodeId] = actualScore;
-  document.querySelectorAll('#q-answers .q-answer-btn').forEach(b => {
-    const bScore = parseInt(b.dataset.score);
-    const sel = bScore === actualScore;
-    b.className = 'q-answer-btn' + (sel ? ' selected' : '');
-    b.style.borderColor = sel ? col : '';
-    b.style.background = sel ? col + '18' : '';
-    const num = b.querySelector('.q-answer-num');
-    if (num) { num.style.background = sel ? col : ''; num.style.color = sel ? '#fff' : ''; }
-  });
-  const nextBtn = document.getElementById('q-next-btn');
-  if (nextBtn) { nextBtn.style.opacity='1'; nextBtn.style.pointerEvents='auto'; }
-  const n = NODES.find(n=>n.id===nodeId);
-  if (n) lightNode(n.svgId, actualScore, n.col);
-  updateOCBars();
-}
-
 async function submitAssessment() {
   const btn = document.getElementById('ar-gen-btn');
-  btn.disabled = true; btn.textContent = 'Calculating your profile…';
-
-  // Calculate scores locally — no API needed
-  lastResult = localScore();
+  btn.disabled = true; btn.textContent = 'Generating…';
+  try {
+    lastResult = await callClaude();
+  } catch(e) {
+    console.error(e);
+    lastResult = localScore();
+  }
   renderResults(lastResult);
   showScreen('screen-results');
-
-  // Email the full score breakdown to SCH
-  await sendScoresToSCH(lastResult);
-
-  btn.disabled = false; btn.textContent = 'View my profile';
+  btn.disabled = false; btn.textContent = 'Generate my report →';
 }
 
-function generate20DigitCode() {
-  // Each digit = effective score (1-5), accounting for reverse polarity
-  // Reversed questions: effective = 6 - raw answer
-  return NODES.map(n => {
-    const raw = scores[n.id] ?? 3;
-    return n.reversed ? (6 - raw) : raw;
-  }).join('');
+async function callClaude() {
+  const known = NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
+  const unknown = NODES.filter(n=>scores[n.id]===null);
+  const name = document.getElementById('obs-name')?.value.trim()||'';
+  const age = document.getElementById('obs-age')?.value.trim()||'';
+
+  // Separate conscious and subconscious scores for drift estimation
+  const conNodes = known.filter(n=>n.layer==='C');
+  const subNodes = known.filter(n=>n.layer==='S');
+  const conAvg = conNodes.length ? conNodes.reduce((s,n)=>s+scores[n.id],0)/conNodes.length : 3;
+  const subAvg = subNodes.length ? subNodes.reduce((s,n)=>s+scores[n.id],0)/subNodes.length : 3;
+  const driftEst = Math.abs(conAvg - subAvg).toFixed(1);
+
+  const sys=`You are generating a short personalised awareness profile for Source Code Holdings. This is the FREE assessment — 3 focused sections, warm and honest, specific to this person's scores. Not generic. Not therapy language. Direct, personal, real.
+
+Framework:
+- NARC: self-reference, survival, protection (polar pair: YARC)
+- YARC: other-directed, empathy, giving (polar pair: NARC)
+- CIST: regulation, structure, integration (polar pair: Øll)
+- Øll: volatility, threshold, all-and-nothing (polar pair: CIST)
+- Zero-Point = 0 on Balance Scale (25% each). +5 = peak expression. Negative = subconscious dominant.
+- Drift (gap between conscious and subconscious layers) ≈ ${driftEst}
+
+RULES:
+- Second person throughout
+- Reference specific scored nodes by name where relevant
+- keyword_identity: 1-3 word name for this profile e.g. "The Anchor", "The Strategist", "The Protector", "The Connector", "The Builder"
+- If any subconscious high-fear or high-protection nodes scored ≤ 2 (low regulation) or Balance Scale ≤ -2.5: include gentle mental health awareness note acknowledging the weight, suggesting speaking to someone trusted or a professional
+- mental_health_note should always be present — if scores look healthy, make it affirming
+
+Return ONLY valid JSON:
+{
+  "balance_scale": <-5 to 5, one decimal>,
+  "awareness_avg": <1-5, one decimal>,
+  "bs_state": <string>,
+  "awareness_state": <string>,
+  "keyword_identity": <string — 1-3 words>,
+  "keyword_description": <string — 1 sentence specific to their profile>,
+  "observer_codes": {"narc":<int>,"yarc":<int>,"cist":<int>,"oll":<int>},
+  "oc_descriptions": {"narc":<string>,"yarc":<string>,"cist":<string>,"oll":<string>},
+  "unknown_count": <int>,
+  "report_sections": {
+    "who_you_are": <string — 2 paragraphs. Open with their keyword. What their dominant code combination produces in daily life. Specific enough they recognise themselves.>,
+    "primary_pattern": <string — 2 paragraphs. The single most significant pattern in their scores — what it produces, what it costs, what it drives. The most honest section.>,
+    "next_move": <string — 1 paragraph. One specific, actionable thing that would move this profile toward balance. Not a list. Speak directly to them.>
+  },
+  "mental_health_note": <string — 1-2 sentences. Gentle, honest. See rules.>
 }
+observer_codes must sum to 100.`;
 
-async function sendScoresToSCH(r) {
-  const name  = document.getElementById('obs-name')?.value.trim() || 'Unknown';
-  const age   = document.getElementById('obs-age')?.value.trim()  || 'Not provided';
-  const email = document.getElementById('pay-email')?.value.trim() || 'Not provided';
-  const code  = window._assessmentCode || generate20DigitCode();
-  const oc    = r.observer_codes || {};
+  const msg=`Observer: ${observer}${name?' · '+name:''}${age?' · Age '+age:''}
+Scored nodes (${known.length}):
+${known.map(n=>`${n.name} (${n.code}·${n.layer==='C'?'Conscious':'Subconscious'}): ${scores[n.id]}/5`).join('\n')}
+Unknown nodes (${unknown.length}): ${unknown.map(n=>n.name).join(', ')||'none'}
+Estimated drift: ${driftEst}`;
 
-  const scoreLines = NODES.map((n,i) =>
-    `Q${String(i+1).padStart(2,'0')} ${n.name.padEnd(16)} (${n.code}·${n.layer.slice(0,3)}): ${scores[n.id] ?? '—'}/5`
-  ).join('%0A');
-
-  const body = [
-    `SCH CHECK — NEW REPORT REQUEST`,
-    ``,
-    `CLIENT DETAILS`,
-    `Name:  ${name}`,
-    `Age:   ${age}`,
-    `Email: ${email}`,
-    ``,
-    `ASSESSMENT CODE (20 digits):`,
-    code,
-    ``,
-    `PROFILE SUMMARY`,
-    `Balance Scale:   ${r.balance_scale > 0 ? '+' : ''}${r.balance_scale}  (${r.bs_state})`,
-    `Awareness Level: ${r.awareness_level} — ${r.awareness_level_name}`,
-    `Drift:           ${r.drift}`,
-    ``,
-    `OBSERVER CODE RATIO`,
-    `NARC: ${oc.narc}%  CIST: ${oc.cist}%  YARC: ${oc.yarc}%  Øll: ${oc.oll}%`,
-    ``,
-    `ALL 20 NODE SCORES (1=activated, 5=regulated)`,
-    ...NODES.map((n,i) => `Q${String(i+1).padStart(2,'0')} ${n.name}: ${scores[n.id] ?? '?'}/5`),
-  ].join('%0A');
-
-  const subject = encodeURIComponent(`SCH Check — ${name} — Level ${r.awareness_level}`);
-  const mailtoLink = `mailto:info@sourcecodeholdings.org?subject=${subject}&body=${body.replace(/ /g,'%20')}`;
-
-  // Show the mailto link in a visible button on the results screen
-  const ctaEl = document.getElementById('r-mailto-btn');
-  if (ctaEl) {
-    ctaEl.href = mailtoLink;
-    ctaEl.style.display = 'inline-block';
-  }
-
-  // Also try to auto-open (works on most devices)
-  try { window.location.href = mailtoLink; } catch(e) {}
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json','x-api-key':'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','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1400,system:sys,messages:[{role:'user',content:msg}]})
+  });
+  const d=await res.json();
+  return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
 }
-
 
 function localScore() {
-  // Effective score: reverse-polarity questions score as 6 - answer
-  const effectiveScore = (n) => {
-    const raw = scores[n.id];
-    if (raw === null || raw === undefined) return null;
-    return n.reversed ? (6 - raw) : raw;
-  };
-
-  const known = NODES.filter(n => effectiveScore(n) !== null);
-  const avg = known.length ? known.reduce((s,n) => s + effectiveScore(n), 0) / known.length : 3;
-
-  // Balance Scale: effective avg 5 → +5, avg 3 → 0, avg 1 → -5
-  const bs = parseFloat(((avg - 3) / 2 * 5).toFixed(1));
-
-  // Drift: gap between conscious and subconscious effective averages
-  const conNodes = NODES.filter(n => n.layer === 'Conscious' && effectiveScore(n) !== null);
-  const subNodes = NODES.filter(n => n.layer === 'Subconscious' && effectiveScore(n) !== null);
-  const conAvg = conNodes.length ? conNodes.reduce((s,n) => s + effectiveScore(n), 0) / conNodes.length : avg;
-  const subAvg = subNodes.length ? subNodes.reduce((s,n) => s + effectiveScore(n), 0) / subNodes.length : avg;
-  const drift = parseFloat(Math.abs(conAvg - subAvg).toFixed(1));
-
-  // Observer Code ratios using effective scores
-  const byCode = {NARC:[], CIST:[], YARC:[], 'Øll':[]};
-  known.forEach(n => { if (byCode[n.code]) byCode[n.code].push(6 - effectiveScore(n)); });
-  const rawTotals = Object.fromEntries(Object.entries(byCode).map(([k,v]) => [k, v.reduce((a,b)=>a+b,0)||1]));
-  const grandTotal = Object.values(rawTotals).reduce((a,b)=>a+b, 0) || 1;
-  const narc = Math.round(rawTotals.NARC / grandTotal * 100);
-  const cist = Math.round(rawTotals.CIST / grandTotal * 100);
-  const yarc = Math.round(rawTotals.YARC / grandTotal * 100);
-  const oll  = 100 - narc - cist - yarc;
-
-  // Awareness level from Balance Scale
-  const lvl = getAwarenessLevel(bs);
-
-  // SC scores object for export code
-  const sc = {};
-  NODES.forEach(n => { sc[n.id] = scores[n.id] ?? null; });
-
-  return {
-    balance_scale: bs,
-    drift,
-    zp_distance: parseFloat(Math.abs(bs).toFixed(1)),
-    bs_state: bs >= 4.5 ? 'Peak expression · Creator threshold' :
-                  bs > 2.5  ? 'Mastery · Expression' :
-                  bs > 0.5  ? 'Stability emerging' :
-                  bs > -0.5 ? 'Zero-Point proximity' :
-                  bs > -2.5 ? 'Drift activated' :
-                  bs > -4.5 ? 'Subconscious dominant' : 'Collapse · Reset',
-    awareness_level: lvl.level,
-    awareness_level_name: lvl.name,
-    awareness_state: lvl.name,
-    observer_codes: { narc, cist, yarc, oll },
-    oc_descriptions: {
-      narc: 'Self-reference and survival patterns.',
-      cist: 'Regulation and integration capacity.',
-      yarc: 'Other-directed awareness and empathy.',
-      oll:  'Integration, volatility, and threshold states.'
-    },
-    sc_scores: sc,
-    unknown_count: NODES.filter(n => scores[n.id] === null).length,
-  };
+  const known=NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
+  const avg=known.reduce((s,n)=>s+scores[n.id],0)/known.length;
+  const bs=parseFloat(((avg-5.5)/4.5*5).toFixed(1));
+  const byCode={NARC:[],CIST:[],YARC:[],'Øll':[]};
+  known.forEach(n=>byCode[n.code].push(scores[n.id]));
+  const total=Object.values(byCode).reduce((s,v)=>s+v.reduce((a,b)=>a+b,0),0)||1;
+  const np=Math.round(byCode.NARC.reduce((a,b)=>a+b,0)/total*100)||25;
+  const cp=Math.round(byCode.CIST.reduce((a,b)=>a+b,0)/total*100)||25;
+  const yp=Math.round(byCode.YARC.reduce((a,b)=>a+b,0)/total*100)||25;
+  const op=100-np-cp-yp;
+  const st=awarenessState(avg);
+  return {balance_scale:bs,awareness_avg:parseFloat(avg.toFixed(1)),awareness_state:st.label,bs_state:st.label,observer_codes:{narc:np,yarc:yp,cist:cp,oll:op},oc_descriptions:{narc:'Self-reference patterns.',yarc:'Other-directed awareness.',cist:'Regulation capacity.',oll:'Integration and volatility.'},unknown_count:NODES.filter(n=>scores[n.id]===null).length,interpretation:'Your awareness profile has been mapped across the Source Code nodes. The Observer Code ratio shows where energy is concentrated in this system.'};
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1579,30 +1556,55 @@ function renderResults(r) {
     </div>`;
   }).join('');
 
-  // Generate export code — sent in the written report, not displayed here
-  const exportData = {
-    v:2, d:new Date().toISOString().slice(0,10),
-    bs:r.balance_scale, dr:r.drift,
-    oc:r.observer_codes, sc:scores,
-    al:r.awareness_level
-  };
-  window._exportCode = btoa(JSON.stringify(exportData)).replace(/=/g,'');
-  window._assessmentCode = generate20DigitCode();
+  // Build written report from new sections
+  const rs = r.report_sections || {};
+  const mhNote = r.mental_health_note || '';
+  const kwId = r.keyword_identity || '';
+  const kwDesc = r.keyword_description || '';
 
-  // Display 20-digit code
-  const codeDisplay = document.getElementById('r-code-display');
-  if (codeDisplay) codeDisplay.textContent = window._assessmentCode;
+  let reportHtml = '';
 
+  // Keyword identity
+  if (kwId) {
+    reportHtml += `<div style="margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);">
+      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Your awareness keyword</div>
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:400;margin-bottom:6px;color:var(--text)">${kwId}</div>
+      <div style="font-size:0.78rem;color:var(--muted);line-height:1.7;">${kwDesc}</div>
+    </div>`;
+  }
+
+  // Three report sections
+  const sections = [
+    { key:'who_you_are',      title:'Who you are right now' },
+    { key:'primary_pattern',  title:'The primary pattern' },
+    { key:'next_move',        title:'Your next move' },
+  ];
+  reportHtml += sections.map(s => {
+    const txt = rs[s.key] || '';
+    if (!txt) return '';
+    return `<div style="margin-bottom:24px;">
+      <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">${s.title}</div>
+      <div style="font-size:0.82rem;line-height:1.85;color:var(--text)"><p style="margin:0 0 12px">${txt.replace(/\n\n/g,'</p><p style="margin:0 0 12px">')}</p></div>
+    </div>`;
+  }).join('');
+
+  // Mental health note
+  if (mhNote) {
+    reportHtml += `<div style="margin-top:28px;padding:18px 20px;background:var(--bg-soft,#f5f4f0);border-radius:10px;border:1px solid var(--line);">
+      <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">A note on awareness and wellbeing</div>
+      <div style="font-size:0.78rem;color:var(--text);line-height:1.8;">${mhNote}</div>
+    </div>`;
+  }
+
+  // Upgrade CTA - link to paid report
+  reportHtml += `<div style="margin-top:28px;padding:20px 24px;background:var(--bg-soft,#f5f4f0);border-radius:12px;border:1px solid var(--line);text-align:center;">
+    <div style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Want the full picture?</div>
+    <div style="font-size:0.82rem;color:var(--text);line-height:1.7;margin-bottom:14px;">The SCH Check maps all 20 Source Codes across both layers — producing a 7-section personalised report including your strengths, shadows, relationship pattern, how you behave under pressure, and your specific recalibration path.</div>
+    <a href="sch-check.html" style="display:inline-block;padding:12px 28px;background:var(--text);color:var(--bg,#f2f1ee);border-radius:999px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">Get the full report — £19.99 →</a>
+  </div>`;
+
+  document.getElementById('r-interp').innerHTML = reportHtml;
   renderResultSVG();
-}
-
-function copyExportCode() {
-  if (!window._exportCode) return;
-  navigator.clipboard.writeText(window._exportCode).then(() => {
-    const btn = event.target;
-    btn.textContent = 'Copied ✓';
-    setTimeout(() => btn.textContent = 'Copy code', 2000);
-  });
 }
 
 function renderResultSVG() {
@@ -1639,55 +1641,75 @@ function showScreen(id) {
   window.scrollTo(0,0);
 }
 
-// Stripe
-const stripe = Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');
-const elements = stripe.elements();
-let cardElement;
-
-function initStripe() {
-  if (cardElement) return;
-  cardElement = elements.create('card', {style:{base:{fontFamily:"'Cormorant',serif",fontSize:'16px',color:'rgba(242,241,238,0.9)'}}});
-  const mount = document.getElementById('card-element');
-  if (mount) cardElement.mount('#card-element');
+// ── Diagram flip (conscious → subconscious transition) ──────────────────────
+function flipToSubconscious(nextStep) {
+  const flipInner = document.getElementById('diag-flip-inner');
+  if (flipInner) {
+    flipInner.classList.add('flipped');
+    // After flip completes, reset all sub-diagram nodes to 0 (fresh start)
+    setTimeout(() => {
+      const subSvg = document.getElementById('sub-diagram');
+      if (subSvg) {
+        subSvg.querySelectorAll('[id^="node-"]').forEach(el => {
+          el.style.opacity = '0';
+          el.querySelectorAll('polygon,ellipse,circle').forEach(s => s.setAttribute('stroke','transparent'));
+        });
+      }
+    }, 800);
+  }
+  goToQ(nextStep);
 }
 
-function startPaidAssessment() {
-  scores = {};
-  currentStep = 0;
-  NODES.forEach(n => {
-    scores[n.id] = n.profiles[observer]?.k ? undefined : null;
-    resetNode(n.svgId);
+// After flip, lightNode should target the active face's SVG
+function getActiveSvg() {
+  const flipped = document.getElementById('diag-flip-inner')?.classList.contains('flipped');
+  return document.getElementById(flipped ? 'sub-diagram' : 'main-diagram');
+}
+
+// Override lightNode to use active face
+const _origLightNode = lightNode;
+function lightNode(svgId, val, col) {
+  const activeSvg = getActiveSvg();
+  const el = activeSvg ? activeSvg.querySelector('#' + svgId) : document.getElementById(svgId);
+  if (!el) return;
+  const op = (0.55 + (val / 5) * 0.4).toFixed(2);
+  el.style.opacity = op;
+  el.style.transition = 'opacity 0.4s ease';
+  el.querySelectorAll('polygon,ellipse,circle').forEach((shape, i) => {
+    if (i === 0) { shape.setAttribute('fill','none'); shape.setAttribute('stroke', col); }
+    else { shape.setAttribute('stroke', col); shape.style.opacity = '0.4'; }
   });
-  showScreen('screen-assessment');
-  showStep(1);
 }
 
+// selectAnswer
+function selectAnswer(nodeId, actualScore, btn, col) {
+  scores[nodeId] = actualScore;
+  document.querySelectorAll('#q-answers .q-answer-btn').forEach(b => {
+    const bScore = parseInt(b.dataset.score);
+    const sel = bScore === actualScore;
+    b.className = 'q-answer-btn' + (sel ? ' selected' : '');
+    b.style.borderColor = sel ? col : '';
+    b.style.background = sel ? col + '18' : '';
+    const num = b.querySelector('.q-answer-num');
+    if (num) { num.style.background = sel ? col : ''; num.style.color = sel ? '#fff' : ''; }
+  });
+  const nextBtn = document.getElementById('q-next-btn');
+  if (nextBtn) { nextBtn.style.opacity='1'; nextBtn.style.pointerEvents='auto'; }
+  const n = NODES.find(n=>n.id===nodeId);
+  if (n) lightNode(n.svgId, actualScore, n.col);
+  updateOCBars();
+}
+
+function finishAssessment() { goToQ(21); }
+
+// Payment + bypass
 function handleIntroCTA() {
   const name = document.getElementById('obs-name')?.value.trim();
   if (!name) { document.getElementById('obs-name').focus(); return; }
   const wrap = document.getElementById('payment-wrap');
-  if (wrap.style.display === 'none') {
+  if (wrap.style.display === 'none' || !wrap.style.display) {
     wrap.style.display = 'block';
-    document.getElementById('intro-cta-btn').textContent = 'Pay £19.99 and begin →';
-    document.getElementById('intro-cta-btn').onclick = handlePayment;
-    initStripe();
   } else { handlePayment(); }
-}
-
-async function handlePayment() {
-  const btn = document.getElementById('pay-btn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
-  try {
-    const {paymentMethod, error} = await stripe.createPaymentMethod({type:'card', card:cardElement});
-    if (error) {
-      document.getElementById('card-errors').textContent = error.message;
-      if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
-      return;
-    }
-    startPaidAssessment();
-  } catch(e) {
-    if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
-  }
 }
 
 function devBypass() {
@@ -1695,58 +1717,130 @@ function devBypass() {
   startPaidAssessment();
 }
 
-// Load comparison code on DOMContentLoaded
-window.addEventListener('DOMContentLoaded', () => {
-  const prevCode = document.getElementById('prev-code-input')?.value;
-  if (prevCode) {
-    try {
-      const padded = prevCode + '='.repeat((4-prevCode.length%4)%4);
-      window._prevProfile = JSON.parse(atob(padded));
-    } catch(e) {}
+function startPaidAssessment() {
+  scores = {}; currentStep = 0;
+  NODES.forEach(n => { scores[n.id] = n.profiles[observer]?.k ? undefined : null; resetNode(n.svgId); });
+  // Also reset sub-diagram
+  const subSvg = document.getElementById('sub-diagram');
+  if (subSvg) subSvg.querySelectorAll('[id^="node-"]').forEach(el => { el.style.opacity='0'; });
+  // Reset flip
+  const fi = document.getElementById('diag-flip-inner');
+  if (fi) fi.classList.remove('flipped');
+  const badge = document.getElementById('diag-layer-badge');
+  if (badge) { badge.textContent = 'Part 1 — Conscious layer'; badge.style.color = 'var(--cist)'; }
+  showScreen('screen-assessment');
+  showStep(1);
+}
+
+// Effective score (reverse polarity)
+function effectiveScore(n) {
+  const raw = scores[n.id];
+  if (raw === null || raw === undefined) return null;
+  return n.reversed ? (6 - raw) : raw;
+}
+
+// localScore using effective scores
+function paidLocalScore() {
+  const known = NODES.filter(n => effectiveScore(n) !== null);
+  const avg = known.length ? known.reduce((s,n) => s + effectiveScore(n), 0) / known.length : 3;
+  const bs = parseFloat(((avg - 3) / 2 * 5).toFixed(1));
+  const conNodes = NODES.filter(n => n.layer === 'Conscious' && effectiveScore(n) !== null);
+  const subNodes = NODES.filter(n => n.layer === 'Subconscious' && effectiveScore(n) !== null);
+  const conAvg = conNodes.length ? conNodes.reduce((s,n) => s + effectiveScore(n), 0) / conNodes.length : avg;
+  const subAvg = subNodes.length ? subNodes.reduce((s,n) => s + effectiveScore(n), 0) / subNodes.length : avg;
+  const drift = parseFloat(Math.abs(conAvg - subAvg).toFixed(1));
+  const byCode = {NARC:[], CIST:[], YARC:[], 'Øll':[]};
+  known.forEach(n => { if (byCode[n.code]) byCode[n.code].push(6 - effectiveScore(n)); });
+  const grand = Object.values(byCode).reduce((a,v) => a + v.reduce((x,y)=>x+y,0), 0) || 1;
+  const narc = Math.round(byCode.NARC.reduce((a,b)=>a+b,0)/grand*100);
+  const cist = Math.round(byCode.CIST.reduce((a,b)=>a+b,0)/grand*100);
+  const yarc = Math.round(byCode.YARC.reduce((a,b)=>a+b,0)/grand*100);
+  const oll  = 100 - narc - cist - yarc;
+  const lvl  = getAwarenessLevel(bs);
+  return { balance_scale:bs, drift, zp_distance:parseFloat(Math.abs(bs).toFixed(1)),
+    bs_state: bs>=4.5?'Peak expression · Creator threshold':bs>2.5?'Mastery · Expression':bs>0.5?'Stability emerging':bs>-0.5?'Zero-Point proximity':bs>-2.5?'Drift activated':'Subconscious dominant',
+    awareness_level:lvl.level, awareness_level_name:lvl.name, awareness_state:lvl.name,
+    observer_codes:{narc,cist,yarc,oll},
+    oc_descriptions:{narc:'Self-reference patterns.',yarc:'Other-directed awareness.',cist:'Regulation capacity.',oll:'Integration and volatility.'},
+    unknown_count:NODES.filter(n=>scores[n.id]===null).length };
+}
+
+async function submitAssessment() {
+  const btn = document.getElementById('ar-gen-btn');
+  if (btn) { btn.disabled=true; btn.textContent='Calculating…'; }
+  lastResult = paidLocalScore();
+  renderResults(lastResult);
+  showScreen('screen-results');
+  await sendScoresToSCH(lastResult);
+  if (btn) { btn.disabled=false; btn.textContent='View my profile'; }
+}
+
+function generate20DigitCode() {
+  return NODES.map(n => { const r=scores[n.id]??3; return n.reversed?(6-r):r; }).join('');
+}
+
+async function sendScoresToSCH(r) {
+  const name  = document.getElementById('obs-name')?.value.trim()||'Unknown';
+  const age   = document.getElementById('obs-age')?.value.trim()||'Not provided';
+  const email = document.getElementById('pay-email')?.value.trim()||'Not provided';
+  const code  = generate20DigitCode();
+  const oc    = r.observer_codes||{};
+  window._assessmentCode = code;
+  const body = [
+    'SCH CHECK — NEW REPORT REQUEST',
+    '',
+    `Name:  ${name}`,
+    `Age:   ${age}`,
+    `Email: ${email}`,
+    '',
+    `ASSESSMENT CODE: ${code}`,
+    '',
+    `Balance Scale:   ${r.balance_scale>0?'+':''}${r.balance_scale}`,
+    `Awareness Level: ${r.awareness_level} — ${r.awareness_level_name}`,
+    `Drift:           ${r.drift}`,
+    '',
+    `OBSERVER CODE RATIO`,
+    `NARC ${oc.narc}%  CIST ${oc.cist}%  YARC ${oc.yarc}%  Øll ${oc.oll}%`,
+    '',
+    'ALL 20 NODE SCORES (effective, 1=activated 5=regulated)',
+    ...NODES.map((n,i)=>`Q${String(i+1).padStart(2,'0')} ${n.name} (${n.layer.slice(0,3)}): ${effectiveScore(n)??'—'}/5 ${n.reversed?'[R]':''}`)
+  ].join('%0A');
+  const subject = encodeURIComponent(`SCH Check — ${name} — Level ${r.awareness_level}`);
+  const mailto = `mailto:info@sourcecodeholdings.org?subject=${subject}&body=${body.replace(/ /g,'%20')}`;
+  const codeDisplay = document.getElementById('r-code-display');
+  if (codeDisplay) codeDisplay.textContent = code;
+  const mailBtn = document.getElementById('r-mailto-btn');
+  if (mailBtn) { mailBtn.href=mailto; mailBtn.style.display='inline-block'; }
+  try { window.location.href=mailto; } catch(e){}
+}
+
+async function handlePayment() {
+  const btn = document.getElementById('pay-btn');
+  if (btn) { btn.disabled=true; btn.textContent='Processing…'; }
+  try {
+    if (!cardElement) { startPaidAssessment(); return; }
+    const {paymentMethod,error} = await stripe.createPaymentMethod({type:'card',card:cardElement});
+    if (error) {
+      document.getElementById('card-errors').textContent = error.message;
+      if (btn) { btn.disabled=false; btn.textContent='Pay £19.99 and begin →'; }
+      return;
+    }
+    startPaidAssessment();
+  } catch(e) {
+    startPaidAssessment(); // fallback for dev
   }
-});
+}
+
+const stripe = Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');
+const elements = stripe.elements();
+let cardElement;
+function initStripe() {
+  if (cardElement) return;
+  cardElement = elements.create('card',{style:{base:{fontFamily:"'Cormorant',serif",fontSize:'16px',color:'rgba(242,241,238,0.9)'}}});
+  const mount = document.getElementById('card-element');
+  if (mount) cardElement.mount('#card-element');
+}
 
 </script>
-
-<!-- ═══ LAYER TRANSITION ═══ -->
-<div id="layer-transition-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;">
-  <div id="transition-diagram-wrap" style="width:min(320px,70vw);height:min(320px,70vw);margin-bottom:40px;">
-  </div>
-  <div style="font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--text);margin-bottom:12px;text-align:center;" id="transition-title">Conscious layer complete</div>
-  <div style="font-size:0.82rem;color:var(--muted);line-height:1.8;text-align:center;max-width:340px;margin-bottom:32px;" id="transition-sub">The diagram now shows your conscious profile. Part 2 maps the subconscious layer — the drivers beneath what you see.</div>
-  <button class="q-btn q-btn-primary" onclick="continueToSubconscious()" style="padding:14px 36px;font-size:0.8rem;letter-spacing:0.12em;">Begin Part 2 →</button>
-</div>
 </body>
-</html>const isReversed = n.reversed === true;
-    const rawAnswers = p.answers || [];
-    // Display order: reversed questions show answers in reverse (5 first, 1 last)
-    const displayAnswers = isReversed ? [...rawAnswers].reverse() : rawAnswers;
-    const currentScore = scores[n.id];
-
-    const answersHtml = displayAnswers.map((ans, displayIdx) => {
-      // Map display position back to actual score
-      const actualScore = isReversed ? (rawAnswers.length - displayIdx) : (displayIdx + 1);
-      const isSelected = currentScore === actualScore;
-      return `<button class="q-answer-btn ${isSelected ? 'selected' : ''}"
-        onclick="selectAnswer('${n.id}', ${actualScore}, this, '${n.col}')"
-        style="${isSelected ? `border-color:${n.col};background:${n.col}18;color:${n.col}` : ''}">
-        <span class="q-answer-num" style="${isSelected ? `background:${n.col};color:#fff` : ''}">${actualScore}</span>
-        <span class="q-answer-text">${ans}</span>
-      </button>`;
-    }).join('');
-
-    const cardHtml = `
-      <div class="q-meta">
-        <div class="q-code-dot" style="background:${n.col}"></div>
-        <div class="q-code-name" style="color:${n.col}">${n.code} · ${n.slot}</div>
-        <div class="q-layer">${n.layer}</div>
-      </div>
-      <div class="q-name">${n.name}</div>
-      <div class="q-text">${p.q}</div>
-      <div class="q-answers" id="q-answers">${answersHtml}</div>
-      <div class="q-nav">
-        ${step > 1 ? `<button class="q-btn" onclick="goToQ(${step-1})">← Back</button>` : '<div></div>'}
-        <button class="q-btn q-btn-primary" id="q-next-btn"
-          onclick="goToQ(${step+1})"
-          ${currentScore === undefined ? 'style="opacity:0.45;pointer-events:none"' : ''}>Next →</button>
-      </div>`;
+</html>
