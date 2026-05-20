@@ -960,66 +960,97 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 // NODE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════════════════
 const NODES = [
-  {id:'sc1',name:'Intention',code:'NARC',slot:'A1',layer:'Conscious',col:'#C4622D',svgId:'node-sc1',appId:'node-a1',ocId:'node-narc',reversed:false,
-   profiles:{Human:{k:true,q:"I feel clear about what I genuinely want from life — my goals reflect my own values rather than outside expectations.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc2',name:'Intention',code:'NARC',slot:'A1',layer:'Subconscious',col:'#C4622D',svgId:'node-sc2',appId:'node-a1',ocId:'node-narc',reversed:true,
-   profiles:{Human:{k:true,q:"I often pursue things because they are expected of me rather than because I truly want them.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc3',name:'Presence',code:'NARC',slot:'A2',layer:'Conscious',col:'#C4622D',svgId:'node-sc3',appId:'node-a2',ocId:'node-narc',reversed:false,
-   profiles:{Human:{k:true,q:"I am able to stay mentally present during important moments and notice my emotional state before reacting.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc4',name:'Presence',code:'NARC',slot:'A2',layer:'Subconscious',col:'#C4622D',svgId:'node-sc4',appId:'node-a2',ocId:'node-narc',reversed:true,
-   profiles:{Human:{k:true,q:"My mind frequently drifts away from the present moment — I often react emotionally before fully understanding a situation.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc5',name:'Self-Awareness',code:'NARC',slot:'A2',layer:'Conscious',col:'#C4622D',svgId:'node-sc5',appId:'node-a2',ocId:'node-narc',reversed:false,
-   profiles:{Human:{k:true,q:"I regularly reflect on my own behaviour and try to understand why I feel certain emotions instead of simply reacting.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc6',name:'Self-Awareness',code:'CIST',slot:'A3',layer:'Subconscious',col:'#534AB7',svgId:'node-sc6',appId:'node-a3',ocId:'node-cist',reversed:true,
-   profiles:{Human:{k:true,q:"I rarely question whether my reactions may be influenced by personal bias — I tend to justify my behaviour instead of examining it.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc7',name:'Logic',code:'CIST',slot:'A3',layer:'Conscious',col:'#534AB7',svgId:'node-sc7',appId:'node-a3',ocId:'node-cist',reversed:false,
-   profiles:{Human:{k:true,q:"I can separate emotional reactions from logical reasoning when necessary and am willing to question my own beliefs if new evidence appears.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc8',name:'Logic',code:'CIST',slot:'A4',layer:'Subconscious',col:'#534AB7',svgId:'node-sc8',appId:'node-a4',ocId:'node-cist',reversed:true,
-   profiles:{Human:{k:true,q:"I can become emotionally attached to beliefs even when evidence challenges them — I sometimes defend beliefs more than I investigate them.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc9',name:'Pattern',code:'CIST',slot:'A4',layer:'Conscious',col:'#534AB7',svgId:'node-sc9',appId:'node-a4',ocId:'node-cist',reversed:false,
-   profiles:{Human:{k:true,q:"I notice recurring patterns in my behaviour over time and can identify cycles that repeatedly appear in my life.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc10',name:'Pattern',code:'CIST',slot:'A5',layer:'Subconscious',col:'#534AB7',svgId:'node-sc10',appId:'node-a5',ocId:'node-cist',reversed:true,
-   profiles:{Human:{k:true,q:"I often repeat behaviours I later regret — I sometimes fall back into habits I promised to change even when I recognise the cycle.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc11',name:'Connection',code:'YARC',slot:'A5',layer:'Conscious',col:'#1D9E75',svgId:'node-sc11',appId:'node-a5',ocId:'node-yarc',reversed:false,
-   profiles:{Human:{k:true,q:"I genuinely try to understand other people's perspectives and value meaningful connection more than status or appearance.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc12',name:'Connection',code:'YARC',slot:'A6',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc12',appId:'node-a6',ocId:'node-yarc',reversed:true,
-   profiles:{Human:{k:true,q:"I often assume people misunderstand me — I sometimes withdraw emotionally instead of expressing how I truly feel.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc13',name:'Purpose',code:'YARC',slot:'A6',layer:'Conscious',col:'#1D9E75',svgId:'node-sc13',appId:'node-a6',ocId:'node-yarc',reversed:false,
-   profiles:{Human:{k:true,q:"I feel my life has direction and meaning beyond short-term survival — I regularly think about my long-term purpose.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc14',name:'Purpose',code:'YARC',slot:'A7',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc14',appId:'node-a7',ocId:'node-yarc',reversed:true,
-   profiles:{Human:{k:true,q:"I sometimes feel like I am moving through life without real direction — I often focus more on avoiding failure than pursuing meaning.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc15',name:'Balance',code:'YARC',slot:'A7',layer:'Conscious',col:'#1D9E75',svgId:'node-sc15',appId:'node-a7',ocId:'node-yarc',reversed:false,
-   profiles:{Human:{k:true,q:"I can usually remain emotionally stable during stressful situations and consider multiple perspectives before forming conclusions.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc16',name:'Balance',code:'Øll',slot:'A7',layer:'Subconscious',col:'#A0426B',svgId:'node-sc16',appId:'node-a7',ocId:'node-oll',reversed:true,
-   profiles:{Human:{k:true,q:"Negative emotions can stay with me long after situations are over — stress can quickly overwhelm my thinking.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc17',name:'Core Self',code:'Øll',slot:'A8',layer:'Conscious',col:'#A0426B',svgId:'node-sc16',appId:'node-a8',ocId:'node-oll',reversed:false,
-   profiles:{Human:{k:true,q:"I feel connected to who I truly am beneath social roles — I rarely feel the need to become someone different to gain approval.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc18',name:'Core Self',code:'Øll',slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc15',appId:'node-a8',ocId:'node-oll',reversed:true,
-   profiles:{Human:{k:true,q:"I change parts of myself depending on who I am around — I sometimes feel unsure who the real me actually is.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc19',name:'Integrity',code:'Øll',slot:'A8',layer:'Conscious',col:'#A0426B',svgId:'node-sc14',appId:'node-a8',ocId:'node-oll',reversed:false,
-   profiles:{Human:{k:true,q:"My actions usually align with the values I claim to believe in — I try to remain honest with myself even when the truth feels uncomfortable.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
-  {id:'sc20',name:'Integrity',code:'Øll',slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc4',appId:'node-a8',ocId:'node-oll',reversed:true,
-   profiles:{Human:{k:true,q:"I occasionally behave in ways that conflict with what I believe is right — I sometimes compromise my values to avoid discomfort.",
-   answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ═══ PART 1 — CONSCIOUS LAYER (Q1–20) ═══
+  // ── NARC ARM ──────────────────────────────────────────────────────────────
+  {id:'sc1', name:'Intention',  code:'NARC', slot:'A1', layer:'Conscious',    col:'#C4622D', svgId:'node-sc1',  appId:'node-a1', ocId:'node-narc', reversed:false,
+   profiles:{Human:{k:true, q:"I feel clear about what I genuinely want from life.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc2', name:'Intention',  code:'NARC', slot:'A1', layer:'Conscious',    col:'#C4622D', svgId:'node-sc2',  appId:'node-a1', ocId:'node-narc', reversed:false,
+   profiles:{Human:{k:true, q:"My goals usually reflect my personal values rather than outside expectations.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc3', name:'Presence',   code:'NARC', slot:'A2', layer:'Conscious',    col:'#C4622D', svgId:'node-sc3',  appId:'node-a2', ocId:'node-narc', reversed:false,
+   profiles:{Human:{k:true, q:"I am able to stay mentally present during important moments.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc4', name:'Presence',   code:'NARC', slot:'A2', layer:'Conscious',    col:'#C4622D', svgId:'node-sc4',  appId:'node-a2', ocId:'node-narc', reversed:false,
+   profiles:{Human:{k:true, q:"I notice my emotional state before reacting impulsively.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc5', name:'Awareness',  code:'NARC', slot:'A2', layer:'Conscious',    col:'#C4622D', svgId:'node-sc5',  appId:'node-a2', ocId:'node-narc', reversed:false,
+   profiles:{Human:{k:true, q:"I regularly reflect on my own behaviour and decisions.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ── CIST ARM ──────────────────────────────────────────────────────────────
+  {id:'sc6', name:'Core Self',  code:'CIST', slot:'A3', layer:'Conscious',    col:'#534AB7', svgId:'node-sc6',  appId:'node-a3', ocId:'node-cist', reversed:false,
+   profiles:{Human:{k:true, q:"I feel connected to who I truly am beneath social roles and expectations.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc7', name:'Core Self',  code:'CIST', slot:'A3', layer:'Conscious',    col:'#534AB7', svgId:'node-sc7',  appId:'node-a3', ocId:'node-cist', reversed:false,
+   profiles:{Human:{k:true, q:"I rarely feel the need to become someone different to gain approval.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc8', name:'Integrity',  code:'CIST', slot:'A4', layer:'Conscious',    col:'#534AB7', svgId:'node-sc8',  appId:'node-a4', ocId:'node-cist', reversed:false,
+   profiles:{Human:{k:true, q:"My actions usually align with the values I claim to believe in.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc9', name:'Integrity',  code:'CIST', slot:'A4', layer:'Conscious',    col:'#534AB7', svgId:'node-sc9',  appId:'node-a4', ocId:'node-cist', reversed:false,
+   profiles:{Human:{k:true, q:"I try to remain honest with myself even when the truth feels uncomfortable.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc10',name:'Logic',      code:'CIST', slot:'A5', layer:'Conscious',    col:'#534AB7', svgId:'node-sc10', appId:'node-a5', ocId:'node-cist', reversed:false,
+   profiles:{Human:{k:true, q:"I can separate emotional reactions from logical reasoning when necessary.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ── YARC ARM ──────────────────────────────────────────────────────────────
+  {id:'sc11',name:'Balance',    code:'YARC', slot:'A5', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc11', appId:'node-a5', ocId:'node-yarc', reversed:false,
+   profiles:{Human:{k:true, q:"I can usually remain emotionally stable during stressful situations.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc12',name:'Balance',    code:'YARC', slot:'A6', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc', reversed:false,
+   profiles:{Human:{k:true, q:"I am able to consider multiple perspectives before forming conclusions.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc13',name:'Connection', code:'YARC', slot:'A6', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc13', appId:'node-a6', ocId:'node-yarc', reversed:false,
+   profiles:{Human:{k:true, q:"I genuinely try to understand other people's perspectives.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc14',name:'Connection', code:'YARC', slot:'A7', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc14', appId:'node-a7', ocId:'node-yarc', reversed:false,
+   profiles:{Human:{k:true, q:"I value meaningful connection more than status or appearance.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc15',name:'Purpose',    code:'YARC', slot:'A7', layer:'Conscious',    col:'#1D9E75', svgId:'node-sc15', appId:'node-a7', ocId:'node-yarc', reversed:false,
+   profiles:{Human:{k:true, q:"I feel my life has direction or meaning beyond short-term survival.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ── Øll ARM ───────────────────────────────────────────────────────────────
+  {id:'sc16',name:'Purpose',    code:'Øll',  slot:'A7', layer:'Conscious',    col:'#A0426B', svgId:'node-sc16', appId:'node-a7', ocId:'node-oll',  reversed:false,
+   profiles:{Human:{k:true, q:"I regularly think about my long-term purpose.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc17',name:'Pattern',    code:'Øll',  slot:'A8', layer:'Conscious',    col:'#A0426B', svgId:'node-a1',   appId:'node-a8', ocId:'node-oll',  reversed:false,
+   profiles:{Human:{k:true, q:"I notice recurring patterns in my behaviour over time.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc18',name:'Pattern',    code:'Øll',  slot:'A8', layer:'Conscious',    col:'#A0426B', svgId:'node-a2',   appId:'node-a8', ocId:'node-oll',  reversed:false,
+   profiles:{Human:{k:true, q:"I can identify cycles that repeatedly appear in my life.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc19',name:'Logic',      code:'Øll',  slot:'A8', layer:'Conscious',    col:'#A0426B', svgId:'node-a3',   appId:'node-a8', ocId:'node-oll',  reversed:false,
+   profiles:{Human:{k:true, q:"I am willing to question my own beliefs if new evidence appears.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc20',name:'Awareness',  code:'Øll',  slot:'A8', layer:'Conscious',    col:'#A0426B', svgId:'node-a4',   appId:'node-a8', ocId:'node-oll',  reversed:false,
+   profiles:{Human:{k:true, q:"I try to understand why I feel certain emotions instead of simply reacting to them.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+
+  // ═══ PART 2 — SUBCONSCIOUS LAYER (Q21–40, reverse scored) ═══
+  // ── NARC ARM ──────────────────────────────────────────────────────────────
+  {id:'sc21',name:'Intention',  code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc1',  appId:'node-a1', ocId:'node-narc', reversed:true,
+   profiles:{Human:{k:true, q:"I often pursue things because they are expected of me rather than because I truly want them.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc22',name:'Intention',  code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc2',  appId:'node-a1', ocId:'node-narc', reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes feel disconnected from the goals I spend most of my time chasing.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc23',name:'Presence',   code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc3',  appId:'node-a2', ocId:'node-narc', reversed:true,
+   profiles:{Human:{k:true, q:"My mind frequently drifts away from the present moment.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc24',name:'Presence',   code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc4',  appId:'node-a2', ocId:'node-narc', reversed:true,
+   profiles:{Human:{k:true, q:"I often react emotionally before fully understanding a situation.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc25',name:'Awareness',  code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc5',  appId:'node-a2', ocId:'node-narc', reversed:true,
+   profiles:{Human:{k:true, q:"I rarely question whether my reactions may be influenced by personal bias.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ── CIST ARM ──────────────────────────────────────────────────────────────
+  {id:'sc26',name:'Core Self',  code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc6',  appId:'node-a3', ocId:'node-cist', reversed:true,
+   profiles:{Human:{k:true, q:"I change parts of myself depending on who I am around.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc27',name:'Core Self',  code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc7',  appId:'node-a3', ocId:'node-cist', reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes feel unsure who the real me actually is.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc28',name:'Integrity',  code:'CIST', slot:'A4', layer:'Subconscious', col:'#534AB7', svgId:'node-sc8',  appId:'node-a4', ocId:'node-cist', reversed:true,
+   profiles:{Human:{k:true, q:"I occasionally behave in ways that conflict with what I believe is right.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc29',name:'Integrity',  code:'CIST', slot:'A4', layer:'Subconscious', col:'#534AB7', svgId:'node-sc9',  appId:'node-a4', ocId:'node-cist', reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes compromise my values to avoid discomfort.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc30',name:'Logic',      code:'CIST', slot:'A5', layer:'Subconscious', col:'#534AB7', svgId:'node-sc10', appId:'node-a5', ocId:'node-cist', reversed:true,
+   profiles:{Human:{k:true, q:"I can become emotionally attached to beliefs even when evidence challenges them.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ── YARC ARM ──────────────────────────────────────────────────────────────
+  {id:'sc31',name:'Balance',    code:'YARC', slot:'A5', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc11', appId:'node-a5', ocId:'node-yarc', reversed:true,
+   profiles:{Human:{k:true, q:"Negative emotions can stay with me long after situations are over.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc32',name:'Balance',    code:'YARC', slot:'A6', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc', reversed:true,
+   profiles:{Human:{k:true, q:"Stress can quickly overwhelm my thinking.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc33',name:'Connection', code:'YARC', slot:'A6', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc13', appId:'node-a6', ocId:'node-yarc', reversed:true,
+   profiles:{Human:{k:true, q:"I often assume people misunderstand me.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc34',name:'Connection', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc14', appId:'node-a7', ocId:'node-yarc', reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes withdraw emotionally instead of expressing how I truly feel.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc35',name:'Purpose',    code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc15', appId:'node-a7', ocId:'node-yarc', reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes feel like I am moving through life without real direction.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  // ── Øll ARM ───────────────────────────────────────────────────────────────
+  {id:'sc36',name:'Purpose',    code:'Øll',  slot:'A7', layer:'Subconscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a7', ocId:'node-oll',  reversed:true,
+   profiles:{Human:{k:true, q:"I often focus more on avoiding failure than pursuing meaning.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc37',name:'Pattern',    code:'Øll',  slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-a1',   appId:'node-a8', ocId:'node-oll',  reversed:true,
+   profiles:{Human:{k:true, q:"I often repeat behaviours I later regret.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc38',name:'Pattern',    code:'Øll',  slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-a2',   appId:'node-a8', ocId:'node-oll',  reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes fall back into habits I promised to change even when I recognise the cycle.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc39',name:'Logic',      code:'Øll',  slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-a3',   appId:'node-a8', ocId:'node-oll',  reversed:true,
+   profiles:{Human:{k:true, q:"I sometimes defend beliefs more than I investigate them.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc40',name:'Awareness',  code:'Øll',  slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-a4',   appId:'node-a8', ocId:'node-oll',  reversed:true,
+   profiles:{Human:{k:true, q:"I tend to justify my behaviour instead of deeply examining it.", answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
 ];
 
 const OC_INFO = {
@@ -1129,29 +1160,49 @@ function showStep(step) {
   const p = n.profiles[observer];
   document.getElementById('diag-prog-text').textContent = `${step} / ${knownNodes.length}`;
 
-  // Build question card
+  // Build question card with selectable answer buttons
   const wrap = document.getElementById('q-card-wrap');
+  const isReversed = n.reversed === true;
+  const rawAnswers = p.answers || ["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"];
+  const displayAnswers = isReversed ? [...rawAnswers].reverse() : rawAnswers;
+  const currentScore = scores[n.id];
+  const isLast = step === knownNodes.length;
+  const isPartTransition = step === 20;
+
+  // Update layer badge
+  const badge = document.getElementById('diag-layer-badge');
+  if (badge) {
+    badge.textContent = n.layer === 'Subconscious' ? 'Part 2 — Subconscious layer' : 'Part 1 — Conscious layer';
+    badge.style.color = n.layer === 'Subconscious' ? 'var(--narc)' : 'var(--cist)';
+  }
+
+  const answersHtml = displayAnswers.map((ans, di) => {
+    const actual = isReversed ? (rawAnswers.length - di) : (di + 1);
+    const sel = currentScore === actual;
+    return `<button class="q-answer-btn${sel?' selected':''}" onclick="selectAnswer('${n.id}',${actual},this,'${n.col}')" data-score="${actual}"
+      style="${sel?`border-color:${n.col};background:${n.col}18`:''}">
+      <span class="q-answer-num" style="${sel?`background:${n.col};color:#fff`:''}">${actual}</span>
+      <span class="q-answer-text">${ans}</span>
+    </button>`;
+  }).join('');
+
+  const nextAction = isLast ? 'finishAssessment()' : isPartTransition ? `flipToSubconscious(${step+1})` : `goToQ(${step+1})`;
+  const nextLabel  = isLast ? 'Complete →' : isPartTransition ? 'Continue to Part 2 →' : 'Next →';
+
   wrap.innerHTML = `
     <div class="q-step active">
       <div class="q-meta-row">
         <div class="q-geo-dot" style="background:${n.col}"></div>
         <span class="q-code-label" style="color:${n.col}">${n.code} · ${n.slot}</span>
-        <span class="q-layer-label">${n.layer}</span>
+        <span class="q-layer-label" style="color:${n.layer==='Subconscious'?'var(--narc)':'var(--cist)'}">${n.layer}</span>
       </div>
       <div class="q-node-name">${n.name}</div>
       <div class="q-question">${p.q}</div>
-      <div class="q-slider-wrap">
-        <div class="q-slider-row">
-          <input type="range" id="active-slider" min="1" max="5" value="${scores[n.id]||3}"
-            oninput="onSlide('${n.id}',this.value)" style="--pct:${((scores[n.id]||3)-1)/4*100}%">
-          <div class="q-val-big" id="active-val" style="color:${n.col}">${scores[n.id]||3}</div>
-        </div>
-        <div class="q-slider-labels"><span>${p.lo||'Low'}</span><span>${p.hi||'High'}</span></div>
-        <div class="q-band-label" id="active-band">${awarenessState(scores[n.id]||5).label}</div>
-      </div>
+      <div class="q-answers" id="q-answers">${answersHtml}</div>
       <div class="q-nav-row">
         <button class="q-btn q-btn-ghost" onclick="goToQ(${step-1})" ${step===1?'style="visibility:hidden"':''}>← Back</button>
-        <button class="q-btn q-btn-primary" onclick="goToQ(${step+1})">${step===knownNodes.length?'See my score →':'Next →'}</button>
+        <button class="q-btn q-btn-primary" id="q-next-btn" onclick="${nextAction}"
+          ${currentScore===undefined?'style="opacity:0.4;pointer-events:none"':''}>${nextLabel}</button>
       </div>
     </div>
   `;
@@ -1162,18 +1213,7 @@ function showStep(step) {
 }
 
 function goToQ(step) {
-  // Save current slider value — default to 5 if user hasn't moved it
-  if (currentStep > 0) {
-    const knownNodes = NODES.filter(n=>n.profiles[observer]?.k);
-    const n = knownNodes[currentStep-1];
-    if (n) {
-      const slider = document.getElementById('active-slider');
-      const val = slider ? parseInt(slider.value) : 5;
-      scores[n.id] = val;
-      lightNode(n.svgId, val, n.col);
-      updateOCBars();
-    }
-  }
+  // Score already saved by selectAnswer — nothing to save here
   showStep(step);
 }
 
@@ -1838,4 +1878,3 @@ function initStripe() {
 </script>
 </body>
 </html>
-  
