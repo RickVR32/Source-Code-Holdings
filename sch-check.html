@@ -97,6 +97,7 @@ nav {
 /* SCREENS */
 .screen { display:none; }
 .screen.active { display:block; }
+#screen-assessment.active { display:flex; flex-direction:column; height:calc(100vh - 63px); overflow:hidden; }
 
 /* ═══════════════════════════════════════════
    INTRO SCREEN
@@ -130,9 +131,11 @@ nav {
    ASSESSMENT LAYOUT
 ═══════════════════════════════════════════ */
 .assess-layout {
-  display:grid;
-  grid-template-columns: 1fr 440px;
-  min-height: calc(100vh - 63px);
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* LEFT: DIAGRAM */
@@ -142,9 +145,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  position: sticky;
-  top: 63px;
-  height: calc(100vh - 63px);
+  height: 100%;
   overflow: hidden;
 }
 
@@ -195,10 +196,10 @@ nav {
 
 /* RIGHT: QUESTIONS */
 .q-col {
-  display:flex; flex-direction:column;
-  height:calc(100vh - 63px);
-  position:sticky; top:63px;
-  overflow:hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* OBSERVER CARD (Q0) */
