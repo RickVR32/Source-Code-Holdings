@@ -281,6 +281,26 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 .q-btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--line-strong); }
 .q-btn-ghost:hover { color:var(--text); border-color:var(--text); }
 
+/* Answer buttons */
+.q-answers { display:flex; flex-direction:column; gap:8px; margin:20px 0 24px; }
+.q-answer-btn {
+  display:flex; align-items:flex-start; gap:14px; width:100%;
+  padding:13px 16px; background:var(--bg); border:1.5px solid var(--line);
+  border-radius:12px; cursor:pointer; text-align:left;
+  font-family:var(--serif); font-size:0.88rem; color:var(--text);
+  line-height:1.5; transition:border-color 0.15s, background 0.15s;
+}
+.q-answer-btn:hover { border-color:var(--text); }
+.q-answer-btn.selected { font-weight:500; }
+.q-answer-num {
+  display:flex; align-items:center; justify-content:center;
+  width:24px; height:24px; min-width:24px; border-radius:50%;
+  background:var(--line); color:var(--muted);
+  font-family:var(--mono,monospace); font-size:0.7rem; font-weight:600;
+  transition:background 0.15s, color 0.15s; flex-shrink:0; margin-top:1px;
+}
+.q-answer-text { flex:1; }
+
 /* PROGRESS BAR */
 .q-progress-bar { height:2px; background:var(--line); flex-shrink:0; }
 .q-progress-fill { height:100%; background:var(--text); transition:width 0.5s ease; }
@@ -792,47 +812,98 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 // NODE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════════════════
 const NODES = [
-  {id:'sc1', name:'Presence', code:'NARC', slot:'A1', layer:'Conscious', col:'#C4622D', svgId:'node-sc1', appId:'node-a1', ocId:'node-narc',
-   profiles:{ Human:{k:true, q:"When a conversation becomes emotionally intense, what happens to your ability to stay in it?", sub:"Not how you appear — what actually happens inside. Whether you remain present and accessible or whether part of you disappears.", lo:"I shut down or go blank", hi:"I stay present and grounded"} }},
-  {id:'sc2', name:'Fear', code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc2', appId:'node-a1', ocId:'node-narc',
-   profiles:{ Human:{k:true, q:"How much energy do you spend managing how you come across to other people?", sub:"The constant monitoring and adjusting. The work others don't see but you feel the cost of every day.", lo:"Significant — always monitoring", hi:"Very little — I'm the same everywhere"} }},
-  {id:'sc3', name:'Interpretation', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc3', appId:'node-a2', ocId:'node-narc',
-   profiles:{ Human:{k:true, q:"When someone says something ambiguous, what is your default response?", sub:"Whether you naturally read context and subtext or whether you need it made explicit before you feel safe acting on it.", lo:"I take it at face value", hi:"I read between the lines naturally"} }},
-  {id:'sc4', name:'Desire', code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc4', appId:'node-a2', ocId:'node-narc',
-   profiles:{ Human:{k:true, q:"When something genuinely interests you, how does the rest of your life relate to it?", sub:"The pull of deep interest — whether it enriches everything or consumes everything.", lo:"Everything else fades — hours disappear", hi:"I engage deeply but maintain proportion"} }},
-  {id:'sc5', name:'Intention', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc5', appId:'node-a2', ocId:'node-narc',
-   profiles:{ Human:{k:true, q:"How clearly can you separate what you actually want from what you have been conditioned to want?", sub:"The difference between your own wants and inherited wants that feel like yours but may not be.", lo:"The two feel identical most of the time", hi:"I know the difference clearly"} }},
-  {id:'sc6', name:'Communication', code:'CIST', slot:'A3', layer:'Conscious', col:'#534AB7', svgId:'node-sc6', appId:'node-a3', ocId:'node-cist',
-   profiles:{ Human:{k:true, q:"After spending extended time with people — even people you like — how do you feel?", sub:"Not whether you enjoy it. What it costs your system. How much recovery time your nervous system needs afterwards.", lo:"Depleted — I need significant time alone", hi:"Energised or neutral — people don't drain me"} }},
-  {id:'sc7', name:'Attachment', code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc7', appId:'node-a3', ocId:'node-cist',
-   profiles:{ Human:{k:true, q:"In your closest relationships, which pattern is most familiar to you?", sub:"The pattern underneath the relationship — what you do to keep people, or what happens when you sense them pulling away.", lo:"I work hard to keep people close", hi:"I trust the connection — I don't maintain it anxiously"} }},
-  {id:'sc8', name:'Expression', code:'CIST', slot:'A4', layer:'Conscious', col:'#534AB7', svgId:'node-sc8', appId:'node-a4', ocId:'node-cist',
-   profiles:{ Human:{k:true, q:"When you have something important to say, how accurately does what comes out match what you actually meant?", sub:"The gap between what is inside and what is expressed. Whether your words carry what you actually feel.", lo:"Rarely — what I mean and what I say diverge", hi:"Usually — I can express myself accurately"} }},
-  {id:'sc9', name:'Perspective', code:'CIST', slot:'A4', layer:'Conscious', col:'#534AB7', svgId:'node-sc9', appId:'node-a4', ocId:'node-cist',
-   profiles:{ Human:{k:true, q:"When someone is upset, how naturally do you understand why without them having to explain it?", sub:"Whether emotional states in others are legible to you instinctively or whether you need more data than most people seem to.", lo:"I struggle — I need more context than most", hi:"I read emotional states without words"} }},
-  {id:'sc10', name:'Memory', code:'CIST', slot:'A5', layer:'Subconscious', col:'#534AB7', svgId:'node-sc10', appId:'node-a5', ocId:'node-cist',
-   profiles:{ Human:{k:true, q:"When a relationship ends or changes significantly, how long does it stay with you?", sub:"Not grief — that is normal. Whether the loss layers over how you see new relationships and new people.", lo:"A long time — it colours what comes after", hi:"I grieve it and move forward cleanly"} }},
-  {id:'sc11', name:'Pattern', code:'YARC', slot:'A5', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc11', appId:'node-a5', ocId:'node-yarc',
-   profiles:{ Human:{k:true, q:"When your routine is disrupted unexpectedly, what happens inside you?", sub:"The internal experience — not how you appear. Whether disruption to structure triggers something real in your system.", lo:"Significant distress — it affects my whole day", hi:"Minor adjustment — I adapt without losing my footing"} }},
-  {id:'sc12', name:'Logic', code:'YARC', slot:'A6', layer:'Conscious', col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc',
-   profiles:{ Human:{k:true, q:"When you are working on something that fully engages you, how aware are you of time passing?", sub:"The quality of absorption. Whether you can engage completely and still maintain a relationship with ordinary time.", lo:"Not at all — hours disappear without me noticing", hi:"Fully aware — I engage deeply and track time"} }},
-  {id:'sc13', name:'Alignment', code:'YARC', slot:'A6', layer:'Conscious', col:'#1D9E75', svgId:'node-sc13', appId:'node-a6', ocId:'node-yarc',
-   profiles:{ Human:{k:true, q:"How consistent is the version of you that people see with the version you experience privately?", sub:"The distance between your performed self and your actual self. Whether you are presenting or present.", lo:"Very different — I perform most of the time", hi:"Very similar — what people see is who I am"} }},
-  {id:'sc14', name:'Protection', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc14', appId:'node-a7', ocId:'node-yarc',
-   profiles:{ Human:{k:true, q:"When your environment becomes too loud, bright, or busy, what does your system do?", sub:"Whether sensory input is processed as information or overrides your functioning and forces withdrawal.", lo:"I need to leave — it overrides my system", hi:"I adjust and manage — it doesn't override me"} }},
-  {id:'sc15', name:'Instinct', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc15', appId:'node-a7', ocId:'node-yarc',
-   profiles:{ Human:{k:true, q:"Do you have specific routines, rituals, or repeated behaviours that help you feel regulated?", sub:"Whether you rely on structure to maintain stability. Whether certain patterns are essential rather than optional.", lo:"Yes — they are essential, not optional", hi:"Rarely — I don't rely on specific patterns"} }},
-  {id:'sc16', name:'Adaptation', code:'Øll', slot:'A7', layer:'Conscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a7', ocId:'node-oll',
-   profiles:{ Human:{k:true, q:"When circumstances change significantly and without warning, where do you land?", sub:"The honest aftermath of sudden change. How long your system needs to find its footing and what happens in the gap.", lo:"Dysregulated for a sustained period", hi:"Uncomfortable briefly then functional"} }},
-  {id:'sc17', name:'Core Identity', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a8', ocId:'node-oll',
-   profiles:{ Human:{k:true, q:"After a period of sustained social performance, who do you return to when you are alone?", sub:"Whether you find yourself — quickly and clearly — or whether extended social periods leave you unsure of who you are.", lo:"I'm not sure — I lose track of myself", hi:"Myself — clearly, quickly, without much recovery"} }},
-  {id:'sc18', name:'Instinct2', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc15', appId:'node-a8', ocId:'node-oll',
-   profiles:{ Human:{k:true, q:"How much does your physical environment affect your internal state?", sub:"Light, sound, temperature, texture, smell. Whether your environment is neutral background or something that registers strongly.", lo:"Significantly — sensory input registers strongly", hi:"Minimally — my environment rarely overrides me"} }},
-  {id:'sc19', name:'Drift', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc14', appId:'node-a8', ocId:'node-oll',
-   profiles:{ Human:{k:true, q:"When you reach your limit — emotionally, socially, or sensorially — what does that look like?", sub:"The endpoint. Whether you signal it and take what you need, or whether you disappear entirely.", lo:"Complete withdrawal — I go unreachable", hi:"I signal it clearly and take what I need"} }},
-  {id:'sc20', name:'Integrity', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc4', appId:'node-a8', ocId:'node-oll',
-   profiles:{ Human:{k:true, q:"How honest are you — with yourself and others — about what you actually need versus what you present as needing?", sub:"The gap between your real needs and your presented needs. Whether you have learned to name what you actually need.", lo:"The gap is large — I present as needing less", hi:"The gap is small — I name what I actually need"} }},
+  // ── NARC ARM — Self, identity, intention ─────────────────────────────────
+  {id:'sc1', name:'Intention', code:'NARC', slot:'A1', layer:'Conscious', col:'#C4622D', svgId:'node-sc1', appId:'node-a1', ocId:'node-narc', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I feel clear about what I genuinely want from life — my goals reflect my own values rather than outside expectations.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc2', name:'Intention', code:'NARC', slot:'A1', layer:'Subconscious', col:'#C4622D', svgId:'node-sc2', appId:'node-a1', ocId:'node-narc', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I often pursue things because they are expected of me rather than because I truly want them.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc3', name:'Presence', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc3', appId:'node-a2', ocId:'node-narc', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I am able to stay mentally present during important moments and notice my emotional state before reacting.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc4', name:'Presence', code:'NARC', slot:'A2', layer:'Subconscious', col:'#C4622D', svgId:'node-sc4', appId:'node-a2', ocId:'node-narc', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"My mind frequently drifts away from the present moment — I often react emotionally before fully understanding a situation.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc5', name:'Self-Awareness', code:'NARC', slot:'A2', layer:'Conscious', col:'#C4622D', svgId:'node-sc5', appId:'node-a2', ocId:'node-narc', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I regularly reflect on my own behaviour and try to understand why I feel certain emotions instead of simply reacting.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+
+  // ── CIST ARM — Structure, regulation, logic ──────────────────────────────
+  {id:'sc6', name:'Self-Awareness', code:'CIST', slot:'A3', layer:'Subconscious', col:'#534AB7', svgId:'node-sc6', appId:'node-a3', ocId:'node-cist', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I rarely question whether my reactions may be influenced by personal bias — I tend to justify my behaviour instead of deeply examining it.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc7', name:'Logic', code:'CIST', slot:'A3', layer:'Conscious', col:'#534AB7', svgId:'node-sc7', appId:'node-a3', ocId:'node-cist', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I can separate emotional reactions from logical reasoning when necessary and am willing to question my own beliefs if new evidence appears.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc8', name:'Logic', code:'CIST', slot:'A4', layer:'Subconscious', col:'#534AB7', svgId:'node-sc8', appId:'node-a4', ocId:'node-cist', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I can become emotionally attached to beliefs even when evidence challenges them — I sometimes defend beliefs more than I investigate them.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc9', name:'Pattern', code:'CIST', slot:'A4', layer:'Conscious', col:'#534AB7', svgId:'node-sc9', appId:'node-a4', ocId:'node-cist', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I notice recurring patterns in my behaviour over time and can identify cycles that repeatedly appear in my life.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc10', name:'Pattern', code:'CIST', slot:'A5', layer:'Subconscious', col:'#534AB7', svgId:'node-sc10', appId:'node-a5', ocId:'node-cist', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I often repeat behaviours I later regret — I sometimes fall back into habits I promised to change even when I recognise the cycle.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+
+  // ── YARC ARM — Connection, empathy, purpose ──────────────────────────────
+  {id:'sc11', name:'Connection', code:'YARC', slot:'A5', layer:'Conscious', col:'#1D9E75', svgId:'node-sc11', appId:'node-a5', ocId:'node-yarc', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I genuinely try to understand other people's perspectives and value meaningful connection more than status or appearance.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc12', name:'Connection', code:'YARC', slot:'A6', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc12', appId:'node-a6', ocId:'node-yarc', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I often assume people misunderstand me — I sometimes withdraw emotionally instead of expressing how I truly feel.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc13', name:'Purpose', code:'YARC', slot:'A6', layer:'Conscious', col:'#1D9E75', svgId:'node-sc13', appId:'node-a6', ocId:'node-yarc', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I feel my life has direction and meaning beyond short-term survival — I regularly think about my long-term purpose.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc14', name:'Purpose', code:'YARC', slot:'A7', layer:'Subconscious', col:'#1D9E75', svgId:'node-sc14', appId:'node-a7', ocId:'node-yarc', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I sometimes feel like I am moving through life without real direction — I often focus more on avoiding failure than pursuing meaning.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc15', name:'Balance', code:'YARC', slot:'A7', layer:'Conscious', col:'#1D9E75', svgId:'node-sc15', appId:'node-a7', ocId:'node-yarc', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I can usually remain emotionally stable during stressful situations and consider multiple perspectives before forming conclusions.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+
+  // ── Øll ARM — Integration, volatility, threshold ─────────────────────────
+  {id:'sc16', name:'Balance', code:'Øll', slot:'A7', layer:'Subconscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a7', ocId:'node-oll', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"Negative emotions can stay with me long after situations are over — stress can quickly overwhelm my thinking.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc17', name:'Core Self', code:'Øll', slot:'A8', layer:'Conscious', col:'#A0426B', svgId:'node-sc16', appId:'node-a8', ocId:'node-oll', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"I feel connected to who I truly am beneath social roles — I rarely feel the need to become someone different to gain approval.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc18', name:'Core Self', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc15', appId:'node-a8', ocId:'node-oll', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I change parts of myself depending on who I am around — I sometimes feel unsure who the real me actually is.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc19', name:'Integrity', code:'Øll', slot:'A8', layer:'Conscious', col:'#A0426B', svgId:'node-sc14', appId:'node-a8', ocId:'node-oll', reversed:false,
+   profiles:{ Human:{k:true,
+    q:"My actions usually align with the values I claim to believe in — I try to remain honest with myself even when the truth feels uncomfortable.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
+  {id:'sc20', name:'Integrity', code:'Øll', slot:'A8', layer:'Subconscious', col:'#A0426B', svgId:'node-sc4', appId:'node-a8', ocId:'node-oll', reversed:true,
+   profiles:{ Human:{k:true,
+    q:"I occasionally behave in ways that conflict with what I believe is right — I sometimes compromise my values to avoid discomfort.",
+    answers:["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"]}}},
 ];
+
+// Which questions are in each layer
+const CONSCIOUS_IDS = ['sc1','sc3','sc5','sc7','sc9','sc11','sc13','sc15','sc17','sc19'];
+const SUBCONSCIOUS_IDS = ['sc2','sc4','sc6','sc8','sc10','sc12','sc14','sc16','sc18','sc20'];
 
 const OC_INFO = {
   obs:  {name:'Observer',      meta:'The centre — all inputs feed here', desc:'The subject of observation. The system being scored. All 16 Source Code nodes ultimately feed their data back to this point.', col:'#7a7972'},
@@ -947,29 +1018,49 @@ function showStep(step) {
   const p = n.profiles[observer];
   document.getElementById('diag-prog-text').textContent = `${step} / ${knownNodes.length}`;
 
-  // Build question card
+  // Build question card with selectable answers
   const wrap = document.getElementById('q-card-wrap');
+  const isReversed = n.reversed === true;
+  const rawAnswers = p.answers || ["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"];
+  const displayAnswers = isReversed ? [...rawAnswers].reverse() : rawAnswers;
+  const currentScore = scores[n.id];
+  const isLastQuestion = step === knownNodes.length;
+  const isLayerTransition = step === 10; // after Q10, before Q11
+
+  const answersHtml = displayAnswers.map((ans, displayIdx) => {
+    const actualScore = isReversed ? (rawAnswers.length - displayIdx) : (displayIdx + 1);
+    const isSelected = currentScore === actualScore;
+    return `<button class="q-answer-btn ${isSelected ? 'selected' : ''}"
+      onclick="selectAnswer('${n.id}', ${actualScore}, this, '${n.col}')"
+      data-score="${actualScore}"
+      style="${isSelected ? `border-color:${n.col};background:${n.col}18;` : ''}">
+      <span class="q-answer-num" style="${isSelected ? `background:${n.col};color:#fff` : ''}">${actualScore}</span>
+      <span class="q-answer-text">${ans}</span>
+    </button>`;
+  }).join('');
+
+  // Layer label
+  const layerTag = n.layer === 'Subconscious'
+    ? `<span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--narc);opacity:0.8;margin-left:6px;">Subconscious</span>`
+    : `<span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--cist);opacity:0.8;margin-left:6px;">Conscious</span>`;
+
   wrap.innerHTML = `
     <div class="q-step active">
       <div class="q-meta-row">
         <div class="q-geo-dot" style="background:${n.col}"></div>
         <span class="q-code-label" style="color:${n.col}">${n.code} · ${n.slot}</span>
-        <span class="q-layer-label">${n.layer}</span>
+        ${layerTag}
       </div>
       <div class="q-node-name">${n.name}</div>
       <div class="q-question">${p.q}</div>
-      <div class="q-slider-wrap">
-        <div class="q-slider-row">
-          <input type="range" id="active-slider" min="1" max="5" value="${scores[n.id] !== undefined ? scores[n.id] : (Math.floor(Math.random()*4)+1)}"
-            oninput="onSlide('${n.id}',this.value)" style="--pct:${scores[n.id] !== undefined ? ((scores[n.id]-1)/4*100) : Math.floor(Math.random()*100)}%">
-          <div class="q-val-big" id="active-val" style="color:${n.col}">${scores[n.id]||3}</div>
-        </div>
-        <div class="q-slider-labels"><span>${p.lo||'Low'}</span><span>${p.hi||'High'}</span></div>
-        <div class="q-band-label" id="active-band">${awarenessState(scores[n.id]||5).label}</div>
-      </div>
+      <div class="q-answers" id="q-answers">${answersHtml}</div>
       <div class="q-nav-row">
         <button class="q-btn q-btn-ghost" onclick="goToQ(${step-1})" ${step===1?'style="visibility:hidden"':''}>← Back</button>
-        <button class="q-btn q-btn-primary" onclick="goToQ(${step+1})">${step===knownNodes.length?'See my score →':'Next →'}</button>
+        <button class="q-btn q-btn-primary" id="q-next-btn"
+          onclick="${isLastQuestion ? 'finishAssessment()' : (step === 10 ? `showLayerTransition(${step+1})` : `goToQ(${step+1})`)}"
+          ${currentScore === undefined ? 'style="opacity:0.4;pointer-events:none"' : ''}>
+          ${isLastQuestion ? 'Complete →' : step === 10 ? 'Continue →' : 'Next →'}
+        </button>
       </div>
     </div>
   `;
@@ -1007,6 +1098,9 @@ function updateObsNode() {
 // ═══════════════════════════════════════════════════════════════════════════
 // SLIDER
 // ═══════════════════════════════════════════════════════════════════════════
+
+
+
 function onSlide(id, rawVal) {
   const val = parseInt(rawVal);
   scores[id] = val;
@@ -1195,6 +1289,80 @@ function hideTooltip() {
 // ═══════════════════════════════════════════════════════════════════════════
 // SUBMIT
 // ═══════════════════════════════════════════════════════════════════════════
+
+// ── Layer transition (between conscious and subconscious) ──────────────────
+function showLayerTransition(nextStep) {
+  // First save current answer if any
+  const knownNodes = NODES.filter(n=>n.profiles[observer]?.k);
+  const n = knownNodes[currentStep-1];
+
+  // Clone the live diagram into the transition screen
+  const liveDiag = document.getElementById('main-diagram') || document.getElementById('sc-check-diagram');
+  const wrap = document.getElementById('transition-diagram-wrap');
+  if (liveDiag && wrap) {
+    const clone = liveDiag.cloneNode(true);
+    clone.style.width = '100%';
+    clone.style.height = '100%';
+    clone.removeAttribute('id');
+    wrap.innerHTML = '';
+    wrap.appendChild(clone);
+  }
+
+  const screen = document.getElementById('layer-transition-screen');
+  screen.style.display = 'flex';
+
+  // Animate rotation after a short delay
+  setTimeout(() => {
+    const diagClone = wrap.querySelector('svg');
+    if (diagClone) {
+      diagClone.style.transition = 'transform 1.8s cubic-bezier(0.4,0,0.2,1)';
+      diagClone.style.transform = 'rotate(180deg)';
+    }
+  }, 400);
+
+  window._nextStepAfterTransition = nextStep;
+}
+
+function continueToSubconscious() {
+  const screen = document.getElementById('layer-transition-screen');
+  screen.style.display = 'none';
+  // Rotate the live diagram 180deg to signal layer change
+  const liveDiag = document.getElementById('main-diagram') || document.getElementById('sc-check-diagram');
+  if (liveDiag) {
+    liveDiag.style.transition = 'transform 1s ease';
+    liveDiag.style.transform = 'rotate(180deg)';
+    setTimeout(() => {
+      liveDiag.style.transition = 'transform 0.6s ease';
+      liveDiag.style.transform = 'rotate(0deg)';
+    }, 1200);
+  }
+  goToQ(window._nextStepAfterTransition || 11);
+}
+
+function finishAssessment() {
+  // Save last answer via goToQ beyond the end
+  goToQ(21);
+}
+
+// selectAnswer function
+function selectAnswer(nodeId, actualScore, btn, col) {
+  scores[nodeId] = actualScore;
+  document.querySelectorAll('#q-answers .q-answer-btn').forEach(b => {
+    const bScore = parseInt(b.dataset.score);
+    const sel = bScore === actualScore;
+    b.className = 'q-answer-btn' + (sel ? ' selected' : '');
+    b.style.borderColor = sel ? col : '';
+    b.style.background = sel ? col + '18' : '';
+    const num = b.querySelector('.q-answer-num');
+    if (num) { num.style.background = sel ? col : ''; num.style.color = sel ? '#fff' : ''; }
+  });
+  const nextBtn = document.getElementById('q-next-btn');
+  if (nextBtn) { nextBtn.style.opacity='1'; nextBtn.style.pointerEvents='auto'; }
+  const n = NODES.find(n=>n.id===nodeId);
+  if (n) lightNode(n.svgId, actualScore, n.col);
+  updateOCBars();
+}
+
 async function submitAssessment() {
   const btn = document.getElementById('ar-gen-btn');
   btn.disabled = true; btn.textContent = 'Calculating your profile…';
@@ -1211,8 +1379,12 @@ async function submitAssessment() {
 }
 
 function generate20DigitCode() {
-  // Each digit = the score for that question (1-5), Q1 through Q20
-  return NODES.map((n,i) => scores[n.id] ?? 3).join('');
+  // Each digit = effective score (1-5), accounting for reverse polarity
+  // Reversed questions: effective = 6 - raw answer
+  return NODES.map(n => {
+    const raw = scores[n.id] ?? 3;
+    return n.reversed ? (6 - raw) : raw;
+  }).join('');
 }
 
 async function sendScoresToSCH(r) {
@@ -1265,24 +1437,29 @@ async function sendScoresToSCH(r) {
 
 
 function localScore() {
-  const known = NODES.filter(n => scores[n.id] !== null && scores[n.id] !== undefined);
-  const avg = known.length ? known.reduce((s,n) => s + scores[n.id], 0) / known.length : 3;
+  // Effective score: reverse-polarity questions score as 6 - answer
+  const effectiveScore = (n) => {
+    const raw = scores[n.id];
+    if (raw === null || raw === undefined) return null;
+    return n.reversed ? (6 - raw) : raw;
+  };
 
-  // Balance Scale: 1=activated(negative), 5=regulated(positive)
-  // avg 5 → +5, avg 3 → 0, avg 1 → -5
+  const known = NODES.filter(n => effectiveScore(n) !== null);
+  const avg = known.length ? known.reduce((s,n) => s + effectiveScore(n), 0) / known.length : 3;
+
+  // Balance Scale: effective avg 5 → +5, avg 3 → 0, avg 1 → -5
   const bs = parseFloat(((avg - 3) / 2 * 5).toFixed(1));
 
-  // Drift: gap between conscious and subconscious averages
-  const conNodes = NODES.filter(n => n.layer === 'Conscious' && scores[n.id]);
-  const subNodes = NODES.filter(n => n.layer === 'Subconscious' && scores[n.id]);
-  const conAvg = conNodes.length ? conNodes.reduce((s,n) => s + scores[n.id], 0) / conNodes.length : avg;
-  const subAvg = subNodes.length ? subNodes.reduce((s,n) => s + scores[n.id], 0) / subNodes.length : avg;
+  // Drift: gap between conscious and subconscious effective averages
+  const conNodes = NODES.filter(n => n.layer === 'Conscious' && effectiveScore(n) !== null);
+  const subNodes = NODES.filter(n => n.layer === 'Subconscious' && effectiveScore(n) !== null);
+  const conAvg = conNodes.length ? conNodes.reduce((s,n) => s + effectiveScore(n), 0) / conNodes.length : avg;
+  const subAvg = subNodes.length ? subNodes.reduce((s,n) => s + effectiveScore(n), 0) / subNodes.length : avg;
   const drift = parseFloat(Math.abs(conAvg - subAvg).toFixed(1));
 
-  // Observer Code ratios — higher score = more regulated = less dominant activation
-  // Invert so high scores reduce dominance (5 = regulated, contributes less to "activated" ratio)
+  // Observer Code ratios using effective scores
   const byCode = {NARC:[], CIST:[], YARC:[], 'Øll':[]};
-  known.forEach(n => { if (byCode[n.code]) byCode[n.code].push(6 - scores[n.id]); }); // invert
+  known.forEach(n => { if (byCode[n.code]) byCode[n.code].push(6 - effectiveScore(n)); });
   const rawTotals = Object.fromEntries(Object.entries(byCode).map(([k,v]) => [k, v.reduce((a,b)=>a+b,0)||1]));
   const grandTotal = Object.values(rawTotals).reduce((a,b)=>a+b, 0) || 1;
   const narc = Math.round(rawTotals.NARC / grandTotal * 100);
@@ -1530,5 +1707,46 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<!-- ═══ LAYER TRANSITION ═══ -->
+<div id="layer-transition-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;">
+  <div id="transition-diagram-wrap" style="width:min(320px,70vw);height:min(320px,70vw);margin-bottom:40px;">
+  </div>
+  <div style="font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--text);margin-bottom:12px;text-align:center;" id="transition-title">Conscious layer complete</div>
+  <div style="font-size:0.82rem;color:var(--muted);line-height:1.8;text-align:center;max-width:340px;margin-bottom:32px;" id="transition-sub">The diagram now shows your conscious profile. Part 2 maps the subconscious layer — the drivers beneath what you see.</div>
+  <button class="q-btn q-btn-primary" onclick="continueToSubconscious()" style="padding:14px 36px;font-size:0.8rem;letter-spacing:0.12em;">Begin Part 2 →</button>
+</div>
 </body>
-</html>
+</html>const isReversed = n.reversed === true;
+    const rawAnswers = p.answers || [];
+    // Display order: reversed questions show answers in reverse (5 first, 1 last)
+    const displayAnswers = isReversed ? [...rawAnswers].reverse() : rawAnswers;
+    const currentScore = scores[n.id];
+
+    const answersHtml = displayAnswers.map((ans, displayIdx) => {
+      // Map display position back to actual score
+      const actualScore = isReversed ? (rawAnswers.length - displayIdx) : (displayIdx + 1);
+      const isSelected = currentScore === actualScore;
+      return `<button class="q-answer-btn ${isSelected ? 'selected' : ''}"
+        onclick="selectAnswer('${n.id}', ${actualScore}, this, '${n.col}')"
+        style="${isSelected ? `border-color:${n.col};background:${n.col}18;color:${n.col}` : ''}">
+        <span class="q-answer-num" style="${isSelected ? `background:${n.col};color:#fff` : ''}">${actualScore}</span>
+        <span class="q-answer-text">${ans}</span>
+      </button>`;
+    }).join('');
+
+    const cardHtml = `
+      <div class="q-meta">
+        <div class="q-code-dot" style="background:${n.col}"></div>
+        <div class="q-code-name" style="color:${n.col}">${n.code} · ${n.slot}</div>
+        <div class="q-layer">${n.layer}</div>
+      </div>
+      <div class="q-name">${n.name}</div>
+      <div class="q-text">${p.q}</div>
+      <div class="q-answers" id="q-answers">${answersHtml}</div>
+      <div class="q-nav">
+        ${step > 1 ? `<button class="q-btn" onclick="goToQ(${step-1})">← Back</button>` : '<div></div>'}
+        <button class="q-btn q-btn-primary" id="q-next-btn"
+          onclick="goToQ(${step+1})"
+          ${currentScore === undefined ? 'style="opacity:0.45;pointer-events:none"' : ''}>Next →</button>
+      </div>`;
