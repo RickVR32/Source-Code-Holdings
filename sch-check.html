@@ -158,7 +158,7 @@ nav {
   overflow: hidden;
 }
 
-#main-diagram {
+#main-diagram, #sub-diagram {
   width: 100%;
   height: 100%;
   max-height: 100%;
@@ -353,23 +353,26 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
 }
 
 /* Diagram flip card */
-.diag-svg-wrap { perspective: 1400px; }
+.diag-svg-wrap { perspective: 1400px; flex:1; min-height:0; position:relative; }
 .diag-flip-inner {
-  position: relative; width: 100%; height: 100%;
+  width: 100%; height: 100%;
   transform-style: preserve-3d;
   transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 .diag-flip-inner.flipped { transform: rotateY(180deg); }
 .diag-face {
-  position: absolute; inset: 0; backface-visibility: hidden;
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex; align-items: center; justify-content: center;
 }
-.diag-face svg { width: 100%; height: 100%; }
+.diag-face svg { width: 100%; height: 100%; display:block; }
 .diag-face-back { transform: rotateY(180deg); }
 .diag-layer-badge {
   font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--muted); text-align: center; margin-top: 8px; transition: color 0.5s;
+  flex-shrink: 0;
 }
 /* Answer buttons */
 .q-answers { display:flex; flex-direction:column; gap:8px; margin:20px 0 24px; }
@@ -455,7 +458,7 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
       <div class="diag-progress-text" id="diag-prog-text">Observer</div>
     </div>
 
-    <div class="diag-svg-wrap" style="position:relative;flex:1;">
+    <div class="diag-svg-wrap">
       <div class="diag-flip-inner" id="diag-flip-inner">
         <div class="diag-face diag-face-front"><svg id="main-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
   <polygon points="450.0,302.0 598.0,450.0 450.0,598.0 302.0,450.0" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
