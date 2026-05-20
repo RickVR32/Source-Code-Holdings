@@ -877,7 +877,7 @@ input[type=range]:disabled { opacity:0.25; cursor:not-allowed; }
       <div class="ar-state" id="ar-state">—</div>
       <div class="ar-desc" id="ar-desc">—</div>
       <div class="ar-track"><div class="ar-fill" id="ar-fill" style="width:0%"></div></div>
-      <button class="ar-generate-btn" id="ar-gen-btn" onclick="submitAssessment()">Generate my report →</button>
+      <button class="ar-generate-btn" id="ar-gen-btn" onclick="submitAssessment()">Complete — view my results →</button>
     </div>
 
   </div>
@@ -1272,22 +1272,22 @@ function lightNode(svgId, val, col) {
 function pulseNode(svgId) {} // handled by highlightNode
 
 function highlightNode(n) {
-  const curEl = document.getElementById(n.svgId);
+  const svg = getActiveSvg();
+  const curEl = (svg && svg.querySelector('#' + n.svgId)) || document.getElementById(n.svgId);
   if (curEl) {
     curEl.style.opacity = '0.7';
-    // Restore stroke so it's visible for scoring
     curEl.querySelectorAll('polygon,ellipse,circle').forEach((shape, i) => {
       shape.setAttribute('stroke', i === 0 ? n.col : 'transparent');
       if (i === 0) shape.setAttribute('fill', 'none');
     });
     // Faintly reveal parent App slot
-    const appEl = document.getElementById(n.appId);
+    const appEl = (svg && svg.querySelector('#' + n.appId)) || document.getElementById(n.appId);
     if (appEl && parseFloat(appEl.style.opacity || 0) < 0.35) {
       appEl.style.opacity = '0.35';
       appEl.querySelectorAll('ellipse').forEach(s => s.setAttribute('stroke', n.col));
     }
     // Faintly reveal OC diamond
-    const ocEl = document.getElementById(n.ocId);
+    const ocEl = (svg && svg.querySelector('#' + n.ocId)) || document.getElementById(n.ocId);
     if (ocEl && parseFloat(ocEl.style.opacity || 0) < 0.25) {
       ocEl.style.opacity = '0.25';
       ocEl.querySelectorAll('polygon').forEach((s, i) => {
@@ -1362,20 +1362,25 @@ function updateOCBars() {
 // ═══════════════════════════════════════════════════════════════════════════
 function showAwarenessReveal() {
   document.getElementById('q-card-wrap').style.display = 'none';
-  // q-step-0 removed
 
-  const known = NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
-  const avg = known.reduce((s,n)=>s+scores[n.id],0)/known.length;
-  const st = awarenessState(avg);
+  // Calculate using effective scores (reverse polarity corrected)
+  const r = paidLocalScore();
+  const lvl = r.awareness_level;
+  const lvlName = r.awareness_level_name;
+  const bs = r.balance_scale;
 
-  document.getElementById('ar-score').textContent = avg.toFixed(1);
-  document.getElementById('ar-score').style.color = st.col;
-  document.getElementById('ar-state').textContent = st.label;
-  document.getElementById('ar-state').style.color = st.col;
-  document.getElementById('ar-desc').textContent = st.desc;
-  document.getElementById('ar-fill').style.width = (avg/5*100)+'%';
-  document.getElementById('ar-fill').style.background = st.col;
+  // Colour based on level
+  const col = lvl >= 8 ? 'var(--yarc)' : lvl >= 5 ? 'var(--cist)' : lvl >= 3 ? 'var(--narc)' : 'var(--oll)';
+
+  document.getElementById('ar-score').textContent = lvl;
+  document.getElementById('ar-score').style.color = col;
+  document.getElementById('ar-state').textContent = lvlName + ' · Balance Scale ' + (bs > 0 ? '+' : '') + bs;
+  document.getElementById('ar-state').style.color = col;
+  document.getElementById('ar-desc').textContent = r.bs_state;
+  document.getElementById('ar-fill').style.width = (lvl / 10 * 100) + '%';
+  document.getElementById('ar-fill').style.background = col;
   document.getElementById('diag-prog-text').textContent = 'Complete';
+  document.getElementById('ar-gen-btn').textContent = 'View my full profile →';
 
   document.getElementById('awareness-reveal').classList.add('visible');
 }
@@ -1677,21 +1682,38 @@ function showScreen(id) {
 
 // ── Diagram flip (conscious → subconscious transition) ──────────────────────
 function flipToSubconscious(nextStep) {
-  const flipInner = document.getElementById('diag-flip-inner');
-  if (flipInner) {
-    flipInner.classList.add('flipped');
-    // After flip completes, reset all sub-diagram nodes to 0 (fresh start)
-    setTimeout(() => {
-      const subSvg = document.getElementById('sub-diagram');
-      if (subSvg) {
-        subSvg.querySelectorAll('[id^="node-"]').forEach(el => {
-          el.style.opacity = '0';
-          el.querySelectorAll('polygon,ellipse,circle').forEach(s => s.setAttribute('stroke','transparent'));
-        });
-      }
-    }, 800);
+  // Reset sub-diagram FIRST — before the flip reveals it
+  const subSvg = document.getElementById('sub-diagram');
+  if (subSvg) {
+    subSvg.querySelectorAll('[id^="node-"]').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity 0.4s ease';
+      el.querySelectorAll('polygon,ellipse,circle').forEach(s => {
+        s.setAttribute('stroke','transparent');
+        s.setAttribute('fill','none');
+      });
+    });
+    // Faintly show OC diamonds and app slots on back face (same as front face start)
+    ['node-narc','node-cist','node-yarc','node-oll'].forEach(id => {
+      const el = subSvg.querySelector('#'+id);
+      if (el) el.style.opacity = '0.25';
+    });
+    ['node-a1','node-a2','node-a3','node-a4','node-a5','node-a6','node-a7','node-a8'].forEach(id => {
+      const el = subSvg.querySelector('#'+id);
+      if (el) el.style.opacity = '0.2';
+    });
   }
-  goToQ(nextStep);
+
+  // Now flip
+  const flipInner = document.getElementById('diag-flip-inner');
+  if (flipInner) flipInner.classList.add('flipped');
+
+  // Update badge
+  const badge = document.getElementById('diag-layer-badge');
+  if (badge) { badge.textContent = 'Part 2 — Subconscious layer'; badge.style.color = 'var(--narc)'; }
+
+  // Wait for flip animation to complete before showing Q21
+  setTimeout(() => goToQ(nextStep), 1500);
 }
 
 // After flip, lightNode should target the active face's SVG
@@ -1700,11 +1722,12 @@ function getActiveSvg() {
   return document.getElementById(flipped ? 'sub-diagram' : 'main-diagram');
 }
 
-// Override lightNode to use active face
-const _origLightNode = lightNode;
+// lightNode targets whichever diagram face is currently active
 function lightNode(svgId, val, col) {
   const activeSvg = getActiveSvg();
-  const el = activeSvg ? activeSvg.querySelector('#' + svgId) : document.getElementById(svgId);
+  // Try active face first, fall back to document-level
+  const el = (activeSvg && activeSvg.querySelector('#' + svgId))
+           || document.getElementById(svgId);
   if (!el) return;
   const op = (0.55 + (val / 5) * 0.4).toFixed(2);
   el.style.opacity = op;
@@ -1734,7 +1757,7 @@ function selectAnswer(nodeId, actualScore, btn, col) {
   updateOCBars();
 }
 
-function finishAssessment() { goToQ(21); }
+function finishAssessment() { goToQ(41); } // 40 nodes total
 
 // Payment + bypass
 function handleIntroCTA() {
@@ -1753,13 +1776,19 @@ function devBypass() {
 
 function startPaidAssessment() {
   scores = {}; currentStep = 0;
-  NODES.forEach(n => { scores[n.id] = n.profiles[observer]?.k ? undefined : null; resetNode(n.svgId); });
-  // Also reset sub-diagram
-  const subSvg = document.getElementById('sub-diagram');
-  if (subSvg) subSvg.querySelectorAll('[id^="node-"]').forEach(el => { el.style.opacity='0'; });
-  // Reset flip
+  // Reset flip to front face first
   const fi = document.getElementById('diag-flip-inner');
   if (fi) fi.classList.remove('flipped');
+  // Reset ALL nodes on BOTH faces
+  ['main-diagram','sub-diagram'].forEach(diagId => {
+    const svg = document.getElementById(diagId);
+    if (!svg) return;
+    svg.querySelectorAll('[id^="node-"]').forEach(el => {
+      el.style.opacity = '0';
+      el.querySelectorAll('polygon,ellipse,circle').forEach(s => s.setAttribute('stroke','transparent'));
+    });
+  });
+  NODES.forEach(n => { scores[n.id] = n.profiles[observer]?.k ? undefined : null; });
   const badge = document.getElementById('diag-layer-badge');
   if (badge) { badge.textContent = 'Part 1 — Conscious layer'; badge.style.color = 'var(--cist)'; }
   showScreen('screen-assessment');
