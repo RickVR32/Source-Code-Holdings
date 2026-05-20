@@ -1770,29 +1770,40 @@ function handleIntroCTA() {
 }
 
 function devBypass() {
-  if (!document.getElementById('obs-name').value) document.getElementById('obs-name').value = 'Test User';
-  startPaidAssessment();
+  try {
+    const nameEl = document.getElementById('obs-name');
+    if (nameEl && !nameEl.value) nameEl.value = 'Test User';
+    startPaidAssessment();
+  } catch(e) {
+    console.error('devBypass error:', e);
+    alert('devBypass error: ' + e.message + '\n\nCheck console for details.');
+  }
 }
 
 function startPaidAssessment() {
-  scores = {}; currentStep = 0;
-  // Reset flip to front face first
-  const fi = document.getElementById('diag-flip-inner');
-  if (fi) fi.classList.remove('flipped');
-  // Reset ALL nodes on BOTH faces
-  ['main-diagram','sub-diagram'].forEach(diagId => {
-    const svg = document.getElementById(diagId);
-    if (!svg) return;
-    svg.querySelectorAll('[id^="node-"]').forEach(el => {
-      el.style.opacity = '0';
-      el.querySelectorAll('polygon,ellipse,circle').forEach(s => s.setAttribute('stroke','transparent'));
+  try {
+    scores = {}; currentStep = 0;
+    // Reset flip to front face first
+    const fi = document.getElementById('diag-flip-inner');
+    if (fi) fi.classList.remove('flipped');
+    // Reset ALL nodes on BOTH faces
+    ['main-diagram','sub-diagram'].forEach(diagId => {
+      const svg = document.getElementById(diagId);
+      if (!svg) return;
+      svg.querySelectorAll('[id^="node-"]').forEach(el => {
+        el.style.opacity = '0';
+        el.querySelectorAll('polygon,ellipse,circle').forEach(s => s.setAttribute('stroke','transparent'));
+      });
     });
-  });
-  NODES.forEach(n => { scores[n.id] = n.profiles[observer]?.k ? undefined : null; });
-  const badge = document.getElementById('diag-layer-badge');
-  if (badge) { badge.textContent = 'Part 1 — Conscious layer'; badge.style.color = 'var(--cist)'; }
-  showScreen('screen-assessment');
-  showStep(1);
+    NODES.forEach(n => { scores[n.id] = n.profiles[observer]?.k ? undefined : null; });
+    const badge = document.getElementById('diag-layer-badge');
+    if (badge) { badge.textContent = 'Part 1 — Conscious layer'; badge.style.color = 'var(--cist)'; }
+    showScreen('screen-assessment');
+    showStep(1);
+  } catch(e) {
+    console.error('startPaidAssessment error:', e);
+    alert('startPaidAssessment error: ' + e.message);
+  }
 }
 
 // Effective score (reverse polarity)
