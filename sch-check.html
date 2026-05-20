@@ -1110,15 +1110,9 @@ function showStep(step) {
   const pct = step === 0 ? 0 : (step / totalKnown * 100).toFixed(0);
   document.getElementById('q-prog-fill').style.width = pct + '%';
 
-  if (step === 0) {
-    document.getElementById('q-step-0').style.display = 'flex';
-    document.getElementById('q-card-wrap').style.display = 'none';
-    document.getElementById('awareness-reveal').classList.remove('visible');
-    document.getElementById('diag-prog-text').textContent = 'Observer';
-    return;
-  }
+  if (step === 0) { showStep(1); return; } // q-step-0 removed — skip to Q1
 
-  document.getElementById('q-step-0').style.display = 'none';
+  // q-step-0 removed
   document.getElementById('awareness-reveal').classList.remove('visible');
   document.getElementById('q-card-wrap').style.display = 'flex';
 
@@ -1328,7 +1322,7 @@ function updateOCBars() {
 // ═══════════════════════════════════════════════════════════════════════════
 function showAwarenessReveal() {
   document.getElementById('q-card-wrap').style.display = 'none';
-  document.getElementById('q-step-0').style.display = 'none';
+  // q-step-0 removed
 
   const known = NODES.filter(n=>scores[n.id]!==null&&scores[n.id]!==undefined);
   const avg = known.reduce((s,n)=>s+scores[n.id],0)/known.length;
@@ -1844,3 +1838,4 @@ function initStripe() {
 </script>
 </body>
 </html>
+  
