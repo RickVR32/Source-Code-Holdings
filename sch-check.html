@@ -638,20 +638,28 @@ function updateOCBars(){
 // ── DIAGRAM FLIP ───────────────────────────────────────────────────────────
 function flipDiagram(nextStep){
   const wrap=document.getElementById('diag-svg-wrap');
-  const conn=document.getElementById('con-line');
-  if(conn){conn.setAttribute('stroke','none');conn.setAttribute('opacity','0');}
   if(prevPulseEl){prevPulseEl.classList.remove('node-active-pulse');prevPulseEl=null;}
   wrap.classList.add('diag-flip-out');
   setTimeout(()=>{
+    // Reset sub-diagram completely — Part 2 fills in fresh just like Part 1
+    const subSvg=document.getElementById('sub-diagram');
+    if(subSvg){
+      subSvg.querySelectorAll('[id^="sub-"]').forEach(el=>{
+        el.style.opacity='0';
+        el.classList.remove('node-active-pulse');
+        el.querySelectorAll('polygon,ellipse').forEach(s=>{
+          s.setAttribute('stroke-width','2.5');
+        });
+      });
+      // OC diamonds start at faint baseline
+      ['sub-node-narc','sub-node-cist','sub-node-yarc','sub-node-oll'].forEach(id=>{
+        const el=subSvg.querySelector('#'+id);
+        if(el)el.style.opacity='0.12';
+      });
+    }
     wrap.classList.add('show-sub');
     wrap.classList.remove('diag-flip-out');
     wrap.classList.add('diag-flip-in');
-    // Sync OC diamond opacities to sub face
-    ['narc','cist','yarc','oll'].forEach(k=>{
-      const front=document.getElementById('node-'+k);
-      const back=document.getElementById('sub-node-'+k);
-      if(front&&back)back.style.opacity=front.style.opacity;
-    });
     setTimeout(()=>{wrap.classList.remove('diag-flip-in');goToQ(nextStep);},450);
   },450);
 }
