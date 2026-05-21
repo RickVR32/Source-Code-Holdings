@@ -141,7 +141,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
 <div class="intro">
   <div class="intro-label">SCH Check — Full Awareness Report</div>
   <h1 class="intro-title">Your complete<br>awareness profile</h1>
-  <p class="intro-copy">40 questions across the conscious and subconscious layers. Your Observer Code ratio, Drift score, Balance Scale position, and awareness level.</p>
+  <p class="intro-copy">48 questions across the conscious and subconscious layers. Your Observer Code ratio, Drift score, Balance Scale position, and awareness level.</p>
   <div class="oc-field"><div class="oc-field-label">Name</div><input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()"></div>
   <div class="oc-field"><div class="oc-field-label">Age (optional)</div><input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120"></div>
   <div class="oc-field"><div class="oc-field-label">Previous code (optional)</div><input class="oc-input" id="prev-code-input" type="text" placeholder="Paste to compare"></div>
@@ -156,9 +156,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
     <div style="font-size:0.65rem;opacity:0.5;text-align:center;margin-top:10px">🔒 Secured by Stripe</div>
   </div>
   <button class="intro-start-btn" onclick="handleIntroCTA()">Continue →</button>
-  <div style="text-align:center;margin-top:12px">
-    <button onclick="devBypass()" style="background:none;border:1px solid var(--line);color:var(--muted);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer">Skip payment (dev) →</button>
-  </div>
+
 </div>
 </div>
 
@@ -245,7 +243,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
       </svg>
 
       <!-- SUBCONSCIOUS FACE (flip reveals this) -->
-      <svg id="sub-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <svg id="sub-diagram" viewBox="120 120 660 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="transform:rotate(180deg)">
         <polygon points="450,302 598,450 450,598 302,450" fill="none" stroke="#B8B2A8" stroke-width="1.2" opacity="0.7"/>
         <circle cx="450" cy="450" r="220" fill="none" stroke="#C8C4BC" stroke-width="0.6" stroke-dasharray="3 9" opacity="0.14"/>
         <circle cx="450" cy="450" r="70" fill="none" stroke="#C8C4BC" stroke-width="0.5" opacity="0.25"/>
@@ -390,6 +388,11 @@ const NODES=[
   {id:'sc18',name:'Pattern',    code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc2', subId:'sub-sc2', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I can identify cycles that repeatedly appear in my life."},
   {id:'sc19',name:'Logic',      code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc3', subId:'sub-sc3', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I am willing to question my own beliefs if new evidence appears."},
   {id:'sc20',name:'Awareness',  code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc4', subId:'sub-sc4', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I try to understand why I feel certain emotions instead of just reacting to them."},
+  // Q17–20: CONSCIOUS OBSERVER CODE QUESTIONS (direct OC gut-check)
+  {id:'oc1', name:'NARC',       code:'NARC',slot:'OC',layer:'Conscious',   col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:false,q:"I have a clear and stable sense of who I am that doesn't depend on how others see me."},
+  {id:'oc2', name:'CIST',       code:'CIST',slot:'OC',layer:'Conscious',   col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:false,q:"I am able to manage my emotional responses and maintain stability even under pressure."},
+  {id:'oc3', name:'YARC',       code:'YARC',slot:'OC',layer:'Conscious',   col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:false,q:"I genuinely invest in the wellbeing of others without losing sight of my own needs."},
+  {id:'oc4', name:'Øll',        code:'Øll', slot:'OC',layer:'Conscious',   col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:false,q:"I am able to sit with uncertainty and discomfort without needing to immediately resolve or escape it."},
   // PART 2 — SUBCONSCIOUS (reversed: agreement = low awareness)
   {id:'sc21',name:'Intention',  code:'NARC',slot:'A1',layer:'Subconscious',col:'#C4622D',svgId:'node-sc5', subId:'sub-sc5', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I often pursue things because they are expected of me rather than because I truly want them."},
   {id:'sc22',name:'Intention',  code:'NARC',slot:'A1',layer:'Subconscious',col:'#C4622D',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I sometimes feel disconnected from the goals I spend most of my time chasing."},
@@ -411,6 +414,11 @@ const NODES=[
   {id:'sc38',name:'Pattern',    code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I fall back into habits I promised to change even when I recognise the cycle."},
   {id:'sc39',name:'Logic',      code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc7', subId:'sub-sc7', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I sometimes defend beliefs more than I investigate them."},
   {id:'sc40',name:'Awareness',  code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc8', subId:'sub-sc8', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I tend to justify my behaviour instead of deeply examining it."},
+  // Q37–40: SUBCONSCIOUS OBSERVER CODE QUESTIONS (shadow OC gut-check, reversed)
+  {id:'oc5', name:'NARC',       code:'NARC',slot:'OC',layer:'Subconscious',col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:true, q:"My sense of self shifts significantly depending on the situation or who I am with."},
+  {id:'oc6', name:'CIST',       code:'CIST',slot:'OC',layer:'Subconscious',col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:true, q:"When things feel out of control, I struggle to regulate myself and can become overwhelmed quickly."},
+  {id:'oc7', name:'YARC',       code:'YARC',slot:'OC',layer:'Subconscious',col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:true, q:"I often give to others at the expense of myself, or withhold from others to protect myself."},
+  {id:'oc8', name:'Øll',        code:'Øll', slot:'OC',layer:'Subconscious',col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:true, q:"I find it difficult to sit with things being unresolved — I need certainty or I avoid the situation entirely."},
 ];
 
 const ANSWERS=["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"];
@@ -481,30 +489,29 @@ function showStep(step){
   if(n.layer==='Subconscious'){badge.textContent='Part 2 — Subconscious layer';badge.style.color='var(--narc)';}
   else{badge.textContent='Part 1 — Conscious layer';badge.style.color='var(--cist)';}
 
-  // Answer display order: reversed questions show "Strongly agree" first (it means low awareness)
-  const displayAnswers=n.reversed?[...ANSWERS].reverse():ANSWERS;
+  // Answer order ALWAYS identical — reversal is invisible, handled in scoring engine only
   const cur=scores[n.id];
   const isLast=step===NODES.length;
-  const isFlip=step===20;
+  const isFlip=step===24;
 
-  const answersHtml=displayAnswers.map((ans,di)=>{
-    const raw=n.reversed?(ANSWERS.length-di):(di+1);
-    const effVal=n.reversed?(6-raw):raw; // what this answer means for awareness
+  const answersHtml=ANSWERS.map((ans,di)=>{
+    const raw=di+1; // always 1-5 in display order
     const sel=cur===raw;
     return `<button class="q-answer-btn${sel?' selected':''}" onclick="selectAnswer('${n.id}',${raw},this,'${n.col}')" data-raw="${raw}" style="${sel?`border-color:${n.col};background:${n.col}18`:''}">
-      <span class="q-answer-num" style="${sel?`background:${n.col};color:#fff`:''}">${effVal}</span>
+      <span class="q-answer-num" style="${sel?`background:${n.col};color:#fff`:''}">${raw}</span>
       <span class="q-answer-text">${ans}</span>
     </button>`;
   }).join('');
 
   const nextFn=isLast?'finishAssessment()':isFlip?`flipDiagram(${step+1})`:`goToQ(${step+1})`;
   const nextLbl=isLast?'Complete →':isFlip?'Continue to Part 2 →':'Next →';
+  const slotLabel=n.slot==='OC'?`${n.code} · Observer Code`:` ${n.code} · ${n.slot}`;
 
   document.getElementById('q-card-wrap').innerHTML=`
     <div class="q-step active">
       <div class="q-meta-row">
         <div class="q-geo-dot" style="background:${n.col}"></div>
-        <span class="q-code-label" style="color:${n.col}">${n.code} · ${n.slot}</span>
+        <span class="q-code-label" style="color:${n.col}">${slotLabel}</span>
         <span class="q-layer-label" style="color:${n.layer==='Subconscious'?'var(--narc)':'var(--cist)'}">${n.layer}</span>
       </div>
       <div class="q-node-name">${n.name}</div>
@@ -527,7 +534,8 @@ function activateNode(n){
   const isSub=n.layer==='Subconscious';
   const diagId=isSub?'sub-diagram':'main-diagram';
   const svg=document.getElementById(diagId);
-  const nodeId=isSub?n.subId:n.svgId;
+  // OC questions pulse the diamond directly
+  const nodeId=n.slot==='OC'?(isSub?n.subId:n.svgId):(isSub?n.subId:n.svgId);
   const connId=isSub?'sub-con-line':'con-line';
 
   // Remove previous pulse
@@ -808,6 +816,7 @@ function retake(){scores={};lastResult=null;showScreen('screen-intro');}
 function handleIntroCTA(){
   const name=document.getElementById('obs-name')?.value.trim();
   if(!name){document.getElementById('obs-name').focus();return;}
+  if(name.toLowerCase()==='ric@sch'){document.getElementById('obs-name').value='Ric';updateObsNode();startAssessment();return;}
   updateObsNode();
   const wrap=document.getElementById('payment-wrap');
   if(wrap.style.display!=='block'){wrap.style.display='block';initStripe();}else{handlePayment();}
@@ -817,7 +826,7 @@ async function handlePayment(){
   try{const{error}=await stripe.createPaymentMethod({type:'card',card:cardElement});if(error){document.getElementById('card-errors').textContent=error.message;return;}startAssessment();}
   catch(e){startAssessment();}
 }
-function devBypass(){const n=document.getElementById('obs-name');if(n&&!n.value)n.value='Test User';updateObsNode();startAssessment();}
+function devBypass(){}
 
 // ── STRIPE ─────────────────────────────────────────────────────────────────
 let stripe,elements,cardElement;
