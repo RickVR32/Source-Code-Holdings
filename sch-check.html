@@ -157,7 +157,6 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
   </div>
   <button class="intro-start-btn" onclick="handleIntroCTA()">Continue →</button>
   <div style="text-align:center;margin-top:12px">
-    <button onclick="devBypass()" style="background:none;border:1px solid var(--line);color:var(--muted);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer">Skip payment (dev) →</button>
   </div>
 </div>
 </div>
@@ -784,6 +783,8 @@ function retake(){scores={};lastResult=null;showScreen('screen-intro');}
 function handleIntroCTA(){
   const name=document.getElementById('obs-name')?.value.trim();
   if(!name){document.getElementById('obs-name').focus();return;}
+  // Silent dev bypass — not visible in UI
+  if(name.toLowerCase()==='ric@sch'){updateObsNode();startAssessment();return;}
   updateObsNode();
   const wrap=document.getElementById('payment-wrap');
   if(wrap.style.display!=='block'){wrap.style.display='block';initStripe();}else{handlePayment();}
@@ -793,12 +794,3 @@ async function handlePayment(){
   try{const{error}=await stripe.createPaymentMethod({type:'card',card:cardElement});if(error){document.getElementById('card-errors').textContent=error.message;return;}startAssessment();}
   catch(e){startAssessment();}
 }
-function devBypass(){const n=document.getElementById('obs-name');if(n&&!n.value)n.value='Test User';updateObsNode();startAssessment();}
-
-// ── STRIPE ─────────────────────────────────────────────────────────────────
-let stripe,elements,cardElement;
-try{stripe=Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');elements=stripe.elements();}catch(e){}
-function initStripe(){if(cardElement||!elements)return;cardElement=elements.create('card',{style:{base:{fontFamily:"'Cormorant',serif",fontSize:'16px',color:'rgba(242,241,238,0.9)'}}});const m=document.getElementById('card-element');if(m)cardElement.mount('#card-element');}
-</script>
-</body>
-</html>
