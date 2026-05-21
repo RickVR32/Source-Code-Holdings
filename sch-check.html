@@ -364,17 +364,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 // ═══════════════════════════════════════
-// NODE DEFINITIONS — exact SVG positions for connector line
-// ═══════════════════════════════════════
-const SC_POSITIONS = {
-  'node-sc1':{x:287,y:196},'node-sc2':{x:393,y:152},'node-sc3':{x:507,y:152},'node-sc4':{x:613,y:196},
-  'node-sc5':{x:701,y:287},'node-sc6':{x:744,y:393},'node-sc7':{x:744,y:507},'node-sc8':{x:701,y:613},
-  'node-sc9':{x:613,y:701},'node-sc10':{x:507,y:744},'node-sc11':{x:393,y:744},'node-sc12':{x:287,y:701},
-  'node-sc13':{x:198,y:613},'node-sc14':{x:155,y:507},'node-sc15':{x:155,y:393},'node-sc16':{x:198,y:287}
-};
-
-// ═══════════════════════════════════════
-// 40-NODE QUESTION SET
+// 56-NODE QUESTION SET
 // reversed:true = agreement means LOW awareness (scored inverted)
 // ═══════════════════════════════════════
 const NODES=[
@@ -406,7 +396,7 @@ const NODES=[
   {id:'ap7', name:'A7',appNum:7, code:'Øll', slot:'APP',layer:'Conscious',  col:'#A0426B',svgId:'node-a7',  subId:'sub-node-a7', appId:'node-a7',ocId:'node-oll', reversed:false,q:"The way I show up for others reflects something deeper than habit or obligation."},
   {id:'ap8', name:'A8',appNum:8, code:'Øll', slot:'APP',layer:'Conscious',  col:'#A0426B',svgId:'node-a8',  subId:'sub-node-a8', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I am actively breaking cycles that no longer serve me rather than just recognising them."},
   // Q25–28: OBSERVER CODE QUESTIONS — diamond nodes (gut-check)
-  {id:'oc1', name:'NARC',       code:'NARC',slot:'OC', layer:'Conscious',   col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:false,q:"I have a clear and stable sense of who I am that doesn't depend on how others see me."},
+  {id:'oc1', name:'NARC',       code:'NARC',slot:'OC', layer:'Conscious',   col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:false,q:"I have a clear and stable sense of who I am that doesn\'t depend on how others see me."},
   {id:'oc2', name:'CIST',       code:'CIST',slot:'OC', layer:'Conscious',   col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:false,q:"I am able to manage my emotional responses and maintain stability even under pressure."},
   {id:'oc3', name:'YARC',       code:'YARC',slot:'OC', layer:'Conscious',   col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:false,q:"I genuinely invest in the wellbeing of others without losing sight of my own needs."},
   {id:'oc4', name:'Øll',        code:'Øll', slot:'OC', layer:'Conscious',   col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:false,q:"I am able to sit with uncertainty and discomfort without needing to immediately resolve or escape it."},
@@ -432,11 +422,11 @@ const NODES=[
   // Q45–52: SUBCONSCIOUS APP QUESTIONS (reversed)
   {id:'ap9', name:'A1',appNum:1, code:'NARC',slot:'APP',layer:'Subconscious',col:'#C4622D',svgId:'node-a1', subId:'sub-node-a1', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I often start things with energy but lose momentum before they mean anything."},
   {id:'ap10',name:'A2',appNum:2, code:'NARC',slot:'APP',layer:'Subconscious',col:'#C4622D',svgId:'node-a2', subId:'sub-node-a2', appId:'node-a2',ocId:'node-narc',reversed:true, q:"I frequently notice my mood has affected a situation only after the damage is done."},
-  {id:'ap11',name:'A3',appNum:3, code:'CIST',slot:'APP',layer:'Subconscious',col:'#534AB7',svgId:'node-a3', subId:'sub-node-a3', appId:'node-a3',ocId:'node-cist',reversed:true, q:"I behave differently when no one is watching — my private self and public self don't always match."},
-  {id:'ap12',name:'A4',appNum:4, code:'CIST',slot:'APP',layer:'Subconscious',col:'#534AB7',svgId:'node-a4', subId:'sub-node-a4', appId:'node-a4',ocId:'node-cist',reversed:true, q:"I sometimes make decisions I can't fully justify, then construct reasons afterwards."},
+  {id:'ap11',name:'A3',appNum:3, code:'CIST',slot:'APP',layer:'Subconscious',col:'#534AB7',svgId:'node-a3', subId:'sub-node-a3', appId:'node-a3',ocId:'node-cist',reversed:true, q:"I behave differently when no one is watching — my private self and public self don\'t always match."},
+  {id:'ap12',name:'A4',appNum:4, code:'CIST',slot:'APP',layer:'Subconscious',col:'#534AB7',svgId:'node-a4', subId:'sub-node-a4', appId:'node-a4',ocId:'node-cist',reversed:true, q:"I sometimes make decisions I can\'t fully justify, then construct reasons afterwards."},
   {id:'ap13',name:'A5',appNum:5, code:'YARC',slot:'APP',layer:'Subconscious',col:'#1D9E75',svgId:'node-a5', subId:'sub-node-a5', appId:'node-a5',ocId:'node-yarc',reversed:true, q:"When emotions run high I find it hard to think straight or see the situation clearly."},
   {id:'ap14',name:'A6',appNum:6, code:'YARC',slot:'APP',layer:'Subconscious',col:'#1D9E75',svgId:'node-a6', subId:'sub-node-a6', appId:'node-a6',ocId:'node-yarc',reversed:true, q:"Being around certain people drains me or pulls me off centre in ways I struggle to control."},
-  {id:'ap15',name:'A7',appNum:7, code:'Øll', slot:'APP',layer:'Subconscious',col:'#A0426B',svgId:'node-a7', subId:'sub-node-a7', appId:'node-a7',ocId:'node-oll', reversed:true, q:"A lot of what I do for others comes from obligation, guilt, or fear of how I'll be perceived."},
+  {id:'ap15',name:'A7',appNum:7, code:'Øll', slot:'APP',layer:'Subconscious',col:'#A0426B',svgId:'node-a7', subId:'sub-node-a7', appId:'node-a7',ocId:'node-oll', reversed:true, q:"A lot of what I do for others comes from obligation, guilt, or fear of how I\'ll be perceived."},
   {id:'ap16',name:'A8',appNum:8, code:'Øll', slot:'APP',layer:'Subconscious',col:'#A0426B',svgId:'node-a8', subId:'sub-node-a8', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I can see the cycles clearly but keep returning to them anyway."},
   // Q53–56: SUBCONSCIOUS OBSERVER CODE QUESTIONS (reversed)
   {id:'oc5', name:'NARC',       code:'NARC',slot:'OC', layer:'Subconscious',col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:true, q:"My sense of self shifts significantly depending on the situation or who I am with."},
@@ -491,7 +481,6 @@ function startAssessment(){
     });
   });
   // Reset connector lines
-  ['con-line','sub-con-line'].forEach(id=>{const el=document.getElementById(id);if(el){el.setAttribute('stroke','none');el.setAttribute('opacity','0');}});
   document.getElementById('diag-layer-badge').textContent='Part 1 — Conscious layer';
   document.getElementById('diag-layer-badge').style.color='var(--cist)';
   document.getElementById('diag-svg-wrap').classList.remove('show-sub');
@@ -571,23 +560,14 @@ function activateNode(n){
     el.querySelectorAll('polygon,ellipse').forEach((s,i)=>{if(i===0){s.setAttribute('fill','none');s.setAttribute('stroke',n.col);s.setAttribute('stroke-width','3.5');}});
     prevPulseEl=el;
   }
-
-  // Draw connector line from centre (450,450) to node position
-  const pos=SC_POSITIONS[n.svgId];
-  const connector=document.getElementById(connId);
-  if(connector&&pos){
-    connector.setAttribute('x1','450');connector.setAttribute('y1','450');
-    connector.setAttribute('x2',String(pos.x));connector.setAttribute('y2',String(pos.y));
-    connector.setAttribute('stroke',n.col);connector.setAttribute('opacity','0.6');
-  }
-
   // Brighten OC diamond
   const ocId=isSub?n.ocId.replace('node-','sub-node-'):n.ocId;
   const ocEl=svg?svg.querySelector('#'+ocId):document.getElementById(ocId);
   if(ocEl){const op=parseFloat(ocEl.style.opacity||0.12);if(op<0.45)ocEl.style.opacity='0.45';}
 
-  // Brighten app slot
-  const appEl=isSub?null:document.getElementById(n.appId);
+  // Brighten app slot — works on both faces
+  const appNodeId=isSub?n.appId.replace('node-','sub-node-'):n.appId;
+  const appEl=(svg&&svg.querySelector('#'+appNodeId))||document.getElementById(appNodeId);
   if(appEl){const op=parseFloat(appEl.style.opacity||0);if(op<0.35){appEl.style.opacity='0.35';appEl.querySelectorAll('ellipse').forEach(s=>s.setAttribute('stroke',n.col));}}
 }
 
@@ -679,7 +659,6 @@ function flipDiagram(nextStep){
 // ── AWARENESS REVEAL ───────────────────────────────────────────────────────
 function showReveal(){
   document.getElementById('q-card-wrap').style.display='none';
-  ['con-line','sub-con-line'].forEach(id=>{const el=document.getElementById(id);if(el){el.setAttribute('stroke','none');el.setAttribute('opacity','0');}});
   if(prevPulseEl){prevPulseEl.classList.remove('node-active-pulse');prevPulseEl=null;}
   const r=calcScores();
   const lvl=getLevel(r.balance_scale);
