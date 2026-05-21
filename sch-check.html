@@ -156,8 +156,6 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
     <div style="font-size:0.65rem;opacity:0.5;text-align:center;margin-top:10px">🔒 Secured by Stripe</div>
   </div>
   <button class="intro-start-btn" onclick="handleIntroCTA()">Continue →</button>
-  <div style="text-align:center;margin-top:12px">
-  </div>
 </div>
 </div>
 
@@ -784,7 +782,12 @@ function handleIntroCTA(){
   const name=document.getElementById('obs-name')?.value.trim();
   if(!name){document.getElementById('obs-name').focus();return;}
   // Silent dev bypass — not visible in UI
-  if(name.toLowerCase()==='ric@sch'){updateObsNode();startAssessment();return;}
+  if(name.toLowerCase()==='ric@sch'){
+    document.getElementById('obs-name').value='Dev';
+    updateObsNode();
+    startAssessment();
+    return;
+  }
   updateObsNode();
   const wrap=document.getElementById('payment-wrap');
   if(wrap.style.display!=='block'){wrap.style.display='block';initStripe();}else{handlePayment();}
