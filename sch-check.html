@@ -141,7 +141,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
 <div class="intro">
   <div class="intro-label">SCH Check — Full Awareness Report</div>
   <h1 class="intro-title">Your complete<br>awareness profile</h1>
-  <p class="intro-copy">48 questions across the conscious and subconscious layers. Your Observer Code ratio, Drift score, Balance Scale position, and awareness level.</p>
+  <p class="intro-copy">56 questions across three layers — Source Codes, Apps, and Observer Codes — mapped across both the conscious and subconscious. Your complete awareness profile.</p>
   <div class="oc-field"><div class="oc-field-label">Name</div><input class="oc-input" id="obs-name" type="text" placeholder="Your name" oninput="updateObsNode()"></div>
   <div class="oc-field"><div class="oc-field-label">Age (optional)</div><input class="oc-input" id="obs-age" type="number" placeholder="Your age" min="1" max="120"></div>
   <div class="oc-field"><div class="oc-field-label">Previous code (optional)</div><input class="oc-input" id="prev-code-input" type="text" placeholder="Paste to compare"></div>
@@ -367,58 +367,71 @@ const SC_POSITIONS = {
 // reversed:true = agreement means LOW awareness (scored inverted)
 // ═══════════════════════════════════════
 const NODES=[
-  // PART 1 — CONSCIOUS
-  {id:'sc1', name:'Intention',  code:'NARC',slot:'A1',layer:'Conscious',   col:'#C4622D',svgId:'node-sc1', subId:'sub-sc1', appId:'node-a1',ocId:'node-narc',reversed:false,q:"I feel clear about what I genuinely want from life."},
-  {id:'sc2', name:'Intention',  code:'NARC',slot:'A1',layer:'Conscious',   col:'#C4622D',svgId:'node-sc2', subId:'sub-sc2', appId:'node-a1',ocId:'node-narc',reversed:false,q:"My goals reflect my personal values rather than outside expectations."},
-  {id:'sc3', name:'Presence',   code:'NARC',slot:'A2',layer:'Conscious',   col:'#C4622D',svgId:'node-sc3', subId:'sub-sc3', appId:'node-a2',ocId:'node-narc',reversed:false,q:"I am able to stay mentally present during important moments."},
-  {id:'sc4', name:'Presence',   code:'NARC',slot:'A2',layer:'Conscious',   col:'#C4622D',svgId:'node-sc4', subId:'sub-sc4', appId:'node-a2',ocId:'node-narc',reversed:false,q:"I notice my emotional state before reacting impulsively."},
-  {id:'sc5', name:'Awareness',  code:'NARC',slot:'A2',layer:'Conscious',   col:'#C4622D',svgId:'node-sc5', subId:'sub-sc5', appId:'node-a2',ocId:'node-narc',reversed:false,q:"I regularly reflect on my own behaviour and decisions."},
-  {id:'sc6', name:'Core Self',  code:'CIST',slot:'A3',layer:'Conscious',   col:'#534AB7',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a3',ocId:'node-cist',reversed:false,q:"I feel connected to who I truly am beneath social roles."},
-  {id:'sc7', name:'Core Self',  code:'CIST',slot:'A3',layer:'Conscious',   col:'#534AB7',svgId:'node-sc7', subId:'sub-sc7', appId:'node-a3',ocId:'node-cist',reversed:false,q:"I rarely feel the need to become someone different to gain approval."},
-  {id:'sc8', name:'Integrity',  code:'CIST',slot:'A4',layer:'Conscious',   col:'#534AB7',svgId:'node-sc8', subId:'sub-sc8', appId:'node-a4',ocId:'node-cist',reversed:false,q:"My actions usually align with the values I claim to believe in."},
-  {id:'sc9', name:'Integrity',  code:'CIST',slot:'A4',layer:'Conscious',   col:'#534AB7',svgId:'node-sc9', subId:'sub-sc9', appId:'node-a4',ocId:'node-cist',reversed:false,q:"I remain honest with myself even when the truth feels uncomfortable."},
-  {id:'sc10',name:'Logic',      code:'CIST',slot:'A5',layer:'Conscious',   col:'#534AB7',svgId:'node-sc10',subId:'sub-sc10',appId:'node-a5',ocId:'node-cist',reversed:false,q:"I can separate emotional reactions from logical reasoning when necessary."},
-  {id:'sc11',name:'Balance',    code:'YARC',slot:'A5',layer:'Conscious',   col:'#1D9E75',svgId:'node-sc11',subId:'sub-sc11',appId:'node-a5',ocId:'node-yarc',reversed:false,q:"I can usually remain emotionally stable during stressful situations."},
-  {id:'sc12',name:'Balance',    code:'YARC',slot:'A6',layer:'Conscious',   col:'#1D9E75',svgId:'node-sc12',subId:'sub-sc12',appId:'node-a6',ocId:'node-yarc',reversed:false,q:"I consider multiple perspectives before forming conclusions."},
-  {id:'sc13',name:'Connection', code:'YARC',slot:'A6',layer:'Conscious',   col:'#1D9E75',svgId:'node-sc13',subId:'sub-sc13',appId:'node-a6',ocId:'node-yarc',reversed:false,q:"I genuinely try to understand other people's perspectives."},
-  {id:'sc14',name:'Connection', code:'YARC',slot:'A7',layer:'Conscious',   col:'#1D9E75',svgId:'node-sc14',subId:'sub-sc14',appId:'node-a7',ocId:'node-yarc',reversed:false,q:"I value meaningful connection more than status or appearance."},
-  {id:'sc15',name:'Purpose',    code:'YARC',slot:'A7',layer:'Conscious',   col:'#1D9E75',svgId:'node-sc15',subId:'sub-sc15',appId:'node-a7',ocId:'node-yarc',reversed:false,q:"I feel my life has direction or meaning beyond short-term survival."},
-  {id:'sc16',name:'Purpose',    code:'Øll', slot:'A7',layer:'Conscious',   col:'#A0426B',svgId:'node-sc16',subId:'sub-sc16',appId:'node-a7',ocId:'node-oll', reversed:false,q:"I regularly think about my long-term purpose."},
-  {id:'sc17',name:'Pattern',    code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc1', subId:'sub-sc1', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I notice recurring patterns in my behaviour over time."},
-  {id:'sc18',name:'Pattern',    code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc2', subId:'sub-sc2', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I can identify cycles that repeatedly appear in my life."},
-  {id:'sc19',name:'Logic',      code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc3', subId:'sub-sc3', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I am willing to question my own beliefs if new evidence appears."},
-  {id:'sc20',name:'Awareness',  code:'Øll', slot:'A8',layer:'Conscious',   col:'#A0426B',svgId:'node-sc4', subId:'sub-sc4', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I try to understand why I feel certain emotions instead of just reacting to them."},
-  // Q17–20: CONSCIOUS OBSERVER CODE QUESTIONS (direct OC gut-check)
-  {id:'oc1', name:'NARC',       code:'NARC',slot:'OC',layer:'Conscious',   col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:false,q:"I have a clear and stable sense of who I am that doesn't depend on how others see me."},
-  {id:'oc2', name:'CIST',       code:'CIST',slot:'OC',layer:'Conscious',   col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:false,q:"I am able to manage my emotional responses and maintain stability even under pressure."},
-  {id:'oc3', name:'YARC',       code:'YARC',slot:'OC',layer:'Conscious',   col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:false,q:"I genuinely invest in the wellbeing of others without losing sight of my own needs."},
-  {id:'oc4', name:'Øll',        code:'Øll', slot:'OC',layer:'Conscious',   col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:false,q:"I am able to sit with uncertainty and discomfort without needing to immediately resolve or escape it."},
-  // PART 2 — SUBCONSCIOUS (reversed: agreement = low awareness)
-  {id:'sc21',name:'Intention',  code:'NARC',slot:'A1',layer:'Subconscious',col:'#C4622D',svgId:'node-sc5', subId:'sub-sc5', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I often pursue things because they are expected of me rather than because I truly want them."},
-  {id:'sc22',name:'Intention',  code:'NARC',slot:'A1',layer:'Subconscious',col:'#C4622D',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I sometimes feel disconnected from the goals I spend most of my time chasing."},
-  {id:'sc23',name:'Presence',   code:'NARC',slot:'A2',layer:'Subconscious',col:'#C4622D',svgId:'node-sc7', subId:'sub-sc7', appId:'node-a2',ocId:'node-narc',reversed:true, q:"My mind frequently drifts away from the present moment."},
-  {id:'sc24',name:'Presence',   code:'NARC',slot:'A2',layer:'Subconscious',col:'#C4622D',svgId:'node-sc8', subId:'sub-sc8', appId:'node-a2',ocId:'node-narc',reversed:true, q:"I often react emotionally before fully understanding a situation."},
-  {id:'sc25',name:'Awareness',  code:'NARC',slot:'A2',layer:'Subconscious',col:'#C4622D',svgId:'node-sc9', subId:'sub-sc9', appId:'node-a2',ocId:'node-narc',reversed:true, q:"I rarely question whether my reactions may be influenced by personal bias."},
-  {id:'sc26',name:'Core Self',  code:'CIST',slot:'A3',layer:'Subconscious',col:'#534AB7',svgId:'node-sc10',subId:'sub-sc10',appId:'node-a3',ocId:'node-cist',reversed:true, q:"I change parts of myself depending on who I am around."},
-  {id:'sc27',name:'Core Self',  code:'CIST',slot:'A3',layer:'Subconscious',col:'#534AB7',svgId:'node-sc11',subId:'sub-sc11',appId:'node-a3',ocId:'node-cist',reversed:true, q:"I sometimes feel unsure who the real me actually is."},
-  {id:'sc28',name:'Integrity',  code:'CIST',slot:'A4',layer:'Subconscious',col:'#534AB7',svgId:'node-sc12',subId:'sub-sc12',appId:'node-a4',ocId:'node-cist',reversed:true, q:"I occasionally behave in ways that conflict with what I believe is right."},
-  {id:'sc29',name:'Integrity',  code:'CIST',slot:'A4',layer:'Subconscious',col:'#534AB7',svgId:'node-sc13',subId:'sub-sc13',appId:'node-a4',ocId:'node-cist',reversed:true, q:"I sometimes compromise my values to avoid discomfort."},
-  {id:'sc30',name:'Logic',      code:'CIST',slot:'A5',layer:'Subconscious',col:'#534AB7',svgId:'node-sc14',subId:'sub-sc14',appId:'node-a5',ocId:'node-cist',reversed:true, q:"I can become emotionally attached to beliefs even when evidence challenges them."},
-  {id:'sc31',name:'Balance',    code:'YARC',slot:'A5',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc15',subId:'sub-sc15',appId:'node-a5',ocId:'node-yarc',reversed:true, q:"Negative emotions can stay with me long after situations are over."},
-  {id:'sc32',name:'Balance',    code:'YARC',slot:'A6',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc16',subId:'sub-sc16',appId:'node-a6',ocId:'node-yarc',reversed:true, q:"Stress can quickly overwhelm my thinking."},
-  {id:'sc33',name:'Connection', code:'YARC',slot:'A6',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc1', subId:'sub-sc1', appId:'node-a6',ocId:'node-yarc',reversed:true, q:"I often assume people misunderstand me."},
-  {id:'sc34',name:'Connection', code:'YARC',slot:'A7',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc2', subId:'sub-sc2', appId:'node-a7',ocId:'node-yarc',reversed:true, q:"I sometimes withdraw emotionally instead of expressing how I truly feel."},
-  {id:'sc35',name:'Purpose',    code:'YARC',slot:'A7',layer:'Subconscious',col:'#1D9E75',svgId:'node-sc3', subId:'sub-sc3', appId:'node-a7',ocId:'node-yarc',reversed:true, q:"I sometimes feel like I am moving through life without real direction."},
-  {id:'sc36',name:'Purpose',    code:'Øll', slot:'A7',layer:'Subconscious',col:'#A0426B',svgId:'node-sc4', subId:'sub-sc4', appId:'node-a7',ocId:'node-oll', reversed:true, q:"I often focus more on avoiding failure than pursuing meaning."},
-  {id:'sc37',name:'Pattern',    code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc5', subId:'sub-sc5', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I often repeat behaviours I later regret."},
-  {id:'sc38',name:'Pattern',    code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I fall back into habits I promised to change even when I recognise the cycle."},
-  {id:'sc39',name:'Logic',      code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc7', subId:'sub-sc7', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I sometimes defend beliefs more than I investigate them."},
-  {id:'sc40',name:'Awareness',  code:'Øll', slot:'A8',layer:'Subconscious',col:'#A0426B',svgId:'node-sc8', subId:'sub-sc8', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I tend to justify my behaviour instead of deeply examining it."},
-  // Q37–40: SUBCONSCIOUS OBSERVER CODE QUESTIONS (shadow OC gut-check, reversed)
-  {id:'oc5', name:'NARC',       code:'NARC',slot:'OC',layer:'Subconscious',col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:true, q:"My sense of self shifts significantly depending on the situation or who I am with."},
-  {id:'oc6', name:'CIST',       code:'CIST',slot:'OC',layer:'Subconscious',col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:true, q:"When things feel out of control, I struggle to regulate myself and can become overwhelmed quickly."},
-  {id:'oc7', name:'YARC',       code:'YARC',slot:'OC',layer:'Subconscious',col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:true, q:"I often give to others at the expense of myself, or withhold from others to protect myself."},
-  {id:'oc8', name:'Øll',        code:'Øll', slot:'OC',layer:'Subconscious',col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:true, q:"I find it difficult to sit with things being unresolved — I need certainty or I avoid the situation entirely."},
+  // ═══ PART 1 — CONSCIOUS (Q1–28) ═══════════════════════════════════════
+  // Q1–16: SOURCE CODES — outer triangle nodes
+  {id:'sc1', name:'Intention',  code:'NARC',slot:'A1', layer:'Conscious',   col:'#C4622D',svgId:'node-sc1', subId:'sub-sc1', appId:'node-a1',ocId:'node-narc',reversed:false,q:"I feel clear about what I genuinely want from life."},
+  {id:'sc2', name:'Intention',  code:'NARC',slot:'A1', layer:'Conscious',   col:'#C4622D',svgId:'node-sc2', subId:'sub-sc2', appId:'node-a1',ocId:'node-narc',reversed:false,q:"My goals reflect my personal values rather than outside expectations."},
+  {id:'sc3', name:'Presence',   code:'NARC',slot:'A2', layer:'Conscious',   col:'#C4622D',svgId:'node-sc3', subId:'sub-sc3', appId:'node-a2',ocId:'node-narc',reversed:false,q:"I am able to stay mentally present during important moments."},
+  {id:'sc4', name:'Presence',   code:'NARC',slot:'A2', layer:'Conscious',   col:'#C4622D',svgId:'node-sc4', subId:'sub-sc4', appId:'node-a2',ocId:'node-narc',reversed:false,q:"I notice my emotional state before reacting impulsively."},
+  {id:'sc5', name:'Core Self',  code:'CIST',slot:'A3', layer:'Conscious',   col:'#534AB7',svgId:'node-sc5', subId:'sub-sc5', appId:'node-a3',ocId:'node-cist',reversed:false,q:"I feel connected to who I truly am beneath social roles."},
+  {id:'sc6', name:'Core Self',  code:'CIST',slot:'A3', layer:'Conscious',   col:'#534AB7',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a3',ocId:'node-cist',reversed:false,q:"I rarely feel the need to become someone different to gain approval."},
+  {id:'sc7', name:'Integrity',  code:'CIST',slot:'A4', layer:'Conscious',   col:'#534AB7',svgId:'node-sc7', subId:'sub-sc7', appId:'node-a4',ocId:'node-cist',reversed:false,q:"My actions usually align with the values I claim to believe in."},
+  {id:'sc8', name:'Integrity',  code:'CIST',slot:'A4', layer:'Conscious',   col:'#534AB7',svgId:'node-sc8', subId:'sub-sc8', appId:'node-a4',ocId:'node-cist',reversed:false,q:"I remain honest with myself even when the truth feels uncomfortable."},
+  {id:'sc9', name:'Balance',    code:'YARC',slot:'A5', layer:'Conscious',   col:'#1D9E75',svgId:'node-sc9', subId:'sub-sc9', appId:'node-a5',ocId:'node-yarc',reversed:false,q:"I can usually remain emotionally stable during stressful situations."},
+  {id:'sc10',name:'Balance',    code:'YARC',slot:'A5', layer:'Conscious',   col:'#1D9E75',svgId:'node-sc10',subId:'sub-sc10',appId:'node-a5',ocId:'node-yarc',reversed:false,q:"I consider multiple perspectives before forming conclusions."},
+  {id:'sc11',name:'Connection', code:'YARC',slot:'A6', layer:'Conscious',   col:'#1D9E75',svgId:'node-sc11',subId:'sub-sc11',appId:'node-a6',ocId:'node-yarc',reversed:false,q:"I genuinely try to understand other people's perspectives."},
+  {id:'sc12',name:'Connection', code:'YARC',slot:'A6', layer:'Conscious',   col:'#1D9E75',svgId:'node-sc12',subId:'sub-sc12',appId:'node-a6',ocId:'node-yarc',reversed:false,q:"I value meaningful connection more than status or appearance."},
+  {id:'sc13',name:'Purpose',    code:'Øll', slot:'A7', layer:'Conscious',   col:'#A0426B',svgId:'node-sc13',subId:'sub-sc13',appId:'node-a7',ocId:'node-oll', reversed:false,q:"I feel my life has direction or meaning beyond short-term survival."},
+  {id:'sc14',name:'Purpose',    code:'Øll', slot:'A7', layer:'Conscious',   col:'#A0426B',svgId:'node-sc14',subId:'sub-sc14',appId:'node-a7',ocId:'node-oll', reversed:false,q:"I regularly think about my long-term purpose."},
+  {id:'sc15',name:'Pattern',    code:'Øll', slot:'A8', layer:'Conscious',   col:'#A0426B',svgId:'node-sc15',subId:'sub-sc15',appId:'node-a8',ocId:'node-oll', reversed:false,q:"I notice recurring patterns in my behaviour over time."},
+  {id:'sc16',name:'Pattern',    code:'Øll', slot:'A8', layer:'Conscious',   col:'#A0426B',svgId:'node-sc16',subId:'sub-sc16',appId:'node-a8',ocId:'node-oll', reversed:false,q:"I can identify cycles that repeatedly appear in my life."},
+  // Q17–24: APP QUESTIONS — ellipse nodes (integration of 2 SCs)
+  {id:'ap1', name:'A1',appNum:1, code:'NARC',slot:'APP',layer:'Conscious',  col:'#C4622D',svgId:'node-a1',  subId:'sub-node-a1', appId:'node-a1',ocId:'node-narc',reversed:false,q:"When I commit to something, I follow through consistently rather than losing momentum over time."},
+  {id:'ap2', name:'A2',appNum:2, code:'NARC',slot:'APP',layer:'Conscious',  col:'#C4622D',svgId:'node-a2',  subId:'sub-node-a2', appId:'node-a2',ocId:'node-narc',reversed:false,q:"I am generally aware of how my inner state is affecting my behaviour in real time."},
+  {id:'ap3', name:'A3',appNum:3, code:'CIST',slot:'APP',layer:'Conscious',  col:'#534AB7',svgId:'node-a3',  subId:'sub-node-a3', appId:'node-a3',ocId:'node-cist',reversed:false,q:"My behaviour tends to be consistent whether I am being observed or not."},
+  {id:'ap4', name:'A4',appNum:4, code:'CIST',slot:'APP',layer:'Conscious',  col:'#534AB7',svgId:'node-a4',  subId:'sub-node-a4', appId:'node-a4',ocId:'node-cist',reversed:false,q:"When I make decisions, I can usually explain my reasoning clearly and honestly."},
+  {id:'ap5', name:'A5',appNum:5, code:'YARC',slot:'APP',layer:'Conscious',  col:'#1D9E75',svgId:'node-a5',  subId:'sub-node-a5', appId:'node-a5',ocId:'node-yarc',reversed:false,q:"I can think clearly and remain grounded even when situations are emotionally charged."},
+  {id:'ap6', name:'A6',appNum:6, code:'YARC',slot:'APP',layer:'Conscious',  col:'#1D9E75',svgId:'node-a6',  subId:'sub-node-a6', appId:'node-a6',ocId:'node-yarc',reversed:false,q:"I am able to be genuinely present with others without losing my own emotional stability."},
+  {id:'ap7', name:'A7',appNum:7, code:'Øll', slot:'APP',layer:'Conscious',  col:'#A0426B',svgId:'node-a7',  subId:'sub-node-a7', appId:'node-a7',ocId:'node-oll', reversed:false,q:"The way I show up for others reflects something deeper than habit or obligation."},
+  {id:'ap8', name:'A8',appNum:8, code:'Øll', slot:'APP',layer:'Conscious',  col:'#A0426B',svgId:'node-a8',  subId:'sub-node-a8', appId:'node-a8',ocId:'node-oll', reversed:false,q:"I am actively breaking cycles that no longer serve me rather than just recognising them."},
+  // Q25–28: OBSERVER CODE QUESTIONS — diamond nodes (gut-check)
+  {id:'oc1', name:'NARC',       code:'NARC',slot:'OC', layer:'Conscious',   col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:false,q:"I have a clear and stable sense of who I am that doesn't depend on how others see me."},
+  {id:'oc2', name:'CIST',       code:'CIST',slot:'OC', layer:'Conscious',   col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:false,q:"I am able to manage my emotional responses and maintain stability even under pressure."},
+  {id:'oc3', name:'YARC',       code:'YARC',slot:'OC', layer:'Conscious',   col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:false,q:"I genuinely invest in the wellbeing of others without losing sight of my own needs."},
+  {id:'oc4', name:'Øll',        code:'Øll', slot:'OC', layer:'Conscious',   col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:false,q:"I am able to sit with uncertainty and discomfort without needing to immediately resolve or escape it."},
+
+  // ═══ PART 2 — SUBCONSCIOUS (Q29–56) ════════════════════════════════════
+  // Q29–44: SUBCONSCIOUS SOURCE CODES (reversed)
+  {id:'sc17',name:'Intention',  code:'NARC',slot:'A1', layer:'Subconscious',col:'#C4622D',svgId:'node-sc1', subId:'sub-sc1', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I often pursue things because they are expected of me rather than because I truly want them."},
+  {id:'sc18',name:'Intention',  code:'NARC',slot:'A1', layer:'Subconscious',col:'#C4622D',svgId:'node-sc2', subId:'sub-sc2', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I sometimes feel disconnected from the goals I spend most of my time chasing."},
+  {id:'sc19',name:'Presence',   code:'NARC',slot:'A2', layer:'Subconscious',col:'#C4622D',svgId:'node-sc3', subId:'sub-sc3', appId:'node-a2',ocId:'node-narc',reversed:true, q:"My mind frequently drifts away from the present moment."},
+  {id:'sc20',name:'Presence',   code:'NARC',slot:'A2', layer:'Subconscious',col:'#C4622D',svgId:'node-sc4', subId:'sub-sc4', appId:'node-a2',ocId:'node-narc',reversed:true, q:"I often react emotionally before fully understanding a situation."},
+  {id:'sc21',name:'Core Self',  code:'CIST',slot:'A3', layer:'Subconscious',col:'#534AB7',svgId:'node-sc5', subId:'sub-sc5', appId:'node-a3',ocId:'node-cist',reversed:true, q:"I change parts of myself depending on who I am around."},
+  {id:'sc22',name:'Core Self',  code:'CIST',slot:'A3', layer:'Subconscious',col:'#534AB7',svgId:'node-sc6', subId:'sub-sc6', appId:'node-a3',ocId:'node-cist',reversed:true, q:"I sometimes feel unsure who the real me actually is."},
+  {id:'sc23',name:'Integrity',  code:'CIST',slot:'A4', layer:'Subconscious',col:'#534AB7',svgId:'node-sc7', subId:'sub-sc7', appId:'node-a4',ocId:'node-cist',reversed:true, q:"I occasionally behave in ways that conflict with what I believe is right."},
+  {id:'sc24',name:'Integrity',  code:'CIST',slot:'A4', layer:'Subconscious',col:'#534AB7',svgId:'node-sc8', subId:'sub-sc8', appId:'node-a4',ocId:'node-cist',reversed:true, q:"I sometimes compromise my values to avoid discomfort."},
+  {id:'sc25',name:'Balance',    code:'YARC',slot:'A5', layer:'Subconscious',col:'#1D9E75',svgId:'node-sc9', subId:'sub-sc9', appId:'node-a5',ocId:'node-yarc',reversed:true, q:"Negative emotions can stay with me long after situations are over."},
+  {id:'sc26',name:'Balance',    code:'YARC',slot:'A5', layer:'Subconscious',col:'#1D9E75',svgId:'node-sc10',subId:'sub-sc10',appId:'node-a5',ocId:'node-yarc',reversed:true, q:"Stress can quickly overwhelm my thinking."},
+  {id:'sc27',name:'Connection', code:'YARC',slot:'A6', layer:'Subconscious',col:'#1D9E75',svgId:'node-sc11',subId:'sub-sc11',appId:'node-a6',ocId:'node-yarc',reversed:true, q:"I often assume people misunderstand me."},
+  {id:'sc28',name:'Connection', code:'YARC',slot:'A6', layer:'Subconscious',col:'#1D9E75',svgId:'node-sc12',subId:'sub-sc12',appId:'node-a6',ocId:'node-yarc',reversed:true, q:"I sometimes withdraw emotionally instead of expressing how I truly feel."},
+  {id:'sc29',name:'Purpose',    code:'Øll', slot:'A7', layer:'Subconscious',col:'#A0426B',svgId:'node-sc13',subId:'sub-sc13',appId:'node-a7',ocId:'node-oll', reversed:true, q:"I sometimes feel like I am moving through life without real direction."},
+  {id:'sc30',name:'Purpose',    code:'Øll', slot:'A7', layer:'Subconscious',col:'#A0426B',svgId:'node-sc14',subId:'sub-sc14',appId:'node-a7',ocId:'node-oll', reversed:true, q:"I often focus more on avoiding failure than pursuing meaning."},
+  {id:'sc31',name:'Pattern',    code:'Øll', slot:'A8', layer:'Subconscious',col:'#A0426B',svgId:'node-sc15',subId:'sub-sc15',appId:'node-a8',ocId:'node-oll', reversed:true, q:"I often repeat behaviours I later regret."},
+  {id:'sc32',name:'Pattern',    code:'Øll', slot:'A8', layer:'Subconscious',col:'#A0426B',svgId:'node-sc16',subId:'sub-sc16',appId:'node-a8',ocId:'node-oll', reversed:true, q:"I fall back into habits I promised to change even when I recognise the cycle."},
+  // Q45–52: SUBCONSCIOUS APP QUESTIONS (reversed)
+  {id:'ap9', name:'A1',appNum:1, code:'NARC',slot:'APP',layer:'Subconscious',col:'#C4622D',svgId:'node-a1', subId:'sub-node-a1', appId:'node-a1',ocId:'node-narc',reversed:true, q:"I often start things with energy but lose momentum before they mean anything."},
+  {id:'ap10',name:'A2',appNum:2, code:'NARC',slot:'APP',layer:'Subconscious',col:'#C4622D',svgId:'node-a2', subId:'sub-node-a2', appId:'node-a2',ocId:'node-narc',reversed:true, q:"I frequently notice my mood has affected a situation only after the damage is done."},
+  {id:'ap11',name:'A3',appNum:3, code:'CIST',slot:'APP',layer:'Subconscious',col:'#534AB7',svgId:'node-a3', subId:'sub-node-a3', appId:'node-a3',ocId:'node-cist',reversed:true, q:"I behave differently when no one is watching — my private self and public self don't always match."},
+  {id:'ap12',name:'A4',appNum:4, code:'CIST',slot:'APP',layer:'Subconscious',col:'#534AB7',svgId:'node-a4', subId:'sub-node-a4', appId:'node-a4',ocId:'node-cist',reversed:true, q:"I sometimes make decisions I can't fully justify, then construct reasons afterwards."},
+  {id:'ap13',name:'A5',appNum:5, code:'YARC',slot:'APP',layer:'Subconscious',col:'#1D9E75',svgId:'node-a5', subId:'sub-node-a5', appId:'node-a5',ocId:'node-yarc',reversed:true, q:"When emotions run high I find it hard to think straight or see the situation clearly."},
+  {id:'ap14',name:'A6',appNum:6, code:'YARC',slot:'APP',layer:'Subconscious',col:'#1D9E75',svgId:'node-a6', subId:'sub-node-a6', appId:'node-a6',ocId:'node-yarc',reversed:true, q:"Being around certain people drains me or pulls me off centre in ways I struggle to control."},
+  {id:'ap15',name:'A7',appNum:7, code:'Øll', slot:'APP',layer:'Subconscious',col:'#A0426B',svgId:'node-a7', subId:'sub-node-a7', appId:'node-a7',ocId:'node-oll', reversed:true, q:"A lot of what I do for others comes from obligation, guilt, or fear of how I'll be perceived."},
+  {id:'ap16',name:'A8',appNum:8, code:'Øll', slot:'APP',layer:'Subconscious',col:'#A0426B',svgId:'node-a8', subId:'sub-node-a8', appId:'node-a8',ocId:'node-oll', reversed:true, q:"I can see the cycles clearly but keep returning to them anyway."},
+  // Q53–56: SUBCONSCIOUS OBSERVER CODE QUESTIONS (reversed)
+  {id:'oc5', name:'NARC',       code:'NARC',slot:'OC', layer:'Subconscious',col:'#C4622D',svgId:'node-narc',subId:'sub-node-narc',appId:'node-narc',ocId:'node-narc',reversed:true, q:"My sense of self shifts significantly depending on the situation or who I am with."},
+  {id:'oc6', name:'CIST',       code:'CIST',slot:'OC', layer:'Subconscious',col:'#534AB7',svgId:'node-cist',subId:'sub-node-cist',appId:'node-cist',ocId:'node-cist',reversed:true, q:"When things feel out of control, I struggle to regulate myself and can become overwhelmed quickly."},
+  {id:'oc7', name:'YARC',       code:'YARC',slot:'OC', layer:'Subconscious',col:'#1D9E75',svgId:'node-yarc',subId:'sub-node-yarc',appId:'node-yarc',ocId:'node-yarc',reversed:true, q:"I often give to others at the expense of myself, or withhold from others to protect myself."},
+  {id:'oc8', name:'Øll',        code:'Øll', slot:'OC', layer:'Subconscious',col:'#A0426B',svgId:'node-oll', subId:'sub-node-oll', appId:'node-oll', ocId:'node-oll', reversed:true, q:"I find it difficult to sit with things being unresolved — I need certainty or I avoid the situation entirely."},
 ];
 
 const ANSWERS=["Strongly disagree","Disagree","Neutral / unsure","Agree","Strongly agree"];
@@ -489,13 +502,13 @@ function showStep(step){
   if(n.layer==='Subconscious'){badge.textContent='Part 2 — Subconscious layer';badge.style.color='var(--narc)';}
   else{badge.textContent='Part 1 — Conscious layer';badge.style.color='var(--cist)';}
 
-  // Answer order ALWAYS identical — reversal is invisible, handled in scoring engine only
+  // Answer order always identical — reversal invisible, scoring engine only
   const cur=scores[n.id];
   const isLast=step===NODES.length;
-  const isFlip=step===24;
+  const isFlip=step===28;
 
   const answersHtml=ANSWERS.map((ans,di)=>{
-    const raw=di+1; // always 1-5 in display order
+    const raw=di+1;
     const sel=cur===raw;
     return `<button class="q-answer-btn${sel?' selected':''}" onclick="selectAnswer('${n.id}',${raw},this,'${n.col}')" data-raw="${raw}" style="${sel?`border-color:${n.col};background:${n.col}18`:''}">
       <span class="q-answer-num" style="${sel?`background:${n.col};color:#fff`:''}">${raw}</span>
@@ -505,8 +518,8 @@ function showStep(step){
 
   const nextFn=isLast?'finishAssessment()':isFlip?`flipDiagram(${step+1})`:`goToQ(${step+1})`;
   const nextLbl=isLast?'Complete →':isFlip?'Continue to Part 2 →':'Next →';
-  const slotLabel=n.slot==='OC'?`${n.code} · Observer Code`:` ${n.code} · ${n.slot}`;
 
+  const slotLabel=n.slot==='OC'?`${n.code} · Observer Code`:n.slot==='APP'?`${n.code} · App ${n.appNum||''}`:`${n.code} · ${n.slot}`;
   document.getElementById('q-card-wrap').innerHTML=`
     <div class="q-step active">
       <div class="q-meta-row">
@@ -534,8 +547,7 @@ function activateNode(n){
   const isSub=n.layer==='Subconscious';
   const diagId=isSub?'sub-diagram':'main-diagram';
   const svg=document.getElementById(diagId);
-  // OC questions pulse the diamond directly
-  const nodeId=n.slot==='OC'?(isSub?n.subId:n.svgId):(isSub?n.subId:n.svgId);
+  const nodeId=isSub?n.subId:n.svgId;
   const connId=isSub?'sub-con-line':'con-line';
 
   // Remove previous pulse
