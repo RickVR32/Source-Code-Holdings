@@ -156,6 +156,9 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
     <div style="font-size:0.65rem;opacity:0.5;text-align:center;margin-top:10px">🔒 Secured by Stripe</div>
   </div>
   <button class="intro-start-btn" onclick="handleIntroCTA()">Continue →</button>
+  <div style="text-align:center;margin-top:12px">
+    <button onclick="devBypass()" style="background:none;border:1px solid var(--line);color:var(--muted);padding:8px 20px;border-radius:999px;font-size:0.7rem;cursor:pointer">Skip payment (dev) →</button>
+  </div>
 </div>
 </div>
 
@@ -201,6 +204,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
         <line x1="246" y1="367.6" x2="155.5" y2="392.8" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
         <line x1="246" y1="367.6" x2="198.4" y2="286.6" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
         <!-- LIVE CONNECTOR LINE — drawn before nodes so nodes render on top -->
+        <line id="con-line" x1="450" y1="450" x2="450" y2="450" stroke="none" stroke-width="1.2" stroke-dasharray="5 5" opacity="0" style="transition:opacity 0.3s"/>
         <!-- centre -->
         <circle cx="450" cy="450" r="52" fill="white" stroke="#B0ABA0" stroke-width="1.8"/>
         <circle cx="450" cy="450" r="39" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.4"/>
@@ -255,6 +259,7 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
         <line x1="450" y1="598" x2="367.6" y2="654" stroke="#1D9E75" stroke-width="1.2" opacity="0.35"/><line x1="367.6" y1="654" x2="392.8" y2="744.5" stroke="#1D9E75" stroke-width="1" opacity="0.28"/><line x1="367.6" y1="654" x2="286.6" y2="701.6" stroke="#1D9E75" stroke-width="1" opacity="0.28"/>
         <line x1="302" y1="450" x2="246" y2="532.4" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/><line x1="246" y1="532.4" x2="198.4" y2="613.4" stroke="#A0426B" stroke-width="1" opacity="0.28"/><line x1="246" y1="532.4" x2="155.5" y2="507.2" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
         <line x1="302" y1="450" x2="246" y2="367.6" stroke="#A0426B" stroke-width="1.2" opacity="0.35"/><line x1="246" y1="367.6" x2="155.5" y2="392.8" stroke="#A0426B" stroke-width="1" opacity="0.28"/><line x1="246" y1="367.6" x2="198.4" y2="286.6" stroke="#A0426B" stroke-width="1" opacity="0.28"/>
+        <line id="sub-con-line" x1="450" y1="450" x2="450" y2="450" stroke="none" stroke-width="1.2" stroke-dasharray="5 5" opacity="0"/>
         <circle cx="450" cy="450" r="52" fill="white" stroke="#B0ABA0" stroke-width="1.8"/>
         <circle cx="450" cy="450" r="39" fill="none" stroke="#D4D0C8" stroke-width="0.5" opacity="0.4"/>
         <circle cx="450" cy="450" r="3" fill="var(--muted)" opacity="0.4"/>
@@ -350,6 +355,14 @@ nav{padding:18px 0;display:flex;align-items:center;justify-content:space-between
 <script src="https://js.stripe.com/v3/"></script>
 <script>
 // ═══════════════════════════════════════
+// NODE DEFINITIONS — exact SVG positions for connector line
+// ═══════════════════════════════════════
+const SC_POSITIONS = {
+  'node-sc1':{x:287,y:196},'node-sc2':{x:393,y:152},'node-sc3':{x:507,y:152},'node-sc4':{x:613,y:196},
+  'node-sc5':{x:701,y:287},'node-sc6':{x:744,y:393},'node-sc7':{x:744,y:507},'node-sc8':{x:701,y:613},
+  'node-sc9':{x:613,y:701},'node-sc10':{x:507,y:744},'node-sc11':{x:393,y:744},'node-sc12':{x:287,y:701},
+  'node-sc13':{x:198,y:613},'node-sc14':{x:155,y:507},'node-sc15':{x:155,y:393},'node-sc16':{x:198,y:287}
+};
 
 // ═══════════════════════════════════════
 // 40-NODE QUESTION SET
@@ -445,6 +458,8 @@ function startAssessment(){
       const el=svg.querySelector('#'+id);if(el)el.style.opacity='0.12';
     });
   });
+  // Reset connector lines
+  ['con-line','sub-con-line'].forEach(id=>{const el=document.getElementById(id);if(el){el.setAttribute('stroke','none');el.setAttribute('opacity','0');}});
   document.getElementById('diag-layer-badge').textContent='Part 1 — Conscious layer';
   document.getElementById('diag-layer-badge').style.color='var(--cist)';
   document.getElementById('diag-svg-wrap').classList.remove('show-sub');
@@ -507,12 +522,13 @@ function showStep(step){
 function goToQ(s){showStep(s);}
 function finishAssessment(){showStep(41);}
 
-// ── NODE ACTIVATION — pulse only ───────────────────────────────
+// ── NODE ACTIVATION — pulse + connector line ───────────────────────────────
 function activateNode(n){
   const isSub=n.layer==='Subconscious';
   const diagId=isSub?'sub-diagram':'main-diagram';
   const svg=document.getElementById(diagId);
   const nodeId=isSub?n.subId:n.svgId;
+  const connId=isSub?'sub-con-line':'con-line';
 
   // Remove previous pulse
   if(prevPulseEl){prevPulseEl.classList.remove('node-active-pulse');}
@@ -525,6 +541,13 @@ function activateNode(n){
     prevPulseEl=el;
   }
 
+  // Draw connector line from centre (450,450) to node position
+  const pos=SC_POSITIONS[n.svgId];
+  const connector=document.getElementById(connId);
+  if(connector&&pos){
+    connector.setAttribute('x1','450');connector.setAttribute('y1','450');
+    connector.setAttribute('x2',String(pos.x));connector.setAttribute('y2',String(pos.y));
+    connector.setAttribute('stroke',n.col);connector.setAttribute('opacity','0.6');
   }
 
   // Brighten OC diamond
@@ -604,6 +627,8 @@ function updateOCBars(){
 // ── DIAGRAM FLIP ───────────────────────────────────────────────────────────
 function flipDiagram(nextStep){
   const wrap=document.getElementById('diag-svg-wrap');
+  const conn=document.getElementById('con-line');
+  if(conn){conn.setAttribute('stroke','none');conn.setAttribute('opacity','0');}
   if(prevPulseEl){prevPulseEl.classList.remove('node-active-pulse');prevPulseEl=null;}
   wrap.classList.add('diag-flip-out');
   setTimeout(()=>{
@@ -623,6 +648,7 @@ function flipDiagram(nextStep){
 // ── AWARENESS REVEAL ───────────────────────────────────────────────────────
 function showReveal(){
   document.getElementById('q-card-wrap').style.display='none';
+  ['con-line','sub-con-line'].forEach(id=>{const el=document.getElementById(id);if(el){el.setAttribute('stroke','none');el.setAttribute('opacity','0');}});
   if(prevPulseEl){prevPulseEl.classList.remove('node-active-pulse');prevPulseEl=null;}
   const r=calcScores();
   const lvl=getLevel(r.balance_scale);
@@ -730,6 +756,7 @@ function renderResults(r){
   const live=document.getElementById('main-diagram');
   const result=document.getElementById('result-svg');
   result.innerHTML=live.innerHTML;
+  const connClone=result.querySelector('#con-line');if(connClone)connClone.setAttribute('opacity','0');
   NODES.filter(n=>n.layer==='Conscious').forEach(n=>{
     const e=eff(n);const el=result.querySelector('#'+n.svgId);
     if(el)el.style.opacity=e!==null?(0.2+(e/5)*0.75).toFixed(2):'0.05';
@@ -781,13 +808,6 @@ function retake(){scores={};lastResult=null;showScreen('screen-intro');}
 function handleIntroCTA(){
   const name=document.getElementById('obs-name')?.value.trim();
   if(!name){document.getElementById('obs-name').focus();return;}
-  // Silent dev bypass — not visible in UI
-  if(name.toLowerCase()==='ric@sch'){
-    document.getElementById('obs-name').value='Dev';
-    updateObsNode();
-    startAssessment();
-    return;
-  }
   updateObsNode();
   const wrap=document.getElementById('payment-wrap');
   if(wrap.style.display!=='block'){wrap.style.display='block';initStripe();}else{handlePayment();}
@@ -797,3 +817,12 @@ async function handlePayment(){
   try{const{error}=await stripe.createPaymentMethod({type:'card',card:cardElement});if(error){document.getElementById('card-errors').textContent=error.message;return;}startAssessment();}
   catch(e){startAssessment();}
 }
+function devBypass(){const n=document.getElementById('obs-name');if(n&&!n.value)n.value='Test User';updateObsNode();startAssessment();}
+
+// ── STRIPE ─────────────────────────────────────────────────────────────────
+let stripe,elements,cardElement;
+try{stripe=Stripe('pk_test_51TRfEu0RcHD6ncQbifdhyCgjzZ2cgIwGu2AqcsDkqutDHQYIqO37aWGd470liIePymdKF4UqrGwennn4CXLyCu9F00ZnkNTt4D');elements=stripe.elements();}catch(e){}
+function initStripe(){if(cardElement||!elements)return;cardElement=elements.create('card',{style:{base:{fontFamily:"'Cormorant',serif",fontSize:'16px',color:'rgba(242,241,238,0.9)'}}});const m=document.getElementById('card-element');if(m)cardElement.mount('#card-element');}
+</script>
+</body>
+</html>
