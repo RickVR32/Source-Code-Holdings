@@ -6,9 +6,12 @@
 <meta name="description" content="Private infrastructure holding entity." />
 <meta name="robots" content="noindex, nofollow" />
 <title>Source Code Holdings</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+
 <style>
 
 :root{
@@ -33,8 +36,15 @@
   --grid-line:rgba(255,255,255,0.022);
 }
 
-*{ margin:0; padding:0; box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
 
 body{
   background-color:var(--bg);
@@ -55,62 +65,128 @@ body{
 }
 
 /* DARK TOGGLE */
+
 .dark-toggle{
   position:fixed;
-  top:20px; right:24px;
+  top:20px;
+  right:24px;
   z-index:100;
-  display:flex; align-items:center; gap:6px;
+  display:flex;
+  align-items:center;
+  gap:6px;
   padding:6px 14px;
   background:var(--panel);
   border:1px solid var(--line-strong);
   border-radius:999px;
   cursor:pointer;
   font-family:'Geist Mono', monospace;
-  font-size:0.66rem; font-weight:300;
-  letter-spacing:0.1em; text-transform:uppercase;
+  font-size:0.66rem;
+  font-weight:300;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
   color:var(--muted);
   transition:all .2s;
 }
-.dark-toggle:hover{ color:var(--text); border-color:var(--text); }
 
-/* HERO — preserved exactly */
+.dark-toggle:hover{
+  color:var(--text);
+  border-color:var(--text);
+}
+
+/* HERO */
+
 .hero{
   min-height:100vh;
-  display:flex; flex-direction:column;
-  justify-content:center; align-items:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
   padding:60px 0 100px;
 }
-.hero-logo{ margin-bottom:34px; }
-.hero-logo img{ width:140px; height:auto; display:block; margin:auto; opacity:.92; }
-.hero-name{
-  font-family:'Cormorant', serif; font-weight:300;
-  font-size:clamp(1.8rem,4vw,2.6rem);
-  letter-spacing:0.34em; text-transform:uppercase;
-}
-.hero-divider{ width:34px; height:1px; background:var(--line-strong); margin:30px auto; }
-.hero-copy{ max-width:600px; font-size:0.82rem; line-height:2; color:var(--muted); letter-spacing:0.02em; }
-.hero-tag{ margin-top:48px; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--muted); opacity:.55; }
 
-/* STATEMENT — preserved exactly */
-.section{ padding:0 0 120px; }
+.hero-logo{
+  margin-bottom:34px;
+}
+
+.hero-logo img{
+  width:140px;
+  height:auto;
+  display:block;
+  margin:auto;
+  opacity:.92;
+}
+
+.hero-name{
+  font-family:'Cormorant', serif;
+  font-weight:300;
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  letter-spacing:0.34em;
+  text-transform:uppercase;
+}
+
+.hero-divider{
+  width:34px;
+  height:1px;
+  background:var(--line-strong);
+  margin:30px auto;
+}
+
+.hero-copy{
+  max-width:600px;
+  font-size:0.82rem;
+  line-height:2;
+  color:var(--muted);
+  letter-spacing:0.02em;
+}
+
+.hero-tag{
+  margin-top:48px;
+  font-size:0.68rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--muted);
+  opacity:.55;
+}
+
+/* STATEMENT */
+
+.section{
+  padding:0 0 120px;
+}
+
 .statement{
-  max-width:760px; margin:auto;
+  max-width:760px;
+  margin:auto;
   background:rgba(255,255,255,0.28);
   border:1px solid var(--line);
   border-radius:24px;
   padding:56px 54px;
   backdrop-filter:blur(8px);
 }
-[data-theme="dark"] .statement{ background:rgba(255,255,255,0.02); }
-.statement-line{
-  font-family:'Cormorant', serif; font-style:italic; font-weight:300;
-  font-size:clamp(1.5rem,3vw,2.2rem);
-  line-height:1.3; margin-bottom:28px;
-}
-.statement-copy{ font-size:0.8rem; line-height:2; color:var(--muted); max-width:560px; }
 
-/* ── IP PORTFOLIO ── */
+[data-theme="dark"] .statement{
+  background:rgba(255,255,255,0.02);
+}
+
+.statement-line{
+  font-family:'Cormorant', serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.5rem,3vw,2.2rem);
+  line-height:1.3;
+  margin-bottom:28px;
+}
+
+.statement-copy{
+  font-size:0.8rem;
+  line-height:2;
+  color:var(--muted);
+  max-width:560px;
+}
+
+/* IP SECTION */
+
 .ip-section{
   padding:0 0 120px;
 }
@@ -149,7 +225,8 @@ body{
   max-width:520px;
 }
 
-/* Framework row */
+/* FRAMEWORK */
+
 .framework-row{
   max-width:760px;
   margin:0 auto 48px;
@@ -167,7 +244,9 @@ body{
   padding:28px 26px;
 }
 
-[data-theme="dark"] .framework-cell{ background:rgba(255,255,255,0.02); }
+[data-theme="dark"] .framework-cell{
+  background:rgba(255,255,255,0.02);
+}
 
 .framework-cell-label{
   font-size:0.58rem;
@@ -191,7 +270,8 @@ body{
   line-height:1.8;
 }
 
-/* Blueprint devices */
+/* BLUEPRINTS */
+
 .blueprints-label{
   font-size:0.58rem;
   letter-spacing:0.24em;
@@ -224,9 +304,17 @@ body{
   display:block;
 }
 
-[data-theme="dark"] .blueprint-card{ background:rgba(255,255,255,0.02); }
-.blueprint-card:hover{ background:var(--bg-soft); }
-[data-theme="dark"] .blueprint-card:hover{ background:rgba(255,255,255,0.05); }
+[data-theme="dark"] .blueprint-card{
+  background:rgba(255,255,255,0.02);
+}
+
+.blueprint-card:hover{
+  background:var(--bg-soft);
+}
+
+[data-theme="dark"] .blueprint-card:hover{
+  background:rgba(255,255,255,0.05);
+}
 
 .blueprint-img{
   aspect-ratio:1;
@@ -275,7 +363,8 @@ body{
   opacity:0.6;
 }
 
-/* NDA note */
+/* NDA NOTE */
+
 .nda-note{
   max-width:760px;
   margin:20px auto 0;
@@ -289,41 +378,49 @@ body{
   opacity:0.75;
 }
 
-/* CONTACT — preserved exactly */
-.contact{ padding-bottom:120px; }
+/* CONTACT */
+
+.contact{
+  padding-bottom:120px;
+}
+
 .contact-box{
-  max-width:760px; margin:auto;
+  max-width:760px;
+  margin:auto;
   padding-top:42px;
   border-top:1px solid var(--line);
 }
+
 .contact-head{
-  display:flex; justify-content:space-between; align-items:baseline;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
   margin-bottom:24px;
 }
-.contact-head h2{ font-family:'Cormorant', serif; font-weight:300; font-size:1.5rem; letter-spacing:0.04em; }
-.contact-head span{ font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
-.contact-copy{ max-width:520px; font-size:0.8rem; line-height:1.9; color:var(--muted); margin-bottom:34px; }
+
+.contact-head h2{
+  font-family:'Cormorant', serif;
+  font-weight:300;
+  font-size:1.5rem;
+  letter-spacing:0.04em;
+}
+
+.contact-head span{
+  font-size:0.65rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.contact-copy{
+  max-width:520px;
+  font-size:0.8rem;
+  line-height:1.9;
+  color:var(--muted);
+  margin-bottom:34px;
+}
+
 .contact-link{
-  display:inline-flex; align-items:center; gap:10px;
-  text-decoration:none;
-  border:1px solid var(--line-strong);
-  border-radius:999px;
-  padding:10px 22px;
-  color:var(--muted);
-  font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
-  transition:all .2s;
-}
-.contact-link:hover{ color:var(--text); border-color:var(--text); }
-
-/* ENQUIRY FORM */
-.enquiry-wrap{
-  max-width:760px;
-  margin:32px auto 0;
-  padding-top:32px;
-  border-top:1px solid var(--line);
-}
-
-.enquiry-toggle{
   display:inline-flex;
   align-items:center;
   gap:10px;
@@ -336,114 +433,57 @@ body{
   letter-spacing:0.16em;
   text-transform:uppercase;
   transition:all .2s;
-  cursor:pointer;
-  background:none;
-  font-family:'Geist Mono', monospace;
-  font-weight:300;
-  margin-bottom:28px;
-}
-.enquiry-toggle:hover{ color:var(--text); border-color:var(--text); }
-
-.enquiry-form{
-  display:none;
-  flex-direction:column;
-  gap:14px;
 }
 
-.enquiry-form.open{ display:flex; }
-
-.enq-field{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.enq-field label{
-  font-size:0.6rem;
-  letter-spacing:0.16em;
-  text-transform:uppercase;
-  color:var(--muted);
-  opacity:0.8;
-}
-
-.enq-field input,
-.enq-field textarea,
-.enq-field select{
-  background:var(--panel);
-  border:1px solid var(--line-strong);
+.contact-link:hover{
   color:var(--text);
-  padding:11px 14px;
-  font-family:'Geist Mono', monospace;
-  font-size:0.75rem;
-  font-weight:300;
-  border-radius:10px;
-  outline:none;
-  transition:border-color 0.2s;
-  width:100%;
+  border-color:var(--text);
 }
-
-.enq-field textarea{ min-height:110px; resize:vertical; line-height:1.7; }
-.enq-field input::placeholder, .enq-field textarea::placeholder{ color:var(--muted); opacity:0.5; }
-.enq-field input:focus, .enq-field textarea:focus, .enq-field select:focus{ border-color:var(--text); }
-.enq-field select option{ background:var(--panel); }
-
-.enq-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-
-.enq-submit{
-  align-self:flex-start;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  border:1px solid var(--line-strong);
-  border-radius:999px;
-  padding:10px 22px;
-  color:var(--muted);
-  font-size:0.68rem;
-  letter-spacing:0.16em;
-  text-transform:uppercase;
-  transition:all .2s;
-  cursor:pointer;
-  background:none;
-  font-family:'Geist Mono', monospace;
-  font-weight:300;
-}
-.enq-submit:hover{ color:var(--text); border-color:var(--text); }
-.enq-submit:disabled{ opacity:0.35; cursor:not-allowed; }
-
-.enq-success{
-  display:none;
-  padding:22px 24px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  font-size:0.78rem;
-  color:var(--muted);
-  line-height:1.85;
-}
-.enq-success.visible{ display:block; }
 
 /* FOOTER */
+
 footer{
   padding:34px 0;
   border-top:1px solid var(--line);
   text-align:center;
   font-size:0.64rem;
-  letter-spacing:0.16em; text-transform:uppercase;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
   color:var(--muted);
   opacity:.5;
 }
 
 @media(max-width:768px){
-  .hero-name{ letter-spacing:0.18em; line-height:1.3; }
-  .statement{ padding:36px 28px; }
-  .contact-head{ flex-direction:column; gap:10px; }
-  .framework-row{ grid-template-columns:1fr; }
-  .blueprints-grid{ grid-template-columns:repeat(2,1fr); }
-  .enq-row{ grid-template-columns:1fr; }
+
+  .hero-name{
+    letter-spacing:0.18em;
+    line-height:1.3;
+  }
+
+  .statement{
+    padding:36px 28px;
+  }
+
+  .contact-head{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .framework-row{
+    grid-template-columns:1fr;
+  }
+
+  .blueprints-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
 @media(max-width:480px){
-  .blueprints-grid{ grid-template-columns:repeat(2,1fr); }
+  .blueprints-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
+
 </style>
 </head>
 
@@ -456,26 +496,43 @@ footer{
 
 <div class="container">
 
-  <!-- HERO — preserved exactly -->
+  <!-- HERO -->
+
   <section class="hero">
+
     <div class="hero-logo">
       <img id="site-logo" src="sch_sygil.png" alt="Source Code Holdings" />
     </div>
-    <div class="hero-name">Source Code Holdings</div>
+
+    <div class="hero-name">
+      Source Code Holdings
+    </div>
+
     <div class="hero-divider"></div>
+
     <p class="hero-copy">
       A private holding company. We own the IP,
       the system architecture, and the infrastructure.
       Our operating companies do the work.
       We hold, protect, and licence what has been built.
     </p>
-    <div class="hero-tag">Private · Est. 2024</div>
+
+    <div class="hero-tag">
+      Private · Est. 2024
+    </div>
+
   </section>
 
-  <!-- STATEMENT — preserved exactly -->
+  <!-- STATEMENT -->
+
   <section class="section">
+
     <div class="statement">
-      <div class="statement-line">Structured for permanence.</div>
+
+      <div class="statement-line">
+        Structured for permanence.
+      </div>
+
       <div class="statement-copy">
         Source Code Holdings Ltd operates as a private holding entity
         overseeing proprietary systems, intellectual property,
@@ -484,153 +541,188 @@ footer{
         Public-facing operations are conducted independently
         through affiliated structures and external entities.
       </div>
+
     </div>
+
   </section>
 
-  <!-- IP PORTFOLIO -->
+  <!-- IP SECTION -->
+
   <section class="ip-section">
 
-    <p class="ip-label">Intellectual Property</p>
+    <p class="ip-label">
+      Intellectual Property
+    </p>
 
     <div class="ip-header">
-      <h2 class="ip-title">Proprietary framework.<br>Hardware in development.</h2>
+
+      <h2 class="ip-title">
+        Proprietary framework.<br>
+        Hardware in development.
+      </h2>
+
       <p class="ip-body">
-        Source Code Holdings owns a proprietary awareness architecture — a structured framework mapping human behavioural patterns across multiple layers. Software validation is live. Hardware deployment is in active development across four device blueprints.
+        Source Code Holdings owns a proprietary awareness architecture —
+        a structured framework mapping human behavioural patterns across
+        multiple layers. Software validation is live. Hardware deployment
+        is in active development across four device blueprints.
       </p>
+
     </div>
 
-    <!-- Framework -->
+    <!-- FRAMEWORK -->
+
     <div class="framework-row">
+
       <div class="framework-cell">
-        <p class="framework-cell-label">Framework</p>
-        <h3 class="framework-cell-title">Awareness Architecture</h3>
-        <p class="framework-cell-body">
-          A proprietary system mapping Observer Codes, Balance Scale (−5 → +5), and Drift — the gap between conscious and subconscious behavioural layers. Live and validated through software assessment tools.
+
+        <p class="framework-cell-label">
+          Framework
         </p>
+
+        <h3 class="framework-cell-title">
+          Awareness Architecture
+        </h3>
+
+        <p class="framework-cell-body">
+          A proprietary system mapping Observer Codes,
+          Balance Scale (−5 → +5), and Drift — the gap between
+          conscious and subconscious behavioural layers.
+          Live and validated through software assessment tools.
+        </p>
+
       </div>
+
       <div class="framework-cell">
-        <p class="framework-cell-label">Status</p>
-        <h3 class="framework-cell-title">Software live · Hardware prototype stage</h3>
-        <p class="framework-cell-body">
-          Assessment platform operational. Court-ready documentation in active professional use. Four hardware concepts in prototype development with full render and architecture documentation available under NDA.
+
+        <p class="framework-cell-label">
+          Status
         </p>
+
+        <h3 class="framework-cell-title">
+          Software live · Hardware prototype stage
+        </h3>
+
+        <p class="framework-cell-body">
+          Assessment platform operational.
+          Court-ready documentation in active professional use.
+          Four hardware concepts in prototype development
+          with full render and architecture documentation
+          available under NDA.
+        </p>
+
       </div>
+
     </div>
 
-    <!-- Blueprint devices -->
-    <p class="blueprints-label">Hardware Blueprints · In Development</p>
+    <!-- BLUEPRINTS -->
+
+    <p class="blueprints-label">
+      Hardware Blueprints · In Development
+    </p>
 
     <div class="blueprints-grid">
+
+      <!-- DEVICE 01 -->
+
       <a class="blueprint-card" href="dp1_proto.html" target="_blank">
+
         <div class="blueprint-img">
-          <img src="images/dp1_render__6_.png" alt="DP-1" />
+          <img src="dp1_render.png" alt="DP-1" />
         </div>
+
         <div class="blueprint-info">
           <p class="blueprint-code">Device 01</p>
           <p class="blueprint-name">DP-1</p>
           <p class="blueprint-status">Duality Processor</p>
         </div>
+
       </a>
+
+      <!-- DEVICE 02 -->
+
       <a class="blueprint-card" href="abfs_proto.html" target="_blank">
+
         <div class="blueprint-img">
-          <img src="images/abfs_render__3_.png" alt="ABFS" />
+          <img src="abfs_render.png" alt="ABFS" />
         </div>
+
         <div class="blueprint-info">
           <p class="blueprint-code">Device 02</p>
           <p class="blueprint-name">ABFS</p>
           <p class="blueprint-status">Ambient Field Sensor</p>
         </div>
+
       </a>
+
+      <!-- DEVICE 03 -->
+
       <a class="blueprint-card" href="nes_proto.html" target="_blank">
+
         <div class="blueprint-img">
-          <img src="images/dp1_render__13_.png" alt="NES" />
+          <img src="nes_render.png" alt="NES" />
         </div>
+
         <div class="blueprint-info">
           <p class="blueprint-code">Device 03</p>
           <p class="blueprint-name">NES</p>
           <p class="blueprint-status">Neural Engagement System</p>
         </div>
+
       </a>
+
+      <!-- DEVICE 04 -->
+
       <a class="blueprint-card" href="tce_proto.html" target="_blank">
+
         <div class="blueprint-img">
-          <img src="images/dp1_render__5_.png" alt="TCE" />
+          <img src="tce_render.png" alt="TCE" />
         </div>
+
         <div class="blueprint-info">
           <p class="blueprint-code">Device 04</p>
           <p class="blueprint-name">TCE</p>
           <p class="blueprint-status">Terminal Consciousness Engine</p>
         </div>
+
       </a>
+
     </div>
 
     <p class="nda-note">
-      Full architecture documentation, component specifications, and technical whitepapers are available to qualified partners, investors, and grant assessors under NDA. Use the enquiry form below.
+      Full architecture documentation, component specifications,
+      and technical whitepapers are available to qualified partners,
+      investors, and grant assessors under NDA.
     </p>
 
   </section>
 
-  <!-- CONTACT — preserved exactly, enquiry form added -->
+  <!-- CONTACT -->
+
   <section class="contact">
+
     <div class="contact-box">
+
       <div class="contact-head">
         <h2>External Communication</h2>
         <span>Restricted</span>
       </div>
+
       <p class="contact-copy">
         Source Code Holdings Ltd does not engage
         in public correspondence.
       </p>
+
       <a class="contact-link" href="https://umni-systems.com" target="_blank">
         Access Point →
       </a>
+
     </div>
 
-    <div class="enquiry-wrap">
-      <button class="enquiry-toggle" onclick="toggleEnquiry()">
-        IP &amp; Licensing Enquiry →
-      </button>
-
-      <form class="enquiry-form" id="enq-form" onsubmit="submitEnquiry(event)">
-        <div class="enq-row">
-          <div class="enq-field">
-            <label>Name / Organisation</label>
-            <input type="text" name="name" placeholder="Your name or company" required />
-          </div>
-          <div class="enq-field">
-            <label>Contact</label>
-            <input type="text" name="contact" placeholder="Email or Telegram" required />
-          </div>
-        </div>
-        <div class="enq-field">
-          <label>Enquiry type</label>
-          <select name="enquiry_type" required>
-            <option value="">Select...</option>
-            <option value="Investment">Investment</option>
-            <option value="IP Licensing">IP Licensing</option>
-            <option value="Grant / Funding">Grant / Funding</option>
-            <option value="Technical Whitepaper">Technical Whitepaper (NDA)</option>
-            <option value="Partnership">Partnership</option>
-          </select>
-        </div>
-        <div class="enq-field">
-          <label>Message</label>
-          <textarea name="message" placeholder="Outline your interest." required></textarea>
-        </div>
-        <input type="hidden" name="_subject" value="SCH — IP Enquiry" />
-        <input type="hidden" name="_replyto" value="info@sourcecodeholdings.org" />
-        <div style="position:absolute;left:-9999px;opacity:0;pointer-events:none;height:0">
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-        </div>
-        <button type="submit" class="enq-submit" id="enq-btn">Submit →</button>
-      </form>
-
-      <div class="enq-success" id="enq-success">
-        Received. All submissions are reviewed directly by Source Code Holdings. You will be contacted within 48 hours.
-      </div>
-    </div>
   </section>
 
-  <!-- FOOTER — preserved exactly -->
+  <!-- FOOTER -->
+
   <footer>
     Source Code Holdings Ltd · © 2024–2026
   </footer>
@@ -638,46 +730,33 @@ footer{
 </div>
 
 <script>
+
 let isDark = false;
 
 function toggleDark(){
+
   isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('dark-icon').textContent = isDark ? '○' : '◑';
-  document.getElementById('dark-label').textContent = isDark ? 'Light' : 'Dark';
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    isDark ? 'dark' : 'light'
+  );
+
+  document.getElementById('dark-icon').textContent =
+    isDark ? '○' : '◑';
+
+  document.getElementById('dark-label').textContent =
+    isDark ? 'Light' : 'Dark';
+
   const logo = document.getElementById('site-logo');
-  if(logo){ logo.style.filter = isDark ? 'invert(1) brightness(1.8)' : ''; }
-}
 
-function toggleEnquiry(){
-  const form = document.getElementById('enq-form');
-  form.classList.toggle('open');
-}
-
-async function submitEnquiry(e){
-  e.preventDefault();
-  const btn = document.getElementById('enq-btn');
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-  const data = new FormData(document.getElementById('enq-form'));
-  try{
-    const res = await fetch('https://formspree.io/f/mreorpre', {
-      method:'POST', body:data, headers:{'Accept':'application/json'}
-    });
-    if(res.ok){
-      document.getElementById('enq-form').style.display = 'none';
-      document.getElementById('enq-success').classList.add('visible');
-    } else {
-      btn.disabled = false;
-      btn.textContent = 'Submit →';
-      alert('Something went wrong. Please try again.');
-    }
-  } catch(err){
-    btn.disabled = false;
-    btn.textContent = 'Submit →';
-    alert('Submission failed. Please try again.');
+  if(logo){
+    logo.style.filter = isDark
+      ? 'invert(1) brightness(1.8)'
+      : '';
   }
 }
+
 </script>
 
 </body>
