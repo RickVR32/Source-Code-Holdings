@@ -3,205 +3,363 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Source Code Holdings Ltd. Private holding company." />
+
+<meta name="description" content="Private infrastructure holding entity." />
 <meta name="robots" content="noindex, nofollow" />
+
 <title>Source Code Holdings</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg: #f2f1ee;
-  --bg-soft: #e9e8e3;
-  --panel: #fafaf8;
-  --panel-border: rgba(0,0,0,0.09);
-  --line: rgba(0,0,0,0.08);
-  --line-strong: rgba(0,0,0,0.18);
-  --text: #0e0e0c;
-  --muted: #7a7972;
-  --grid-line: rgba(100,100,90,0.055);
+
+:root{
+  --bg:#f2f1ee;
+  --bg-soft:#e9e8e3;
+  --panel:#fafaf8;
+
+  --text:#0d0d0c;
+  --muted:#8a887f;
+
+  --line:rgba(0,0,0,0.08);
+  --line-strong:rgba(0,0,0,0.16);
+
+  --grid-line:rgba(0,0,0,0.045);
 }
 
-[data-theme="dark"] {
-  --bg: #0a0a08;
-  --bg-soft: #141412;
-  --panel: #1a1a18;
-  --panel-border: rgba(255,255,255,0.07);
-  --line: rgba(255,255,255,0.06);
-  --line-strong: rgba(255,255,255,0.15);
-  --text: #e8e7e0;
-  --muted: #7a7972;
-  --grid-line: rgba(255,255,255,0.025);
+[data-theme="dark"]{
+  --bg:#0a0a08;
+  --bg-soft:#121210;
+  --panel:#181816;
+
+  --text:#e8e6e0;
+  --muted:#72706b;
+
+  --line:rgba(255,255,255,0.06);
+  --line-strong:rgba(255,255,255,0.14);
+
+  --grid-line:rgba(255,255,255,0.022);
 }
 
-/* DARK MODE TOGGLE */
-.dark-toggle {
-  position: fixed; top: 20px; right: 24px; z-index: 100;
-  display: flex; align-items: center; gap: 6px;
-  font-family: 'Geist Mono', monospace; font-weight: 300;
-  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--muted); background: var(--panel);
-  border: 1px solid var(--line-strong); border-radius: 999px;
-  padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
-.dark-toggle:hover { color: var(--text); border-color: var(--text); }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html{
+  scroll-behavior:smooth;
+}
 
-body {
-  background-color: var(--bg);
+body{
+  background-color:var(--bg);
+
   background-image:
-    linear-gradient(180deg, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 44px 44px;
-  color: var(--text);
-  font-family: 'Geist Mono', monospace;
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 0.4s, color 0.4s;
+    linear-gradient(180deg,var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+
+  background-size:44px 44px;
+
+  color:var(--text);
+
+  font-family:'Geist Mono', monospace;
+  font-weight:300;
+
+  -webkit-font-smoothing:antialiased;
+
+  transition:
+    background-color .4s,
+    color .4s;
 }
 
-.container { width: min(1200px, calc(100% - 48px)); margin: auto; }
+/* CONTAINER */
+
+.container{
+  width:min(1100px, calc(100% - 48px));
+  margin:auto;
+}
+
+/* DARK TOGGLE */
+
+.dark-toggle{
+  position:fixed;
+  top:20px;
+  right:24px;
+  z-index:100;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  padding:6px 14px;
+
+  background:var(--panel);
+
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+
+  cursor:pointer;
+
+  font-family:'Geist Mono', monospace;
+  font-size:0.66rem;
+  font-weight:300;
+
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+
+  color:var(--muted);
+
+  transition:all .2s;
+}
+
+.dark-toggle:hover{
+  color:var(--text);
+  border-color:var(--text);
+}
 
 /* HERO */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  text-align: center; padding: 60px 0 80px;
-}
-.hero-logo { margin-bottom: 32px; }
-.hero-logo img { width: 140px; height: auto; display: block; margin: 0 auto; opacity: 0.92; }
-.hero-name {
-  font-family: 'Cormorant', serif; font-weight: 300;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  letter-spacing: 0.32em; text-transform: uppercase;
-}
-.hero-divider { width: 32px; height: 1px; background: var(--line-strong); margin: 28px auto; }
-.hero-copy { max-width: 580px; font-size: 0.82rem; line-height: 1.85; color: var(--muted); letter-spacing: 0.02em; }
-.hero-tag { margin-top: 44px; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
 
-/* SECTIONS */
-.section { padding: 80px 0; border-top: 1px solid var(--line); }
-.section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-bottom: 40px; }
-.section-label { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-.section-title { font-family: 'Cormorant', serif; font-weight: 300; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; letter-spacing: -0.01em; }
-.section-desc { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 440px; padding-top: 8px; align-self: end; }
+.hero{
+  min-height:100vh;
 
-/* FRAMEWORK STATEMENT */
-.fw-statement {
-  background: var(--panel); border: 1px solid var(--panel-border);
-  border-radius: 18px; padding: 48px 52px; margin-bottom: 14px;
-}
-.fw-law {
-  font-family: 'Cormorant', serif; font-style: italic; font-weight: 300;
-  font-size: clamp(1.4rem, 2.5vw, 2rem); line-height: 1.35;
-  margin-bottom: 24px; max-width: 680px;
-}
-.fw-body { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 560px; }
+  display:flex;
+  flex-direction:column;
 
-/* HOLDINGS TABLE */
-.holdings-table {
-  background: var(--panel); border: 1px solid var(--panel-border);
-  border-radius: 18px; overflow: hidden;
-}
-.holdings-table-header {
-  display: grid; grid-template-columns: 100px 1fr 160px 110px;
-  padding: 14px 28px;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
-}
-.holding-row {
-  display: grid; grid-template-columns: 100px 1fr 160px 110px;
-  padding: 20px 28px; border-bottom: 1px solid var(--line);
-  align-items: center; transition: background 0.15s;
-}
-.holding-row:last-child { border-bottom: none; }
-.holding-row:hover { background: var(--bg-soft); }
-.holding-id {
-  font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-}
-.holding-name-wrap {}
-.holding-name {
-  font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.2rem; line-height: 1.2;
-}
-.holding-desc {
-  font-size: 0.72rem; color: var(--muted); margin-top: 4px; line-height: 1.5;
-}
-.holding-category {
-  font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-}
-.holding-status {
-  font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.holding-status::before {
-  content: ''; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--muted); flex-shrink: 0;
-}
-.holding-status.active { color: var(--text); }
-.holding-status.active::before { background: var(--text); }
-.holding-status.forthcoming { color: var(--muted); }
-.holding-status.forthcoming::before { background: var(--muted); opacity: 0.4; }
-.holding-status.development::before { background: var(--muted); opacity: 0.6; }
+  justify-content:center;
+  align-items:center;
 
-/* CARDS */
-.cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  text-align:center;
 
-.card {
-  background: var(--panel); border: 1px solid var(--panel-border);
-  border-radius: 18px; padding: 28px 24px;
-  display: flex; flex-direction: column;
-  transition: border-color 0.2s, background 0.4s;
+  padding:60px 0 100px;
 }
-.card:hover { border-color: var(--line-strong); }
-.card-index { font-size: 0.62rem; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 20px; opacity: 0.7; }
-.card h3 { font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.18rem; margin-bottom: 12px; line-height: 1.2; }
-.card p { font-size: 0.77rem; line-height: 1.75; color: var(--muted); margin-bottom: 20px; }
-.card ul { list-style: none; margin-top: auto; border-top: 1px solid var(--line); padding-top: 16px; }
-.card li { font-size: 0.72rem; line-height: 1.6; color: var(--muted); padding: 4px 0; border-bottom: 1px solid var(--line); }
-.card li:last-child { border-bottom: none; }
+
+.hero-logo{
+  margin-bottom:34px;
+}
+
+.hero-logo img{
+  width:140px;
+  height:auto;
+  display:block;
+  margin:auto;
+  opacity:.92;
+}
+
+.hero-name{
+  font-family:'Cormorant', serif;
+  font-weight:300;
+
+  font-size:clamp(1.8rem,4vw,2.6rem);
+
+  letter-spacing:0.34em;
+  text-transform:uppercase;
+}
+
+.hero-divider{
+  width:34px;
+  height:1px;
+
+  background:var(--line-strong);
+
+  margin:30px auto;
+}
+
+.hero-copy{
+  max-width:600px;
+
+  font-size:0.82rem;
+  line-height:2;
+
+  color:var(--muted);
+
+  letter-spacing:0.02em;
+}
+
+.hero-tag{
+  margin-top:48px;
+
+  font-size:0.68rem;
+
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+
+  color:var(--muted);
+
+  opacity:.55;
+}
+
+/* MAIN SECTION */
+
+.section{
+  padding:0 0 120px;
+}
+
+.statement{
+  max-width:760px;
+  margin:auto;
+
+  background:rgba(255,255,255,0.28);
+
+  border:1px solid var(--line);
+
+  border-radius:24px;
+
+  padding:56px 54px;
+
+  backdrop-filter:blur(8px);
+}
+
+[data-theme="dark"] .statement{
+  background:rgba(255,255,255,0.02);
+}
+
+.statement-line{
+  font-family:'Cormorant', serif;
+  font-style:italic;
+  font-weight:300;
+
+  font-size:clamp(1.5rem,3vw,2.2rem);
+
+  line-height:1.3;
+
+  margin-bottom:28px;
+}
+
+.statement-copy{
+  font-size:0.8rem;
+  line-height:2;
+
+  color:var(--muted);
+
+  max-width:560px;
+}
 
 /* CONTACT */
-.contact { padding: 120px 0 80px; border-top: 1px solid var(--line); }
-.contact-inner { max-width: 680px; margin: auto; }
-.contact-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
-.contact-head h2 { font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.5rem; letter-spacing: 0.06em; }
-.contact-head span { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
-.contact-body { font-size: 0.82rem; line-height: 1.9; color: var(--muted); margin-bottom: 32px; }
-.contact-route {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'Geist Mono', monospace; font-size: 0.7rem;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); text-decoration: none;
-  border: 1px solid var(--line-strong); border-radius: 999px;
-  padding: 9px 20px; transition: all 0.2s;
-}
-.contact-route:hover { color: var(--text); border-color: var(--text); }
 
-footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
+.contact{
+  padding-bottom:120px;
+}
+
+.contact-box{
+  max-width:760px;
+  margin:auto;
+
+  padding-top:42px;
+
+  border-top:1px solid var(--line);
+}
+
+.contact-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+
+  margin-bottom:24px;
+}
+
+.contact-head h2{
+  font-family:'Cormorant', serif;
+  font-weight:300;
+
+  font-size:1.5rem;
+
+  letter-spacing:0.04em;
+}
+
+.contact-head span{
+  font-size:0.65rem;
+
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+
+  color:var(--muted);
+}
+
+.contact-copy{
+  max-width:520px;
+
+  font-size:0.8rem;
+  line-height:1.9;
+
+  color:var(--muted);
+
+  margin-bottom:34px;
+}
+
+.contact-link{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
+  text-decoration:none;
+
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+
+  padding:10px 22px;
+
+  color:var(--muted);
+
+  font-size:0.68rem;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+
+  transition:all .2s;
+}
+
+.contact-link:hover{
+  color:var(--text);
+  border-color:var(--text);
+}
+
+/* FOOTER */
+
+footer{
+  padding:34px 0;
+
+  border-top:1px solid var(--line);
+
+  text-align:center;
+
+  font-size:0.64rem;
+
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+
+  color:var(--muted);
+
+  opacity:.5;
+}
 
 /* RESPONSIVE */
-@media (max-width: 900px) {
-  .section-head, .cards-3 { grid-template-columns: 1fr; }
-  .section-desc { max-width: 100%; padding-top: 0; }
-  .fw-statement { padding: 32px 28px; }
-  .holdings-table-header { display: none; }
-  .holding-row { grid-template-columns: 1fr auto; grid-template-rows: auto auto; gap: 4px 12px; }
-  .holding-id { grid-column: 1; grid-row: 1; }
-  .holding-name-wrap { grid-column: 1; grid-row: 2; }
-  .holding-category { display: none; }
-  .holding-status { grid-column: 2; grid-row: 1 / 3; align-self: center; }
-  .contact { padding: 80px 0 60px; }
+
+@media (max-width:768px){
+
+  .hero-name{
+    letter-spacing:0.18em;
+    line-height:1.3;
+  }
+
+  .statement{
+    padding:36px 28px;
+  }
+
+  .contact-head{
+    flex-direction:column;
+    gap:10px;
+  }
+
 }
+
 </style>
 </head>
 
 <body>
-<button class="dark-toggle" onclick="toggleDark()" id="dark-btn">
+
+<button class="dark-toggle" onclick="toggleDark()">
   <span id="dark-icon">◑</span>
   <span id="dark-label">Dark</span>
 </button>
@@ -209,204 +367,123 @@ footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line);
 <div class="container">
 
   <!-- HERO -->
+
   <section class="hero">
+
     <div class="hero-logo">
-      <img id="site-logo" src="sch_sygil.png" alt="Source Code Holdings" style="width:140px;height:auto;display:block;margin:0 auto;opacity:0.92;">
+      <img
+        id="site-logo"
+        src="sch_sygil.png"
+        alt="Source Code Holdings"
+      >
     </div>
-    <div class="hero-name">Source Code Holdings</div>
+
+    <div class="hero-name">
+      Source Code Holdings
+    </div>
+
     <div class="hero-divider"></div>
+
     <p class="hero-copy">
-      A private holding company. We own the IP, the system architecture,
-      and the infrastructure. Our operating companies do the work.
+      A private holding company. We own the IP,
+      the system architecture, and the infrastructure.
+      Our operating companies do the work.
       We hold, protect, and licence what has been built.
     </p>
-    <div class="hero-tag">Private · Est. 2024</div>
+
+    <div class="hero-tag">
+      Private · Est. 2024
+    </div>
+
   </section>
 
-  <!-- 01 — WHAT WE ARE -->
+  <!-- STATEMENT -->
+
   <section class="section">
-    <div class="container">
-      <div class="fw-statement">
-        <div class="fw-law">Holding. Protecting. Licensing.</div>
-        <div class="fw-body">
-          Source Code Holdings Ltd is the parent entity behind everything. We own the IP. We hold the system architecture. Our operating companies do the talking. We do not.<br><br>
-          We do not operate publicly. Everything we build runs through our operating companies. This is not a product company. Not a service. A structure built to hold what has been built — permanently.
-        </div>
+
+    <div class="statement">
+
+      <div class="statement-line">
+        Structured for permanence.
       </div>
+
+      <div class="statement-copy">
+        Source Code Holdings Ltd operates as a private holding entity
+        overseeing proprietary systems, intellectual property,
+        and long-term infrastructure interests.
+        <br><br>
+        Public-facing operations are conducted independently
+        through affiliated structures and external entities.
+      </div>
+
     </div>
-  </section>
 
-  <!-- 02 — OPERATING COMPANIES -->
-  <section class="section" id="holdings">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-label">01 — Operating Companies</div>
-          <h2 class="section-title">Three entities.<br>One structure.</h2>
-        </div>
-        <p class="section-desc">
-          Source Code Holdings owns the IP. These are the operating companies through which it is deployed. Each operates independently with its own commercial focus. All IP remains with the holding company.
-        </p>
-      </div>
-
-      <div class="holdings-table">
-        <div class="holdings-table-header">
-          <span>Ref</span>
-          <span>Entity</span>
-          <span>Category</span>
-          <span>Status</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">SCH-001</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">UMNi Systems</div>
-            <div class="holding-desc">Technology, trading infrastructure, AI automation</div>
-          </div>
-          <span class="holding-category">Technology</span>
-          <span class="holding-status active">Active</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">SCH-002</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">Riclee Digital</div>
-            <div class="holding-desc">Digital consultancy, automation services, personal brand</div>
-          </div>
-          <span class="holding-category">Consultancy</span>
-          <span class="holding-status active">Active</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">SCH-003</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">VG Codeworks</div>
-            <div class="holding-desc">Automotive coding, remapping, salvage parts</div>
-          </div>
-          <span class="holding-category">Automotive</span>
-          <span class="holding-status active">Operational</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 — IP & PUBLICATIONS -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <div class="section-label">02 — Intellectual Property</div>
-          <h2 class="section-title">IP &amp; publications<br>in the stack.</h2>
-        </div>
-        <p class="section-desc">
-          Everything created under the SCH umbrella is owned by the holding company. Books, software, frameworks, and games. Licensed to operating companies. Not sold. Not transferred.
-        </p>
-      </div>
-
-      <div class="holdings-table">
-        <div class="holdings-table-header">
-          <span>Type</span>
-          <span>Asset</span>
-          <span>Route</span>
-          <span>Status</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">Book</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">The Observer Code</div>
-            <div class="holding-desc">SCH Publishing</div>
-          </div>
-          <span class="holding-category">SCH Publishing</span>
-          <span class="holding-status forthcoming">Forthcoming</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">Book</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">Structured Awareness</div>
-            <div class="holding-desc">SCH Publishing</div>
-          </div>
-          <span class="holding-category">SCH Publishing</span>
-          <span class="holding-status forthcoming">Forthcoming</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">Game</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">The Awareness Game</div>
-            <div class="holding-desc">Board game · SCH Publishing</div>
-          </div>
-          <span class="holding-category">SCH Publishing</span>
-          <span class="holding-status development">Development</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">Software</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">UMNi-FX Infrastructure</div>
-            <div class="holding-desc">26 MQL products · Licensed to UMNi Systems</div>
-          </div>
-          <span class="holding-category">UMNi Systems</span>
-          <span class="holding-status active">Licensed</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">Software</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">UMNi-Assist Platform</div>
-            <div class="holding-desc">Business AI assistant · SCH IP</div>
-          </div>
-          <span class="holding-category">UMNi Systems</span>
-          <span class="holding-status development">Development</span>
-        </div>
-
-        <div class="holding-row">
-          <span class="holding-id">Framework</span>
-          <div class="holding-name-wrap">
-            <div class="holding-name">UMNi Awareness System</div>
-            <div class="holding-desc">Source Code framework · Licensed to UMNi Systems</div>
-          </div>
-          <span class="holding-category">UMNi Systems</span>
-          <span class="holding-status active">Licensed</span>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="contact-inner">
+
+  <section class="contact">
+
+    <div class="contact-box">
+
       <div class="contact-head">
-        <h2>Selective enquiries only</h2>
-        <span>By arrangement</span>
+        <h2>External Communication</h2>
+        <span>Restricted</span>
       </div>
-      <p class="contact-body">
-        Source Code Holdings does not accept unsolicited contact.
-        All communications are handled through UMNi Systems.
-        If you need to reach us, you already know how.
+
+      <p class="contact-copy">
+        Source Code Holdings Ltd does not engage
+        in public correspondence.
       </p>
-      <a class="contact-route" href="https://umni-systems.com" target="_blank">→ Contact via UMNi Systems</a>
+
+      <a
+        class="contact-link"
+        href="https://umni-systems.com"
+        target="_blank"
+      >
+        Access Point →
+      </a>
+
     </div>
+
   </section>
 
+  <!-- FOOTER -->
+
   <footer>
-    Source Code Holdings Ltd &bull; © 2024–2026 All Rights Reserved &bull; Registered in England &amp; Wales
+    Source Code Holdings Ltd · © 2024–2026
   </footer>
 
 </div>
 
 <script>
-  let isDark = false;
 
-  function toggleDark() {
-    isDark = !isDark;
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    document.getElementById('dark-icon').textContent  = isDark ? '○' : '◑';
-    document.getElementById('dark-label').textContent = isDark ? 'Light' : 'Dark';
-    const logo = document.getElementById('site-logo');
-    if (logo) logo.style.filter = isDark ? 'invert(1) brightness(1.8)' : '';
+let isDark = false;
+
+function toggleDark(){
+
+  isDark = !isDark;
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    isDark ? 'dark' : 'light'
+  );
+
+  document.getElementById('dark-icon').textContent =
+    isDark ? '○' : '◑';
+
+  document.getElementById('dark-label').textContent =
+    isDark ? 'Light' : 'Dark';
+
+  const logo = document.getElementById('site-logo');
+
+  if(logo){
+    logo.style.filter =
+      isDark ? 'invert(1) brightness(1.8)' : '';
   }
+}
+
 </script>
+
 </body>
 </html>
