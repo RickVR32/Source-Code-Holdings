@@ -3,831 +3,1064 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCH · ABFS — Ambient Field Sensor</title>
+<title>SCH · TCE — Terminal Consciousness Engine</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 
   :root {
-    --bg: #0D0D0B;
-    --bg2: #141412;
-    --bg3: #1C1C19;
-    --border: #2C2C28;
-    --border2: #3A3A35;
-    --text: #E8E7E0;
-    --text2: #9A9990;
-    --text3: #5A5A55;
+    --bg: #08080A;
+    --mirror: #0C0C10;
+    --mirror2: #10101A;
+    --border: #1E1E2A;
+    --border2: #2A2A3A;
+    --text: #E8E7F0;
+    --text2: #9A99A8;
+    --text3: #4A4A5A;
     --amber: #EF9F27;
     --coral: #D85A30;
     --teal: #1D9E75;
-    --purple: #534AB7;
+    --purple: #7B6FD0;
+    --purple2: #534AB7;
     --pink: #D4537E;
     --blue: #378ADD;
-    --red: #E24B4A;
+    --glow-teal: rgba(29,158,117,0.15);
+    --glow-amber: rgba(239,159,39,0.15);
+    --glow-red: rgba(216,90,48,0.15);
     --mono: 'Geist Mono', monospace;
+    --serif: 'DM Serif Display', serif;
     --sans: 'Cormorant', sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
 
-  body::before {
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* FULL MIRROR LAYOUT */
+  .mirror-shell {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* MIRROR BACKGROUND — dark reflective surface */
+  .mirror-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 40%, #12121E 0%, #08080C 100%);
+  }
+
+  /* MIRROR FRAME */
+  .mirror-frame {
+    position: absolute;
+    inset: 20px;
+    border: 1px solid #2A2A3A;
+    border-radius: 16px;
+    box-shadow:
+      inset 0 0 80px rgba(0,0,0,0.8),
+      0 0 0 1px #1A1A28,
+      0 0 60px rgba(0,0,0,0.6);
+    pointer-events: none;
+  }
+
+  /* SCAN LINES */
+  .mirror-bg::after {
     content: '';
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px);
-    pointer-events: none; z-index: 1000;
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 6px);
+    pointer-events: none;
   }
 
-  /* HEADER */
-  .header {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(13,13,11,0.95); backdrop-filter: blur(12px);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .logo { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.08em; }
-  .logo strong { color: var(--text); font-size: 13px; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
-  .pill { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 20px; border: 1px solid; display: flex; align-items: center; gap: 5px; }
-  .pill.green { color: var(--teal); border-color: var(--teal); }
-  .pill.amber { color: var(--amber); border-color: var(--amber); }
-  .pill.red { color: var(--red); border-color: var(--red); }
-  .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: pdot 2s ease-in-out infinite; }
-  @keyframes pdot { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  /* LAYOUT */
-  .main { display: grid; grid-template-columns: 1fr 400px; flex: 1; min-height: 0; }
-
-  /* LEFT */
-  .left { border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-
-  /* ROOM VISUALISER */
-  .room-section { padding: 24px 28px; border-bottom: 1px solid var(--border); }
-  .section-label {
-    font-family: var(--mono); font-size: 9px; color: var(--text3);
-    letter-spacing: 0.12em; text-transform: uppercase;
-    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
-  }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-  .room-wrap { position: relative; }
-
-  /* GROUP STATS */
-  .group-stats { padding: 20px 28px; border-bottom: 1px solid var(--border); }
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .stat-card {
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 12px 14px; transition: border-color 0.4s, box-shadow 0.4s;
-  }
-  .stat-card.lit { border-color: var(--border2); box-shadow: 0 0 16px rgba(55,138,221,0.07); }
-  .stat-label { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
-  .stat-val { font-family: var(--mono); font-size: 26px; font-weight: 700; line-height: 1; transition: color 0.4s; color: var(--text3); }
-  .stat-sub { font-size: 10px; color: var(--text3); margin-top: 3px; font-family: var(--mono); }
-
-  /* PARTICIPANTS */
-  .participants { padding: 20px 28px; flex: 1; }
-  .participant-list { display: flex; flex-direction: column; gap: 0; }
-
-  .p-row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 0; border-bottom: 1px solid var(--border);
-    transition: all 0.4s;
-  }
-  .p-row:last-child { border-bottom: none; }
-
-  .p-avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 11px; font-weight: 700;
-    flex-shrink: 0; border: 1.5px solid; transition: all 0.4s;
+  /* REFLECTION FIGURE — silhouette */
+  .reflection {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 85vh;
+    opacity: 0.06;
+    pointer-events: none;
+    transition: opacity 1s ease;
   }
 
-  .p-name { font-size: 12px; color: var(--text2); min-width: 24px; }
-  .p-bar-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .p-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease, background 0.4s; }
-  .p-drift-val { font-family: var(--mono); font-size: 12px; font-weight: 700; min-width: 32px; text-align: right; transition: color 0.4s; }
-  .p-code { font-family: var(--mono); font-size: 10px; color: var(--text3); min-width: 36px; transition: color 0.4s; }
-  .p-nes-badge { font-family: var(--mono); font-size: 8px; padding: 1px 5px; border-radius: 3px; border: 1px solid var(--border2); color: var(--text3); }
-  .p-nes-badge.connected { color: var(--teal); border-color: rgba(29,158,117,0.4); background: rgba(29,158,117,0.06); }
+  .reflection.active { opacity: 0.1; }
 
-  /* ENVIRONMENT */
-  .env-section { padding: 20px 28px; border-top: 1px solid var(--border); }
-  .env-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .env-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.4s; }
-  .env-label { font-size: 11px; color: var(--text2); }
-  .env-val { font-family: var(--mono); font-size: 12px; font-weight: 700; transition: color 0.4s; }
-
-  /* FUSION ENGINE VIZ */
-  .fusion-bar { height: 3px; background: var(--border); border-radius: 2px; margin: 12px 0; overflow: hidden; }
-  .fusion-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--teal), var(--blue)); transition: width 1s ease; }
-
-  /* RIGHT PANEL */
-  .right { display: flex; flex-direction: column; height: calc(100vh - 57px); position: sticky; top: 57px; overflow: hidden; }
-
-  .panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--bg2); }
-  .panel-title { font-family: var(--mono); font-size: 11px; color: var(--text2); letter-spacing: 0.08em; }
-  .panel-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-  /* COORDINATOR SIGNAL */
-  .signal-area { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-  .signal-area::-webkit-scrollbar { width: 4px; }
-  .signal-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-  .signal-box {
-    background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px;
-    font-size: 13px; color: var(--text2); line-height: 1.7;
-    position: relative; overflow: hidden;
+  /* GLOW AURA around figure */
+  .figure-aura {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    height: 90vh;
+    pointer-events: none;
+    transition: all 1.2s ease;
   }
 
-  .signal-box::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0;
-    width: 3px; background: var(--border2); border-radius: 2px 0 0 2px;
-    transition: background 0.4s;
+  /* HEADER BAR — minimal */
+  .tce-header {
+    position: absolute;
+    top: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    z-index: 20;
   }
-  .signal-box.state-balanced::before { background: var(--teal); }
-  .signal-box.state-narc::before { background: var(--coral); }
-  .signal-box.state-collapse::before { background: var(--red); }
 
-  .signal-title { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
-
-  .signal-text { min-height: 60px; }
-
-  .typing-bar { display: inline-block; width: 2px; height: 14px; background: var(--text3); margin-left: 2px; vertical-align: text-bottom; animation: blink 0.8s step-end infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-  /* ACTIONS */
-  .recommended-actions { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
-  .actions-title { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
-  .action-list { display: flex; flex-direction: column; gap: 6px; }
-  .action-item {
-    display: flex; align-items: flex-start; gap: 8px;
-    font-size: 12px; color: var(--text2); padding: 7px 10px;
-    background: var(--bg3); border-radius: 6px; border: 1px solid var(--border);
-    animation: act-in 0.3s ease;
+  .tce-wordmark {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: rgba(232,231,240,0.3);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
   }
-  @keyframes act-in { from{opacity:0;transform:translateX(6px)} to{opacity:1;transform:translateX(0)} }
-  .action-icon { font-size: 13px; margin-top: 1px; }
 
-  /* CONFLICT FLAG */
-  .conflict-flag {
-    background: rgba(239,159,39,0.06); border: 1px solid rgba(239,159,39,0.3);
-    border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--amber);
+  .tce-sub {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text3);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* STATUS STRIP */
+  .status-strip {
+    position: absolute;
+    top: 36px;
+    right: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    z-index: 20;
+  }
+
+  .s-pill {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .s-pill.green { color: var(--teal); border-color: rgba(29,158,117,0.4); }
+  .s-pill.amber { color: var(--amber); border-color: rgba(239,159,39,0.4); }
+  .s-pill.dim { color: var(--text3); border-color: var(--border2); }
+  .pill-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; animation: pdot 2s ease-in-out infinite; }
+  @keyframes pdot { 0%,100%{opacity:1}50%{opacity:0.2} }
+
+  /* ── OVERLAY PANELS ── */
+
+  /* DRIFT RING — top left */
+  .drift-overlay {
+    position: absolute;
+    top: 100px;
+    left: 60px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .overlay-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* OBSERVER CODE RING — top right */
+  .codes-overlay {
+    position: absolute;
+    top: 100px;
+    right: 60px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* BALANCE SCALE — bottom center */
+  .scale-overlay {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* BIOMETRIC STRIP — left side vertical */
+  .bio-strip {
+    position: absolute;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bio-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .bio-label {
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .bio-bar-track {
+    width: 80px;
+    height: 2px;
+    background: var(--border2);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .bio-bar-fill {
+    height: 100%;
+    border-radius: 1px;
+    transition: width 0.8s ease, background 0.4s;
+  }
+
+  .bio-val {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text2);
+    transition: color 0.4s;
+  }
+
+  /* DIALOGUE PANEL — centre, appears on high drift */
+  .dialogue-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    z-index: 30;
     display: none;
+    flex-direction: column;
+    gap: 0;
   }
-  .conflict-flag.visible { display: block; animation: fade-in 0.4s ease; }
-  @keyframes fade-in { from{opacity:0} to{opacity:1} }
-  .conflict-title { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; margin-bottom: 6px; }
 
-  /* SCENARIO BUTTONS */
-  .scenario-bar { border-top: 1px solid var(--border); padding: 12px 16px; background: var(--bg2); }
-  .scenario-label { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-  .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-  .sc-btn {
-    padding: 6px 12px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em;
-    border-radius: 20px; border: 1px solid var(--border2); background: transparent;
-    color: var(--text3); cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+  .dialogue-panel.visible { display: flex; }
+
+  .dialogue-inner {
+    background: rgba(12,12,16,0.88);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 24px 28px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 60px rgba(0,0,0,0.6);
   }
-  .sc-btn:hover { color: var(--text); border-color: var(--border2); }
-  .sc-btn.active { background: rgba(239,159,39,0.1); border-color: var(--amber); color: var(--amber); }
 
-  /* CUSTOM INPUT */
-  .custom-input-area { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
-  textarea.ci {
-    flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
-    color: var(--text); font-family: var(--sans); font-size: 12px; padding: 8px 10px;
-    outline: none; resize: none; height: 38px; line-height: 1.4; transition: border-color 0.2s;
+  .dialogue-mode-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  textarea.ci:focus { border-color: var(--border2); }
-  .ci-btn {
-    padding: 0 14px; background: var(--amber); border: none; border-radius: 6px;
-    color: #1a1400; font-family: var(--mono); font-size: 10px; font-weight: 700;
-    cursor: pointer; letter-spacing: 0.06em; transition: all 0.2s; height: 38px;
+
+  .dialogue-mode-label::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: pdot 1s ease-in-out infinite;
   }
-  .ci-btn:hover { background: #f5b340; }
-  .ci-btn:disabled { background: var(--border2); color: var(--text3); cursor: not-allowed; }
 
-  /* ROOM SVG */
-  .room-svg-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .dialogue-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: rgba(232,231,240,0.9);
+    line-height: 1.55;
+    margin-bottom: 20px;
+    min-height: 60px;
+  }
 
-  .divider { height: 1px; background: var(--border); }
+  .typing-cursor {
+    display: inline-block;
+    width: 2px; height: 18px;
+    background: var(--text2);
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    animation: blink 0.9s step-end infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+  /* RESPONSE AREA */
+  .response-area {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .mirror-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    resize: none;
+    height: 40px;
+    line-height: 1.4;
+    transition: border-color 0.2s;
+  }
+
+  .mirror-input:focus { border-color: rgba(255,255,255,0.15); }
+  .mirror-input::placeholder { color: var(--text3); }
+
+  .mirror-send {
+    padding: 0 16px;
+    background: rgba(239,159,39,0.15);
+    border: 1px solid rgba(239,159,39,0.3);
+    border-radius: 8px;
+    color: var(--amber);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    height: 40px;
+  }
+
+  .mirror-send:hover { background: rgba(239,159,39,0.25); }
+  .mirror-send:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* INPUT PANEL — bottom right, always visible */
+  .input-panel {
+    position: absolute;
+    bottom: 80px;
+    right: 48px;
+    width: 260px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input-panel-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .ip-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ip-row { display: flex; align-items: center; gap: 8px; }
+
+  input[type=range] {
+    flex: 1; -webkit-appearance: none; height: 2px;
+    background: var(--border2); border-radius: 1px; outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 10px; height: 10px;
+    border-radius: 50%; background: rgba(232,231,240,0.4); cursor: pointer;
+    transition: background 0.2s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { background: var(--amber); }
+  .ipv { font-family: var(--mono); font-size: 9px; color: var(--text3); min-width: 20px; text-align: right; }
+
+  .ip-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 9px 12px;
+    outline: none;
+    resize: none;
+    height: 56px;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+  .ip-textarea:focus { border-color: var(--border2); }
+  .ip-textarea::placeholder { color: var(--text3); font-size: 11px; }
+
+  .scan-btn {
+    width: 100%;
+    padding: 9px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text2);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .scan-btn:hover { background: rgba(239,159,39,0.08); border-color: rgba(239,159,39,0.3); color: var(--amber); }
+  .scan-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* MODE TOGGLE */
+  .mode-indicator {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    z-index: 20;
+    transition: color 0.4s;
+  }
+
+  /* GLOW STATES */
+  @keyframes glow-pulse {
+    0%,100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .aura-teal { background: radial-gradient(ellipse 60% 70% at 50% 80%, var(--glow-teal) 0%, transparent 70%); animation: glow-pulse 3s ease-in-out infinite; }
+  .aura-amber { background: radial-gradient(ellipse 60% 70% at 50% 80%, var(--glow-amber) 0%, transparent 70%); animation: glow-pulse 2s ease-in-out infinite; }
+  .aura-red { background: radial-gradient(ellipse 70% 80% at 50% 80%, var(--glow-red) 0%, transparent 70%); animation: glow-pulse 1.4s ease-in-out infinite; }
+
+  /* OVERLAY FADE IN */
+  @keyframes overlay-in { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:scale(1)} }
+  .overlay-in { animation: overlay-in 0.5s ease forwards; }
+
+  /* CORNER BRACKETS */
+  .bracket {
+    position: absolute;
+    width: 16px; height: 16px;
+    border-color: rgba(255,255,255,0.08);
+    border-style: solid;
+  }
+  .bracket.tl { top: 32px; left: 32px; border-width: 1px 0 0 1px; }
+  .bracket.tr { top: 32px; right: 32px; border-width: 1px 1px 0 0; }
+  .bracket.bl { bottom: 32px; left: 32px; border-width: 0 0 1px 1px; }
+  .bracket.br { bottom: 32px; right: 32px; border-width: 0 1px 1px 0; }
+
+  /* CHAT HISTORY — small, bottom of dialogue */
+  .chat-history {
+    max-height: 120px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .chat-history::-webkit-scrollbar { width: 2px; }
+  .chat-history::-webkit-scrollbar-thumb { background: var(--border2); }
+
+  .ch-msg { font-size: 12px; line-height: 1.5; }
+  .ch-msg.user { color: rgba(232,231,240,0.5); padding-left: 10px; border-left: 1px solid var(--border2); }
+  .ch-msg.tce { color: rgba(232,231,240,0.7); font-style: italic; }
+
+  @keyframes msg-in { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+  .ch-msg { animation: msg-in 0.25s ease; }
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">Source Code Holdings &nbsp;·&nbsp; <strong>ABFS</strong> &nbsp;·&nbsp; Room Sensor — UMNi Labs</div>
-  <div class="header-right">
-    <div class="pill green" id="state-pill"><div class="pill-dot"></div><span id="pill-text">SENSING ACTIVE</span></div>
-    <div class="pill green"><div class="pill-dot"></div>CLAUDE API</div>
-  </div>
-</header>
-<div style="background:#0a0a0a;border-bottom:1px solid rgba(220,38,38,0.2);padding:0.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;">
-  <a href="https://umni-systems.com/tech.html" style="font-family:'Geist Mono',monospace;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#DC2626;text-decoration:none;">← Source Code Holdings</a>
-  <span style="font-family:'Geist Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#444440;">SCH · Prototype · Confidential</span>
-  <a href="https://umni-systems.com" style="font-family:'Geist Mono',monospace;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#444440;text-decoration:none;">umni-systems.com</a>
-</div>
+<div class="mirror-shell">
+  <div class="mirror-bg"></div>
+  <div class="mirror-frame"></div>
 
-<div class="main">
+  <!-- Corner brackets -->
+  <div class="bracket tl"></div>
+  <div class="bracket tr"></div>
+  <div class="bracket bl"></div>
+  <div class="bracket br"></div>
 
-  <!-- LEFT -->
-  <div class="left">
+  <!-- REFLECTION SILHOUETTE -->
+  <div class="figure-aura aura-teal" id="figure-aura"></div>
+  <svg class="reflection" id="reflection-fig" viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg">
+    <!-- Head -->
+    <ellipse cx="100" cy="60" rx="32" ry="38" fill="white"/>
+    <!-- Neck -->
+    <rect x="88" y="94" width="24" height="22" rx="4" fill="white"/>
+    <!-- Shoulders/body -->
+    <path d="M40 116 Q60 108 100 112 Q140 108 160 116 L168 280 Q150 296 100 300 Q50 296 32 280 Z" fill="white"/>
+    <!-- Arms -->
+    <path d="M40 116 L18 240 Q16 256 24 262 L38 268 Q46 270 50 256 L60 160" fill="white"/>
+    <path d="M160 116 L182 240 Q184 256 176 262 L162 268 Q154 270 150 256 L140 160" fill="white"/>
+    <!-- Legs -->
+    <path d="M68 296 L58 480 Q56 500 70 504 L86 506 Q98 508 100 492 L104 310" fill="white"/>
+    <path d="M132 296 L142 480 Q144 500 130 504 L114 506 Q102 508 100 492 L96 310" fill="white"/>
+  </svg>
 
-    <!-- ROOM VISUALISER -->
-    <div class="room-section">
-      <div class="section-label">room — session A · fusion engine active</div>
-      <div class="room-svg-wrap">
-        <svg id="room-svg" width="100%" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
-          <!-- Room outline -->
-          <rect x="10" y="10" width="540" height="180" rx="8" fill="#141412" stroke="#2C2C28" stroke-width="1"/>
-          <!-- ABFS sensor (ceiling mount, center) -->
-          <circle cx="280" cy="24" r="10" fill="#1C1C19" stroke="#3A3A35" stroke-width="1"/>
-          <circle cx="280" cy="24" r="4" fill="#1D9E75" opacity="0.8"/>
-          <text x="280" y="44" text-anchor="middle" font-size="7" fill="#5A5A55" font-family="monospace">ABFS</text>
-          <!-- Sensor sweep lines -->
-          <line x1="280" y1="24" x2="100" y2="155" stroke="#1D9E75" stroke-width="0.5" opacity="0.15" stroke-dasharray="4 3"/>
-          <line x1="280" y1="24" x2="200" y2="165" stroke="#1D9E75" stroke-width="0.5" opacity="0.15" stroke-dasharray="4 3"/>
-          <line x1="280" y1="24" x2="360" y2="165" stroke="#1D9E75" stroke-width="0.5" opacity="0.15" stroke-dasharray="4 3"/>
-          <line x1="280" y1="24" x2="460" y2="155" stroke="#1D9E75" stroke-width="0.5" opacity="0.15" stroke-dasharray="4 3"/>
-          <!-- Participants -->
-          <g id="p-viz-1">
-            <circle cx="110" cy="140" r="22" fill="#1C1C19" stroke="#2C2C28" stroke-width="1.5" id="pv1-ring"/>
-            <text x="110" y="144" text-anchor="middle" font-size="11" fill="#9A9990" font-family="monospace" font-weight="bold">P1</text>
-            <circle cx="110" cy="140" r="28" fill="none" stroke="#534AB7" stroke-width="0.5" opacity="0.3" id="pv1-aura"/>
-          </g>
-          <g id="p-viz-2">
-            <circle cx="210" cy="150" r="22" fill="#1C1C19" stroke="#2C2C28" stroke-width="1.5" id="pv2-ring"/>
-            <text x="210" y="154" text-anchor="middle" font-size="11" fill="#9A9990" font-family="monospace" font-weight="bold">P2</text>
-            <circle cx="210" cy="150" r="28" fill="none" stroke="#534AB7" stroke-width="0.5" opacity="0.3" id="pv2-aura"/>
-          </g>
-          <g id="p-viz-3">
-            <circle cx="360" cy="148" r="22" fill="#1C1C19" stroke="#2C2C28" stroke-width="1.5" id="pv3-ring"/>
-            <text x="360" y="152" text-anchor="middle" font-size="11" fill="#9A9990" font-family="monospace" font-weight="bold">P3</text>
-            <circle cx="360" cy="148" r="28" fill="none" stroke="#534AB7" stroke-width="0.5" opacity="0.3" id="pv3-aura"/>
-          </g>
-          <g id="p-viz-4">
-            <circle cx="460" cy="140" r="22" fill="#1C1C19" stroke="#2C2C28" stroke-width="1.5" id="pv4-ring"/>
-            <text x="460" y="144" text-anchor="middle" font-size="11" fill="#9A9990" font-family="monospace" font-weight="bold">P4</text>
-            <circle cx="460" cy="140" r="28" fill="none" stroke="#3A3A35" stroke-width="0.5" opacity="0.3" id="pv4-aura"/>
-            <text x="460" y="174" text-anchor="middle" font-size="7" fill="#5A5A55" font-family="monospace">no NES</text>
-          </g>
-          <!-- Fusion bar label -->
-          <text x="280" y="95" text-anchor="middle" font-size="8" fill="#3A3A35" font-family="monospace" letter-spacing="0.08em">FUSION ENGINE</text>
-          <rect x="200" y="100" width="160" height="4" rx="2" fill="#1C1C19"/>
-          <rect x="200" y="100" width="0" height="4" rx="2" fill="url(#fusgrad)" id="fusion-bar-fill"/>
-          <defs>
-            <linearGradient id="fusgrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#1D9E75"/>
-              <stop offset="100%" stop-color="#378ADD"/>
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      <!-- Fusion confidence -->
-      <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
-        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.08em;">FUSION CONFIDENCE</div>
-        <div style="flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;">
-          <div id="fusion-confidence" style="height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));width:0%;transition:width 1s ease;border-radius:2px;"></div>
-        </div>
-        <div id="fusion-pct" style="font-family:var(--mono);font-size:10px;color:var(--text2);">—</div>
-      </div>
-    </div>
-
-    <!-- GROUP STATS -->
-    <div class="group-stats">
-      <div class="section-label">group state — live output</div>
-      <div class="stats-grid">
-        <div class="stat-card" id="card-drift">
-          <div class="stat-label">Group Drift</div>
-          <div class="stat-val" id="g-drift">—</div>
-          <div class="stat-sub" id="g-drift-sub">awaiting scan</div>
-        </div>
-        <div class="stat-card" id="card-bs">
-          <div class="stat-label">Balance Scale</div>
-          <div class="stat-val" id="g-bs">—</div>
-          <div class="stat-sub" id="g-bs-sub">group average</div>
-        </div>
-        <div class="stat-card" id="card-code">
-          <div class="stat-label">Dominant Code</div>
-          <div class="stat-val" id="g-code" style="font-size:18px;padding-top:4px;">—</div>
-          <div class="stat-sub" id="g-code-sub">highest aggregate</div>
-        </div>
-        <div class="stat-card" id="card-zp">
-          <div class="stat-label">ZP Distance</div>
-          <div class="stat-val" id="g-zp">—</div>
-          <div class="stat-sub" id="g-zp-sub">avg from zero-point</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PARTICIPANTS + ENV side by side -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0;">
-
-      <!-- PARTICIPANTS -->
-      <div class="participants" style="border-right:1px solid var(--border);">
-        <div class="section-label">individual — NES participants</div>
-        <div class="participant-list" id="participant-list">
-          <!-- Populated by JS -->
-          <div class="p-row">
-            <div class="p-avatar" style="background:rgba(83,74,183,0.1);border-color:var(--purple);color:var(--purple);">P1</div>
-            <div class="p-name">P1</div>
-            <div class="p-bar-track"><div class="p-bar-fill" style="width:0%;background:var(--purple);"></div></div>
-            <div class="p-drift-val" style="color:var(--text3);">—</div>
-            <div class="p-code" style="color:var(--text3);">—</div>
-            <div class="p-nes-badge connected">NES</div>
-          </div>
-          <div class="p-row">
-            <div class="p-avatar" style="background:rgba(83,74,183,0.1);border-color:var(--purple);color:var(--purple);">P2</div>
-            <div class="p-name">P2</div>
-            <div class="p-bar-track"><div class="p-bar-fill" style="width:0%;background:var(--purple);"></div></div>
-            <div class="p-drift-val" style="color:var(--text3);">—</div>
-            <div class="p-code" style="color:var(--text3);">—</div>
-            <div class="p-nes-badge connected">NES</div>
-          </div>
-          <div class="p-row">
-            <div class="p-avatar" style="background:rgba(83,74,183,0.1);border-color:var(--purple);color:var(--purple);">P3</div>
-            <div class="p-name">P3</div>
-            <div class="p-bar-track"><div class="p-bar-fill" style="width:0%;background:var(--purple);"></div></div>
-            <div class="p-drift-val" style="color:var(--text3);">—</div>
-            <div class="p-code" style="color:var(--text3);">—</div>
-            <div class="p-nes-badge connected">NES</div>
-          </div>
-          <div class="p-row">
-            <div class="p-avatar" style="background:rgba(90,90,85,0.1);border-color:var(--text3);color:var(--text3);">P4</div>
-            <div class="p-name">P4</div>
-            <div class="p-bar-track"><div class="p-bar-fill" style="width:100%;background:var(--border2);opacity:0.3;"></div></div>
-            <div class="p-drift-val" style="color:var(--text3);">—</div>
-            <div class="p-code" style="color:var(--text3);">env</div>
-            <div class="p-nes-badge">no NES</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ENVIRONMENT -->
-      <div class="env-section">
-        <div class="section-label">room sensors</div>
-        <div class="env-grid" id="env-grid">
-          <div class="env-card"><span class="env-label">Acoustic</span><span class="env-val" id="env-acoustic" style="color:var(--text3);">—</span></div>
-          <div class="env-card"><span class="env-label">CO₂</span><span class="env-val" id="env-co2" style="color:var(--text3);">—</span></div>
-          <div class="env-card"><span class="env-label">Thermal</span><span class="env-val" id="env-thermal" style="color:var(--text3);">—</span></div>
-          <div class="env-card"><span class="env-label">Motion</span><span class="env-val" id="env-motion" style="color:var(--text3);">—</span></div>
-        </div>
-      </div>
-
-    </div>
-
+  <!-- WORDMARK -->
+  <div class="tce-header">
+    <div class="tce-wordmark">TCE</div>
+    <div class="tce-sub">Smart Mirror · UMNi Labs</div>
   </div>
 
-  <!-- RIGHT: COORDINATOR PANEL -->
-  <div class="right">
-    <div class="panel-header">
-      <div class="panel-title">COORDINATOR SIGNAL — AI GENERATED</div>
-      <div class="panel-sub">Live guidance from ABFS fusion engine · updated every scan</div>
+  <!-- STATUS -->
+  <div class="status-strip">
+    <div class="s-pill green" id="mode-pill"><div class="pill-dot"></div><span id="mode-text">REFLECTIVE MODE</span></div>
+    <div class="s-pill dim"><div class="pill-dot"></div>DP-1 ACTIVE</div>
+  </div>
+
+  <!-- DRIFT RING OVERLAY — top left -->
+  <div class="drift-overlay">
+    <div class="overlay-label">drift</div>
+    <svg id="drift-svg" width="110" height="110" viewBox="0 0 110 110">
+      <circle cx="55" cy="55" r="44" fill="none" stroke="#1E1E2A" stroke-width="8"/>
+      <path id="drift-arc" d="" fill="none" stroke="#5A5A55" stroke-width="8" stroke-linecap="round"/>
+      <text x="55" y="50" text-anchor="middle" font-size="22" fill="#4A4A5A" font-family="monospace" font-weight="bold" id="drift-num">—</text>
+      <text x="55" y="66" text-anchor="middle" font-size="8" fill="#4A4A5A" font-family="monospace" id="drift-sub">of 5.0</text>
+    </svg>
+  </div>
+
+  <!-- CODES RING OVERLAY — top right -->
+  <div class="codes-overlay">
+    <div class="overlay-label">observer codes</div>
+    <svg id="codes-svg" width="110" height="110" viewBox="0 0 110 110">
+      <circle cx="55" cy="55" r="44" fill="#0C0C10" stroke="#1E1E2A" stroke-width="0.5"/>
+      <g id="codes-arcs"></g>
+      <circle cx="55" cy="55" r="20" fill="#08080C"/>
+      <text x="55" y="52" text-anchor="middle" font-size="7" fill="#4A4A5A" font-family="monospace" id="codes-center-1">ZERO</text>
+      <text x="55" y="63" text-anchor="middle" font-size="7" fill="#4A4A5A" font-family="monospace" id="codes-center-2">POINT</text>
+    </svg>
+  </div>
+
+  <!-- BIO STRIP — left -->
+  <div class="bio-strip">
+    <div class="bio-item">
+      <div class="bio-label">HRV</div>
+      <div class="bio-bar-track"><div class="bio-bar-fill" id="bio-hrv" style="width:0%;background:var(--teal);"></div></div>
+      <div class="bio-val" id="bio-hrv-v">—</div>
     </div>
-
-    <div class="signal-area">
-
-      <!-- SIGNAL BOX -->
-      <div class="signal-box" id="signal-box">
-        <div class="signal-title">coordinator signal</div>
-        <div class="signal-text" id="signal-text" style="color:var(--text3);font-size:12px;">
-          Select a scenario or describe a custom group situation to generate a live coordinator signal.
-        </div>
-      </div>
-
-      <!-- CONFLICT FLAG -->
-      <div class="conflict-flag" id="conflict-flag">
-        <div class="conflict-title">⚠ CONFLICT FLAG — NES / ENVIRONMENT DISCREPANCY</div>
-        <div id="conflict-text"></div>
-      </div>
-
-      <!-- RECOMMENDED ACTIONS -->
-      <div class="recommended-actions" id="actions-box" style="display:none;">
-        <div class="actions-title">recommended coordinator actions</div>
-        <div class="action-list" id="action-list"></div>
-      </div>
-
-      <!-- STREAM LOG -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;">
-        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;">scan history</div>
-        <div id="scan-log" style="display:flex;flex-direction:column;gap:6px;">
-          <div style="font-size:11px;color:var(--text3);font-family:var(--mono);">No scans yet</div>
-        </div>
-      </div>
-
+    <div class="bio-item">
+      <div class="bio-label">EDA</div>
+      <div class="bio-bar-track"><div class="bio-bar-fill" id="bio-eda" style="width:0%;background:var(--purple);"></div></div>
+      <div class="bio-val" id="bio-eda-v">—</div>
     </div>
-
-    <!-- SCENARIO PRESETS -->
-    <div class="scenario-bar">
-      <div class="scenario-label">load scenario</div>
-      <div class="scenario-btns">
-        <button class="sc-btn" id="sc-balanced" onclick="loadScenario('balanced')">Balanced</button>
-        <button class="sc-btn" id="sc-narc" onclick="loadScenario('narc')">NARC dominant</button>
-        <button class="sc-btn" id="sc-collapse" onclick="loadScenario('collapse')">Collapse risk</button>
-        <button class="sc-btn" id="sc-conflict" onclick="loadScenario('conflict')">NES conflict</button>
-      </div>
+    <div class="bio-item">
+      <div class="bio-label">Latency</div>
+      <div class="bio-bar-track"><div class="bio-bar-fill" id="bio-lat" style="width:0%;background:var(--amber);"></div></div>
+      <div class="bio-val" id="bio-lat-v">—</div>
     </div>
-
-    <!-- CUSTOM INPUT -->
-    <div class="custom-input-area">
-      <textarea class="ci" id="custom-input" placeholder="Describe the group situation... or ask the coordinator a question" onkeydown="handleKey(event)"></textarea>
-      <button class="ci-btn" id="ci-btn" onclick="runCustom()">SCAN</button>
+    <div class="bio-item">
+      <div class="bio-label">Voice</div>
+      <div class="bio-bar-track"><div class="bio-bar-fill" id="bio-voice" style="width:0%;background:var(--blue);"></div></div>
+      <div class="bio-val" id="bio-voice-v">—</div>
     </div>
   </div>
+
+  <!-- BALANCE SCALE — bottom centre -->
+  <div class="scale-overlay">
+    <svg id="scale-svg" width="220" height="80" viewBox="0 0 220 80">
+      <!-- Arc track -->
+      <path d="M 20 70 A 90 90 0 0 1 200 70" fill="none" stroke="#1E1E2A" stroke-width="6"/>
+      <!-- Coloured zones -->
+      <path d="M 20 70 A 90 90 0 0 1 110 14" fill="none" stroke="#D85A30" stroke-width="6" opacity="0.35"/>
+      <path d="M 110 14 A 90 90 0 0 1 200 70" fill="none" stroke="#1D9E75" stroke-width="6" opacity="0.35"/>
+      <!-- Tick marks -->
+      <g id="scale-ticks"></g>
+      <!-- Needle -->
+      <line id="scale-needle" x1="110" y1="70" x2="110" y2="20" stroke="#4A4A5A" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="110" cy="70" r="4" fill="#2A2A3A"/>
+      <!-- Labels -->
+      <text x="14" y="78" font-size="8" fill="#4A4A5A" font-family="monospace">−5</text>
+      <text x="107" y="10" font-size="8" fill="#4A4A5A" font-family="monospace" text-anchor="middle">0</text>
+      <text x="200" y="78" font-size="8" fill="#4A4A5A" font-family="monospace" text-anchor="end">+5</text>
+      <!-- Score text -->
+      <text id="scale-score" x="110" y="52" text-anchor="middle" font-size="14" fill="#4A4A5A" font-family="monospace" font-weight="bold">—</text>
+    </svg>
+    <div class="overlay-label" id="scale-label">balance scale</div>
+  </div>
+
+  <!-- DIALOGUE PANEL — centre, appears on high drift -->
+  <div class="dialogue-panel" id="dialogue-panel">
+    <div class="dialogue-inner">
+      <div class="dialogue-mode-label">DIALOGUE MODE — DRIFT THRESHOLD CROSSED</div>
+      <div class="chat-history" id="chat-history"></div>
+      <div class="dialogue-text" id="dialogue-text"><span class="typing-cursor"></span></div>
+      <div class="response-area">
+        <textarea class="mirror-input" id="mirror-input" placeholder="Respond to the mirror..." onkeydown="handleDialogueKey(event)"></textarea>
+        <button class="mirror-send" id="mirror-send" onclick="sendDialogue()">SEND</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT PANEL — bottom right -->
+  <div class="input-panel">
+    <div class="input-panel-label">biometric input</div>
+
+    <div class="ip-slider">
+      <div class="bio-label">HRV</div>
+      <div class="ip-row">
+        <input type="range" id="i-hrv" min="0" max="100" value="60" oninput="ipv('iv-hrv',this.value)">
+        <span class="ipv" id="iv-hrv">60</span>
+      </div>
+    </div>
+    <div class="ip-slider">
+      <div class="bio-label">Skin conductance (EDA)</div>
+      <div class="ip-row">
+        <input type="range" id="i-eda" min="0" max="100" value="30" oninput="ipv('iv-eda',this.value)">
+        <span class="ipv" id="iv-eda">30</span>
+      </div>
+    </div>
+    <div class="ip-slider">
+      <div class="bio-label">Response latency</div>
+      <div class="ip-row">
+        <input type="range" id="i-lat" min="0" max="100" value="25" oninput="ipv('iv-lat',this.value)">
+        <span class="ipv" id="iv-lat">25</span>
+      </div>
+    </div>
+    <div class="ip-slider">
+      <div class="bio-label">Voice tension</div>
+      <div class="ip-row">
+        <input type="range" id="i-voice" min="0" max="100" value="20" oninput="ipv('iv-voice',this.value)">
+        <span class="ipv" id="iv-voice">20</span>
+      </div>
+    </div>
+
+    <textarea class="ip-textarea" id="i-report" placeholder="What's on your mind right now... (optional)"></textarea>
+    <button class="scan-btn" id="scan-btn" onclick="runScan()">◉ SCAN</button>
+  </div>
+
+  <!-- MODE INDICATOR -->
+  <div class="mode-indicator" id="mode-indicator">SCH · TCE · SCH · In Development</div>
 
 </div>
 
 <script>
-// ── Scenario presets ───────────────────────────────────────────────────────
-const scenarios = {
-  balanced: {
-    label: 'Balanced group',
-    participants: [
-      { id:'P1', drift:1.0, code:'CIST', col:'#534AB7', nes:true },
-      { id:'P2', drift:1.3, code:'CIST', col:'#534AB7', nes:true },
-      { id:'P3', drift:0.9, code:'YARC', col:'#1D9E75', nes:true },
-      { id:'P4', drift:null, code:'env', col:'#5A5A55', nes:false },
-    ],
-    env: { acoustic:'Low', co2:'Normal', thermal:'Stable', motion:'Calm' },
-    envCols: { acoustic:'#1D9E75', co2:'#1D9E75', thermal:'#1D9E75', motion:'#1D9E75' },
-    conflict: null,
-    context: 'Leadership workshop. 3 of 4 participants wearing NES. Group has been working together for 90 minutes. Content is being integrated well. No observable friction. Acoustic levels low, CO₂ normal.'
-  },
-  narc: {
-    label: 'NARC dominant',
-    participants: [
-      { id:'P1', drift:3.4, code:'NARC', col:'#D85A30', nes:true },
-      { id:'P2', drift:2.1, code:'NARC', col:'#D85A30', nes:true },
-      { id:'P3', drift:3.0, code:'NARC', col:'#D85A30', nes:true },
-      { id:'P4', drift:null, code:'env', col:'#5A5A55', nes:false },
-    ],
-    env: { acoustic:'Elevated', co2:'Rising', thermal:'Warm', motion:'High' },
-    envCols: { acoustic:'#EF9F27', co2:'#EF9F27', thermal:'#EF9F27', motion:'#EF9F27' },
-    conflict: null,
-    context: 'Executive strategy session. All NES participants showing NARC dominant. Room acoustic elevated, CO₂ rising, motion high. Group has been debating resource allocation for 40 minutes. Conversation has become increasingly competitive and zero-sum.'
-  },
-  collapse: {
-    label: 'Collapse risk',
-    participants: [
-      { id:'P1', drift:4.8, code:'Øll', col:'#D4537E', nes:true },
-      { id:'P2', drift:3.6, code:'NARC', col:'#D85A30', nes:true },
-      { id:'P3', drift:4.2, code:'Øll', col:'#D4537E', nes:true },
-      { id:'P4', drift:null, code:'env', col:'#5A5A55', nes:false },
-    ],
-    env: { acoustic:'High', co2:'High', thermal:'Hot', motion:'Erratic' },
-    envCols: { acoustic:'#E24B4A', co2:'#E24B4A', thermal:'#E24B4A', motion:'#E24B4A' },
-    conflict: null,
-    context: 'Therapy group session. Two participants showing Øll dominant with drift near 5. One NARC dominant. All environmental sensors in critical range. Session has been running for 2 hours. Emotional content has been very high. Two participants appear to be in near-collapse state.'
-  },
-  conflict: {
-    label: 'NES conflict',
-    participants: [
-      { id:'P1', drift:1.2, code:'CIST', col:'#534AB7', nes:true },
-      { id:'P2', drift:1.5, code:'CIST', col:'#534AB7', nes:true },
-      { id:'P3', drift:1.0, code:'YARC', col:'#1D9E75', nes:true },
-      { id:'P4', drift:null, code:'env', col:'#5A5A55', nes:false },
-    ],
-    env: { acoustic:'Elevated', co2:'Rising', thermal:'Warm', motion:'High' },
-    envCols: { acoustic:'#EF9F27', co2:'#EF9F27', thermal:'#EF9F27', motion:'#EF9F27' },
-    conflict: 'NES scores indicate CIST/YARC dominant and low drift across participants — but room sensors show elevated acoustics, rising CO₂, high motion, and warm thermal. This discrepancy suggests participants may be suppressing or masking their activation. Subconscious signals not yet surfacing in biometric output.',
-    context: 'Coaching session. NES participants scoring low drift and CIST/YARC dominant — appearing calm and regulated on the watch. However, room sensors show elevated acoustics, CO₂ rising, high motion, warm thermal. There is a discrepancy between individual biometric output and the environmental reading. The group may be suppressing activation rather than genuinely regulated.'
+// ── State ─────────────────────────────────────────────────────────────────
+let scores = null;
+let dialogueMode = false;
+let dialogueHistory = [];
+let chatHistory = [];
+
+function ipv(id, v) { document.getElementById(id).textContent = v; }
+
+// ── SVG helpers ───────────────────────────────────────────────────────────
+function rad(a) { return a * Math.PI / 180; }
+
+function polar(cx, cy, r, angle) {
+  return {
+    x: cx + r * Math.cos(rad(angle)),
+    y: cy + r * Math.sin(rad(angle))
+  };
+}
+
+// ── Drift ring ────────────────────────────────────────────────────────────
+function renderDriftRing(drift) {
+  const cx = 55, cy = 55, r = 44;
+  const pct = Math.min(drift / 5, 1);
+  const sweep = pct * 360;
+  const col = drift < 1.5 ? '#1D9E75' : drift < 2.5 ? '#EF9F27' : '#D85A30';
+
+  let d = '';
+  if (sweep > 0 && sweep < 360) {
+    const s = polar(cx, cy, r, -90);
+    const e = polar(cx, cy, r, -90 + sweep);
+    const lg = sweep > 180 ? 1 : 0;
+    d = `M ${s.x} ${s.y} A ${r} ${r} 0 ${lg} 1 ${e.x} ${e.y}`;
+  } else if (sweep >= 360) {
+    d = `M ${cx} ${cy - r} A ${r} ${r} 0 1 1 ${cx - 0.01} ${cy - r}`;
   }
-};
 
-let scanLog = [];
-let currentScenario = null;
-
-// ── UI helpers ─────────────────────────────────────────────────────────────
-const codeCols = { NARC:'#D85A30', YARC:'#1D9E75', CIST:'#534AB7', 'Øll':'#D4537E' };
-
-function getStatePill(drift) {
-  if (drift === null || drift === undefined) return { cls:'green', text:'SENSING ACTIVE' };
-  if (drift < 2) return { cls:'green', text:'GROUP STABLE' };
-  if (drift < 3.5) return { cls:'amber', text:'DRIFT ELEVATED' };
-  return { cls:'red', text:'CRITICAL ALERT' };
+  document.getElementById('drift-arc').setAttribute('d', d);
+  document.getElementById('drift-arc').setAttribute('stroke', col);
+  document.getElementById('drift-num').textContent = drift.toFixed(1);
+  document.getElementById('drift-num').setAttribute('fill', col);
+  document.getElementById('drift-sub').setAttribute('fill', col);
 }
 
-function updatePill(drift) {
-  const p = getStatePill(drift);
-  const pill = document.getElementById('state-pill');
-  pill.className = 'pill ' + p.cls;
-  document.getElementById('pill-text').textContent = p.text;
-}
+// ── Observer codes pie ────────────────────────────────────────────────────
+function renderCodes(oc) {
+  const cx = 55, cy = 55, r = 44;
+  const codes = [
+    { name:'NARC', pct: oc.narc, col:'#D85A30' },
+    { name:'YARC', pct: oc.yarc, col:'#1D9E75' },
+    { name:'CIST', pct: oc.cist, col:'#7B6FD0' },
+    { name:'Øll',  pct: oc.oll,  col:'#D4537E' },
+  ];
 
-function updateRoomViz(participants, data) {
-  participants.forEach((p, i) => {
-    const n = i + 1;
-    const ring = document.getElementById('pv'+n+'-ring');
-    const aura = document.getElementById('pv'+n+'-aura');
-    if (!ring || !aura) return;
-
-    if (!p.nes) {
-      ring.setAttribute('stroke', '#3A3A35');
-      aura.setAttribute('stroke', '#3A3A35');
-      aura.setAttribute('opacity', '0.15');
-      return;
-    }
-
-    const col = p.col;
-    ring.setAttribute('stroke', col);
-    ring.setAttribute('stroke-width', '2');
-    aura.setAttribute('stroke', col);
-
-    // Pulse aura on high drift
-    const d = p.drift || 0;
-    const opacity = Math.min(0.15 + d * 0.12, 0.6).toFixed(2);
-    aura.setAttribute('opacity', opacity);
+  let startAngle = -90;
+  let arcs = '';
+  codes.forEach(c => {
+    const sweep = (c.pct / 100) * 360;
+    const end = startAngle + sweep;
+    const s = polar(cx, cy, r, startAngle);
+    const e = polar(cx, cy, r, end);
+    const lg = sweep > 180 ? 1 : 0;
+    arcs += `<path d="M ${cx} ${cy} L ${s.x} ${s.y} A ${r} ${r} 0 ${lg} 1 ${e.x} ${e.y} Z" fill="${c.col}" opacity="0.75" stroke="#08080C" stroke-width="0.5"/>`;
+    startAngle = end;
   });
 
-  // Fusion bar
-  const bar = document.getElementById('fusion-bar-fill');
-  const conf = data ? data.fusion_confidence : 0;
-  const barW = Math.round((conf / 100) * 160);
-  bar.setAttribute('width', barW);
-  document.getElementById('fusion-confidence').style.width = conf + '%';
-  document.getElementById('fusion-pct').textContent = conf ? conf + '%' : '—';
+  document.getElementById('codes-arcs').innerHTML = arcs;
+
+  const dom = codes.reduce((a, b) => a.pct > b.pct ? a : b);
+  document.getElementById('codes-center-1').textContent = dom.name;
+  document.getElementById('codes-center-1').setAttribute('fill', dom.col);
+  document.getElementById('codes-center-2').textContent = dom.pct + '%';
+  document.getElementById('codes-center-2').setAttribute('fill', dom.col);
 }
 
-function updateGroupStats(data) {
-  if (!data) return;
+// ── Balance scale ─────────────────────────────────────────────────────────
+function renderScale(bs) {
+  const pct = (bs + 5) / 10;
+  const angle = -180 + pct * 180; // -180 to 0 maps to left to right on arc
+  // Needle from centre (110, 70) pointing at arc
+  const arcR = 90;
+  const nx = 110 + arcR * Math.cos(rad(angle));
+  const ny = 70 + arcR * Math.sin(rad(angle));
 
-  const driftEl = document.getElementById('g-drift');
-  const bsEl = document.getElementById('g-bs');
-  const codeEl = document.getElementById('g-code');
-  const zpEl = document.getElementById('g-zp');
+  const col = bs > 0.5 ? '#1D9E75' : bs < -0.5 ? '#D85A30' : '#EF9F27';
 
-  driftEl.textContent = data.group_drift.toFixed(1);
-  const dc = data.group_drift < 2 ? '#1D9E75' : data.group_drift < 3.5 ? '#EF9F27' : '#E24B4A';
-  driftEl.style.color = dc;
-  document.getElementById('g-drift-sub').textContent = data.drift_state || '';
+  const needle = document.getElementById('scale-needle');
+  needle.setAttribute('x2', nx);
+  needle.setAttribute('y2', ny);
+  needle.setAttribute('stroke', col);
 
-  bsEl.textContent = (data.group_bs > 0 ? '+' : '') + data.group_bs.toFixed(1);
-  bsEl.style.color = data.group_bs > 0.5 ? '#1D9E75' : data.group_bs < -0.5 ? '#D85A30' : '#EF9F27';
-  document.getElementById('g-bs-sub').textContent = data.bs_state || '';
+  const scoreEl = document.getElementById('scale-score');
+  scoreEl.textContent = (bs > 0 ? '+' : '') + bs.toFixed(1);
+  scoreEl.setAttribute('fill', col);
 
-  codeEl.textContent = data.dominant_code;
-  codeEl.style.color = codeCols[data.dominant_code] || '#9A9990';
-
-  zpEl.textContent = Math.abs(data.group_bs).toFixed(1);
-  zpEl.style.color = Math.abs(data.group_bs) < 1 ? '#1D9E75' : Math.abs(data.group_bs) < 2.5 ? '#EF9F27' : '#D85A30';
-
-  ['card-drift','card-bs','card-code','card-zp'].forEach(id => document.getElementById(id).classList.add('lit'));
-
-  updatePill(data.group_drift);
+  document.getElementById('scale-label').textContent = 'balance scale · ' + (scores.bs_state || '');
 }
 
-function updateParticipants(participants, data) {
-  const list = document.getElementById('participant-list');
-  list.innerHTML = participants.map((p, i) => {
-    const pd = data && data.participants ? data.participants[i] : null;
-    const drift = pd ? pd.drift : p.drift;
-    const code = pd ? pd.code : p.code;
-    const col = codeCols[code] || p.col;
-    const driftPct = drift ? Math.min((drift / 5) * 100, 100) : 0;
-
-    return `
-      <div class="p-row">
-        <div class="p-avatar" style="background:${col}18;border-color:${col};color:${col};">${p.id}</div>
-        <div class="p-name">${p.id}</div>
-        <div class="p-bar-track">
-          ${p.nes
-            ? `<div class="p-bar-fill" style="width:${driftPct}%;background:${col};"></div>`
-            : `<div class="p-bar-fill" style="width:100%;background:var(--border2);opacity:0.3;"></div>`
-          }
-        </div>
-        <div class="p-drift-val" style="color:${col};">${p.nes && drift ? drift.toFixed(1) : '—'}</div>
-        <div class="p-code" style="color:${col};">${code}</div>
-        <div class="p-nes-badge ${p.nes ? 'connected' : ''}">${p.nes ? 'NES' : 'no NES'}</div>
-      </div>
-    `;
-  }).join('');
-}
-
-function updateEnv(env, cols) {
-  ['acoustic','co2','thermal','motion'].forEach(k => {
-    const el = document.getElementById('env-'+k);
-    if (el) {
-      el.textContent = env[k] || '—';
-      el.style.color = cols[k] || 'var(--text3)';
-    }
+// ── Biometric bars ────────────────────────────────────────────────────────
+function renderBio(hrv, eda, lat, voice) {
+  const pairs = [
+    { bar:'bio-hrv', val:'bio-hrv-v', v: hrv, col:'#1D9E75' },
+    { bar:'bio-eda', val:'bio-eda-v', v: eda, col:'#7B6FD0' },
+    { bar:'bio-lat', val:'bio-lat-v', v: lat, col:'#EF9F27' },
+    { bar:'bio-voice', val:'bio-voice-v', v: voice, col:'#378ADD' },
+  ];
+  pairs.forEach(p => {
+    document.getElementById(p.bar).style.width = p.v + '%';
+    document.getElementById(p.bar).style.background = p.col;
+    document.getElementById(p.val).textContent = p.v;
+    document.getElementById(p.val).style.color = p.col;
   });
 }
 
-function updateSignal(text, state) {
-  const box = document.getElementById('signal-box');
-  box.className = 'signal-box state-' + (state || 'balanced');
-  document.getElementById('signal-text').textContent = '';
+// ── Aura glow ─────────────────────────────────────────────────────────────
+function updateAura(drift) {
+  const aura = document.getElementById('figure-aura');
+  aura.className = 'figure-aura ' + (drift < 1.5 ? 'aura-teal' : drift < 3 ? 'aura-amber' : 'aura-red');
+  document.getElementById('reflection-fig').classList.toggle('active', drift > 0);
+}
 
-  // Typewriter effect
+// ── Mode switching ────────────────────────────────────────────────────────
+function enterDialogueMode(firstLine) {
+  dialogueMode = true;
+  const panel = document.getElementById('dialogue-panel');
+  panel.classList.add('visible');
+
+  const pill = document.getElementById('mode-pill');
+  pill.className = 's-pill amber';
+  document.getElementById('mode-text').textContent = 'DIALOGUE MODE';
+
+  typeText(firstLine);
+}
+
+function exitDialogueMode() {
+  dialogueMode = false;
+  document.getElementById('dialogue-panel').classList.remove('visible');
+  document.getElementById('mode-pill').className = 's-pill green';
+  document.getElementById('mode-text').textContent = 'REFLECTIVE MODE';
+  document.getElementById('chat-history').innerHTML = '';
+  chatHistory = [];
+  dialogueHistory = [];
+}
+
+// ── Typewriter ─────────────────────────────────────────────────────────────
+function typeText(text) {
+  const el = document.getElementById('dialogue-text');
+  el.innerHTML = '<span class="typing-cursor"></span>';
   let i = 0;
-  const el = document.getElementById('signal-text');
-  el.innerHTML = '<span class="typing-bar"></span>';
   const interval = setInterval(() => {
     if (i < text.length) {
       el.textContent = text.slice(0, i + 1);
-      el.innerHTML += '<span class="typing-bar"></span>';
+      el.innerHTML += '<span class="typing-cursor"></span>';
       i++;
     } else {
       el.textContent = text;
       clearInterval(interval);
     }
-  }, 18);
+  }, 22);
 }
 
-function updateActions(actions) {
-  const box = document.getElementById('actions-box');
-  const list = document.getElementById('action-list');
-
-  if (!actions || actions.length === 0) { box.style.display = 'none'; return; }
-  box.style.display = 'block';
-
-  const icons = ['◈', '◉', '◎', '○', '◇'];
-  list.innerHTML = actions.map((a, i) => `
-    <div class="action-item">
-      <span class="action-icon">${icons[i % icons.length]}</span>
-      <span>${a}</span>
-    </div>
+function addToHistory(role, text) {
+  chatHistory.push({ role, text });
+  const container = document.getElementById('chat-history');
+  if (chatHistory.length > 6) chatHistory.shift();
+  container.innerHTML = chatHistory.map(m => `
+    <div class="ch-msg ${m.role === 'user' ? 'user' : 'tce'}">${m.text}</div>
   `).join('');
+  container.scrollTop = container.scrollHeight;
 }
 
-function updateConflict(text) {
-  const flag = document.getElementById('conflict-flag');
-  if (!text) { flag.classList.remove('visible'); return; }
-  flag.classList.add('visible');
-  document.getElementById('conflict-text').textContent = text;
-}
+// ── Claude API — initial scan ──────────────────────────────────────────────
+async function callTCEScan(data) {
+  const sys = `You are the TCE — Smart Mirror · UMNi Labs. You are a smart mirror powered by the DP-1 processor chip. You read a person's biometric state and self-report, score them through the framework, and decide whether to stay in reflective mode or shift to dialogue.
 
-function addToLog(scenario, groupDrift, state) {
-  const now = new Date();
-  const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
-  scanLog.unshift({ time, scenario, groupDrift, state });
-  if (scanLog.length > 6) scanLog.pop();
+FRAMEWORK:
+- Observer Codes: NARC (extractive), YARC (giving), CIST (regulating), Øll (volatile). Zero-Point = 25% each.
+- Drift 0–5: gap between conscious and subconscious. 0=aligned. >2.5 = dialogue threshold.
+- Balance Scale −5 to +5. 0 = Zero-Point.
+- HRV low = stress/NARC/Øll. EDA spikes = subconscious activation. High latency = avoidance. High voice tension = activation.
 
-  const logEl = document.getElementById('scan-log');
-  logEl.innerHTML = scanLog.map(l => `
-    <div style="display:flex;align-items:center;gap:8px;font-size:11px;">
-      <span style="font-family:var(--mono);font-size:9px;color:var(--text3);">${l.time}</span>
-      <span style="color:var(--text2);">${l.scenario}</span>
-      <span style="font-family:var(--mono);font-size:10px;color:${l.groupDrift < 2 ? 'var(--teal)' : l.groupDrift < 3.5 ? 'var(--amber)' : 'var(--red)'};">drift ${l.groupDrift ? l.groupDrift.toFixed(1) : '—'}</span>
-      <span style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-left:auto;">${l.state}</span>
-    </div>
-  `).join('');
-}
-
-// ── Claude API call ────────────────────────────────────────────────────────
-async function callABFS(context, participants, env, conflict) {
-  const systemPrompt = `You are the ABFS fusion engine — the group-level intelligence layer of the SCH · Source Code Holdings device suite. You process NES data from multiple participants combined with room sensor readings and produce a coordinator-facing analysis.
-
-FRAMEWORK RULES:
-- Observer Codes: NARC (extractive/competitive), YARC (giving/empathic), CIST (regulating/analytical), Øll (volatile/all-or-nothing). Zero-Point = 25% each.
-- Group Drift: weighted average across NES participants. Outliers (especially Øll) pull harder than arithmetic share.
-- Balance Scale: −5 (collapse) to +5 (full group awareness).
-- Dominant code = highest aggregate code across the group.
-- NES vs environment conflict: if NES scores are calm but room is activated (or vice versa), flag it. The coordinator sees both signals.
-
-You must respond ONLY with valid JSON, no other text:
+Return ONLY valid JSON:
 {
-  "group_drift": <number 0-5, one decimal>,
-  "group_bs": <number -5 to 5, one decimal>,
+  "balance_scale": <-5 to 5, one decimal>,
+  "drift": <0 to 5, one decimal>,
   "bs_state": <short string>,
-  "drift_state": <short string>,
   "dominant_code": <"NARC"|"YARC"|"CIST"|"Øll">,
-  "fusion_confidence": <integer 0-100, how confident the fusion engine is given available data>,
-  "session_state": <"balanced"|"narc"|"collapse">,
-  "participants": [
-    { "id": "P1", "drift": <number>, "code": <string> },
-    { "id": "P2", "drift": <number>, "code": <string> },
-    { "id": "P3", "drift": <number>, "code": <string> },
-    { "id": "P4", "drift": null, "code": "env" }
-  ],
-  "coordinator_signal": <string, 3-4 sentences, what is happening in framework terms and the range of appropriate coordinator responses. Clinical but human. Not prescriptive — the coordinator decides.>,
-  "recommended_actions": [<string>, <string>, <string>],
-  "conflict": <string or null — only if NES and environment readings meaningfully contradict each other. Explain the discrepancy precisely.>
+  "observer_codes": { "narc":<int>, "yarc":<int>, "cist":<int>, "oll":<int> },
+  "mode": <"reflective"|"dialogue">,
+  "reflection": <string — if reflective mode: a single short observation the mirror surfaces back to the person. Not coaching, not prescriptive. Just what the data shows. 1 sentence, present tense, second person. e.g. "Your subconscious is running a different pattern to what you're presenting.">,
+  "dialogue_opener": <string or null — if dialogue mode: the first thing the mirror says. A question or gentle observation that opens the conversation. Warm but direct. 1-2 sentences. Italic, thoughtful, the voice of the mirror speaking to you.>
 }
 
-participant[3] (P4) has no NES — leave drift null and code as "env".`;
+observer_codes must sum to 100. Mode = dialogue if drift >= 2.5.`;
 
-  const msg = `CONTEXT: ${context}
+  const msg = `HRV: ${data.hrv}/100
+EDA: ${data.eda}/100
+RESPONSE LATENCY: ${data.lat}/100
+VOICE TENSION: ${data.voice}/100
+SELF-REPORT: ${data.report || 'None provided'}
 
-PARTICIPANT NES DATA:
-${participants.filter(p => p.nes).map(p => `- ${p.id}: drift ${p.drift}, code ${p.code}`).join('\n')}
-- P4: no NES device — environment estimate only
-
-ROOM SENSORS:
-Acoustic: ${env.acoustic}
-CO₂: ${env.co2}
-Thermal: ${env.thermal}
-Motion: ${env.motion}
-
-${conflict ? 'NOTE: There may be a discrepancy between NES and environmental readings.' : ''}
-
-Process through ABFS fusion engine and generate coordinator output.`;
+Score and determine mode.`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 1200,
-      system: systemPrompt,
+      max_tokens: 800,
+      system: sys,
       messages: [{ role: 'user', content: msg }]
     })
   });
 
-  const data = await res.json();
-  const text = data.content?.[0]?.text || '';
-  return JSON.parse(text.replace(/```json|```/g, '').trim());
+  const d = await res.json();
+  return JSON.parse((d.content?.[0]?.text || '').replace(/```json|```/g, '').trim());
 }
 
-// ── Load scenario ──────────────────────────────────────────────────────────
-async function loadScenario(key) {
-  const s = scenarios[key];
-  currentScenario = key;
+// ── Claude API — dialogue turn ────────────────────────────────────────────
+async function callTCEDialogue(userMessage, scores) {
+  const sys = `You are the TCE — a smart mirror coaching engine. You are in dialogue mode because the person's drift has crossed 2.5. Your role is to guide them back toward Zero-Point through gentle, precise reflection and questions. 
 
-  // Update scenario button states
-  Object.keys(scenarios).forEach(k => {
-    document.getElementById('sc-'+k).classList.toggle('active', k === key);
+You are not a therapist. You are the mirror. You name what you see. You ask one question at a time. You do not give advice. You reflect. You use second person. You are warm but unflinching.
+
+Current scores:
+- Drift: ${scores.drift}
+- Balance Scale: ${scores.balance_scale} (${scores.bs_state})
+- Dominant code: ${scores.dominant_code}
+- NARC: ${scores.observer_codes.narc}%, YARC: ${scores.observer_codes.yarc}%, CIST: ${scores.observer_codes.cist}%, Øll: ${scores.observer_codes.oll}%
+
+Respond in 1-3 sentences. No preamble. Just the mirror speaking.`;
+
+  const messages = [
+    ...dialogueHistory,
+    { role: 'user', content: userMessage }
+  ];
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 300,
+      system: sys,
+      messages
+    })
   });
 
-  // Immediately update env and participants with preset data
-  updateEnv(s.env, s.envCols);
-  updateParticipants(s.participants, null);
-  updateRoomViz(s.participants, null);
+  const d = await res.json();
+  const reply = d.content?.[0]?.text || '';
+  dialogueHistory.push({ role: 'user', content: userMessage });
+  dialogueHistory.push({ role: 'assistant', content: reply });
+  return reply;
+}
 
-  // Disable scan btn
-  const btn = document.getElementById('ci-btn');
+// ── Main scan ─────────────────────────────────────────────────────────────
+async function runScan() {
+  const btn = document.getElementById('scan-btn');
   btn.disabled = true;
-  btn.textContent = '...';
+  btn.textContent = '◌ SCANNING...';
 
-  // Show loading signal
-  document.getElementById('signal-text').innerHTML = '<span style="color:var(--text3);font-size:12px;">Fusion engine processing<span class="typing-bar"></span></span>';
+  // Exit dialogue if active
+  if (dialogueMode) exitDialogueMode();
+
+  const data = {
+    hrv: document.getElementById('i-hrv').value,
+    eda: document.getElementById('i-eda').value,
+    lat: document.getElementById('i-lat').value,
+    voice: document.getElementById('i-voice').value,
+    report: document.getElementById('i-report').value
+  };
 
   try {
-    const result = await callABFS(s.context, s.participants, s.env, s.conflict);
+    const result = await callTCEScan(data);
+    scores = result;
 
-    updateGroupStats(result);
-    updateParticipants(s.participants, result);
-    updateRoomViz(s.participants, result);
-    updateSignal(result.coordinator_signal, result.session_state);
-    updateActions(result.recommended_actions);
-    updateConflict(result.conflict);
-    addToLog(s.label, result.group_drift, result.session_state);
+    // Update all overlays
+    renderDriftRing(result.drift);
+    renderCodes(result.observer_codes);
+    renderScale(result.balance_scale);
+    renderBio(data.hrv, data.eda, data.lat, data.voice);
+    updateAura(result.drift);
+
+    if (result.mode === 'dialogue' && result.dialogue_opener) {
+      enterDialogueMode(result.dialogue_opener);
+    } else if (result.reflection) {
+      // Reflective mode — show reflection as overlay text briefly
+      showReflection(result.reflection);
+    }
 
   } catch(e) {
     console.error(e);
-    document.getElementById('signal-text').textContent = 'Processing error. Check console.';
   }
 
   btn.disabled = false;
-  btn.textContent = 'SCAN';
+  btn.textContent = '◉ SCAN';
 }
 
-// ── Custom input ───────────────────────────────────────────────────────────
-async function runCustom() {
-  const input = document.getElementById('custom-input');
-  const text = input.value.trim();
-  if (!text) return;
+// ── Reflection overlay ─────────────────────────────────────────────────────
+let reflectionTimeout = null;
+function showReflection(text) {
+  // Show as a temporary text in the dialogue text slot without full dialogue mode
+  const el = document.getElementById('dialogue-text');
+  const panel = document.getElementById('dialogue-panel');
 
-  const btn = document.getElementById('ci-btn');
-  btn.disabled = true;
-  btn.textContent = '...';
+  // Quick show without dialogue mode chrome
+  document.getElementById('dialogue-panel').classList.add('visible');
+  document.getElementById('dialogue-mode-label') && (document.getElementById('dialogue-mode-label').style.display = 'none');
 
-  // Use current scenario's env if loaded, else defaults
-  const s = currentScenario ? scenarios[currentScenario] : scenarios.narc;
-  const customContext = text;
+  // Temporarily show
+  typeText(text);
 
-  document.getElementById('signal-text').innerHTML = '<span style="color:var(--text3);font-size:12px;">Fusion engine processing<span class="typing-bar"></span></span>';
+  // Hide response area
+  document.querySelector('.response-area').style.display = 'none';
+
+  clearTimeout(reflectionTimeout);
+  reflectionTimeout = setTimeout(() => {
+    panel.classList.remove('visible');
+    document.querySelector('.response-area').style.display = 'flex';
+  }, 6000);
+}
+
+// Override enterDialogueMode to ensure response area is visible
+const _enterDialogueMode = enterDialogueMode;
+function enterDialogueModeFixed(firstLine) {
+  document.querySelector('.response-area').style.display = 'flex';
+  clearTimeout(reflectionTimeout);
+  _enterDialogueMode(firstLine);
+}
+
+// Reassign
+window.enterDialogueMode = enterDialogueModeFixed;
+
+// ── Dialogue send ──────────────────────────────────────────────────────────
+async function sendDialogue() {
+  const input = document.getElementById('mirror-input');
+  const msg = input.value.trim();
+  if (!msg || !scores) return;
+
+  input.value = '';
+  const sendBtn = document.getElementById('mirror-send');
+  sendBtn.disabled = true;
+
+  addToHistory('user', msg);
+  document.getElementById('dialogue-text').innerHTML = '<span class="typing-cursor"></span>';
 
   try {
-    const result = await callABFS(customContext, s.participants, s.env, null);
-    updateGroupStats(result);
-    updateParticipants(s.participants, result);
-    updateRoomViz(s.participants, result);
-    updateSignal(result.coordinator_signal, result.session_state);
-    updateActions(result.recommended_actions);
-    updateConflict(result.conflict);
-    addToLog('Custom: ' + text.slice(0, 30) + (text.length > 30 ? '…' : ''), result.group_drift, result.session_state);
-    input.value = '';
+    const reply = await callTCEDialogue(msg, scores);
+    typeText(reply);
+    addToHistory('tce', reply);
   } catch(e) {
+    typeText('The mirror could not process that. Try again.');
     console.error(e);
-    document.getElementById('signal-text').textContent = 'Processing error. Check console.';
   }
 
-  btn.disabled = false;
-  btn.textContent = 'SCAN';
+  sendBtn.disabled = false;
 }
 
-function handleKey(e) {
+function handleDialogueKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    runCustom();
+    sendDialogue();
   }
 }
 
-// ── Init ───────────────────────────────────────────────────────────────────
-// Load NARC scenario by default
-loadScenario('narc');
+// ── Scale tick marks ───────────────────────────────────────────────────────
+(function renderScaleTicks() {
+  const ticks = document.getElementById('scale-ticks');
+  let t = '';
+  for (let i = 0; i <= 10; i++) {
+    const angle = -180 + i * 18;
+    const r1 = 90, r2 = 84;
+    const x1 = 110 + r1 * Math.cos(rad(angle));
+    const y1 = 70 + r1 * Math.sin(rad(angle));
+    const x2 = 110 + r2 * Math.cos(rad(angle));
+    const y2 = 70 + r2 * Math.sin(rad(angle));
+    t += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2A2A3A" stroke-width="${i===5?1.5:0.8}"/>`;
+  }
+  ticks.innerHTML = t;
+})();
+
+// ── Auto-run on load ───────────────────────────────────────────────────────
+// Small delay so fonts load
+setTimeout(runScan, 600);
 </script>
 
   <div style="text-align:center;padding:2rem;font-family:'Geist Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:#b8b5aa;border-top:1px solid rgba(0,0,0,0.08);margin-top:3rem;">
