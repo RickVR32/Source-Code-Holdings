@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prototype · Source Code Holdings</title>
+<title>SCH · ABFS — Ambient Field Sensor</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 
@@ -23,8 +23,8 @@
     --pink: #D4537E;
     --blue: #378ADD;
     --red: #E24B4A;
-    --mono: 'Space Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --mono: 'Geist Mono', monospace;
+    --sans: 'Cormorant', sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -215,11 +215,17 @@
 </head>
 <body>
 
-
+<header class="header">
+  <div class="logo">Source Code Holdings &nbsp;·&nbsp; <strong>ABFS</strong> &nbsp;·&nbsp; Room Sensor — UMNi Labs</div>
+  <div class="header-right">
+    <div class="pill green" id="state-pill"><div class="pill-dot"></div><span id="pill-text">SENSING ACTIVE</span></div>
+    <div class="pill green"><div class="pill-dot"></div>CLAUDE API</div>
+  </div>
+</header>
 <div style="background:#0a0a0a;border-bottom:1px solid rgba(220,38,38,0.2);padding:0.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;">
-  
-  <span style="font-family:'Space Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#444440;">SCH · Prototype · Confidential</span>
-  
+  <a href="https://umni-systems.com/tech.html" style="font-family:'Geist Mono',monospace;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#DC2626;text-decoration:none;">← Source Code Holdings</a>
+  <span style="font-family:'Geist Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#444440;">SCH · Prototype · Confidential</span>
+  <a href="https://umni-systems.com" style="font-family:'Geist Mono',monospace;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#444440;text-decoration:none;">umni-systems.com</a>
 </div>
 
 <div class="main">
@@ -823,5 +829,9 @@ function handleKey(e) {
 // Load NARC scenario by default
 loadScenario('narc');
 </script>
+
+  <div style="text-align:center;padding:2rem;font-family:'Geist Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:#b8b5aa;border-top:1px solid rgba(0,0,0,0.08);margin-top:3rem;">
+    Prototype concept · Source Code Holdings Ltd · Full architecture under NDA
+  </div>
 </body>
 </html>
