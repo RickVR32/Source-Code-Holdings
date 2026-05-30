@@ -1,963 +1,753 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Source Code Holdings Ltd — Private holding company. Proprietary awareness architecture and hardware prototypes. R&D stage. England & Wales." />
-  <title>Source Code Holdings</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:     #0a0a08;
-      --bg2:    #111110;
-      --text:   #e8e7e0;
-      --muted:  #4a4a44;
-      --dim:    #2a2a28;
-      --rule:   rgba(255,255,255,0.06);
-      --mono:   'Geist Mono', monospace;
-      --serif:  'Cormorant', serif;
-      --accent: rgba(255,255,255,0.85);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--serif);
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
-
-    /* ── HEADER ── */
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.8rem 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--rule);
-      background: rgba(10,10,8,0.94);
-      backdrop-filter: blur(16px);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      text-decoration: none;
-    }
-
-    .logo img {
-      height: 42px;
-      width: auto;
-      opacity: 0.5;
-      filter: invert(1);
-    }
-
-    .logo-text {
-      font-family: var(--mono);
-      font-size: 0.95rem;
-      letter-spacing: 0.22em;
-      color: var(--text);
-      text-transform: uppercase;
-    }
-
-    .header-nav {
-      display: flex;
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    .header-nav a {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .header-nav a:hover { color: var(--text); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 12rem 2rem 8rem;
-      position: relative;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,255,255,0.018) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-sigil {
-      width: 72px;
-      height: 72px;
-      margin-bottom: 4rem;
-      opacity: 0.3;
-      filter: invert(1);
-    }
-
-    .hero-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 3rem;
-    }
-
-    .hero-title {
-      font-family: var(--serif);
-      font-size: clamp(4.5rem, 9vw, 9rem);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.0;
-      color: var(--text);
-      margin-bottom: 3rem;
-    }
-
-    .hero-sub {
-      font-family: var(--serif);
-      font-size: 1.35rem;
-      font-weight: 300;
-      color: var(--muted);
-      max-width: 520px;
-      line-height: 1.9;
-      margin-bottom: 4rem;
-    }
-
-    .hero-tags {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .hero-tag {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--dim);
-      padding: 0.5rem 1.2rem;
-    }
-
-    /* ── SHARED SECTION ── */
-    .rule {
-      width: 100%;
-      height: 1px;
-      background: var(--rule);
-    }
-
-    .section {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 8rem 2rem;
-    }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 3rem;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: clamp(3rem, 5.5vw, 5rem);
-      font-weight: 300;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 2rem;
-    }
-
-    .section-title em { font-style: italic; }
-
-    .section-body {
-      font-family: var(--serif);
-      font-size: 1.25rem;
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 2;
-      max-width: 640px;
-    }
-
-    /* ── WHAT WE BUILD ── */
-    .build-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--rule);
-      margin-top: 3rem;
-    }
-
-    .build-cell {
-      background: var(--bg);
-      padding: 3rem 2.5rem;
-    }
-
-    .build-tag {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    .build-title {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text);
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-
-    .build-desc {
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    .build-outcome {
-      margin-top: 1.5rem;
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-    }
-
-    /* ── DEVICES ── */
-    .device-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      margin-top: 3rem;
-    }
-
-    .device-cell {
-      background: var(--bg);
-      padding: 3rem 2.5rem;
-      text-decoration: none;
-      transition: background 0.2s;
-      display: block;
-    }
-
-    .device-cell:hover { background: var(--bg2); }
-
-    .device-id {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.8rem;
-    }
-
-    .device-name {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 300;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-    }
-
-    .device-full {
-      font-family: var(--serif);
-      font-size: 1rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-
-    .device-desc {
-      font-family: var(--serif);
-      font-size: 1rem;
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-
-    .device-trl {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--dim);
-      padding: 0.3rem 0.8rem;
-      margin-right: 0.5rem;
-    }
-
-    /* ── ROADMAP ── */
-    .roadmap {
-      margin-top: 3rem;
-    }
-
-    .roadmap-row {
-      display: grid;
-      grid-template-columns: 140px 80px 1fr;
-      gap: 2rem;
-      align-items: start;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .roadmap-row:first-child { border-top: 1px solid var(--rule); }
-
-    .roadmap-date {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding-top: 0.3rem;
-    }
-
-    .roadmap-status {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.7rem;
-      border: 1px solid var(--dim);
-      color: var(--muted);
-      white-space: nowrap;
-      text-align: center;
-    }
-
-    .roadmap-status.live {
-      color: rgba(255,255,255,0.5);
-      border-color: rgba(255,255,255,0.15);
-    }
-
-    .roadmap-text {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 300;
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .roadmap-sub {
-      font-family: var(--serif);
-      font-size: 0.95rem;
-      color: var(--muted);
-      margin-top: 0.3rem;
-      font-style: italic;
-    }
-
-    /* ── TEAM ── */
-    .team-card {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 2.5rem;
-      padding: 3rem 0;
-      border-bottom: 1px solid var(--rule);
-      align-items: start;
-    }
-
-    .team-card:first-of-type { border-top: 1px solid var(--rule); }
-
-    .team-initial {
-      width: 80px;
-      height: 80px;
-      border: 1px solid var(--dim);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 2.5rem;
-      font-style: italic;
-      font-weight: 300;
-      color: var(--muted);
-      flex-shrink: 0;
-    }
-
-    .team-name {
-      font-family: var(--serif);
-      font-size: 2rem;
-      font-weight: 300;
-      color: var(--text);
-      margin-bottom: 0.3rem;
-    }
-
-    .team-role {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-
-    .team-bio {
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 1rem;
-    }
-
-    .team-links {
-      display: flex;
-      gap: 1.2rem;
-    }
-
-    .team-link {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      border-bottom: 1px solid var(--dim);
-      padding-bottom: 1px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .team-link:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
-
-    /* ── HOLDINGS ── */
-    .holding-row {
-      display: grid;
-      grid-template-columns: 100px 1fr auto;
-      gap: 2rem;
-      align-items: start;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .holding-row:first-of-type { border-top: 1px solid var(--rule); }
-
-    .holding-id {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding-top: 0.4rem;
-    }
-
-    .holding-name {
-      font-family: var(--serif);
-      font-size: 1.8rem;
-      font-weight: 300;
-      color: var(--text);
-    }
-
-    .holding-desc {
-      font-family: var(--serif);
-      font-size: 1rem;
-      font-weight: 300;
-      color: var(--muted);
-      margin-top: 0.3rem;
-      font-style: italic;
-    }
-
-    .holding-status {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-      padding-top: 0.5rem;
-    }
-
-    /* ── CONTACT ── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--rule);
-      margin-top: 3rem;
-    }
-
-    .contact-cell {
-      background: var(--bg);
-      padding: 3rem 2.5rem;
-    }
-
-    .contact-cell-label {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    .contact-cell-value {
-      font-family: var(--serif);
-      font-size: 1.3rem;
-      font-weight: 300;
-      color: var(--text);
-      text-decoration: none;
-      line-height: 1.6;
-    }
-
-    a.contact-cell-value:hover { opacity: 0.7; }
-
-    .contact-cell-note {
-      font-family: var(--serif);
-      font-size: 0.95rem;
-      color: var(--muted);
-      margin-top: 0.5rem;
-      font-style: italic;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--rule);
-      padding: 2.5rem 3rem;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-
-    .footer-col {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      line-height: 2.4;
-    }
-
-    .footer-col a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .footer-col a:hover { color: var(--text); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      header { padding: 1.5rem 1.5rem; }
-      .header-nav { display: none; }
-      .hero { padding: 10rem 1.5rem 6rem; }
-      .build-grid, .device-grid, .contact-grid { grid-template-columns: 1fr; }
-      .roadmap-row { grid-template-columns: 1fr; gap: 0.8rem; }
-      .team-card { grid-template-columns: 1fr; }
-      .holding-row { grid-template-columns: 1fr; gap: 0.5rem; }
-      .holding-status { display: none; }
-      footer { padding: 2rem 1.5rem; flex-direction: column; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Source Code Holdings Ltd — Private holding company. Proprietary awareness architecture and hardware prototypes. R&D stage. England & Wales." />
+<title>Source Code Holdings</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #f2f1ee;
+  --bg-soft: #e9e8e3;
+  --panel: #fafaf8;
+  --panel-border: rgba(0,0,0,0.09);
+  --line: rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.18);
+  --text: #0e0e0c;
+  --muted: #7a7972;
+  --grid-line: rgba(100,100,90,0.055);
+}
+
+[data-theme="dark"] {
+  --bg: #0a0a08;
+  --bg-soft: #141412;
+  --panel: #1a1a18;
+  --panel-border: rgba(255,255,255,0.07);
+  --line: rgba(255,255,255,0.06);
+  --line-strong: rgba(255,255,255,0.15);
+  --text: #e8e7e0;
+  --muted: #7a7972;
+  --grid-line: rgba(255,255,255,0.025);
+}
+
+/* DARK MODE TOGGLE */
+.dark-toggle {
+  position: fixed; top: 20px; right: 24px; z-index: 100;
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'Geist Mono', monospace; font-weight: 300;
+  font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); background: var(--panel);
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+}
+.dark-toggle:hover { color: var(--text); border-color: var(--text); }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(180deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+.container { width: min(1200px, calc(100% - 48px)); margin: auto; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; padding: 60px 0 80px;
+}
+.hero-logo { margin-bottom: 32px; }
+.hero-logo img { width: 140px; height: auto; display: block; margin: 0 auto; opacity: 0.92; }
+.hero-name {
+  font-family: 'Cormorant', serif; font-weight: 300;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.32em; text-transform: uppercase;
+}
+.hero-divider { width: 32px; height: 1px; background: var(--line-strong); margin: 28px auto; }
+.hero-copy { max-width: 580px; font-size: 0.82rem; line-height: 1.85; color: var(--muted); letter-spacing: 0.02em; }
+.hero-tag { margin-top: 44px; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
+
+/* SECTIONS */
+.section { padding: 80px 0; border-top: 1px solid var(--line); }
+.section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; margin-bottom: 40px; }
+.section-label { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.section-title { font-family: 'Cormorant', serif; font-weight: 300; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; letter-spacing: -0.01em; }
+.section-desc { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 440px; padding-top: 8px; align-self: end; }
+
+/* CARDS */
+.cards   { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.cards-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+.cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+
+.card {
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 28px 24px;
+  display: flex; flex-direction: column;
+  transition: border-color 0.2s, background 0.4s;
+}
+.card:hover { border-color: var(--line-strong); }
+.card-index { font-size: 0.62rem; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 20px; opacity: 0.7; }
+.card-badge {
+  display: inline-block; font-size: 0.62rem; letter-spacing: 0.14em;
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 3px 10px; color: var(--muted); margin-bottom: 20px; align-self: flex-start;
+}
+.card h3 { font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.18rem; margin-bottom: 12px; line-height: 1.2; }
+.card p { font-size: 0.77rem; line-height: 1.75; color: var(--muted); margin-bottom: 20px; }
+.card ul { list-style: none; margin-top: auto; border-top: 1px solid var(--line); padding-top: 16px; }
+.card li { font-size: 0.72rem; line-height: 1.6; color: var(--muted); padding: 4px 0; border-bottom: 1px solid var(--line); }
+.card li:last-child { border-bottom: none; }
+
+.card-demo-btn {
+  margin-top: 20px; font-family: 'Geist Mono', monospace; font-weight: 300;
+  font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: transparent; color: var(--muted); border: 1px solid var(--line-strong);
+  border-radius: 999px; padding: 7px 16px; cursor: pointer; transition: all 0.2s; align-self: flex-start;
+}
+.card-demo-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* FRAMEWORK STATEMENT */
+.fw-statement {
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 48px 52px; margin-bottom: 14px;
+}
+.fw-law {
+  font-family: 'Cormorant', serif; font-style: italic; font-weight: 300;
+  font-size: clamp(1.4rem, 2.5vw, 2rem); line-height: 1.35;
+  margin-bottom: 24px; max-width: 680px;
+}
+.fw-body { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 560px; }
+
+/* SCALE */
+.scale-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 18px; padding: 36px 32px; }
+.scale-track-wrap { position: relative; margin: 24px 0 10px; }
+.scale-track { height: 1px; background: var(--line-strong); position: relative; }
+.scale-pip {
+  position: absolute; top: 50%; transform: translate(-50%,-50%);
+  width: 7px; height: 7px; border-radius: 50%; background: var(--text);
+}
+.scale-pip.empty { background: transparent; border: 1px solid var(--line-strong); }
+.scale-ends { display: flex; justify-content: space-between; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+.scale-rows { display: flex; flex-direction: column; margin-top: 20px; border-top: 1px solid var(--line); }
+.scale-row { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.72rem; }
+.scale-row:last-child { border-bottom: none; }
+.scale-score { font-family: 'Cormorant', serif; font-size: 1rem; min-width: 40px; }
+.scale-state { flex: 1; }
+.scale-note { color: var(--muted); font-size: 0.68rem; text-align: right; }
+
+/* ROADMAP */
+.roadmap-rows { display: flex; flex-direction: column; margin-top: 20px; }
+.roadmap-row {
+  display: grid; grid-template-columns: 110px 90px 1fr; gap: 20px;
+  align-items: start; padding: 20px 0; border-bottom: 1px solid var(--line);
+  font-size: 0.77rem;
+}
+.roadmap-row:first-child { border-top: 1px solid var(--line); }
+.roadmap-row:last-child { border-bottom: none; }
+.roadmap-date { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding-top: 2px; }
+.roadmap-status {
+  display: inline-block; font-size: 0.58rem; letter-spacing: 0.14em;
+  text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--line-strong);
+  border-radius: 999px; color: var(--muted); white-space: nowrap; align-self: start;
+}
+.roadmap-status.live { color: var(--text); border-color: var(--line-strong); }
+.roadmap-text { font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.05rem; margin-bottom: 4px; line-height: 1.3; }
+.roadmap-sub { font-size: 0.7rem; line-height: 1.7; color: var(--muted); }
+
+/* TEAM */
+.team-card {
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 40px;
+  display: grid; grid-template-columns: 80px 1fr; gap: 32px; align-items: start;
+}
+.team-initial {
+  width: 80px; height: 80px; border: 1px solid var(--line-strong);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant', serif; font-size: 2.5rem; font-style: italic;
+  font-weight: 300; color: var(--muted); flex-shrink: 0;
+}
+.team-name { font-family: 'Cormorant', serif; font-weight: 300; font-size: 2rem; margin-bottom: 4px; }
+.team-role { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.team-bio { font-size: 0.78rem; line-height: 1.9; color: var(--muted); margin-bottom: 12px; }
+.team-links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+.team-link {
+  font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  border-bottom: 1px solid var(--line-strong); padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.team-link:hover { color: var(--text); border-color: var(--text); }
+
+/* HOLDINGS */
+.holding-row {
+  display: grid; grid-template-columns: 100px 1fr auto;
+  gap: 20px; align-items: start; padding: 24px 0; border-bottom: 1px solid var(--line);
+}
+.holding-row:first-child { border-top: 1px solid var(--line); }
+.holding-row:last-child { border-bottom: none; }
+.holding-id { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.holding-name { font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.6rem; }
+.holding-desc { font-size: 0.72rem; line-height: 1.7; color: var(--muted); margin-top: 4px; font-style: italic; }
+.holding-status { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; padding-top: 6px; }
+
+/* QUOTE */
+.quote-block {
+  background: var(--panel); border: 1px solid var(--panel-border);
+  border-radius: 18px; padding: 48px 52px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+}
+.quote-text { font-family: 'Cormorant', serif; font-style: italic; font-weight: 300; font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.4; }
+.quote-attr { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--muted); margin-top: 20px; }
+.quote-right { font-size: 0.78rem; line-height: 1.85; color: var(--muted); }
+
+/* DEMO PANELS */
+.demo-panel { display: none; flex-direction: column; margin-top: 14px; border-radius: 18px; overflow: hidden; border: 1px solid var(--panel-border); }
+.demo-panel.visible { display: flex; }
+.demo-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+.demo-label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.demo-close { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); background: none; border: none; cursor: pointer; transition: color 0.2s; font-family: 'Geist Mono', monospace; font-weight: 300; }
+.demo-close:hover { color: var(--text); }
+.demo-frame { width: 100%; height: 760px; background: #0D0D0B; border: none; }
+.demo-footer { padding: 10px 22px; background: var(--bg-soft); border-top: 1px solid var(--line); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--muted); display: flex; justify-content: space-between; }
+
+/* ASSESSMENT SECTION */
+.assess-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.assess-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 18px; padding: 36px 32px; display: flex; flex-direction: column; }
+.assess-card.paid { background: var(--text); color: var(--bg); }
+.assess-tag { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.assess-card.paid .assess-tag { color: rgba(242,241,238,0.45); }
+.assess-title { font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.7rem; line-height: 1.1; margin-bottom: 12px; }
+.assess-card.paid .assess-title { color: var(--bg); }
+.assess-price { font-family: 'Cormorant', serif; font-size: 2.2rem; font-weight: 300; margin-bottom: 4px; }
+.assess-price-sub { font-size: 0.68rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 24px; }
+.assess-card.paid .assess-price-sub { color: rgba(242,241,238,0.45); }
+.assess-desc { font-size: 0.78rem; line-height: 1.85; color: var(--muted); margin-bottom: 24px; flex: 1; }
+.assess-card.paid .assess-desc { color: rgba(242,241,238,0.65); }
+.assess-features { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); padding-top: 16px; }
+.assess-card.paid .assess-features { border-top-color: rgba(242,241,238,0.12); }
+.assess-features li { font-size: 0.72rem; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--line); }
+.assess-card.paid .assess-features li { color: rgba(242,241,238,0.55); border-bottom-color: rgba(242,241,238,0.1); }
+.assess-features li:last-child { border-bottom: none; }
+.assess-btn { font-family: 'Geist Mono', monospace; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 22px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+.assess-btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+.assess-btn-paid { font-family: 'Geist Mono', monospace; font-weight: 300; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 22px; border-radius: 999px; border: 1px solid rgba(242,241,238,0.3); background: rgba(242,241,238,0.1); color: var(--bg); cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+.assess-btn-paid:hover { background: rgba(242,241,238,0.2); }
+
+/* CONTACT */
+.contact { padding: 120px 0 80px; border-top: 1px solid var(--line); }
+.contact-inner { max-width: 680px; margin: auto; }
+.contact-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.contact-head h2 { font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.5rem; letter-spacing: 0.06em; }
+.contact-head span { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+input, select, textarea {
+  font-family: 'Geist Mono', monospace; font-weight: 300; font-size: 0.78rem;
+  padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line-strong);
+  background: var(--panel); color: var(--text); outline: none;
+  transition: border-color 0.2s; letter-spacing: 0.01em; width: 100%;
+}
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.7; }
+input:focus, select:focus, textarea:focus { border-color: var(--text); }
+select { appearance: none; cursor: pointer; }
+textarea { grid-column: 1 / -1; min-height: 90px; resize: none; }
+.form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 4px; }
+.form-actions button {
+  font-family: 'Geist Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em;
+  text-transform: uppercase; background: var(--text); color: var(--bg);
+  padding: 9px 20px; border-radius: 999px; border: none; cursor: pointer; transition: opacity 0.2s;
+}
+.form-actions button:hover { opacity: 0.75; }
+
+footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--line); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .section-head, .cards, .cards-2, .cards-3, .form-grid, .quote-block, .assess-grid { grid-template-columns: 1fr; }
+  .section-desc { max-width: 100%; padding-top: 0; }
+  .fw-statement, .quote-block { padding: 32px 28px; }
+  .contact { padding: 80px 0 60px; }
+  .roadmap-row { grid-template-columns: 1fr; gap: 8px; }
+  .team-card { grid-template-columns: 1fr; }
+  .holding-row { grid-template-columns: 1fr; }
+  .holding-status { display: none; }
+}
+@media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+</style>
 </head>
-<body>
 
-  <!-- HEADER -->
-  <header>
-    <a class="logo" href="/">
-      <img src="sch_sygil.png" alt="SCH" />
-      <span class="logo-text">Source Code Holdings</span>
-    </a>
-    <nav class="header-nav">
-      <a href="#technology">Technology</a>
-      <a href="#prototypes">Prototypes</a>
-      <a href="#roadmap">Roadmap</a>
-      <a href="#team">Team</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<body>
+<button class="dark-toggle" onclick="toggleDark()" id="dark-btn">
+  <span id="dark-icon">◑</span>
+  <span id="dark-label">Dark</span>
+</button>
+
+<div class="container">
 
   <!-- HERO -->
   <section class="hero">
-    <img class="hero-sigil" src="sch_sygil.png" alt="" />
-    <p class="hero-label">Source Code Holdings Ltd</p>
-    <h1 class="hero-title">We own<br/>the infrastructure.</h1>
-    <p class="hero-sub">
-      A private holding company developing proprietary awareness architecture —
-      a structured framework mapping human behavioural patterns into
-      measurable, actionable data. Software live. Hardware in development.
+    <div class="hero-logo">
+      <img id="site-logo" src="sch_sygil.png" alt="Source Code Holdings" style="width:140px;height:auto;display:block;margin:0 auto;opacity:0.92;">
+    </div>
+    <div class="hero-name">Source Code Holdings</div>
+    <div class="hero-divider"></div>
+    <p class="hero-copy">
+      A private holding structure for intellectual property, system architecture,
+      and behavioural frameworks. Not a product company. Not a service.
+      A structure built to hold, protect, and licence what has been built.
     </p>
-    <div class="hero-tags">
-      <span class="hero-tag">R&D Stage</span>
-      <span class="hero-tag">Hardware Prototypes</span>
-      <span class="hero-tag">Proprietary Framework</span>
-      <span class="hero-tag">England & Wales</span>
+    <div class="hero-tag">Private · By arrangement only</div>
+  </section>
+
+  <!-- 01 — THE FRAMEWORK -->
+  <section class="section" id="framework">
+    <div class="section-head">
+      <div>
+        <div class="section-label">01 — The Framework</div>
+        <h2 class="section-title">A law, not<br>a theory</h2>
+      </div>
+      <p class="section-desc">
+        The Source Code Framework was reverse-engineered from lived human experience — not built top-down from academic theory. An original, internally consistent model of human awareness. The language, structure, and all terminology are proprietary intellectual property of Source Code Holdings Ltd.
+      </p>
+    </div>
+
+    <div class="fw-statement">
+      <div class="fw-law">"Everything in existence must coincide with its polar opposite or cease to exist."</div>
+      <div class="fw-body">
+        This is the single principle from which the entire framework derives. Not a metaphor — a structural rule. It determines why the framework is shaped the way it is, why its measurement system works the way it does, and why its developmental model follows a spiral rather than a line.<br><br>
+        The practical implication: no code, state, or pattern should be eliminated. The goal is never to remove the negative — it is to balance all components so that none dominates to the point of dysfunction.
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card">
+        <div class="card-index">Layer 01</div>
+        <h3>Conscious layer</h3>
+        <p>The external, observable layer. What a person shows — their behaviour, decisions, communication, and patterns. Ten discrete codes govern this layer. Accessible through observation and structured self-reflection.</p>
+        <ul>
+          <li>10 Conscious Source Codes</li>
+          <li>Observable behaviour and output</li>
+          <li>The active Yin-Yang</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-index">Layer 02</div>
+        <h3>Subconscious layer</h3>
+        <p>The internal, hidden layer running underneath simultaneously. What drives the conscious layer without the person's awareness — fear, memory, desire, instinct, attachment. Ten codes. Not directly observable.</p>
+        <ul>
+          <li>10 Subconscious Source Codes</li>
+          <li>Emotional patterns and loops</li>
+          <li>The inverse Yin-Yang</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-index">The gap</div>
+        <h3>Drift</h3>
+        <p>The measurable distance between what a person presents and what is actually running underneath. A person can appear perfectly regulated while running a destabilising subconscious programme. That gap is their true score.</p>
+        <ul>
+          <li>D = |Conscious − Subconscious|</li>
+          <li>Zero = full alignment</li>
+          <li>The primary measurement output</li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <div class="rule"></div>
-
-  <!-- WHAT WE BUILD -->
-  <section class="section" id="technology">
-    <p class="section-label">What we build</p>
-    <h2 class="section-title">Awareness.<br/><em>Measured.</em></h2>
-    <p class="section-body">
-      Source Code Holdings develops the Observer Code framework — a structured methodology
-      for mapping individual and organisational behavioural patterns across four primary
-      source codes. The output is measurable awareness data with direct applications
-      in personal development, business intelligence, and AI-assisted coaching.
-    </p>
-
-    <div class="build-grid">
-
-      <div class="build-cell">
-        <p class="build-tag">Framework · Live</p>
-        <h3 class="build-title">Awareness Architecture</h3>
-        <p class="build-desc">
-          Proprietary four-axis behavioural mapping system. Classifies individual
-          patterns across NARC, YARC, CIST, and OLL source codes. Produces a
-          quantified Observer Code profile with Balance Scale scoring and
-          awareness level assignment (1–10).
-        </p>
-        <p class="build-outcome">Outcome: measurable behavioural classification · Assessment platform live</p>
+  <!-- 02 — OBSERVER CODES -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-label">02 — Observer Codes</div>
+        <h2 class="section-title">Not types.<br>Percentages.</h2>
       </div>
-
-      <div class="build-cell">
-        <p class="build-tag">Software · Live</p>
-        <h3 class="build-title">Assessment Platform</h3>
-        <p class="build-desc">
-          Web-based psychometric assessment tool delivering individual Observer Code
-          profiles. Free tier and paid full assessment (£19.99). Deployed via
-          Riclee Digital. Business awareness assessment in development —
-          digital footprint analysis and organisational pattern mapping.
-        </p>
-        <p class="build-outcome">Outcome: scalable digital assessment delivery · Active users</p>
+      <p class="section-desc">
+        The framework's most original contribution. Four Observer Codes present in every person simultaneously, always summing to 100%. The ratio between them determines current state and predicts behavioural output. Zero-Point — fully balanced awareness — is 25% across all four simultaneously.
+      </p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-badge">NARC</div>
+        <h3>The negative percentage</h3>
+        <p>Extractive, self-protective, survival-oriented energy. Not inherently harmful — at 25% it provides necessary self-preservation. When dominant it becomes zero-sum. Where every human awareness begins.</p>
+        <ul>
+          <li>Polar pair: YARC</li>
+          <li>At 25%: healthy self-interest</li>
+          <li>When dominant: manipulative, zero-sum</li>
+        </ul>
       </div>
-
-      <div class="build-cell">
-        <p class="build-tag">Software · Live</p>
-        <h3 class="build-title">UMNi Systems Platform</h3>
-        <p class="build-desc">
-          AI-driven trading infrastructure operating company. 26 MQL software
-          products for MetaTrader 4/5. Telegram automation, signal intelligence,
-          and execution agent. Demonstrates the group's software engineering
-          capability across complex real-time data environments.
-        </p>
-        <p class="build-outcome">Outcome: live revenue-generating software · MQL5 marketplace</p>
+      <div class="card">
+        <div class="card-badge">YARC</div>
+        <h3>The positive percentage</h3>
+        <p>Giving, other-directed energy. The polar opposite of NARC. At 25% it produces empathy and genuine connection. When dominant, self-abandoning. Not widely recognised as a dysfunction — society rewards self-sacrifice.</p>
+        <ul>
+          <li>Polar pair: NARC</li>
+          <li>At 25%: empathy, connection</li>
+          <li>When dominant: self-abandoning</li>
+        </ul>
       </div>
-
-      <div class="build-cell">
-        <p class="build-tag">AI · In Development</p>
-        <h3 class="build-title">UMNi-Assist</h3>
-        <p class="build-desc">
-          Unified AI business assistant. Single Python process managing signal
-          processing, trade monitoring, customer support, and multi-brand
-          communications across three operating companies. Demonstrates
-          practical AI automation at production scale.
-        </p>
-        <p class="build-outcome">Outcome: full business automation · Multi-brand AI layer</p>
+      <div class="card">
+        <div class="card-badge">CIST</div>
+        <h3>The balanced percentage</h3>
+        <p>The integration code. Holds NARC and YARC in conscious regulation — does not eliminate either, contains both. When dominant, the most stable self-aware functioning state available below Zero-Point.</p>
+        <ul>
+          <li>Polar pair: Øll</li>
+          <li>At 25%: stable, grounded</li>
+          <li>When dominant: rigid, over-analytical</li>
+        </ul>
       </div>
-
+      <div class="card">
+        <div class="card-badge">Øll</div>
+        <h3>The all-and-nothing percentage</h3>
+        <p>Pure potential in both directions simultaneously. At 25% it provides creative intensity and transformational energy. When dominant, total volatility — behaviour that cannot be predicted even by the person themselves.</p>
+        <ul>
+          <li>Polar pair: CIST</li>
+          <li>At 25%: creative intensity</li>
+          <li>When dominant: implosion or explosion</li>
+        </ul>
+      </div>
     </div>
   </section>
 
-  <div class="rule"></div>
-
-  <!-- PROTOTYPES -->
-  <section class="section" id="prototypes">
-    <p class="section-label">Hardware · TRL 2–3</p>
-    <h2 class="section-title">Four devices.<br/><em>In development.</em></h2>
-    <p class="section-body">
-      Source Code Holdings is developing four hardware prototypes designed to
-      passively capture environmental and biometric data for integration with
-      the Awareness Architecture framework. All devices are at concept and
-      early prototype stage (TRL 2–3). Full technical specifications available
-      under NDA.
-    </p>
-
-    <div class="device-grid">
-
-      <a class="device-cell" href="dp1_proto.html">
-        <p class="device-id">Device 01 · DP-1</p>
-        <h3 class="device-name">Duality Processor</h3>
-        <p class="device-full">Dual-channel cognitive state monitor</p>
-        <p class="device-desc">
-          Processes parallel input streams to identify cognitive state transitions
-          and pattern drift in real time. Designed to integrate with the
-          Observer Code scoring system.
-        </p>
-        <span class="device-trl">TRL 2</span>
-        <span class="device-trl">Concept validated</span>
-      </a>
-
-      <a class="device-cell" href="abfs_proto.html">
-        <p class="device-id">Device 02 · ABFS</p>
-        <h3 class="device-name">Ambient Field Sensor</h3>
-        <p class="device-full">Environmental awareness capture system</p>
-        <p class="device-desc">
-          Passive environmental sensor array designed to detect and map
-          ambient field conditions relevant to behavioural state classification
-          within the Awareness Architecture.
-        </p>
-        <span class="device-trl">TRL 2</span>
-        <span class="device-trl">Concept validated</span>
-      </a>
-
-      <a class="device-cell" href="nes_proto.html">
-        <p class="device-id">Device 03 · NES</p>
-        <h3 class="device-name">Neural Engagement System</h3>
-        <p class="device-full">Engagement pattern detection device</p>
-        <p class="device-desc">
-          Detects and classifies neural engagement patterns, providing
-          real-time input to the Awareness Architecture scoring engine.
-          Target application: coaching, focus optimisation, awareness training.
-        </p>
-        <span class="device-trl">TRL 2</span>
-        <span class="device-trl">Prototype stage</span>
-      </a>
-
-      <a class="device-cell" href="tce_proto.html">
-        <p class="device-id">Device 04 · TCE</p>
-        <h3 class="device-name">Terminal Consciousness Engine</h3>
-        <p class="device-full">Primary awareness computation unit</p>
-        <p class="device-desc">
-          Central processing unit for the hardware ecosystem. Aggregates
-          data from DP-1, ABFS, and NES to produce a unified real-time
-          awareness score. The hardware brain of the system.
-        </p>
-        <span class="device-trl">TRL 3</span>
-        <span class="device-trl">Early prototype</span>
-      </a>
-
+  <!-- 03 — MEASUREMENT -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-label">03 — Measurement</div>
+        <h2 class="section-title">The Balance<br>Scale</h2>
+      </div>
+      <p class="section-desc">
+        A universal measurement axis running from −5 to +5. Zero is Zero-Point — perfect alignment of both awareness layers with a balanced Observer Code ratio. Negative scores indicate subconscious dominance. Positive scores indicate conscious expansion.
+      </p>
     </div>
-
-    <p style="margin-top:2rem;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);">
-      Full architecture documentation · Technical specifications · Available under NDA
-    </p>
+    <div class="scale-card">
+      <div class="section-label">Balance Scale axis</div>
+      <div class="scale-track-wrap">
+        <div class="scale-track">
+          <div class="scale-pip" style="left:0%"></div>
+          <div class="scale-pip empty" style="left:50%"></div>
+          <div class="scale-pip" style="left:100%"></div>
+        </div>
+      </div>
+      <div class="scale-ends"><span>−5 · Collapse</span><span>0 · Zero-Point</span><span>+5 · Peak expression</span></div>
+      <div class="scale-rows">
+        <div class="scale-row"><div class="scale-score">+5</div><div class="scale-state">Peak expression</div><div class="scale-note">25/25/25/25 · both layers aligned · creator threshold</div></div>
+        <div class="scale-row"><div class="scale-score">+3 / +4</div><div class="scale-state">Conscious expansion</div><div class="scale-note">CIST / YARC rising · drift low</div></div>
+        <div class="scale-row"><div class="scale-score">+1 / +2</div><div class="scale-state">Stability emerging</div><div class="scale-note">CIST dominant · NARC regulated</div></div>
+        <div class="scale-row"><div class="scale-score">0</div><div class="scale-state">Zero-Point</div><div class="scale-note">Perfect 25/25/25/25 balance</div></div>
+        <div class="scale-row"><div class="scale-score">−1 / −2</div><div class="scale-state">Drift activated</div><div class="scale-note">NARC or Øll beginning to rise</div></div>
+        <div class="scale-row"><div class="scale-score">−3 / −4</div><div class="scale-state">Emotional overload</div><div class="scale-note">NARC or Øll dominant</div></div>
+        <div class="scale-row"><div class="scale-score">−5</div><div class="scale-state">Collapse</div><div class="scale-note">Øll dominant · implosion or explosion</div></div>
+      </div>
+    </div>
   </section>
 
-  <div class="rule"></div>
+  <!-- 04 — THEORY BRIDGE -->
+  <section class="section">
+    <div class="fw-statement">
+      <div class="fw-law">Everything = Quadrality, or Nothing — dependent on the Observer.</div>
+      <div class="fw-body">
+        The framework maps onto physics, dimensional mathematics, consciousness research, and ancient geometry — not by design, but by convergence. The same structure kept appearing in different systems because it was already there in all of them. The Omniality Engine is the software implementation of this logic. The DP-1 is the hardware implementation.<br><br>
+        <a href="theory.html" style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line-strong);padding-bottom:2px;">Read the full theory →</a>
+      </div>
+    </div>
+  </section>
 
-  <!-- ROADMAP -->
+  <!-- 05 — DEVICE LAYER -->
+  <section class="section" id="devices">
+    <div class="section-head">
+      <div>
+        <div class="section-label">05 — Device Layer</div>
+        <h2 class="section-title">Four devices.<br>One engine.</h2>
+      </div>
+      <p class="section-desc">
+        Four proprietary devices. Each reads awareness at a different scale — personal, on-body, and room-level. All powered by the DP-1 processor. All at concept and early prototype stage (TRL 2–3). Full technical specifications available under NDA. Interactive prototypes below.
+      </p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-badge">DP-1</div>
+        <h3>Duality Processor</h3>
+        <p>The core processing engine. Processes parallel input streams to identify cognitive state transitions and pattern drift in real time. Currently deployed as a software implementation (the Omniality Engine). The final vision is a custom silicon chip.</p>
+        <ul><li>Core engine — all framework logic</li><li>Powers TCE, NES, and ABFS</li><li>TRL 2 · Concept validated</li></ul>
+        <button class="card-demo-btn" onclick="showDemo('dp1')">Interactive prototype ↗</button>
+      </div>
+      <div class="card">
+        <div class="card-badge">TCE</div>
+        <h3>Terminal Consciousness Engine</h3>
+        <p>Primary awareness computation unit — the hardware brain of the system. Aggregates data from DP-1, ABFS, and NES to produce a unified real-time awareness score. Designed as a self-coaching smart mirror display.</p>
+        <ul><li>Observer Code ratio display</li><li>Drift score and recalibration path</li><li>TRL 3 · Early prototype</li></ul>
+        <button class="card-demo-btn" onclick="showDemo('tce')">Interactive prototype ↗</button>
+      </div>
+      <div class="card">
+        <div class="card-badge">NES</div>
+        <h3>Neural Engagement System</h3>
+        <p>Awareness on the body. Detects and classifies neural engagement patterns, monitoring drift throughout the day — surfacing signals before they become behavioural events. Target: coaching, focus optimisation, awareness training.</p>
+        <ul><li>Continuous real-time drift monitoring</li><li>Early warning before behaviour changes</li><li>TRL 2 · Prototype stage</li></ul>
+        <button class="card-demo-btn" onclick="showDemo('nes')">Interactive prototype ↗</button>
+      </div>
+      <div class="card">
+        <div class="card-badge">ABFS</div>
+        <h3>Ambient Field Sensor</h3>
+        <p>Room-level group awareness. Passive environmental sensor array designed to detect and map ambient field conditions — modelling the collective state of everyone in a space as an aggregate. No individual identification.</p>
+        <ul><li>Group Observer Code profile</li><li>Collective drift monitoring</li><li>TRL 2 · Concept validated</li></ul>
+        <button class="card-demo-btn" onclick="showDemo('abfs')">Interactive prototype ↗</button>
+      </div>
+    </div>
+
+    <div class="demo-panel" id="demo-tce">
+      <div class="demo-header"><div class="demo-label">TCE — Terminal Consciousness Engine · Prototype</div><button class="demo-close" onclick="hideDemo('tce')">✕ close</button></div>
+      <iframe class="demo-frame" src="tce_smart_mirror.html" frameborder="0"></iframe>
+      <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>TRL 3 · Powered by DP-1</span></div>
+    </div>
+    <div class="demo-panel" id="demo-nes">
+      <div class="demo-header"><div class="demo-label">NES — Neural Engagement System · Prototype</div><button class="demo-close" onclick="hideDemo('nes')">✕ close</button></div>
+      <iframe class="demo-frame" src="nes_watch_live.html" frameborder="0"></iframe>
+      <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>TRL 2 · Powered by DP-1</span></div>
+    </div>
+    <div class="demo-panel" id="demo-abfs">
+      <div class="demo-header"><div class="demo-label">ABFS — Ambient Field Sensor · Prototype</div><button class="demo-close" onclick="hideDemo('abfs')">✕ close</button></div>
+      <iframe class="demo-frame" src="abfs_coordinator_live.html" frameborder="0"></iframe>
+      <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>TRL 2 · Powered by DP-1</span></div>
+    </div>
+    <div class="demo-panel" id="demo-dp1">
+      <div class="demo-header"><div class="demo-label">DP-1 — Duality Processor · Prototype</div><button class="demo-close" onclick="hideDemo('dp1')">✕ close</button></div>
+      <iframe class="demo-frame" src="dp1_interactive_demo.html" frameborder="0"></iframe>
+      <div class="demo-footer"><span>Prototype · Source Code Holdings Ltd · Confidential</span><span>TRL 2 · Core processing engine</span></div>
+    </div>
+  </section>
+
+  <!-- 06 — LICENSING -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-label">06 — Licensing</div>
+        <h2 class="section-title">Three tiers.<br>One framework.</h2>
+      </div>
+      <p class="section-desc">
+        Source Code Holdings is an IP licensing company. The apps prove the system works. The devices extend the ecosystem. The Source Codes themselves are the asset. Licensing is the strategy. Ownership is permanent.
+      </p>
+    </div>
+
+    <div class="fw-statement" style="margin-bottom:14px;">
+      <div class="fw-law">Source Code Coaching — Law 1: Value Requires Boundaries</div>
+      <div class="fw-body">
+        Unlimited access collapses value. When access is unlimited, mystery collapses, consequence disappears, and replacement becomes assumed. Source Code Coaching teaches access governance, energy economics, and observer-level self-respect — not pop motivation. This principle is the foundation of everything SCH builds and how it is licenced.
+      </div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card">
+        <div class="card-index">Tier 01 — Consumer</div>
+        <h3>Proof of work</h3>
+        <p>The framework in accessible form. Apps and assessments that prove the Source Code system works at scale — generating the user data, credibility, and commercial evidence that makes Tiers 2 and 3 possible.</p>
+        <ul><li>Solo Awareness app</li><li>SCH Check personal and business reports</li><li>Public access</li></ul>
+      </div>
+      <div class="card">
+        <div class="card-index">Tier 02 — Practitioner</div>
+        <h3>Licensed deployment</h3>
+        <p>Coaches, therapists, educators, and institutions. Full framework access, certification, and deployment rights. The practitioner network distributes the Source Code system — recurring licence, not one-off sale.</p>
+        <ul><li>Full 20-code architecture</li><li>NARC / YARC / CIST / Øll certification</li><li>By arrangement</li></ul>
+      </div>
+      <div class="card">
+        <div class="card-index">Tier 03 — Enterprise</div>
+        <h3>Full IP access</h3>
+        <p>Corporations, healthcare, technology companies, research institutions. Full IP access, device integration, white-label rights, and custom deployment. The complete Source Code stack at organisational scale.</p>
+        <ul><li>Full IP and device integration rights</li><li>White-label and custom deployment</li><li>By arrangement only</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — ROADMAP -->
   <section class="section" id="roadmap">
-    <p class="section-label">Development roadmap</p>
-    <h2 class="section-title">Where we are.<br/><em>Where we're going.</em></h2>
-
-    <div class="roadmap">
-
+    <div class="section-head">
+      <div>
+        <div class="section-label">07 — Roadmap</div>
+        <h2 class="section-title">Where we are.<br>Where we're going.</h2>
+      </div>
+      <p class="section-desc">
+        Software is live. Hardware is in development. The roadmap below covers the full build from company formation through to a proprietary language model trained on Awareness Architecture data.
+      </p>
+    </div>
+    <div class="roadmap-rows">
       <div class="roadmap-row">
         <span class="roadmap-date">2024</span>
         <span class="roadmap-status live">Complete</span>
         <div>
-          <p class="roadmap-text">Company formation & IP structure</p>
-          <p class="roadmap-sub">Source Code Holdings Ltd registered · IP framework established · Operating companies structured</p>
+          <div class="roadmap-text">Company formation & IP structure</div>
+          <div class="roadmap-sub">Source Code Holdings Ltd registered · IP framework established · Operating companies structured</div>
         </div>
       </div>
-
       <div class="roadmap-row">
         <span class="roadmap-date">Q1 2025</span>
         <span class="roadmap-status live">Complete</span>
         <div>
-          <p class="roadmap-text">Software platform launch</p>
-          <p class="roadmap-sub">UMNi Systems live · MQL products on marketplace · Awareness Assessment platform deployed · Signal infrastructure operational</p>
+          <div class="roadmap-text">Software platform launch</div>
+          <div class="roadmap-sub">UMNi Systems live · MQL products on marketplace · Awareness Assessment platform deployed · Signal infrastructure operational</div>
         </div>
       </div>
-
       <div class="roadmap-row">
         <span class="roadmap-date">Q2 2025</span>
         <span class="roadmap-status live">Complete</span>
         <div>
-          <p class="roadmap-text">AI automation layer</p>
-          <p class="roadmap-sub">UMNi-Assist v1 · Unified communications across 3 brands · Claude API integration · Multi-channel support automation</p>
+          <div class="roadmap-text">AI automation layer</div>
+          <div class="roadmap-sub">Unified AI communications across 3 brands · Claude API integration · Multi-channel support automation</div>
         </div>
       </div>
-
       <div class="roadmap-row">
         <span class="roadmap-date">Q3 2025</span>
         <span class="roadmap-status">In Progress</span>
         <div>
-          <p class="roadmap-text">Hardware prototype development</p>
-          <p class="roadmap-sub">DP-1 · ABFS · NES · TCE — moving from concept to physical prototype · Grant funding sought for hardware R&D</p>
+          <div class="roadmap-text">Hardware prototype development</div>
+          <div class="roadmap-sub">DP-1 · ABFS · NES · TCE — moving from concept to physical prototype · Grant funding sought for hardware R&D</div>
         </div>
       </div>
-
       <div class="roadmap-row">
         <span class="roadmap-date">Q4 2025</span>
         <span class="roadmap-status">Planned</span>
         <div>
-          <p class="roadmap-text">Business awareness platform & coaching apps</p>
-          <p class="roadmap-sub">Business digital footprint assessment · Android coaching app (individual) · Android coaching app (business)</p>
+          <div class="roadmap-text">Business awareness platform & coaching apps</div>
+          <div class="roadmap-sub">Business digital footprint assessment · Android coaching app (individual) · Android coaching app (business)</div>
         </div>
       </div>
-
       <div class="roadmap-row">
         <span class="roadmap-date">2026</span>
         <span class="roadmap-status">Roadmap</span>
         <div>
-          <p class="roadmap-text">UMNi-LLM & integrated hardware ecosystem</p>
-          <p class="roadmap-sub">Proprietary language model trained on Awareness Architecture data · Full hardware-software integration · TRL 6+ target</p>
+          <div class="roadmap-text">UMNi-LLM & integrated hardware ecosystem</div>
+          <div class="roadmap-sub">Proprietary language model trained on Awareness Architecture data · Full hardware-software integration · TRL 6+ target</div>
         </div>
       </div>
-
     </div>
   </section>
 
-  <div class="rule"></div>
-
-  <!-- TEAM -->
+  <!-- 09 — TEAM -->
   <section class="section" id="team">
-    <p class="section-label">Founding team</p>
-    <h2 class="section-title">Built by<br/><em>one person.</em></h2>
-    <p class="section-body">
-      Source Code Holdings was founded and is operated by Ric Lee —
-      developer, trader, and systems architect. Every product, framework,
-      and infrastructure component has been designed and built in-house.
-    </p>
-
-    <div style="margin-top:3rem;">
-      <div class="team-card">
-        <div class="team-initial">R</div>
-        <div>
-          <h3 class="team-name">Ric Lee</h3>
-          <p class="team-role">Founder · Developer · Systems Architect</p>
-          <p class="team-bio">
-            Full-stack developer and algorithmic trader with multi-year experience
-            building production systems across trading infrastructure, AI automation,
-            and behavioural framework design. Developed and deployed 26 MQL software
-            products to the MQL5 marketplace, a live signal processing pipeline
-            handling real-time trade execution, and the Observer Code awareness
-            framework — all independently.
-          </p>
-          <p class="team-bio">
-            Background in pattern recognition, systems thinking, and structured
-            problem solving. Neurodivergent founder — Asperger's profile with
-            documented strength in cross-domain pattern identification, the
-            foundational capability behind the Awareness Architecture.
-          </p>
-          <div class="team-links">
-            <a class="team-link" href="https://github.com/RickVR32" target="_blank">GitHub</a>
-            <a class="team-link" href="https://www.mql5.com/en/users/rickvr32/seller" target="_blank">MQL5</a>
-            <a class="team-link" href="https://umni-systems.com" target="_blank">UMNi Systems</a>
-            <a class="team-link" href="https://riclee-dc.info" target="_blank">Riclee Digital</a>
-          </div>
+    <div class="section-head">
+      <div>
+        <div class="section-label">08 — Founding Team</div>
+        <h2 class="section-title">Built by<br>one person.</h2>
+      </div>
+      <p class="section-desc">
+        Source Code Holdings was founded and is operated by Ric Lee — developer, trader, and systems architect. Every product, framework, and infrastructure component has been designed and built in-house.
+      </p>
+    </div>
+    <div class="team-card">
+      <div class="team-initial">R</div>
+      <div>
+        <div class="team-name">Ric Lee</div>
+        <div class="team-role">Founder · Developer · Systems Architect</div>
+        <p class="team-bio">Full-stack developer and algorithmic trader with multi-year experience building production systems across trading infrastructure, AI automation, and behavioural framework design. Developed and deployed 26 MQL software products to the MQL5 marketplace, a live signal processing pipeline handling real-time trade execution, and the Observer Code awareness framework — all independently.</p>
+        <p class="team-bio">Background in pattern recognition, systems thinking, and structured problem solving. Neurodivergent founder — Asperger's profile with documented strength in cross-domain pattern identification, the foundational capability behind the Awareness Architecture.</p>
+        <div class="team-links">
+          <a class="team-link" href="https://www.mql5.com/en/users/rickvr32/seller" target="_blank">MQL5 Marketplace</a>
+          <a class="team-link" href="https://umni-systems.com" target="_blank">UMNi Systems</a>
+          <a class="team-link" href="https://riclee-dc.info" target="_blank">Riclee Digital</a>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="rule"></div>
-
-  <!-- OPERATING COMPANIES -->
+  <!-- 10 — GROUP STRUCTURE -->
   <section class="section">
-    <p class="section-label">Group structure</p>
-    <h2 class="section-title">Three companies.<br/><em>One architecture.</em></h2>
-
-    <div style="margin-top:3rem;">
-      <div class="holding-row">
-        <span class="holding-id">SCH-001</span>
-        <div>
-          <div class="holding-name">UMNi Systems</div>
-          <div class="holding-desc">AI-driven trading infrastructure · 26 MQL products · Signal intelligence · Telegram automation</div>
-        </div>
-        <span class="holding-status">Active · Revenue generating</span>
+    <div class="section-head">
+      <div>
+        <div class="section-label">09 — Group Structure</div>
+        <h2 class="section-title">Two companies.<br>One architecture.</h2>
       </div>
-
-      <div class="holding-row">
-        <span class="holding-id">SCH-002</span>
-        <div>
-          <div class="holding-name">Riclee Digital</div>
-          <div class="holding-desc">Digital consultancy · AI automation services · Awareness Assessment platform · Personal brand</div>
-        </div>
-        <span class="holding-status">Active · Client facing</span>
+      <p class="section-desc">
+        Source Code Holdings is the parent IP structure. Two operating companies sit beneath it — each generating revenue, credibility, and infrastructure that feeds back into the core framework.
+      </p>
+    </div>
+    <div class="holding-row">
+      <span class="holding-id">SCH-001</span>
+      <div>
+        <div class="holding-name">UMNi Systems</div>
+        <div class="holding-desc">AI-driven trading infrastructure · 26 MQL products · Signal intelligence · Telegram automation</div>
       </div>
-
-      <div class="holding-row">
-        <span class="holding-id">SCH-003</span>
-        <div>
-          <div class="holding-name">VG Codeworks</div>
-          <div class="holding-desc">Automotive ECU coding · Remapping · VAG salvage parts</div>
-        </div>
-        <span class="holding-status">Operational</span>
+      <span class="holding-status">Active · Revenue generating</span>
+    </div>
+    <div class="holding-row">
+      <span class="holding-id">SCH-002</span>
+      <div>
+        <div class="holding-name">Riclee Digital</div>
+        <div class="holding-desc">Digital consultancy · AI automation services · Awareness Assessment platform · Personal brand</div>
       </div>
+      <span class="holding-status">Active · Client facing</span>
     </div>
   </section>
-
-  <div class="rule"></div>
 
   <!-- CONTACT -->
-  <section class="section" id="contact">
-    <p class="section-label">Contact</p>
-    <h2 class="section-title">Selective<br/><em>enquiries.</em></h2>
-    <p class="section-body">
-      Source Code Holdings welcomes enquiries from investors, grant bodies,
-      and strategic partners. All other communications should be directed
-      to the relevant operating company.
-    </p>
-
-    <div class="contact-grid">
-
-      <div class="contact-cell">
-        <p class="contact-cell-label">Investment & Grant enquiries</p>
-        <a class="contact-cell-value" href="mailto:grants@sourcecodeholdings.org">grants@sourcecodeholdings.org</a>
-        <p class="contact-cell-note">NDA available on request · Full technical documentation to qualified parties</p>
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-head">
+        <h2>Private access</h2>
+        <span>Selective enquiries only</span>
       </div>
-
-      <div class="contact-cell">
-        <p class="contact-cell-label">General enquiries</p>
-        <a class="contact-cell-value" href="https://umni-systems.com" target="_blank">umni-systems.com</a>
-        <p class="contact-cell-note">All general communications handled via UMNi Systems</p>
-      </div>
-
-      <div class="contact-cell">
-        <p class="contact-cell-label">Technical repository</p>
-        <a class="contact-cell-value" href="https://github.com/RickVR32" target="_blank">github.com/RickVR32</a>
-        <p class="contact-cell-note">Public repositories · Additional private repos available under NDA</p>
-      </div>
-
-      <div class="contact-cell">
-        <p class="contact-cell-label">Operating address</p>
-        <p class="contact-cell-value">London, England</p>
-        <p class="contact-cell-note">Registered address available to verified grant bodies and investors on request</p>
-      </div>
-
+      <form action="https://formspree.io/f/xpqobvev" method="POST">
+        <div class="form-grid">
+          <input type="text" name="name" placeholder="Name" required>
+          <input type="text" name="company" placeholder="Company">
+          <input type="email" name="email" placeholder="Email" required>
+          <select name="enquiry_type" required>
+            <option value="" disabled selected>Enquiry type</option>
+            <option value="IP / Licensing">IP / Licensing</option>
+            <option value="Framework Access">Framework Access</option>
+            <option value="System Architecture">System Architecture</option>
+            <option value="Investment / Grant">Investment / Grant</option>
+            <option value="Partnership">Partnership</option>
+          </select>
+          <textarea name="message" placeholder="Brief enquiry..." required></textarea>
+          <input type="hidden" name="_replyto" value="admin@sourcecodeholdings.org">
+          <input type="hidden" name="_subject" value="New SCH enquiry">
+          <div class="form-actions"><button type="submit">Submit</button></div>
+        </div>
+      </form>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-col">
-      Source Code Holdings Ltd<br/>
-      Registered in England & Wales<br/>
-      © 2024–2026 All rights reserved
-    </div>
-    <div class="footer-col">
-      <a href="mailto:grants@sourcecodeholdings.org">grants@sourcecodeholdings.org</a><br/>
-      <a href="https://umni-systems.com" target="_blank">umni-systems.com</a><br/>
-      <a href="https://github.com/RickVR32" target="_blank">github.com/RickVR32</a>
-    </div>
-    <div class="footer-col">
-      <a href="/privacy.html">Privacy Policy</a><br/>
-      NDA available on request<br/>
-      TRL 2–3 · Hardware R&D stage
-    </div>
-  </footer>
+  <footer>Source Code Holdings Ltd &bull; Registered in England & Wales &bull; All Rights Reserved 2026</footer>
 
+</div>
+
+<script>
+  let current = null;
+  function showDemo(id) {
+    if (current && current !== id) document.getElementById('demo-'+current).classList.remove('visible');
+    current = id;
+    const el = document.getElementById('demo-'+id);
+    el.classList.add('visible');
+    setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+  }
+  function hideDemo(id) {
+    document.getElementById('demo-'+id).classList.remove('visible');
+    if (current === id) current = null;
+    document.getElementById('devices').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  let isDark = false;
+  function toggleDark() {
+    isDark = !isDark;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.getElementById('dark-icon').textContent  = isDark ? '○' : '◑';
+    document.getElementById('dark-label').textContent = isDark ? 'Light' : 'Dark';
+    const logo = document.getElementById('site-logo');
+    if (logo) logo.style.filter = isDark ? 'invert(1) brightness(1.8)' : '';
+  }
+</script>
 </body>
 </html>
