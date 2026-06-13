@@ -120,7 +120,7 @@
     /* CONTACT */
     .contact-desc { font-size: 0.8rem; line-height: 1.9; color: var(--muted); max-width: 480px; margin-bottom: 40px; }
 
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 32px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 32px; }
     .contact-cell {
       background: var(--panel); border: 1px solid var(--panel-border);
       border-radius: 18px; padding: 28px 24px; transition: background 0.4s;
@@ -215,9 +215,9 @@
     <div class="holding-row">
       <span class="holding-id">SCH-001</span>
       <div>
-        <div class="holding-name">Mapped-Metrics</div>
+        <div class="holding-name">PsyTectrics</div>
         <div class="holding-desc">Behavioural profiling and awareness intelligence platform. Observer Code assessments, psychometric reports, and AI-powered profile analysis. Primary commercial licensee of the SCH awareness framework.</div>
-        <div style="margin-top:10px"><a class="holding-link" href="https://mappedmetrics.com" target="_blank">mappedmetrics.com</a></div>
+        <div style="margin-top:10px"><a class="holding-link" href="https://psytectrics.com" target="_blank">psytectrics.com</a></div>
       </div>
       <span class="holding-status">Active · Live</span>
     </div>
@@ -254,11 +254,6 @@
     </p>
 
     <div class="contact-grid">
-      <div class="contact-cell">
-        <p class="contact-cell-label">Investment & Grant enquiries</p>
-        <a class="contact-cell-value" href="mailto:grants@sourcecodeholdings.org">grants@sourcecodeholdings.org</a>
-        <p class="contact-cell-note">NDA available on request · Full technical documentation to qualified parties</p>
-      </div>
       <div class="contact-cell">
         <p class="contact-cell-label">Operating address</p>
         <p class="contact-cell-value">London, England</p>
@@ -353,7 +348,7 @@
       } else { throw new Error(); }
     } catch {
       status.className = 'form-status error';
-      status.textContent = 'Something went wrong. Email grants@sourcecodeholdings.org directly.';
+      status.textContent = 'Something went wrong. Please try again later.';
     }
     btn.disabled = false; btn.textContent = 'Submit enquiry';
   });
