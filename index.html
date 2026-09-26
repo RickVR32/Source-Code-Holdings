@@ -39,6 +39,7 @@ background-image:
 linear-gradient(180deg, var(--grid-line) 1px, transparent 1px),
 linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
 background-size: 44px 44px;
+background-position: center 0;
 color: var(--text);
 font-family: var(--mono);
 font-weight: 300;
@@ -71,7 +72,8 @@ align-items: center; justify-content: center;
 text-align: center; padding: 80px 2rem;
 }
 .hero-logo { margin-bottom: 32px; }
-.hero-logo img { width: 120px; height: auto; display: block; margin: 0 auto; opacity: 0.92; transition: filter 0.4s; }
+.hero-logo img { width: 143.5px; height: auto; display: block; margin: 0 auto; opacity: 0.92; transition: filter 0.4s; mix-blend-mode: multiply; }
+[data-theme="dark"] .hero-logo img { mix-blend-mode: screen; }
 .hero-name {
 font-family: var(--serif); font-weight: 300;
 font-size: clamp(1.4rem, 3vw, 2rem);
@@ -281,6 +283,19 @@ NDA available on request
 </footer>
 
 <script>
+// Snap the grid so the logo's diamond sits exactly in a 3x3 block of squares
+function alignGrid() {
+const logo = document.getElementById('site-logo');
+if (!logo || !logo.offsetHeight) return;
+const diamondTop = logo.getBoundingClientRect().top + window.scrollY + logo.offsetHeight * (6 / 500);
+const offset = ((diamondTop % 44) + 44) % 44;
+document.body.style.backgroundPosition = 'center ' + offset.toFixed(2) + 'px';
+}
+window.addEventListener('load', alignGrid);
+window.addEventListener('resize', alignGrid);
+document.getElementById('site-logo')?.addEventListener('load', alignGrid);
+alignGrid();
+
 // Theme
 let isDark = false;
 function toggleDark() {
